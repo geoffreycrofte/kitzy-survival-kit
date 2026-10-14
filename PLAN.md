@@ -1,20 +1,26 @@
-# Plan projet — PWA « Kit 72 h »
+# Plan projet — Kitzy
 
-> Application web progressive (PWA), 100 % hors-ligne, pour constituer, suivre et faire tourner sa réserve d'urgence de 72 heures, sur la base de la stratégie nationale de résilience luxembourgeoise « Lëtz prepare! » et des listes de référence internationales.
+> **Kitzy** : application web progressive (PWA) 100 % hors-ligne, puis app native iOS/Android, pour constituer, suivre et faire tourner sa réserve d'urgence de 72 heures, sur la base de la stratégie nationale de résilience luxembourgeoise « Lëtz prepare! » et des listes de référence internationales.
 
-- Statut : **plan v0.2**. Décisions validées ci-dessous ; reste le nom de l'app et quelques points au [§ 15](#15-questions-ouvertes)
+- Statut : **plan v0.3**. Nom, stack et périmètre validés ; reste à choisir la piste graphique (§ 11) et quelques points au [§ 15](#15-questions-ouvertes)
 
-### Décisions validées (v0.2)
+### Décisions validées
 
 | Sujet | Décision |
 |---|---|
+| Nom | **Kitzy**, avec un **hérisson** pour mascotte (Igel et Prett étaient pris). Dépôt de marque EUIPO et noms sur les stores à vérifier. |
 | Hébergement | **GitHub Pages**, 100 % statique |
 | Serveur | **Aucun pour l'instant**. Le VPS personnel est disponible plus tard pour le Web Push (§ 6.4) |
 | Langues | **FR, EN, LB (luxembourgeois), DE, PT** (§ 12.1) |
-| Stack | Libre, tant qu'on a une PWA, une app store plus tard et une compatibilité GitHub Pages : **SvelteKit statique + Capacitor** retenu (§ 5.1) |
+| Stack | **React** pour la PWA + **React Native (Expo)** pour les stores, avec un **cœur TypeScript partagé**. Pas de Capacitor (mauvaise expérience) (§ 5) |
+| Périmètre | **Luxembourg d'abord, compatible avec toute l'Europe** : profils par pays (§ 12.4) |
+| Partage | **QR code et URL** partageable par email (§ 3.9) |
+| Contenu officiel | Repris **reformulé, simplifié et résumé**, avec un lien vers la source (§ 12.2) |
+| Plan d'urgence | Le « plan en ligne » officiel n'est que le PDF : on reprend ses champs à l'identique, avec une bien meilleure expérience (§ 3.6) |
 | Budget produits | Marqueurs **€ / €€ / €€€** uniquement, sans prix affiché |
 | Affiliation | Amazon (compte existant), AliExpress (compte existant, usage très limité), plus des marchands réputés FR/DE à ouvrir (§ 8.3) |
-| Plan d'urgence | Formulaire officiel en 6 pages reçu : champs repris à l'identique (§ 3.6) |
+| Dons | **Oui**, option de don (§ 8.5) |
+| Design | 2 pistes graphiques proposées en maquette : [Kitzy — pistes graphiques](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB) (§ 11) |
 - Langue de travail : français
 - Référentiel d'accessibilité : **RAWeb 1.1, niveau AA** (skills `raweb-code` / `raweb-audit` de [luxembourg-accessibility-skillset](https://github.com/geoffreycrofte/luxembourg-accessibility-skillset)), puis **RAAM 1.1** si on publie des apps natives (skills `raam-code` / `raam-audit`)
 
@@ -298,7 +304,7 @@ Le nombre de jours est un réglage, car certains pays (Allemagne, Suède, Suisse
 - Générée automatiquement : manquants, expirés et à remplacer
 - Cochable en magasin, hors-ligne
 - Pour chaque article, des **suggestions produit** à plusieurs budgets (voir § 8)
-- Partage en texte (API Web Share)
+- Partage en texte (API Web Share), en QR code ou par URL (§ 3.9)
 
 ### 3.5 « À consommer bientôt » (rotation)
 
@@ -306,6 +312,8 @@ Le nombre de jours est un réglage, car certains pays (Allemagne, Suède, Suisse
 - Idées de recettes à partir de ces articles (catalogue local de recettes simples), voir § 4
 
 ### 3.6 Plan personnel d'urgence
+
+Le « plan à compléter en ligne » officiel n'est qu'un **PDF remplissable** (le même que dans le guide). Kitzy en fait un vrai parcours guidé, sauvegardé et partageable : c'est l'un des arguments forts de l'app.
 
 Version numérique **fidèle au formulaire officiel** (guide p. 43-50), sous forme d'assistant en 5 étapes, chacune pouvant être sauvegardée et reprise plus tard. Le guide insiste : *« Je garde le formulaire en digital et en imprimé au cas où je n'aurais plus de batterie. »*
 
@@ -364,6 +372,26 @@ Structure officielle du guide, reprise pour l'arborescence de l'aide : **1. Comp
 - Réinitialiser
 - À propos, sources, mentions d'affiliation, déclaration d'accessibilité, confidentialité
 
+### 3.9 Partage par QR code ou URL
+
+Sans serveur, sans compte : **les données voyagent dans le lien lui-même**.
+
+- Format : `https://<domaine>/partage#<données>`. Les données sont dans le **fragment** (après `#`), qui n'est **jamais envoyé au serveur** : GitHub Pages ne voit rien, et aucun journal ne contient les données.
+- Encodage : JSON minimal, puis compression `deflate-raw` (API `CompressionStream`, ou `pako` en repli), puis base64url. Le schéma est versionné (`v=1`).
+- **Chiffrement optionnel** par phrase de passe (WebCrypto : PBKDF2 + AES-GCM), recommandé dès que le contenu est sensible. La phrase de passe se transmet par un autre canal (oral, SMS).
+
+| Ce qu'on partage | Contenu | Chiffrement |
+|---|---|---|
+| **Liste de courses** | Articles manquants et quantités | Non (rien de sensible) |
+| **Plan d'urgence « famille »** | Contacts, lieux de retrouvailles, emplacements du foyer | Proposé par défaut |
+| Plan complet avec santé | Plus les allergies, traitements, groupe sanguin, matricule | **Obligatoire**, avec avertissement explicite |
+| **Inventaire du foyer** (synchroniser un 2e téléphone) | Kits, articles, lots, dates | Proposé |
+
+- **Canaux** : QR code affiché à l'écran (scanné par l'autre téléphone), bouton « Envoyer par email » (`mailto:` avec le lien), Web Share API (WhatsApp, Signal, SMS…), copier le lien.
+- **Taille** : un QR code reste lisible jusqu'à environ 1 à 2 Ko de données compressées. Au-delà, on propose plutôt le lien par email ou le fichier d'export. Une liste de courses ou un plan sans santé tiennent dans un QR code.
+- **Import** : à l'ouverture du lien, aperçu de ce qui sera importé, puis « Fusionner » ou « Remplacer ». Rien n'est importé sans confirmation.
+- **Accessibilité** : le QR code n'est jamais le seul moyen (lien textuel et bouton de copie juste à côté) ; texte alternatif « QR code du lien de partage de ta liste de courses ».
+
 ---
 
 ## 4. Rendre la préparation « fun » et normale
@@ -382,7 +410,7 @@ L'idée générale : traiter le kit comme **une habitude de foyer**, au même ti
 | **Simulation 72 h interactive** | Le scénario officiel (janvier, un lundi, au travail, coupure générale ; jour 1 retour à la maison, jour 2 l'eau ne coule plus, jour 3 entraide et retour du courant) raconté en histoire « dont tu es le héros ». À chaque étape : « As-tu ce qu'il faut ? », relié à ton inventaire et à ton plan. Le guide le dit lui-même : *« Les enfants vivent la situation comme une grande aventure. »* La simulation se termine sur la question officielle « De quoi avez-vous manqué ? » et alimente la liste de courses. | v2 |
 | **Quiz** | Signaux des sirènes, niveaux de vigilance, bons réflexes cyber : courts, sans chronomètre (accessibilité). | v2 |
 | **Badges discrets** | « Eau OK », « Lumière OK », « Plan d'urgence rempli », « 1 an de rotation ». Désactivables. | v2 |
-| **Mode foyer partagé** | Partager la liste de courses ou le plan avec un·e conjoint·e (export/QR code d'abord, synchronisation éventuellement plus tard). | v2+ |
+| **Mode foyer partagé** | Partager la liste de courses, l'inventaire ou le plan par QR code ou par URL (§ 3.9). La synchronisation automatique viendra éventuellement plus tard, via le VPS. | v1 |
 | **Voisinage** | Fiche imprimable « Je suis votre voisin·e, voici mon numéro » à glisser dans les boîtes aux lettres. Elle alimente la section « Le quartier » du plan (personnes aidantes et à aider). Étape 3 officielle : « Parlez-en autour de vous et proposez votre aide ». | v2 |
 | **« Aide un proche à faire son kit »** | Générer une checklist imprimable ou partageable, pré-remplie pour un parent âgé (le guide insiste sur les plus vulnérables). | v2 |
 | **Compétences** | Badge « Premiers secours » quand on a suivi un cours (liens Croix-Rouge / CGDIS). | v2 |
@@ -393,56 +421,78 @@ Garde-fous : pas de compte à rebours anxiogène, pas de notifications culpabili
 
 ## 5. Architecture technique
 
-### 5.1 Stack recommandée
+### 5.1 Pourquoi React + React Native (et pas une seule base de code)
 
-| Couche | Choix proposé | Pourquoi |
+Deux façons de faire du React Native pour le web et les stores :
+
+| Option | Principe | Avantages | Inconvénients |
+|---|---|---|---|
+| **A. Expo « universel »** (`react-native-web`) | Une seule UI pour iOS, Android et le web | Une seule base de code d'interface | Sur le web, le rendu est fait de `<div>` avec des rôles ARIA au lieu de HTML sémantique (titres, listes, formulaires, landmarks) : beaucoup plus difficile de tenir **RAWeb AA**. La PWA hors-ligne (service worker) est à bricoler soi-même. |
+| **B. Monorepo, cœur partagé** ✅ recommandé | `packages/core` en TypeScript pur, partagé entre une **PWA React** (HTML sémantique) et une **app Expo** (composants natifs) | Accessibilité native de chaque côté (RAWeb pour le web, RAAM pour le mobile) ; vraies notifications locales et SQLite sur mobile ; les builds iOS se font dans le cloud avec **EAS** (pas besoin de Mac) | L'interface est écrite deux fois (mêmes écrans, mêmes noms de composants), mais **toute la logique est partagée** : calculs, rappels, catalogue, i18n, format d'export et de partage |
+
+**Choix : option B.** L'accessibilité est un critère non négociable du projet, et la logique (la partie difficile) n'est écrite qu'une fois.
+
+Ordre de travail : **la PWA d'abord** (GitHub Pages, phases 0 à 4), l'app Expo ensuite (phase 5), qui réutilise `core` tel quel.
+
+### 5.2 Stack
+
+| Couche | Choix | Pourquoi |
 |---|---|---|
-| Build | **Vite** + **TypeScript** | Rapide, sortie statique, compatible GitHub Pages |
-| UI | **Svelte 5** + **SvelteKit** avec `adapter-static` (toutes les pages pré-générées) | Bundle léger (important hors-ligne et sur mobiles modestes), HTML natif facile à rendre accessible ; la même sortie statique sert à GitHub Pages **et** à Capacitor, sans réécriture |
-| PWA | **vite-plugin-pwa** (Workbox) | Precache de toute l'app, stratégies de cache, mise à jour contrôlée |
-| Stockage | **IndexedDB** via **Dexie** | Données structurées, requêtes sur les dates, migrations de schéma |
-| i18n | **Paraglide JS** (inlang) : messages JSON par langue, compilés, typés, tree-shakés ; `Intl` pour les dates et nombres | Léger, statique, intégré à SvelteKit, 5 langues sans surcoût de bundle |
-| Tests | **Vitest** (logique), **Playwright** (E2E et mode hors-ligne), **axe-core** (pré-filtrage a11y) + audit manuel RAWeb | |
-| CI/CD | **GitHub Actions** : lint, tests, build, déploiement Pages, cron de vérification des liens | |
-| Natif (plus tard) | **Capacitor** (iOS + Android) et/ou **TWA** (Android) | Voir § 13 |
+| Monorepo | **pnpm workspaces** (+ Turborepo si besoin) | Partage de `core` entre web et mobile |
+| Langage | **TypeScript** strict partout | |
+| **Cœur partagé** `packages/core` | TS pur, sans dépendance UI : modèles, quantités, statuts, FIFO, moteur de rappels, score, schémas (Zod), format de partage et d'export, messages i18n | Testé une fois avec Vitest, utilisé par les deux apps |
+| Web : UI | **React 19** + **Vite**, React Router en mode statique | HTML sémantique, composants accessibles maison selon les patterns APG du skillset |
+| Web : PWA | **vite-plugin-pwa** (Workbox) | Precache complet, mise à jour contrôlée |
+| Web : stockage | **IndexedDB** via **Dexie** | |
+| Mobile : app | **Expo** (React Native), Expo Router | Builds iOS/Android dans le cloud (EAS), mises à jour OTA |
+| Mobile : stockage | **expo-sqlite** | Même interface « dépôt » que Dexie, définie dans `core` |
+| Mobile : notifications | **expo-notifications** : notifications **locales planifiées, hors-ligne**, sans serveur | Règle le problème du § 6 sur les stores |
+| Mobile : scan | **expo-camera** (lecture de codes-barres) | |
+| i18n | **i18next** (+ `react-i18next`), messages JSON dans `core`, format ICU pour les pluriels | Même bibliothèque et mêmes fichiers sur web et mobile |
+| État | **Zustand** (hooks identiques web et mobile) | Léger |
+| Tests | **Vitest** (core et web), **Playwright** (E2E web et hors-ligne), **axe-core** (pré-filtrage), **Jest + React Native Testing Library** (mobile), audits manuels RAWeb et RAAM | |
+| CI/CD | **GitHub Actions** : lint, tests, build, déploiement Pages, vérification des liens ; **EAS Build** pour les stores | |
 
 **Spécificités GitHub Pages** :
 
-- `paths.base` configuré sur `/survival-kit` (ou vide si domaine personnalisé) ; scope et `start_url` du manifest alignés.
-- Toutes les routes sont pré-générées. Les pages dynamiques (fiche article) utilisent un paramètre (`/article?id=…`) ou un `404.html` de repli : pas de réécriture serveur possible.
-- Fichier `.nojekyll` (sinon les dossiers `_app/` sont ignorés).
-- Déploiement par l'action officielle `actions/deploy-pages`.
+- `base` Vite configuré sur `/survival-kit/` (ou `/` avec un domaine personnalisé) ; scope et `start_url` du manifest alignés.
+- Routes pré-générées ou repli `404.html` qui recharge l'app (pas de réécriture serveur).
+- Fichier `.nojekyll` ; déploiement par l'action officielle `actions/deploy-pages`.
 - Pas d'en-têtes HTTP personnalisés : la CSP passe par une balise `<meta http-equiv>`.
-- Un **domaine personnalisé** (HTTPS automatique) est recommandé avant le lancement : changer d'origine ensuite fait perdre aux utilisateurs leurs données locales (IndexedDB est liée à l'origine). Il faut donc choisir le domaine **avant** la première mise en production publique.
+- **Domaine personnalisé** à choisir **avant** la mise en production publique : IndexedDB est liée à l'origine, et changer de domaine ensuite ferait perdre leurs données aux utilisateurs.
 
-### 5.2 Structure du dépôt (proposée)
+### 5.3 Structure du dépôt
 
 ```
 /
 ├─ PLAN.md
-├─ src/
-│  ├─ lib/
-│  │  ├─ db/            # Dexie : schéma, migrations
-│  │  ├─ domain/        # calculs : quantités cibles, statuts, FIFO, score
-│  │  ├─ reminders/     # moteur de rappels (pur, testable)
-│  │  ├─ notify/        # adaptateurs : web push, in-app, .ics, Capacitor
-│  │  ├─ i18n/
-│  │  └─ components/    # composants accessibles (Button, Disclosure, Meter, Dialog…)
-│  ├─ routes/           # pages
-│  └─ service-worker.ts
+├─ packages/
+│  └─ core/                     # TS pur, partagé
+│     ├─ src/domain/            # quantités, statuts, FIFO, score
+│     ├─ src/reminders/         # moteur de rappels (pur, testable)
+│     ├─ src/share/             # encodage QR/URL, chiffrement, export/import
+│     ├─ src/schema/            # Zod : catalogue, inventaire, plan, pays
+│     ├─ src/repo/              # interfaces de stockage (implémentées par web et mobile)
+│     └─ i18n/{fr,en,lb,de,pt}.json
+├─ apps/
+│  ├─ web/                      # PWA React + Vite (GitHub Pages)
+│  │  ├─ src/components/        # composants accessibles (Button, Disclosure, Dialog, Meter…)
+│  │  ├─ src/notify/            # in-app, .ics, Periodic Background Sync, Web Push (désactivé)
+│  │  └─ src/db/                # Dexie
+│  └─ mobile/                   # Expo (phase 5)
+│     ├─ app/                   # Expo Router
+│     └─ src/notify/            # expo-notifications
 ├─ data/
-│  ├─ catalog/items.json        # modèles d'articles (versionné)
-│  ├─ catalog/products.json     # offres produits / affiliation (mis à jour sans release)
-│  ├─ guide/{fr,en,de,…}/*.md   # contenu d'aide
+│  ├─ countries/{lu,fr,de,be,…}.json   # profils pays (§ 12.4)
+│  ├─ catalog/items.json
+│  ├─ catalog/products.json
+│  ├─ guide/{fr,en,lb,de,pt}/*.md
 │  └─ recipes/*.json
-├─ scripts/
-│  └─ check-links.ts            # surveillance des liens (§ 9)
-└─ .github/workflows/
-   ├─ deploy.yml
-   └─ link-check.yml
+├─ scripts/check-links.ts
+└─ .github/workflows/{deploy,link-check}.yml
 ```
 
-### 5.3 Données dynamiques et mises à jour
+### 5.4 Données dynamiques et mises à jour
 
 - `items.json` (catalogue d'articles) et le guide sont **embarqués dans le precache** : l'app est complète dès la première visite.
 - `products.json` (liens affiliés) suit une stratégie **stale-while-revalidate** : la dernière version connue reste toujours affichée, et la mise à jour se fait en arrière-plan quand le réseau revient.
@@ -464,7 +514,7 @@ Tu veux des notifications **générées localement selon des dates, sans serveur
 | **Web Push** (serveur → appareil) | Il faut un serveur qui envoie au bon moment | Tous les navigateurs modernes ; sur **iOS, uniquement si la PWA est ajoutée à l'écran d'accueil** (iOS 16.4+) |
 | Notification à l'ouverture de l'app | Oui | Partout |
 | **Fichier calendrier .ics** (rappels exportés dans le calendrier du téléphone) | **Oui, 100 % local et fiable** | Partout |
-| **Notifications locales natives** (Capacitor Local Notifications) | **Oui, totalement** | Uniquement en app native (stores) |
+| **Notifications locales natives** (expo-notifications) | **Oui, totalement** | Uniquement en app native (stores) |
 
 **Conclusion** : avec un hébergement purement statique (GitHub Pages), on ne peut **pas** garantir une notification push à date fixe sur tous les appareils, notamment iPhone.
 
@@ -476,7 +526,7 @@ Un **moteur de rappels unique**, pur et testé, calcule la liste des rappels à 
 2. **Export calendrier .ics** (toujours, recommandé) : un clic ajoute les échéances et les revues semestrielles au calendrier du téléphone. Fonctionne hors-ligne, sans serveur, sur iOS comme sur Android. Possibilité de régénérer après chaque modification.
 3. **Periodic Background Sync** (Chromium installé) : vérification quotidienne en arrière-plan, puis `showNotification()` locale. Aucun serveur, aucune donnée envoyée.
 4. **Web Push via un mini-serveur** (**plus tard**, sur ton VPS, voir § 6.4). Respect de la vie privée : l'app n'envoie **que** l'abonnement push et une liste de dates/identifiants opaques (« rappel #a1b2 le 2027-03-01 »), **jamais** le contenu de l'inventaire. Le texte de la notification reste générique (« Tu as 2 rappels pour ton kit ») ; le détail s'affiche à l'ouverture.
-5. **Notifications locales natives** (quand l'app sera sur les stores) : même moteur, adaptateur Capacitor. C'est la solution complète.
+5. **Notifications locales natives** (app Expo sur les stores) : même moteur de rappels (`core`), adaptateur `expo-notifications`. C'est la solution complète.
 
 ### 6.3 Décision : 100 % sans serveur au lancement
 
@@ -628,6 +678,12 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 - Phase 1 : édition directe des JSON dans le dépôt (PR → CI valide le schéma via JSON Schema → déploiement).
 - Phase 2 (si besoin) : petit back-office statique, ou un CMS Git (Decap CMS, Pages CMS) pour éditer sans toucher au JSON.
 
+### 8.5 Dons
+
+- **Web (PWA)** : page « Soutenir Kitzy » et lien discret dans « À propos ». Plateforme au choix : **Liberapay** (association européenne, sans commission de plateforme), **Ko-fi** ou **GitHub Sponsors**. Jamais de pop-up, jamais pendant une tâche.
+- **Stores** : Apple impose l'**achat intégré** pour les pourboires versés au développeur, et Google Play a des règles similaires pour les contenus numériques. Dans l'app native, on propose donc soit un « pot à pourboires » en achat intégré (3 montants), soit on masque le lien externe. Règles à revérifier au moment de la publication.
+- Ton : « Kitzy est gratuit et sans pub. Si l'app t'aide, tu peux offrir une pomme au hérisson. »
+
 ---
 
 ## 9. Surveillance des liens
@@ -694,23 +750,35 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 
 ## 11. Design
 
-### 11.1 Direction : « familier, friendly, moderne »
+### 11.1 Deux pistes proposées
 
-- **Ambiance** : un mélange de carnet de camping et d'appli de courses. Chaleureux, arrondi, aéré.
-- **Palette** : **distincte du bleu et rouge gouvernementaux**, pour ne pas laisser croire à une app officielle. Proposition : vert sapin profond (confiance, nature luxembourgeoise), jaune soleil (énergie, lumière), crème chaud en fond, terracotta pour l'accent. Statuts : vert / ambre / rouge brique, toujours avec icône et texte.
-- **Typographie** : une sans-serif humaniste et très lisible (Atkinson Hyperlegible, Lexend ou Nunito), corps de 17 px minimum sur mobile.
-- **Illustrations** : objets du kit dessinés au trait, un peu ludiques (une lampe frontale qui sourit, une boîte de conserve). Pas de scènes de catastrophe.
-- **Iconographie** : un jeu cohérent (Phosphor ou Tabler, licence libre) pour les catégories.
-- **Mascotte optionnelle** : par exemple un petit hérisson (prévoyant, qui fait des réserves), uniquement si ça ne surcharge pas l'UI.
-- **Composants** : cartes, chips de catégorie, grandes zones tactiles (44 × 44 px minimum), barre de navigation en bas (Accueil, Kits, Courses, Guide, Plus).
-- **Thème sombre** soigné, et respect de `prefers-color-scheme` et `prefers-contrast`.
+Maquettes (écran d'accueil + système visuel) : **[Kitzy — pistes graphiques](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB)**.
 
-### 11.2 Livrables design
+| | **A · Sous-bois** | **B · Sticker pop** |
+|---|---|---|
+| Ambiance | Garde-manger rangé après une balade en forêt : doux, arrondi, naturel | Autocollants sur une boîte à outils : contours francs, couleurs vives, ton joueur |
+| Couleurs | Sapin `#1F5C45`, Soleil `#F2B33D`, Noisette `#7A5440`, Encre `#1E2B24`, fond Mousse `#F3F5EF` | Nuit `#16163A`, Mandarine `#FF6B3D`, Lagon `#0B6E69`, Citron `#FFD84D`, fond Nuage `#F6F7FB` |
+| Typo | **Fredoka** (titres) + **Atkinson Hyperlegible** (texte) | **Bricolage Grotesque** (titres) + **Lexend** (texte) |
+| Formes | Grands rayons (16 à 28 px), pas de contour, ombres très légères | Contour de 2 px, ombres décalées pleines, rayons moyens |
+| Hérisson | Pointes en festons arrondis, feuille sur le dos ; pose « endormi » pour les états vides | Pointes en zigzag cernées de noir, **lampe frontale** ; pose « badge gagné » avec confettis |
+| Gamification | Paliers sobres (« Prêt·e pour un week-end ») | « Missions » et badges plus présents |
 
-1. Moodboard et 2 pistes de palette (vérifiées en contraste)
-2. Design tokens (couleurs, typo, espacements, rayons) en variables CSS
-3. Maquettes des écrans clés : onboarding, tableau de bord, inventaire, fiche article, liste de courses, guide, plan d'urgence
-4. Icône d'app et splash screens (formats PWA, iOS et Android)
+Les contrastes de texte de chaque piste respectent **4,5:1 minimum** (calculés pour chaque paire texte/fond affichée). Les statuts combinent toujours icône, texte et couleur.
+
+Communs aux deux pistes : distinctes du bleu et du rouge gouvernementaux, iconographie au trait (style Phosphor ou Tabler), zones tactiles de 44 px minimum, barre de navigation en bas (Accueil, Kits, Courses, Guide, Plus), thème sombre à décliner, respect de `prefers-reduced-motion` et `prefers-contrast`.
+
+### 11.2 Le hérisson
+
+- Dessiné en **SVG vectoriel** à partir de formes simples : ça le rend léger, net à toutes les tailles, animable et déclinable par couleur (thème sombre).
+- Les deux versions des maquettes sont des **bases de travail** cohérentes et utilisables pour le MVP. Pour une identité finale (expressions, poses multiples, icône d'app, stickers), un ou une **illustratrice** peut repartir de ces bases comme brief.
+- Poses prévues : principale, endormi (tout est à jour), content (badge), pensif (aide/guide), avec une lampe (coupure de courant), en boule (erreur ou hors-ligne, sans dramatiser).
+- Toujours décoratif ou doté d'un texte alternatif selon le contexte ; jamais porteur seul d'une information.
+
+### 11.3 Livrables design (après choix de la piste)
+
+1. Design tokens (couleurs clair/sombre, typo, espacements, rayons) dans `core`, exportés en variables CSS (web) et en thème (React Native)
+2. Maquettes des écrans clés : onboarding, tableau de bord, inventaire, fiche article, liste de courses, partage QR, guide, plan d'urgence
+3. Planche du hérisson (6 poses) et icône d'app (formats PWA, iOS, Android)
 
 ---
 
@@ -729,7 +797,7 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 | Português | `pt` | **Portugais européen (`pt-PT`)**, celui de la communauté au Luxembourg |
 
 - Langue proposée par défaut selon `navigator.languages`, changeable à tout moment (sélecteur accessible, chaque langue écrite dans sa propre langue avec son `lang`).
-- Les contenus longs (guide, recettes) sont en Markdown par langue ; l'UI passe par les messages Paraglide.
+- Les contenus longs (guide, recettes) sont en Markdown par langue ; l'UI passe par les messages i18next de `core`.
 - **Ordre de production** : FR complet, puis EN et DE, puis PT et LB. Une langue n'est publiée qu'**entièrement traduite et relue** : pas de mélange de langues dans l'interface (RAWeb 8.7).
 - Récupérer les versions officielles du guide dans ces langues pour reprendre la terminologie (LU-Alert, niveaux de vigilance, noms des signaux de sirène).
 - Les liens affiliés peuvent varier selon la langue (Amazon.de pour DE et LB, Amazon.fr pour FR) : OneLink ou choix du marchand dans les réglages.
@@ -737,7 +805,8 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 ### 12.2 Contenu du guide
 
 - Source de référence : **« Mon guide 72h d'autonomie »**, version PDF accessible (balisée), 50 pages, septembre 2026 (HCPN, campagne 2026). Le plan reprend désormais l'intégralité de ses 4 chapitres, de la checklist et du formulaire du plan d'urgence.
-- Résumer et **lier** vers letzprepare.public.lu plutôt que copier mot pour mot ; vérifier les **conditions de réutilisation** du contenu officiel avant toute reprise de texte ou d'illustration. Le PDF n'est **pas** versionné dans le dépôt public pour l'instant (droits à confirmer).
+- **Décision** : le contenu officiel est **reformulé, simplifié et résumé**, jamais copié tel quel, avec un lien vers la source. Pas de reprise des illustrations officielles.
+- Cible de lisibilité : **langage clair** (phrases courtes, un message par paragraphe, vocabulaire courant, niveau B1 environ), ce qui est aussi un plus pour l'accessibilité cognitive et pour les personnes qui lisent dans une langue qui n'est pas la leur. Le PDF n'est **pas** versionné dans le dépôt public pour l'instant (droits à confirmer).
 - Chaque page d'aide affiche « Source : Lëtz prepare! – Gouvernement du Grand-Duché de Luxembourg » avec un lien.
 - Le guide existe « en plusieurs langues et en versions accessibles » : récupérer les versions DE, EN (et autres) pour aligner les traductions de l'app sur la terminologie officielle.
 
@@ -750,24 +819,44 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 - **Avertissements santé et sécurité** : iode uniquement sur instruction des autorités, monoxyde de carbone, bougies, médicaments sur avis médical. L'app ne remplace pas les consignes officielles.
 - **Analytics** : aucun par défaut. Si besoin, une solution sans cookie et respectueuse de la vie privée (Plausible ou Umami auto-hébergé), avec opt-in.
 
+### 12.4 Luxembourg d'abord, compatible avec l'Europe
+
+Tout ce qui dépend du pays est isolé dans un **profil pays** (`data/countries/<code>.json`). Le Luxembourg est le seul profil complet au lancement ; les autres peuvent s'ajouter sans toucher au code.
+
+| Élément du profil | Exemple LU |
+|---|---|
+| Source officielle et lien du guide | Lëtz prepare! (HCPN) |
+| Liste officielle (identifiants d'articles marqués « officiel » pour ce pays) | Checklist 72 h |
+| Numéros d'urgence | 112 (secours), 113 (police), numéro vert 8002 7788 |
+| Système d'alerte et lien vers l'app | LU-Alert |
+| Test des sirènes (pour le rituel mensuel) | Premier lundi du mois, à midi |
+| Radios de crise | RTL, radio 100,7 |
+| Sites utiles | infocrise.lu, 112.lu, inondations.lu, meteolux.lu… |
+| Marchands affiliés pertinents | Amazon.fr/.de, Decathlon FR, Bergfreunde… |
+| Langues proposées par défaut | FR, LB, DE, EN, PT |
+
+Candidats suivants (à documenter et vérifier un par un, avec leurs sources officielles) : **France** (FR-Alert), **Belgique** (BE-Alert), **Allemagne** (NINA, Cell Broadcast DE-Alert), **Pays-Bas** (NL-Alert). Le **112** fonctionne dans toute l'UE et reste le numéro affiché par défaut pour un pays sans profil.
+
+- Le pays est demandé à l'onboarding (par défaut d'après la langue et le fuseau, toujours modifiable) ; un mode « Europe générique » s'appuie sur les recommandations européennes (72 h, 112).
+- Le rituel « premier lundi » devient « le jour du test des sirènes de ton pays », ou un jour choisi s'il n'y a pas de test régulier.
+
 ---
 
 ## 13. Publication sur les stores
 
 Oui, c'est possible :
 
-| Plateforme | Méthode | Effort | Remarques |
-|---|---|---|---|
-| **Android (Google Play)** | **TWA** via Bubblewrap ou PWABuilder | Faible | La PWA telle quelle, plein écran. Compte développeur Google (frais uniques). Le Web Push fonctionne. |
-| **Android + iOS** | **Capacitor** (même code web, enveloppe native) | Moyen | Ajoute les **notifications locales natives**, ce qui règle le problème du § 6. |
-| **iOS (App Store)** | Capacitor obligatoire en pratique | Moyen à élevé | Apple rejette les « sites web emballés » (règle 4.2, fonctionnalité minimale) : les notifications locales, le scan et le partage natif aident à passer la revue. Il faut un Mac ou un build cloud et un compte Apple Developer (abonnement annuel). |
+| Plateforme | Méthode | Remarques |
+|---|---|---|
+| **Android (Google Play)** | App **Expo** buildée avec **EAS Build** | Compte développeur Google (frais uniques). Alternative express possible avant l'app Expo : publier la PWA en **TWA** (Bubblewrap/PWABuilder). |
+| **iOS (App Store)** | App **Expo**, EAS Build et EAS Submit (pas besoin de Mac) | Compte Apple Developer (abonnement annuel). Une vraie app native passe sans difficulté la règle 4.2 (fonctionnalité minimale) qui pose problème aux sites web emballés. |
 
-Pour que ce soit possible plus tard, sans réécriture :
+Préparé dès le départ :
 
-- abstraction `notify/` avec adaptateurs (déjà prévue au § 6) ;
-- pas de dépendance à des API web exotiques sans repli ;
-- routing compatible `file://` et `capacitor://` (pas de chemins absolus en dur) ;
-- audit **RAAM 1.1** au moment du passage en natif.
+- toute la logique dans `packages/core`, sans dépendance au DOM ;
+- interface de stockage abstraite (Dexie côté web, SQLite côté mobile) ;
+- **même format d'export et de partage** : un utilisateur passe de la PWA à l'app native en scannant un QR code ou en important son fichier ;
+- audit **RAAM 1.1** (skills `raam-code` / `raam-audit`) pour l'app Expo.
 
 ---
 
@@ -775,9 +864,10 @@ Pour que ce soit possible plus tard, sans réécriture :
 
 ### Phase 0 : Fondations (≈ 1 semaine)
 
-- [x] Valider le plan (v0.2)
-- [ ] Choix du **nom**, du **domaine**, de la palette et de la typographie
-- [ ] Initialiser le projet (SvelteKit `adapter-static`, TS, Paraglide avec 5 langues déclarées, lint, Prettier, Vitest, Playwright)
+- [x] Valider le plan (v0.3) et le nom **Kitzy**
+- [ ] Choisir la **piste graphique** (A ou B) et le **domaine** ; vérifier la marque « Kitzy » (EUIPO, stores)
+- [ ] Initialiser le monorepo pnpm : `packages/core` (TS, Zod, i18next, Vitest) et `apps/web` (React, Vite, vite-plugin-pwa, Dexie, Playwright), lint, Prettier
+- [ ] Profil pays `lu.json` et schéma des profils
 - [ ] CI GitHub Actions et déploiement sur GitHub Pages
 - [ ] Manifest PWA et service worker (precache), test hors-ligne en E2E
 - [ ] Installer le skillset accessibilité dans `.claude/skills/`
@@ -793,6 +883,8 @@ Pour que ce soit possible plus tard, sans réécriture :
 - [ ] Liste de courses
 - [ ] Moteur de rappels avec adaptateurs in-app et **.ics**
 - [ ] Export / import JSON
+- [ ] Partage par QR code et URL (liste de courses d'abord)
+- [ ] Page « Soutenir Kitzy » (dons)
 - [ ] Guide : pages principales (72 h, alertes, sirènes, coupure d'électricité)
 - [ ] Audit RAWeb du MVP et corrections
 
@@ -822,9 +914,11 @@ Pour que ce soit possible plus tard, sans réécriture :
 ### Phase 5 : International et stores
 
 - [ ] Traductions EN et DE, puis PT et LB (relecture native)
-- [ ] TWA Android
-- [ ] Capacitor : notifications locales, iOS
+- [ ] App **Expo** (`apps/mobile`) branchée sur `core` : SQLite, notifications locales, scan
+- [ ] Pot à pourboires en achat intégré (ou lien masqué)
+- [ ] EAS Build et Submit (Google Play, App Store)
 - [ ] Audit RAAM
+- [ ] Profils pays supplémentaires (FR, BE, DE, NL)
 
 ---
 
@@ -832,26 +926,17 @@ Pour que ce soit possible plus tard, sans réécriture :
 
 ### Réglées
 
-- ~~Hébergement~~ : GitHub Pages · ~~Serveur~~ : aucun pour l'instant, VPS plus tard · ~~Langues~~ : FR, EN, LB, DE, PT · ~~Framework~~ : SvelteKit + Capacitor · ~~Prix~~ : € / €€ / €€€ · ~~Plan d'urgence~~ : formulaire officiel reçu
+Hébergement (GitHub Pages) · Serveur (aucun, VPS plus tard) · Langues (FR, EN, LB, DE, PT) · Nom (**Kitzy**) · Mascotte (hérisson) · Stack (React + Expo, cœur partagé) · Périmètre (LU d'abord, compatible Europe) · Partage (QR et URL) · Contenu officiel (reformulé) · Plan d'urgence (champs officiels) · Prix (€ / €€ / €€€) · Dons (oui)
 
 ### Encore ouvertes
 
-1. **Nom de l'app** : court et évocateur, utilisable dans les 5 langues, sans référence à « Lëtz prepare ». Pistes :
-   - **Prett** : « prêt » en luxembourgeois, court, local, se prononce dans toutes les langues
-   - **Bereet** : « prêt » en luxembourgeois (proche de l'allemand *bereit*)
-   - **Stocky** : ludique, évoque la réserve
-   - **Kitzy** : « kit » + diminutif sympa
-   - **Igel** : « hérisson » en allemand et en luxembourgeois, animal qui fait des réserves, mascotte toute trouvée
-
-   À vérifier ensuite : marques déposées (EUIPO), noms sur les stores, domaine disponible (.lu, .app, .eu). Confirmer aussi l'orthographe des mots luxembourgeois avec une personne de langue maternelle.
-2. **Domaine** : à choisir **avant** le lancement public (changer d'origine ensuite efface les données locales des utilisateurs).
-3. **Public cible** : uniquement le Luxembourg, ou une ouverture future à d'autres pays avec leur liste officielle (FR, BE, DE) ? La structure « source par pays » du catalogue peut être prévue dès maintenant à faible coût.
-4. **Partage au sein du foyer** : l'export/QR suffit-il au départ (la synchronisation demanderait le VPS) ?
-5. **Droits sur le guide** : peut-on reprendre des textes et illustrations (demande au HCPN), ou part-on sur des résumés et des liens ? Faut-il versionner les PDF dans le dépôt ?
-6. **Plan « à compléter en ligne »** : le guide mentionne une version en ligne (QR code). As-tu l'URL, pour la proposer en lien ?
-7. **Durée cible** : 72 h par défaut, réglable jusqu'à 14 jours : ça te va ?
-8. **Monétisation complémentaire** : un « tip jar » (Ko-fi, GitHub Sponsors) en plus de l'affiliation ? Pas de publicité, je suppose ?
-9. **Design et mascotte** : des références d'apps que tu aimes ? Je peux proposer 2 moodboards. Mascotte hérisson (et le nom *Igel*) : oui ou non ?
+1. **Piste graphique** : A « Sous-bois » ou B « Sticker pop », ou un mélange (par exemple la palette de A avec le hérisson à lampe frontale de B) ? Voir [les maquettes](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB).
+2. **Domaine** : kitzy.app, kitzy.eu, kitzy.lu… À réserver **avant** le lancement public.
+3. **Marque** : vérifier « Kitzy » sur EUIPO (classe 9, logiciels) et sur les stores.
+4. **Stack** : OK pour l'option B (PWA React + app Expo avec cœur partagé) plutôt qu'Expo universel ?
+5. **Durée cible** : 72 h par défaut, réglable jusqu'à 14 jours : ça te va ?
+6. **Plateforme de dons** : Liberapay, Ko-fi ou GitHub Sponsors ?
+7. **Illustration** : on garde le hérisson SVG pour le MVP, puis un ou une illustratrice pour la version finale ?
 
 ---
 
