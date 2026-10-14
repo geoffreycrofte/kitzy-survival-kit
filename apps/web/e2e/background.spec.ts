@@ -4,7 +4,15 @@ import { setUpHousehold } from './helpers';
 // Fuseau choisi pour qu'il soit midi pendant le test : la vérification ne notifie jamais la nuit.
 const offset = 12 - new Date().getUTCHours();
 const timezoneId = offset === 0 ? 'UTC' : `Etc/GMT${offset > 0 ? '-' : '+'}${Math.abs(offset)}`;
-test.use({ timezoneId });
+// Le fuseau de la page ne suffit pas toujours pour le service worker : on règle aussi celui du navigateur.
+const executablePath = process.env.PLAYWRIGHT_CHROMIUM_PATH;
+test.use({
+  timezoneId,
+  launchOptions: {
+    env: { ...process.env, TZ: timezoneId },
+    ...(executablePath ? { executablePath } : {}),
+  },
+});
 
 test('la vérification en arrière-plan envoie une seule notification regroupée', async ({
   page,
@@ -30,6 +38,13 @@ test('la vérification en arrière-plan envoie une seule notification regroupée
 
   await page.goto('./reglages');
   await page.evaluate(() => navigator.serviceWorker.ready);
+  // Le service worker doit voir l'heure du test (hors des heures calmes).
+  const worker = context.serviceWorkers()[0] ?? (await context.waitForEvent('serviceworker'));
+  const workerHour = await worker.evaluate(() => new Date().getHours());
+  expect(
+    workerHour >= 8 && workerHour < 21,
+    `heure vue par le service worker : ${workerHour}`,
+  ).toBe(true);
   await page.getByRole('checkbox', { name: 'Me prévenir sur cet appareil' }).check();
 
   // Chrome DevTools déclenche l'événement que le système enverrait une fois par jour.
