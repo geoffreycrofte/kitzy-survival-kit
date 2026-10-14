@@ -966,13 +966,12 @@ Hébergement (GitHub Pages) · Serveur (aucun, VPS plus tard) · Langues (FR, EN
 
 ### Encore ouvertes
 
-1. **Piste graphique** : 1 « Douillet » ou 2 « Affiche », ou un mélange ? Voir [les maquettes](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB).
-2. **Domaine** : kitzy.app, kitzy.eu, kitzy.lu… À réserver **avant** le lancement public.
-3. **Marque** : vérifier « Kitzy » sur EUIPO (classe 9, logiciels) et sur les stores.
-4. **Stack** : OK pour l'option B (PWA React + app Expo avec cœur partagé) plutôt qu'Expo universel ?
-5. **Durée cible** : 72 h par défaut, réglable jusqu'à 14 jours : ça te va ?
-6. **Plateforme de dons** : Liberapay, Ko-fi ou GitHub Sponsors ?
-7. **Poses du hérisson** : tu génères les autres poses avec le même modèle (je peux rédiger les descriptions) ?
+1. **Domaine** : kitzy.app, kitzy.eu, kitzy.lu… À réserver **avant** le lancement public.
+2. **Marque** : vérifier « Kitzy » sur EUIPO (classe 9, logiciels) et sur les stores.
+3. **Stack** : OK pour l'option B (PWA React + app Expo avec cœur partagé) plutôt qu'Expo universel ?
+4. **Durée cible** : 72 h par défaut, réglable jusqu'à 14 jours : ça te va ?
+5. **Plateforme de dons** : Liberapay, Ko-fi ou GitHub Sponsors ?
+6. **Poses du hérisson** : tu génères les autres poses avec le même modèle (je peux rédiger les descriptions) ?
 
 ---
 
