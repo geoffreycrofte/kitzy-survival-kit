@@ -1,0 +1,782 @@
+# Plan projet — PWA « Kit 72 h »
+
+> Application web progressive (PWA), 100 % hors-ligne, pour constituer, suivre et faire tourner sa réserve d'urgence de 72 heures, sur la base de la stratégie nationale de résilience luxembourgeoise « Lëtz prepare! » et des listes de référence internationales.
+
+- Statut : **plan v0.1, à valider** (voir [§ 15 Questions ouvertes](#15-questions-ouvertes))
+- Langue de travail : français
+- Référentiel d'accessibilité : **RAWeb 1.1, niveau AA** (skills `raweb-code` / `raweb-audit` de [luxembourg-accessibility-skillset](https://github.com/geoffreycrofte/luxembourg-accessibility-skillset)), puis **RAAM 1.1** si on publie des apps natives (skills `raam-code` / `raam-audit`)
+
+---
+
+## Sommaire
+
+1. [Vision et principes](#1-vision-et-principes)
+2. [Liste exhaustive du kit](#2-liste-exhaustive-du-kit)
+3. [Fonctionnalités](#3-fonctionnalités)
+4. [Rendre la préparation « fun » et normale](#4-rendre-la-préparation-fun-et-normale)
+5. [Architecture technique](#5-architecture-technique)
+6. [Hors-ligne et notifications : contraintes et stratégie](#6-hors-ligne-et-notifications--contraintes-et-stratégie)
+7. [Modèle de données](#7-modèle-de-données)
+8. [Affiliation et catalogue produits](#8-affiliation-et-catalogue-produits)
+9. [Surveillance des liens](#9-surveillance-des-liens)
+10. [Accessibilité](#10-accessibilité)
+11. [Design](#11-design)
+12. [Contenu, langues et aspects légaux](#12-contenu-langues-et-aspects-légaux)
+13. [Publication sur les stores](#13-publication-sur-les-stores)
+14. [Feuille de route](#14-feuille-de-route)
+15. [Questions ouvertes](#15-questions-ouvertes)
+
+---
+
+## 1. Vision et principes
+
+**Promesse utilisateur** : « Ton kit 72 h, prêt et à jour, sans y penser. »
+
+L'app ne vend pas la peur. Elle s'occupe de la partie fastidieuse : quoi acheter et en quelle quantité, ce qui va périmer, ce qu'il faut recharger, à quel moment refaire un point.
+
+Principes directeurs :
+
+| Principe | Conséquence concrète |
+|---|---|
+| **Offline-first** | Toutes les fonctionnalités marchent sans réseau. Le réseau ne sert qu'à mettre à jour le catalogue et les liens. |
+| **Local-first et vie privée** | Les données (inventaire, foyer, plan d'urgence) restent sur l'appareil. Pas de compte. Export/import manuel. |
+| **Rotation plutôt que stockage** | Le stock s'intègre aux courses habituelles : on consomme le plus ancien (FIFO) et on rachète. |
+| **Ton rassurant** | Vocabulaire de camping, de pique-nique, de check-up. Pas de « survie », de « catastrophe » ou d'apocalypse dans l'interface. |
+| **Accessible par défaut** | RAWeb AA dès le premier composant, pas en correction à la fin. |
+| **Sources citées** | Chaque recommandation affiche sa source : officielle LU, recommandée par des listes expertes, ou optionnelle. |
+
+---
+
+## 2. Liste exhaustive du kit
+
+### 2.1 Légende
+
+- **[OFF]** : présent dans la checklist officielle luxembourgeoise « Ma checklist pour 72 heures »
+- **[REC]** : recommandé par des listes de référence : Croix-Rouge, Ready.gov (FEMA), BBK (Allemagne), OFAE/« Notvorrat » (Suisse), MSB (Suède), stratégie européenne « Preparedness Union » (2025)
+- **[OPT]** : confort, ou utile selon le profil du foyer
+- **Kits** : 🏠 Réserve maison (mise à l'abri) · 🎒 Sac d'évacuation (léger, par personne) · 🚗 Kit voiture (optionnel)
+- **Suivi** : 📅 date de péremption · 🔋 recharge ou piles · 🔄 rotation conseillée · 👤 quantité calculée par personne
+
+### 2.2 Remarques sur ta liste de départ
+
+1. **Eau : 6 bouteilles, c'est trop juste.** La norme officielle est de **3 L par personne et par jour**, soit **9 L par personne pour 72 h**. 6 × 1,5 L = 9 L, ce qui couvre **une seule personne**. L'app calculera la quantité selon la composition du foyer, animaux compris.
+2. **Pâtes et riz** demandent de l'eau et du combustible pour cuire. On garde, mais on privilégie des aliments **prêts à manger** (conserves de plats cuisinés, poisson en boîte, compotes, barres) et on compte l'eau de cuisson en plus.
+3. **Radio** : au Luxembourg, la radio de crise passe par **FM (UKW) et DAB+**. Les ondes courtes n'apportent rien ici. Cible : radio **FM/DAB+** à **dynamo, solaire et piles**, avec sortie USB pour recharger un téléphone.
+4. **Réchaud à gaz** : la mise en garde officielle sur le **monoxyde de carbone** doit apparaître dans l'app. Utilisation en extérieur ou dans une pièce très ventilée, jamais pour chauffer.
+5. **Tes idées complémentaires** (cordes, fil et aiguilles, cash, frontale) sont toutes reprises ci-dessous.
+
+### 2.3 Eau et alimentation
+
+| Élément | Source | Kit | Suivi | Détail |
+|---|---|---|---|---|
+| Eau potable en bouteille | [OFF] | 🏠 | 📅👤🔄 | 3 L/pers/jour, soit 9 L par personne. Ajouter l'eau des animaux. |
+| 1 à 2 bouteilles d'eau | [OFF] | 🎒 | 📅 | Dans le sac d'évacuation |
+| Pastilles de purification ou filtre à eau | [REC] | 🏠🎒 | 📅 | Solution de secours si les bouteilles sont épuisées |
+| Récipients vides (bouteilles, jerrican pliable) | [OFF] | 🏠 | | Pour stocker de l'eau du robinet dès qu'une alerte tombe |
+| Seau (10 L) | [REC] | 🏠 | | Puiser l'eau, toilettes de secours |
+| Nourriture non périssable, facile à consommer | [OFF] | 🏠 | 📅👤🔄 | Environ 2 000 kcal/adulte/jour. Prêt à manger en priorité. |
+| Conserves (plats cuisinés, légumes, poisson, légumineuses) | [REC] | 🏠 | 📅🔄 | |
+| Féculents (pâtes, riz, semoule, flocons d'avoine) | [REC] | 🏠 | 📅🔄 | Prévoir l'eau de cuisson |
+| Biscuits, noix, fruits secs, barres énergétiques | [OFF] | 🏠🎒 | 📅🔄 | |
+| Compotes, purées en gourde | [OPT] | 🏠🎒 | 📅 | Pratique pour les enfants |
+| Café/thé soluble, sucre, sel, chocolat | [OPT] | 🏠 | 📅 | Pour le moral |
+| Lait UHT ou en poudre | [REC] | 🏠 | 📅 | |
+| Nourriture et eau pour animaux | [OFF] | 🏠🎒 | 📅👤 | Par animal, selon l'espèce et le poids |
+| Alimentation bébé (lait infantile, petits pots) | [OPT] | 🏠🎒 | 📅👤 | Si nourrisson dans le foyer |
+| Aliments pour régimes spécifiques (sans gluten, diabète…) | [OPT] | 🏠 | 📅 | Selon le profil santé |
+
+### 2.4 Cuisiner et manger
+
+| Élément | Source | Kit | Suivi |
+|---|---|---|---|
+| Réchaud, de préférence à gaz | [OFF] | 🏠 | |
+| Cartouches de gaz (1 à 2 pour 72 h) | [OFF] | 🏠 | 🔄 contrôle annuel |
+| Ouvre-boîte manuel | [OFF] | 🏠🎒 | |
+| Popote ou casserole, couverts, gobelet | [REC] | 🏠 | |
+| Assiettes et gobelets réutilisables | [OPT] | 🏠 | |
+| Papier aluminium, sacs congélation | [REC] | 🏠 | |
+| Liquide vaisselle, éponge | [OPT] | 🏠 | |
+
+### 2.5 Outils
+
+| Élément | Source | Kit | Remarque |
+|---|---|---|---|
+| Couteau de poche multifonction / couteau suisse | [OFF] | 🏠🎒 | |
+| Ciseaux | [OFF] | 🏠 | |
+| Stylo à bille, crayon, carnet | [OFF] | 🏠🎒 | Le crayon écrit même mouillé |
+| Pince multifonction (multitool) | [REC] | 🏠 | |
+| Ruban adhésif renforcé (duct tape) | [REC] | 🏠 | Réparations, calfeutrage |
+| Corde fine (paracorde, environ 15 m) | [REC] | 🏠🎒 | Ta suggestion |
+| Corde épaisse (environ 10 m) | [OPT] | 🏠 | Ta suggestion |
+| Colliers de serrage (Rilsan) | [REC] | 🏠 | |
+| Mousquetons | [OPT] | 🎒 | |
+| Gants de travail | [REC] | 🏠🎒 | |
+| Bâche plastique | [REC] | 🏠 | Abri, fenêtre cassée, imperméabilisation |
+| Sacs-poubelle résistants | [REC] | 🏠🎒 | Déchets, toilettes, poncho improvisé |
+| Clé pour couper le gaz et l'eau | [REC] | 🏠 | Savoir où sont les vannes : à noter dans le plan |
+| Sifflet | [REC] | 🎒 | Se signaler |
+| Extincteur et couverture anti-feu | [REC] | 🏠 | 📅 contrôle |
+| Détecteur de fumée et de CO | [REC] | 🏠 | 🔋 piles |
+| Kit de couture (fil, aiguilles, épingles à nourrice) | [OPT] | 🏠 | Ta suggestion |
+| Carte papier de la région et boussole | [REC] | 🎒🚗 | GPS et réseau peuvent tomber |
+
+### 2.6 Lumière et énergie
+
+| Élément | Source | Kit | Suivi |
+|---|---|---|---|
+| Lampe de poche + 2 jeux de piles **ou** lampe à manivelle (dynamo) | [OFF] | 🏠🎒 | 🔋 |
+| Lampe frontale | [OFF] | 🏠🎒 | 🔋 Ta suggestion, citée dans le texte officiel |
+| Bougies + allumettes ou briquet | [OFF] | 🏠 | Utilisation responsable et sûre |
+| Allumettes tempête dans une boîte étanche | [REC] | 🏠🎒 | |
+| Briquet de rechange | [REC] | 🏠🎒 | |
+| Bâtons lumineux (light sticks) | [OPT] | 🎒 | 📅 |
+| Lanterne LED (éclairer une pièce) | [OPT] | 🏠 | 🔋 |
+| Piles de rechange AA/AAA (et formats spécifiques) | [REC] | 🏠 | 📅 péremption |
+| Batterie externe (power bank) et câbles | [OFF] | 🏠🎒 | 🔋 recharge tous les 3 mois |
+| Chargeurs de téléphone et d'ordinateur | [OFF] | 🏠 | |
+| Panneau solaire USB pliable | [OPT] | 🏠 | |
+| Adaptateur allume-cigare USB | [OPT] | 🚗 | |
+
+### 2.7 S'informer et rester en contact
+
+| Élément | Source | Kit | Suivi |
+|---|---|---|---|
+| Radio à piles ou à manivelle (FM/UKW et/ou DAB+) ; la radio de la voiture peut servir. Stations officielles en crise : **RTL** et **radio 100,7** | [OFF] | 🏠 | 🔋 test mensuel |
+| Application LU-Alert installée, notifications réglées | [OFF] | téléphone | Action de configuration |
+| Téléphone portable avec chargeur | [OFF] | 🎒 | |
+| Liste des numéros utiles sur papier | [OFF] | 🏠🎒 | 🔄 revue annuelle |
+| Plan personnel d'urgence | [OFF] | 🏠🎒 | L'app le génère, voir § 3.6 |
+
+### 2.8 Documents et argent
+
+| Élément | Source | Kit | Suivi |
+|---|---|---|---|
+| Copies des pièces d'identité, passeport, permis, assurances dans une pochette étanche | [OFF] | 🏠 | 📅 validité des pièces |
+| Portefeuille : pièces d'identité, cash, cartes, papiers importants | [OFF] | 🎒 | |
+| Argent liquide en petites coupures et pièces | [OFF] | 🏠🎒 | Distributeurs et terminaux de paiement tombent avec le courant |
+| Copie numérique chiffrée (clé USB) | [OPT] | 🎒 | |
+| Ordonnances, carnet de vaccination, groupe sanguin | [REC] | 🎒 | |
+| Photos récentes des membres du foyer et des animaux | [REC] | 🎒 | Retrouver une personne perdue |
+| Clés de la maison et de la voiture (double) | [OFF] | 🎒 | |
+| Carnet de santé et puce de l'animal | [OPT] | 🎒 | |
+
+### 2.9 Rester au chaud et habillé
+
+| Élément | Source | Kit |
+|---|---|---|
+| Sacs de couchage et/ou couvertures | [OFF] | 🏠 |
+| Couverture de survie (isotherme) | [REC] | 🎒🚗 |
+| Vêtements et chaussures de rechange (selon la saison) | [OFF] | 🏠🎒 |
+| Vêtements chauds : bonnet, gants, polaire | [REC] | 🏠🎒 |
+| Poncho ou veste de pluie | [REC] | 🎒 |
+| Chaussures de marche solides | [REC] | 🎒 |
+| Chaufferettes chimiques | [OPT] | 🎒 📅 |
+
+### 2.10 Se soigner
+
+| Élément | Source | Kit | Suivi |
+|---|---|---|---|
+| Trousse de premiers soins : pansements, compresses, désinfectant, paracétamol | [OFF] | 🏠🎒 | 📅 |
+| Médicaments prescrits (traitement en cours) + ordonnances | [OFF] | 🏠🎒 | 📅 |
+| Comprimés d'iode (iodure de potassium), disponibles auprès de la commune. **À prendre uniquement sur instruction des autorités**, en général pour les moins de 45 ans. | [OFF] | 🏠 | 📅 |
+| Bande élastique, sparadrap, pansements compressifs | [REC] | 🏠 | |
+| Pince à épiler et **tire-tique** (forêts luxembourgeoises) | [REC] | 🏠🎒 | |
+| Thermomètre | [REC] | 🏠 | 🔋 |
+| Sels de réhydratation orale | [REC] | 🏠 | 📅 |
+| Antihistaminique, anti-diarrhéique (sur avis de ton pharmacien) | [OPT] | 🏠 | 📅 |
+| Masques FFP2 | [REC] | 🏠🎒 | 📅 |
+| Gants jetables (nitrile) | [REC] | 🏠 | |
+| Lunettes de rechange, lentilles et produit | [REC] | 🎒 | |
+| Piles pour appareil auditif, matériel médical spécifique | [OPT] | 🏠🎒 | 🔋 |
+| Crème solaire, anti-moustiques | [OPT] | 🎒 | 📅 |
+
+### 2.11 Hygiène
+
+| Élément | Source | Kit | Suivi |
+|---|---|---|---|
+| Lingettes humides, papier toilette, gel désinfectant | [OFF] | 🏠🎒 | 📅 gel |
+| Produits d'hygiène personnelle : savon, brosse et dentifrice, déodorant | [OFF] | 🏠🎒 | |
+| Protections hygiéniques | [REC] | 🏠🎒 | |
+| Couches et lingettes bébé | [OPT] | 🏠🎒 | 👤 |
+| Toilettes de secours : seau, sacs, litière ou sciure | [REC] | 🏠 | La chasse d'eau peut ne plus fonctionner |
+| Serviette microfibre | [OPT] | 🎒 | |
+| Eau de Javel non parfumée (désinfection) | [OPT] | 🏠 | 📅 |
+
+### 2.12 Moral et vie de famille
+
+| Élément | Source | Kit |
+|---|---|---|
+| Jeux de cartes, jeux de société, livres, carnet de coloriage | [REC] | 🏠 |
+| Doudou ou jouet favori de l'enfant | [OPT] | 🎒 |
+| Friandises | [OPT] | 🏠🎒 |
+
+### 2.13 Le sac lui-même
+
+| Élément | Source | Remarque |
+|---|---|---|
+| Sac à dos solide, un par personne capable de le porter | [REC] | « Veillez à ce que votre sac d'évacuation reste léger et facilement transportable » [OFF] |
+| Bac ou caisse étiquetée pour la réserve maison | [REC] | Lieu sûr, accessible et connu de tout le foyer [OFF] |
+| Sacs étanches (dry bags) / sacs zip | [REC] | Documents, allumettes, électronique |
+
+### 2.14 Gestes et actions (hors objets)
+
+L'app les suivra comme des **tâches**, pas comme des objets :
+
+- Installer **LU-Alert** et régler les notifications par zone [OFF]
+- Remplir son **plan personnel d'urgence** [OFF]
+- Savoir couper **gaz, eau et électricité** [REC]
+- Repérer les **zones inondables** sur eau.geoportail.lu [OFF]
+- Repérer un **point de rendez-vous** familial près de chez soi et un autre hors du quartier [REC]
+- Garder le **réservoir de la voiture au moins à moitié plein** [REC]
+- Copies de sauvegarde des documents et photos [OFF, cyber]
+- Gestionnaire de mots de passe et double authentification [OFF, cyber]
+- Reconnaître les **signaux des sirènes** (test chaque premier lundi du mois à midi) [OFF]
+- Vérifier le kit **au moins deux fois par an** [OFF]
+- Identifier le **CIS, le commissariat et l'hôpital** les plus proches de la maison et du travail [OFF]
+- Connaître les **radios officielles de crise : RTL et radio 100,7** (noter leurs fréquences locales) [OFF]
+- Savoir **ouvrir la porte du garage sans électricité**, prévoir une **sortie de secours** [OFF, plan]
+- Recenser les **personnes aidantes et les personnes à aider** dans le quartier [OFF, plan]
+- Suivre un **cours de premiers secours** (Croix-Rouge luxembourgeoise, cours.cgdis.lu) [OFF]
+- Parler du kit à ses proches, surtout les plus vulnérables (« Parlez-en autour de vous ») [OFF]
+- Préparer un **sac vide prêt à remplir** en cas d'évacuation [OFF]
+
+**Réflexes « pendant » à afficher dans le guide (scénario coupure)** [OFF] : faire des réserves d'eau tant qu'elle coule ; ouvrir le moins possible le frigo et le congélateur ; fermer les volets pour garder la chaleur ; mode économie d'énergie du téléphone ; **jamais** de barbecue, brasero ou groupe électrogène à l'intérieur (monoxyde de carbone) ; avant le retour du courant, **débrancher** frigo, congélateur, TV, ordinateurs et voiture électrique ; après, faire le point : « De quoi avons-nous manqué ? »
+
+### 2.15 Quantités : règles de calcul (par défaut, modifiables)
+
+| Règle | Adulte | Enfant | Nourrisson | Chien moyen | Chat |
+|---|---|---|---|---|---|
+| Eau/jour | 3 L | 3 L | 1 L + préparation du lait | 1 L | 0,3 L |
+| kcal/jour | 2 000 | 1 400 | — | selon fabricant | selon fabricant |
+| Durée | 72 h, réglable (3, 7, 10, 14 jours) pour qui veut aller plus loin |
+
+Le nombre de jours est un réglage, car certains pays (Allemagne, Suède, Suisse) recommandent jusqu'à 7 à 10 jours.
+
+---
+
+## 3. Fonctionnalités
+
+### 3.1 Onboarding (≈ 2 minutes, chaque étape peut être passée)
+
+1. **Ton foyer** : adultes, enfants, nourrissons, seniors, animaux (espèce), besoins particuliers (traitement, mobilité, régime)
+2. **Tes kits** : réserve maison (par défaut), sacs d'évacuation (un par personne, proposé), voiture (optionnel)
+3. **Ton point de départ** : « J'ai déjà des choses » (on coche) ou « Je pars de zéro » (liste de courses générée)
+4. **Rappels** : choix des canaux (notifications, calendrier .ics, rappel à l'ouverture de l'app)
+
+### 3.2 Tableau de bord
+
+- **Niveau de préparation** par kit : jauge accessible (`<meter>` avec texte explicite, pas seulement une couleur)
+- **À faire bientôt** : ce qui périme, ce qui doit être rechargé, la prochaine revue
+- **Prochaine action conseillée**, une seule à la fois (« Ajoute 6 L d'eau pour atteindre 72 h »)
+- Raccourcis : ajouter un article, liste de courses, guide
+
+### 3.3 Inventaire
+
+- Vue par **catégorie** (eau, nourriture, lumière…) et par **kit**
+- Chaque article : quantité possédée / quantité cible, état (OK, bientôt, expiré, manquant), texte et icône en plus de la couleur
+- **Lots** : un même article peut avoir plusieurs dates de péremption (6 bouteilles achetées à des dates différentes)
+- **DLC et DDM** : distinguer « à consommer jusqu'au » (date stricte, alerte rouge) et « à consommer de préférence avant » (date indicative, alerte douce)
+- **Consommation FIFO** : un bouton « J'en ai utilisé 1 » retire du lot le plus ancien et propose de l'ajouter à la liste de courses
+- **Batteries** : date de dernière recharge et intervalle (par défaut tous les 3 mois pour une power bank, test mensuel pour la radio)
+- Articles **personnalisés** (« Mes objets personnels » de la checklist officielle)
+- Ajout rapide : recherche dans le catalogue, **scan de code-barres** (API `BarcodeDetector` sur Chrome/Android, repli `zxing-wasm`, saisie manuelle toujours possible), saisie de la date au clavier (jamais uniquement via un sélecteur)
+
+### 3.4 Liste de courses
+
+- Générée automatiquement : manquants, expirés et à remplacer
+- Cochable en magasin, hors-ligne
+- Pour chaque article, des **suggestions produit** à plusieurs budgets (voir § 8)
+- Partage en texte (API Web Share)
+
+### 3.5 « À consommer bientôt » (rotation)
+
+- Liste des articles qui arrivent à échéance dans N jours (réglable, 30 par défaut)
+- Idées de recettes à partir de ces articles (catalogue local de recettes simples), voir § 4
+
+### 3.6 Plan personnel d'urgence
+
+Version numérique **fidèle au formulaire officiel** (guide p. 43-50), sous forme d'assistant en 5 étapes, chacune pouvant être sauvegardée et reprise plus tard. Le guide insiste : *« Je garde le formulaire en digital et en imprimé au cas où je n'aurais plus de batterie. »*
+
+| Section officielle | Champs |
+|---|---|
+| **En-tête** | Ce plan appartient à (nom, prénom), adresse, ville, complété le, mis à jour le |
+| **1. Habitants du foyer** | Nombre d'adultes et d'enfants. Par personne : nom, prénom, tél., groupe sanguin, matricule, langues |
+| | Limitations physiques / besoin d'aide technique au quotidien : nature du handicap (fauteuil, prothèse…) |
+| | **Informations médicales** : allergies et intolérances (aliments, médicaments) ; médicaments pris régulièrement (nom, posologie, mode d'administration) ; remarques |
+| | **Animaux domestiques** : espèce, nom, informations (comportement, handicap, maladie, traitement) |
+| **2. Le foyer** | Emplacement et commentaires pour : extincteurs, robinet d'arrivée d'eau, robinet de gaz, compteur électrique, disjoncteur, chaudière/climatisation, centrale photovoltaïque, documents d'identité, kit de préparation |
+| | Par où sortir si la sortie principale est bloquée ? Comment ouvrir la porte du garage sans électricité ? Une clé supplémentaire est-elle nécessaire ? Autres informations |
+| **3. Le quartier** | **Personnes aidantes** (nom, prénom, type d'aide apportée, tél., adresse : bricolage, premiers secours, équipement, cave…) |
+| | **Personnes à aider** (nom, prénom, type d'aide sollicitée, tél., adresse) |
+| **4. En cas d'urgence** | Centre d'incendie et de secours (CIS) de proximité (lien 112.public.lu) |
+| | Lieux de retrouvailles 1 et 2 si séparation et foyer inaccessible |
+| | Comment informer les proches sans téléphone : choix 1 et 2 |
+| | Contacts 1 et 2 à joindre si on ne parvient pas à se joindre |
+| | **Situation personnelle** : qui va chercher les enfants à l'école (contacts 1 et 2) ; alternatives pour rentrer du travail sans voiture ni transports en commun ; autre situation ; chez qui aller en cas d'urgence (lieux 1 et 2 avec nom, tél., adresse) |
+| **5. Numéros importants** | 112 (CGDIS), 113 (Police) : *à n'utiliser qu'en cas de réelle urgence, jamais à titre d'essai* |
+| | Fournisseurs (nom/société, n° client, tél.) : opérateur télécom, électricité, gaz, eau, assurance, médecin traitant, médecin spécialiste, école, travail, banque ; commentaires |
+
+Fonctionnalités associées :
+
+- **Pré-remplissage** depuis le foyer saisi à l'onboarding (membres, animaux, emplacement du kit) : on ne saisit rien deux fois.
+- **Import de contacts** via la Contact Picker API quand elle est disponible (Chrome Android), sinon saisie manuelle.
+- Données de santé et matricule : **consentement explicite**, stockage local uniquement, avec un avertissement à l'export (fichier sensible).
+- **Impression / PDF accessible** reproduisant la structure officielle (feuille de style print soignée) : le papier est indispensable quand il n'y a plus de batterie. Bouton « Imprimer en 2 exemplaires : un pour le kit, un pour le sac ».
+- Rappel de **mise à jour annuelle** et à chaque changement (nouveau membre, déménagement).
+- Pages « Situation personnelle » liées au **scénario du guide** (« Vous êtes au travail à Luxembourg-Ville, vous habitez dans le sud… »).
+
+### 3.7 Guide (contenu officiel, disponible hors-ligne)
+
+Pages d'aide reprenant et résumant le guide officiel avec liens vers la source :
+
+- Pourquoi 72 h ?
+- À quoi se préparer : phénomènes météo, inondations, attaques cyber, menace terroriste, accident nucléaire, coupure d'électricité généralisée et effet cascade
+- Comment je serai alerté : LU-Alert, niveaux de vigilance (jaune, orange, rouge, violet), canaux (app, site, SMS, Cell Broadcast, sirènes, médias)
+- **Signaux des sirènes**, avec description textuelle de chaque signal en plus de l'éventuel audio
+- Bonnes pratiques d'information (vérifier qui, quand, d'où ; ne pas diffuser une alerte non confirmée ; attention aux fausses images et vidéos générées par IA)
+- Simulation « 72 h sans électricité » (jours 1, 2, 3), en version interactive (voir § 4)
+- Que font les autorités ? Plan « Rupture d'énergie », cellule de crise, plans locaux de résilience, centres d'accueil des communes (RESILIENZBONUS), réserve RESC-LU, rétablissement zone par zone
+- Se préparer en 3 étapes : kit, plan, en parler autour de soi
+- Plus forts ensemble : entraide, premiers secours, soutien psychologique (SOS Détresse)
+- **Contacts utiles** : 112 (CGDIS), 113 (Police), **8002 7788** (numéro vert, peut être activé en cas de crise), et les sites lu-alert.lu, infocrise.lu, letzprepare.lu, 112.lu (gardes : hôpitaux, maisons médicales, pharmacies), police.lu, inondations.lu, seveso.lu, meteolux.lu, cours.cgdis.lu, santesecu.public.lu ; plus les canaux de sa commune
+
+Structure officielle du guide, reprise pour l'arborescence de l'aide : **1. Comprendre & anticiper** · **2. L'alerte & l'information** · **3. L'action des autorités** · **4. Mon kit & mon plan personnel d'urgence**.
+- Chaque article du catalogue renvoie vers la page du guide qui explique **pourquoi** il est utile
+
+### 3.8 Réglages
+
+- Langue, thème (clair, sombre, système), taille de texte
+- Notifications : canaux, délais d'alerte (J-30, J-7, J0), heures calmes
+- Durée cible (72 h par défaut)
+- **Export / import** JSON (sauvegarde, changement de téléphone), export CSV de l'inventaire
+- Réinitialiser
+- À propos, sources, mentions d'affiliation, déclaration d'accessibilité, confidentialité
+
+---
+
+## 4. Rendre la préparation « fun » et normale
+
+L'idée générale : traiter le kit comme **une habitude de foyer**, au même titre que la trousse de pharmacie ou le sac de camping, et pas comme un abri antiatomique.
+
+| Idée | Description | Priorité |
+|---|---|---|
+| **Vocabulaire « camping/pique-nique »** | « Ton kit », « check-up », « rotation », « soirée conserves ». Pas de « survie » dans l'UI. | MVP |
+| **Progression positive** | Jauge par kit et paliers : *Débutant·e → Prêt·e pour un week-end → Prêt·e 72 h → Voisin·e ressource*. On valorise ce qui est fait, pas ce qui manque. | MVP |
+| **Une seule prochaine action** | Le tableau de bord propose une petite étape, pas 60 manques d'un coup. | MVP |
+| **Soirée « conserves »** | Quand des articles approchent de leur date : « Ce soir, chili aux haricots de ta réserve ? » avec une recette simple. Ça transforme la rotation en moment sympa. | v1 |
+| **Le rendez-vous du premier lundi** | Le test mensuel des sirènes (premier lundi du mois à midi) devient le rappel « mini-check » : 2 minutes, 3 questions. Un rituel national déjà existant. | v1 |
+| **Le grand check-up de l'heure d'été/hiver** | La revue semestrielle recommandée officiellement est calée sur les changements d'heure (on change aussi les piles du détecteur de fumée). | v1 |
+| **Défi « soirée sans électricité »** | Mode jeu en famille : on coupe tout pendant une soirée en n'utilisant que le kit. Petite checklist d'observations (« Qu'est-ce qui nous a manqué ? ») ajoutée à la liste de courses. | v1 |
+| **Simulation 72 h interactive** | Le scénario officiel (janvier, un lundi, au travail, coupure générale ; jour 1 retour à la maison, jour 2 l'eau ne coule plus, jour 3 entraide et retour du courant) raconté en histoire « dont tu es le héros ». À chaque étape : « As-tu ce qu'il faut ? », relié à ton inventaire et à ton plan. Le guide le dit lui-même : *« Les enfants vivent la situation comme une grande aventure. »* La simulation se termine sur la question officielle « De quoi avez-vous manqué ? » et alimente la liste de courses. | v2 |
+| **Quiz** | Signaux des sirènes, niveaux de vigilance, bons réflexes cyber : courts, sans chronomètre (accessibilité). | v2 |
+| **Badges discrets** | « Eau OK », « Lumière OK », « Plan d'urgence rempli », « 1 an de rotation ». Désactivables. | v2 |
+| **Mode foyer partagé** | Partager la liste de courses ou le plan avec un·e conjoint·e (export/QR code d'abord, synchronisation éventuellement plus tard). | v2+ |
+| **Voisinage** | Fiche imprimable « Je suis votre voisin·e, voici mon numéro » à glisser dans les boîtes aux lettres. Elle alimente la section « Le quartier » du plan (personnes aidantes et à aider). Étape 3 officielle : « Parlez-en autour de vous et proposez votre aide ». | v2 |
+| **« Aide un proche à faire son kit »** | Générer une checklist imprimable ou partageable, pré-remplie pour un parent âgé (le guide insiste sur les plus vulnérables). | v2 |
+| **Compétences** | Badge « Premiers secours » quand on a suivi un cours (liens Croix-Rouge / CGDIS). | v2 |
+
+Garde-fous : pas de compte à rebours anxiogène, pas de notifications culpabilisantes, ni de streak qui « casse ». Les animations respectent `prefers-reduced-motion`.
+
+---
+
+## 5. Architecture technique
+
+### 5.1 Stack recommandée
+
+| Couche | Choix proposé | Pourquoi |
+|---|---|---|
+| Build | **Vite** + **TypeScript** | Rapide, sortie statique, compatible GitHub Pages |
+| UI | **Svelte 5** (SvelteKit, `adapter-static`) | Bundle léger (important hors-ligne et sur mobiles modestes), HTML natif facile à rendre accessible. Alternative : Preact ou vanilla + Web Components. |
+| PWA | **vite-plugin-pwa** (Workbox) | Precache de toute l'app, stratégies de cache, mise à jour contrôlée |
+| Stockage | **IndexedDB** via **Dexie** | Données structurées, requêtes sur les dates, migrations de schéma |
+| i18n | Fichiers JSON par langue + `Intl.DateTimeFormat` / `Intl.PluralRules` | Sans dépendance lourde |
+| Tests | **Vitest** (logique), **Playwright** (E2E et mode hors-ligne), **axe-core** (pré-filtrage a11y) + audit manuel RAWeb | |
+| CI/CD | **GitHub Actions** : lint, tests, build, déploiement Pages, cron de vérification des liens | |
+| Natif (plus tard) | **Capacitor** (iOS + Android) et/ou **TWA** (Android) | Voir § 13 |
+
+### 5.2 Structure du dépôt (proposée)
+
+```
+/
+├─ PLAN.md
+├─ src/
+│  ├─ lib/
+│  │  ├─ db/            # Dexie : schéma, migrations
+│  │  ├─ domain/        # calculs : quantités cibles, statuts, FIFO, score
+│  │  ├─ reminders/     # moteur de rappels (pur, testable)
+│  │  ├─ notify/        # adaptateurs : web push, in-app, .ics, Capacitor
+│  │  ├─ i18n/
+│  │  └─ components/    # composants accessibles (Button, Disclosure, Meter, Dialog…)
+│  ├─ routes/           # pages
+│  └─ service-worker.ts
+├─ data/
+│  ├─ catalog/items.json        # modèles d'articles (versionné)
+│  ├─ catalog/products.json     # offres produits / affiliation (mis à jour sans release)
+│  ├─ guide/{fr,en,de,…}/*.md   # contenu d'aide
+│  └─ recipes/*.json
+├─ scripts/
+│  └─ check-links.ts            # surveillance des liens (§ 9)
+└─ .github/workflows/
+   ├─ deploy.yml
+   └─ link-check.yml
+```
+
+### 5.3 Données dynamiques et mises à jour
+
+- `items.json` (catalogue d'articles) et le guide sont **embarqués dans le precache** : l'app est complète dès la première visite.
+- `products.json` (liens affiliés) suit une stratégie **stale-while-revalidate** : la dernière version connue reste toujours affichée, et la mise à jour se fait en arrière-plan quand le réseau revient.
+- Chaque fichier porte un `version` et un `updatedAt`. L'app affiche « Catalogue mis à jour le … ».
+- Mise à jour de l'app : bandeau « Nouvelle version disponible : recharger » (jamais de rechargement forcé pendant une saisie).
+
+---
+
+## 6. Hors-ligne et notifications : contraintes et stratégie
+
+### 6.1 Le point dur
+
+Tu veux des notifications **générées localement selon des dates, sans serveur**. Sur le web en 2026 :
+
+| Mécanisme | Fonctionne hors-ligne, app fermée ? | Support |
+|---|---|---|
+| Notification planifiée locale (Notification Triggers API) | — | **Abandonnée**, non disponible |
+| **Periodic Background Sync** | Oui, mais l'OS décide quand (au plus une fois par jour environ) | Chrome/Edge Android et desktop, **PWA installée** uniquement. Ni iOS, ni Firefox, ni Safari. |
+| **Web Push** (serveur → appareil) | Il faut un serveur qui envoie au bon moment | Tous les navigateurs modernes ; sur **iOS, uniquement si la PWA est ajoutée à l'écran d'accueil** (iOS 16.4+) |
+| Notification à l'ouverture de l'app | Oui | Partout |
+| **Fichier calendrier .ics** (rappels exportés dans le calendrier du téléphone) | **Oui, 100 % local et fiable** | Partout |
+| **Notifications locales natives** (Capacitor Local Notifications) | **Oui, totalement** | Uniquement en app native (stores) |
+
+**Conclusion** : avec un hébergement purement statique (GitHub Pages), on ne peut **pas** garantir une notification push à date fixe sur tous les appareils, notamment iPhone.
+
+### 6.2 Stratégie proposée (par couches)
+
+Un **moteur de rappels unique**, pur et testé, calcule la liste des rappels à partir de l'inventaire. Plusieurs **adaptateurs** les délivrent :
+
+1. **In-app** (toujours) : badge, bandeau et liste « À faire » à chaque ouverture.
+2. **Export calendrier .ics** (toujours, recommandé) : un clic ajoute les échéances et les revues semestrielles au calendrier du téléphone. Fonctionne hors-ligne, sans serveur, sur iOS comme sur Android. Possibilité de régénérer après chaque modification.
+3. **Periodic Background Sync** (Chromium installé) : vérification quotidienne en arrière-plan, puis `showNotification()` locale. Aucun serveur, aucune donnée envoyée.
+4. **Web Push via un mini-serveur** (optionnel, phase 2, voir [question 3](#15-questions-ouvertes)) : par exemple un Cloudflare Worker avec Cron et KV, gratuit à petite échelle. Respect de la vie privée : l'app n'envoie **que** l'abonnement push et une liste de dates/identifiants opaques (« rappel #a1b2 le 2027-03-01 »), **jamais** le contenu de l'inventaire. Le texte de la notification reste générique (« Tu as 2 rappels pour ton kit ») ; le détail s'affiche à l'ouverture.
+5. **Notifications locales natives** (quand l'app sera sur les stores) : même moteur, adaptateur Capacitor. C'est la solution complète.
+
+### 6.3 Règles de rappel par défaut
+
+| Type | Déclencheurs |
+|---|---|
+| Péremption DLC | J-30, J-7, J0 |
+| Péremption DDM | J-30, J+0 (ton doux : « à consommer bientôt ») |
+| Batterie / power bank | Tous les 3 mois après la dernière recharge |
+| Test radio et lampe | Mensuel (premier lundi, avec le test des sirènes) |
+| Piles stockées | Selon la date imprimée |
+| Revue complète du kit | 2 fois par an (changements d'heure) |
+| Documents d'identité | J-60 avant l'expiration |
+| Plan d'urgence | Revue annuelle |
+
+Tout est modifiable. Les rappels du même jour sont **regroupés** (une seule notification, pas dix).
+
+---
+
+## 7. Modèle de données
+
+```ts
+// Foyer
+Household {
+  id; durationDays: number /* 3 par défaut */;
+  members: Member[];
+}
+Member {
+  id; name?: string;
+  type: 'adult' | 'child' | 'infant' | 'senior' | 'pet';
+  petSpecies?: 'dog' | 'cat' | 'other'; petWeightKg?: number;
+  needs?: string[];          // 'medication', 'mobility', 'gluten-free'...
+  hasGoBag: boolean;
+}
+
+// Kits
+Kit { id; type: 'home' | 'go-bag' | 'car' | 'custom'; name; ownerMemberId?; location?: string }
+
+// Catalogue (données livrées, versionnées)
+ItemTemplate {
+  id; category: CategoryId;
+  name: I18nString; description: I18nString; whyLink?: GuidePageId;
+  source: 'official-lu' | 'recommended' | 'optional';
+  kitTypes: KitType[];
+  quantityRule?: { perMemberType: Record<MemberType, number>; perDay: boolean; unit: 'L' | 'kcal' | 'pcs' | ... };
+  tracking: { expiry?: 'dlc' | 'ddm'; battery?: { intervalDays: number }; reviewIntervalDays?: number };
+  safetyNote?: I18nString;   // ex. monoxyde de carbone, iode
+  productIds: string[];      // offres associées (§ 8)
+}
+
+// Inventaire (données utilisateur)
+InventoryItem {
+  id; kitId; templateId?: string; customName?: string;
+  targetQuantity?: number;   // surcharge de la règle
+  lots: Lot[];
+  battery?: { lastChargedAt: ISODate; intervalDays: number };
+  notes?: string;
+}
+Lot { id; quantity: number; unit; expiryDate?: ISODate; expiryType?: 'dlc' | 'ddm'; addedAt: ISODate; barcode?: string }
+
+Task { id; templateId; doneAt?: ISODate }       // gestes (§ 2.14)
+EmergencyPlan { contacts[]; meetingPoints[]; utilityShutoffs; medicalInfo[]; updatedAt }
+ActivityLog { id; type; at; payload }           // progression, badges
+Settings { locale; theme; textScale; reminderOffsets; channels; quietHours }
+```
+
+- **Migrations** Dexie versionnées dès la v1.
+- L'**export** JSON reprend tout (`schemaVersion` inclus) ; l'import valide le schéma et propose « fusionner » ou « remplacer ».
+
+---
+
+## 8. Affiliation et catalogue produits
+
+### 8.1 Principe
+
+Pour chaque modèle d'article, **2 à 4 offres** à différents niveaux de budget : 💶 Essentiel · 💶💶 Équilibré · 💶💶💶 Durable/Premium. Et si possible plusieurs marchands.
+
+```jsonc
+// data/catalog/products.json
+{
+  "version": 12, "updatedAt": "2026-10-14",
+  "products": [{
+    "id": "swiss-knife-basic",
+    "itemTemplateIds": ["multitool-knife"],
+    "name": "Couteau suisse 12 fonctions",
+    "brand": "…",
+    "tier": 1,                              // 1 = essentiel, 2 = équilibré, 3 = premium
+    "why": { "fr": "Lame + ouvre-boîte + ciseaux en un seul objet" },
+    "offers": [
+      { "merchant": "amazon-fr", "url": "https://…?tag=XXXX-21", "status": "ok", "lastChecked": "2026-10-13" },
+      { "merchant": "amazon-de", "url": "…", "status": "ok" }
+    ]
+  }]
+}
+```
+
+### 8.2 Règles
+
+- **Pas de prix affichés** en dur : ils deviennent faux vite et les conditions d'Amazon encadrent strictement l'affichage des prix. On affiche des **paliers de budget** (€, €€, €€€) et éventuellement « environ 15 à 25 € ». À valider.
+- Le **Luxembourg n'a pas d'Amazon local** : on proposera amazon.fr et amazon.de (le programme Partenaires est souscrit par marketplace ; voir OneLink pour la redirection selon le pays). On pourra ajouter des réseaux d'affiliation européens (Awin, Tradedoubler, programmes directs de marques ou d'enseignes outdoor), selon disponibilité au Luxembourg.
+- **Transparence** : mention claire sur chaque bloc produit (« Lien affilié : je touche une petite commission, sans surcoût pour toi »), et page dédiée.
+- Les liens s'ouvrent avec `rel="sponsored noopener"` et un texte de lien explicite (« Voir le couteau suisse 12 fonctions sur Amazon.fr », nouvelle fenêtre signalée).
+- **La recommandation ne dépend jamais de l'affiliation** : l'article reste conseillé même sans offre disponible.
+- Hors-ligne, les offres restent visibles (dernière version connue) ; les liens sont simplement inactifs avec un message.
+
+### 8.3 Édition du catalogue
+
+- Phase 1 : édition directe des JSON dans le dépôt (PR → CI valide le schéma via JSON Schema → déploiement).
+- Phase 2 (si besoin) : petit back-office statique, ou un CMS Git (Decap CMS, Pages CMS) pour éditer sans toucher au JSON.
+
+---
+
+## 9. Surveillance des liens
+
+### 9.1 Pipeline
+
+`.github/workflows/link-check.yml` : **cron hebdomadaire** et déclenchement manuel.
+
+1. `scripts/check-links.ts` parcourt `products.json` et les liens sortants du guide.
+2. Pour chaque URL :
+   - code HTTP (404, 410, 5xx), redirections vers une page de recherche ou d'accueil (signe d'un produit retiré) ;
+   - pour les marchands où c'est **autorisé**, détection « indisponible » (marqueurs comme `"availability":"OutOfStock"` en JSON-LD, ou « Actuellement indisponible ») ;
+   - pour **Amazon**, ne pas scraper (c'est interdit par les conditions du programme, et Amazon bloque les robots). Utiliser l'**API officielle** pour la disponibilité dès que le compte y est éligible (Amazon conditionne l'accès à l'API à un minimum de ventes qualifiées). En attendant, contrôle du code HTTP et revue manuelle trimestrielle.
+3. Résultat :
+   - mise à jour automatique du `status` (`ok` | `unavailable` | `broken` | `unknown`) et de `lastChecked` dans une PR générée par le bot ;
+   - **issue GitHub** récapitulative listant les liens à corriger (une seule issue mise à jour, pas une par lien) ;
+   - l'app **masque** les offres `broken`/`unavailable` et remonte l'offre suivante du même palier.
+4. Liens du guide officiel (letzprepare.public.lu, lu-alert.lu, infocrise.lu…) : même contrôle, sans les masquer automatiquement.
+
+### 9.2 Garde-fous
+
+- Limite de requêtes, User-Agent honnête, respect de `robots.txt`.
+- Un échec isolé passe en `unknown`, pas en `broken` (on confirme sur deux passages consécutifs).
+
+---
+
+## 10. Accessibilité
+
+**Cible : RAWeb 1.1 niveau AA** (EN 301 549 / WCAG 2.1), avec le skill `raweb-code` pendant le développement et `raweb-audit` avant chaque release. Ensuite **RAAM 1.1** pour les versions natives.
+
+### 10.1 Points d'attention spécifiques à cette app
+
+| Sujet | Exigence | Critères RAWeb concernés (à confirmer via `raweb-lookup.sh`) |
+|---|---|---|
+| Statuts d'articles (OK, bientôt, expiré) | Jamais par la couleur seule : texte + icône + info dans le code | 3.1 |
+| Contrastes | Texte 4,5:1, composants et icônes 3:1, en thème clair **et** sombre | 3.2, 3.3 |
+| Jauges de préparation | `<meter>` ou équivalent, avec valeur textuelle visible | 7.1 |
+| Cases à cocher (inventaire, courses) | `<input type="checkbox">` natif + `<label>` | 11.1, 11.2 |
+| Formulaires (ajout, dates, foyer) | Étiquettes visibles, erreurs liées au champ, format de date indiqué, `autocomplete` sur les champs personnels du plan | 11.x |
+| Messages de statut (« Ajouté », « 1 retiré ») | Région live (`role="status"`) | 7.5 |
+| Navigation SPA | Mise à jour du `<title>`, focus déplacé vers le `<h1>` de la nouvelle page, lien d'évitement | 8.6, 12.x |
+| Modales (confirmation, scan) | Pattern dialog APG : focus piégé, `Échap`, retour du focus | 7.1, 12.x |
+| Scan code-barres | Alternative de saisie manuelle toujours disponible | 7.x |
+| Zoom et reflow | Aucune perte de contenu à 200 %, puis 320 px de large | 10.4, 10.11 |
+| Espacement du texte | Compatible avec les surcharges utilisateur | 10.12 |
+| Animations et badges | `prefers-reduced-motion`, aucune animation essentielle | 13.x |
+| Langues | `lang` sur `<html>` et sur tout passage dans une autre langue | 8.3, 8.7 |
+| Audio des sirènes | Description textuelle de chaque signal ; aucun son en lecture automatique | 4.x |
+| Quiz | Pas de limite de temps | 13.1 |
+| Liens affiliés | Intitulé explicite, nouvelle fenêtre signalée | 6.1, 13.2 |
+| Impression du plan | Styles print lisibles ; PDF généré balisé | — |
+| Notifications | Texte autoporteur, sans emoji seul porteur de sens | — |
+
+### 10.2 Process
+
+- **Bibliothèque de composants accessibles** dès le premier sprint (bouton, disclosure, dialog, tabs, meter, toast/status, combobox de recherche du catalogue), basée sur les patterns APG du skillset.
+- Checklist pré-commit du skill `raweb-code`.
+- Automatisé : axe-core dans Playwright à chaque PR (pré-filtrage seulement).
+- Manuel avant chaque release : clavier seul, NVDA + Firefox, VoiceOver iOS, TalkBack Android, zoom 200 %, contraste forcé Windows.
+- **Déclaration d'accessibilité** publiée dans l'app (bonne pratique, même si l'obligation légale vise le secteur public).
+- Tests utilisateurs avec au moins une personne utilisatrice de lecteur d'écran avant la v1.
+
+---
+
+## 11. Design
+
+### 11.1 Direction : « familier, friendly, moderne »
+
+- **Ambiance** : un mélange de carnet de camping et d'appli de courses. Chaleureux, arrondi, aéré.
+- **Palette** : **distincte du bleu et rouge gouvernementaux**, pour ne pas laisser croire à une app officielle. Proposition : vert sapin profond (confiance, nature luxembourgeoise), jaune soleil (énergie, lumière), crème chaud en fond, terracotta pour l'accent. Statuts : vert / ambre / rouge brique, toujours avec icône et texte.
+- **Typographie** : une sans-serif humaniste et très lisible (Atkinson Hyperlegible, Lexend ou Nunito), corps de 17 px minimum sur mobile.
+- **Illustrations** : objets du kit dessinés au trait, un peu ludiques (une lampe frontale qui sourit, une boîte de conserve). Pas de scènes de catastrophe.
+- **Iconographie** : un jeu cohérent (Phosphor ou Tabler, licence libre) pour les catégories.
+- **Mascotte optionnelle** : par exemple un petit hérisson (prévoyant, qui fait des réserves), uniquement si ça ne surcharge pas l'UI.
+- **Composants** : cartes, chips de catégorie, grandes zones tactiles (44 × 44 px minimum), barre de navigation en bas (Accueil, Kits, Courses, Guide, Plus).
+- **Thème sombre** soigné, et respect de `prefers-color-scheme` et `prefers-contrast`.
+
+### 11.2 Livrables design
+
+1. Moodboard et 2 pistes de palette (vérifiées en contraste)
+2. Design tokens (couleurs, typo, espacements, rayons) en variables CSS
+3. Maquettes des écrans clés : onboarding, tableau de bord, inventaire, fiche article, liste de courses, guide, plan d'urgence
+4. Icône d'app et splash screens (formats PWA, iOS et Android)
+
+---
+
+## 12. Contenu, langues et aspects légaux
+
+### 12.1 Langues
+
+Le Luxembourg est multilingue. Proposition : **FR au lancement**, puis **EN, DE**, puis **PT** (communauté importante) et **LB**. Le guide officiel existe en plusieurs langues, ce qui facilitera l'alignement du contenu.
+
+### 12.2 Contenu du guide
+
+- Source de référence : **« Mon guide 72h d'autonomie »**, version PDF accessible (balisée), 50 pages, septembre 2026 (HCPN, campagne 2026). Le plan reprend désormais l'intégralité de ses 4 chapitres, de la checklist et du formulaire du plan d'urgence.
+- Résumer et **lier** vers letzprepare.public.lu plutôt que copier mot pour mot ; vérifier les **conditions de réutilisation** du contenu officiel avant toute reprise de texte ou d'illustration. Le PDF n'est **pas** versionné dans le dépôt public pour l'instant (droits à confirmer).
+- Chaque page d'aide affiche « Source : Lëtz prepare! – Gouvernement du Grand-Duché de Luxembourg » avec un lien.
+- Le guide existe « en plusieurs langues et en versions accessibles » : récupérer les versions DE, EN (et autres) pour aligner les traductions de l'app sur la terminologie officielle.
+
+### 12.3 Juridique (à faire valider)
+
+- **Pas d'usurpation d'identité officielle** : ni logo du gouvernement, ni lion rouge, ni nom « Lëtz prepare » dans le nom de l'app. Mention claire : « Application indépendante, non affiliée au Gouvernement du Luxembourg ».
+- **RGPD** : données locales uniquement, donc une politique de confidentialité simple. Si le serveur Web Push est ajouté : minimisation des données, base légale, durée de conservation.
+- **Données de santé** (plan d'urgence) : stockées localement, avec consentement explicite et suppression facile.
+- **Affiliation** : mention obligatoire (pratiques commerciales loyales, conditions des programmes partenaires).
+- **Avertissements santé et sécurité** : iode uniquement sur instruction des autorités, monoxyde de carbone, bougies, médicaments sur avis médical. L'app ne remplace pas les consignes officielles.
+- **Analytics** : aucun par défaut. Si besoin, une solution sans cookie et respectueuse de la vie privée (Plausible ou Umami auto-hébergé), avec opt-in.
+
+---
+
+## 13. Publication sur les stores
+
+Oui, c'est possible :
+
+| Plateforme | Méthode | Effort | Remarques |
+|---|---|---|---|
+| **Android (Google Play)** | **TWA** via Bubblewrap ou PWABuilder | Faible | La PWA telle quelle, plein écran. Compte développeur Google (frais uniques). Le Web Push fonctionne. |
+| **Android + iOS** | **Capacitor** (même code web, enveloppe native) | Moyen | Ajoute les **notifications locales natives**, ce qui règle le problème du § 6. |
+| **iOS (App Store)** | Capacitor obligatoire en pratique | Moyen à élevé | Apple rejette les « sites web emballés » (règle 4.2, fonctionnalité minimale) : les notifications locales, le scan et le partage natif aident à passer la revue. Il faut un Mac ou un build cloud et un compte Apple Developer (abonnement annuel). |
+
+Pour que ce soit possible plus tard, sans réécriture :
+
+- abstraction `notify/` avec adaptateurs (déjà prévue au § 6) ;
+- pas de dépendance à des API web exotiques sans repli ;
+- routing compatible `file://` et `capacitor://` (pas de chemins absolus en dur) ;
+- audit **RAAM 1.1** au moment du passage en natif.
+
+---
+
+## 14. Feuille de route
+
+### Phase 0 : Fondations (≈ 1 semaine)
+
+- [ ] Valider ce plan et les [questions ouvertes](#15-questions-ouvertes)
+- [ ] Choix du nom, de la palette et de la typographie
+- [ ] Initialiser le projet (Vite, Svelte, TS, lint, Prettier, Vitest, Playwright)
+- [ ] CI GitHub Actions et déploiement sur GitHub Pages
+- [ ] Manifest PWA et service worker (precache), test hors-ligne en E2E
+- [ ] Installer le skillset accessibilité dans `.claude/skills/`
+
+### Phase 1 : MVP hors-ligne (≈ 3 à 4 semaines)
+
+- [ ] Composants accessibles de base
+- [ ] Catalogue `items.json` complet (§ 2) en FR, avec JSON Schema
+- [ ] Onboarding du foyer et calcul des quantités
+- [ ] Kits (maison et sac d'évacuation), inventaire avec lots, DLC/DDM, FIFO
+- [ ] Suivi des batteries
+- [ ] Tableau de bord, jauges, prochaine action
+- [ ] Liste de courses
+- [ ] Moteur de rappels avec adaptateurs in-app et **.ics**
+- [ ] Export / import JSON
+- [ ] Guide : pages principales (72 h, alertes, sirènes, coupure d'électricité)
+- [ ] Audit RAWeb du MVP et corrections
+
+### Phase 2 : Notifications et plan (≈ 2 semaines)
+
+- [ ] Periodic Background Sync (Chromium)
+- [ ] Web Push avec mini-serveur (si validé)
+- [ ] Plan personnel d'urgence, impression et PDF
+- [ ] Scan de codes-barres
+- [ ] Tâches et gestes (§ 2.14)
+
+### Phase 3 : Affiliation (≈ 1 à 2 semaines)
+
+- [ ] `products.json`, paliers de budget, blocs produits accessibles
+- [ ] Inscription aux programmes (Amazon.fr, Amazon.de, autres réseaux)
+- [ ] Page de transparence affiliation
+- [ ] Workflow `link-check` (cron, PR bot, issue récapitulative)
+
+### Phase 4 : Le côté fun (≈ 2 semaines)
+
+- [ ] Paliers de progression et badges
+- [ ] Recettes « soirée conserves »
+- [ ] Rituel du premier lundi, check-up semestriel
+- [ ] Défi « soirée sans électricité »
+- [ ] Simulation 72 h interactive et quiz
+
+### Phase 5 : International et stores
+
+- [ ] Traductions EN, DE, puis PT, LB
+- [ ] TWA Android
+- [ ] Capacitor : notifications locales, iOS
+- [ ] Audit RAAM
+
+---
+
+## 15. Questions ouvertes
+
+1. **Hébergement : « Google Pages »** — veux-tu dire **GitHub Pages** (le dépôt est sur GitHub, c'est le plus simple et gratuit) ou **Firebase Hosting** (Google) ? Et as-tu un nom de domaine en tête ?
+2. **Nom de l'app** — des idées ? Quelques pistes : *Mon Kit 72*, *Prêt·e !*, *Placard Malin*, *Réserve*, *Hérisson*. Le nom ne doit pas reprendre « Lëtz prepare » (marque gouvernementale).
+3. **Notifications et serveur** — acceptes-tu un **mini-serveur** (Cloudflare Worker gratuit) pour le Web Push fiable sur iPhone, avec seulement des dates opaques envoyées ? Ou préfères-tu rester **100 % sans serveur** (in-app, .ics, Background Sync Android) jusqu'à la version store ?
+4. **Langues au lancement** — FR seul, ou FR + EN + DE dès la v1 ?
+5. **Framework** — OK pour Svelte 5 ? Ou tu préfères une stack que tu maîtrises déjà (vanilla + Web Components, Vue, React…) ?
+6. **Affiliation** — as-tu déjà des comptes partenaires (Amazon.fr, .de, Awin…) ? Y a-t-il des enseignes locales ou européennes que tu veux privilégier (Decathlon, magasins outdoor, pharmacies en ligne…) ? Veux-tu afficher des fourchettes de prix ou seulement des paliers € / €€ / €€€ ?
+7. **Public cible** — uniquement les résident·es du Luxembourg, ou une app pensée pour s'étendre aux autres pays (FR, BE, DE…) avec des listes officielles par pays ? Ça change la structure du catalogue (sources par pays).
+8. **Partage au sein du foyer** — la synchronisation entre plusieurs téléphones est-elle importante pour toi ? Elle implique un serveur, donc à voir plus tard ; l'export/QR suffit-il au départ ?
+9. **Plan personnel d'urgence** — ✅ formulaire officiel repris (§ 3.6). Le guide mentionne aussi un plan « à compléter en ligne » (QR code) : as-tu l'URL ? Si un formulaire officiel en ligne existe, on peut proposer un lien vers lui en plus de notre version locale.
+10. **Droits sur le contenu du guide** — ✅ PDF complet reçu. Reste à savoir : peut-on reprendre des textes ou illustrations (licence, ou demande au HCPN), ou part-on sur des résumés et des liens ? Faut-il versionner le PDF dans le dépôt ?
+11. **Durée cible** — 72 h par défaut et réglable jusqu'à 14 jours : ça te va ?
+12. **Monétisation complémentaire** — l'affiliation seule, ou aussi un « tip jar » / dons (Ko-fi, GitHub Sponsors) ? Pas de publicité, je suppose ?
+13. **Design** — as-tu des références d'apps dont tu aimes le style, ou veux-tu que je te propose 2 moodboards ?
+14. **Mascotte** — partant·e pour le hérisson, ou on reste sobre ?
+
+---
+
+### Sources et références
+
+- Lëtz prepare! — Guide et checklist 72 h : <https://letzprepare.public.lu/fr/guide.html>
+- Guide PDF : « Mon guide 72h d'autonomie », Lëtz prepare!, HCPN, campagne 2026 (version accessible FR)
+- LU-Alert : <https://lu-alert.lu> · Infocrise : <https://infocrise.lu> · Zones inondables : <https://eau.geoportail.lu> · <https://inondations.lu>
+- Secours et gardes : <https://112.lu> · CIS de proximité : <https://112.public.lu/fr/organisation/secours.html> · Premiers secours : <https://cours.cgdis.lu> · <https://croix-rouge.lu> · Météo : <https://meteolux.lu> · <https://seveso.lu>
+- Cybersécurité : <https://cybersecurity.lu> · <https://cyberfraud.lu> · BEE SECURE <https://bee-secure.lu> (helpline 8002 1234)
+- RAWeb 1.1 : <https://accessibilite.public.lu/fr/raweb1.1/> · RAAM 1.1 : <https://accessibilite.public.lu/fr/raam1.1/>
+- Skillset accessibilité : <https://github.com/geoffreycrofte/luxembourg-accessibility-skillset>
+- Listes de référence consultées pour les compléments [REC] : Croix-Rouge, Ready.gov (FEMA), BBK « Ratgeber für Notfallvorsorge », OFAE « Notvorrat » (Suisse), MSB « Om krisen eller kriget kommer » (Suède), Commission européenne « Preparedness Union Strategy » (2025)
