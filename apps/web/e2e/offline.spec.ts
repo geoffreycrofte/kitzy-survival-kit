@@ -14,7 +14,10 @@ test('Kitzy fonctionne sans connexion après une première visite', async ({ pag
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Prépare ton terrier.');
 
   // Une autre route s'ouvre aussi hors-ligne.
-  await page.goto('./guide');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Guide');
-  await expect(page.locator('img.soon__hog')).toHaveJSProperty('complete', true);
+  await page.goto('./guide/sirenes');
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  await expect(page.locator('img.prose__hog')).toHaveJSProperty('complete', true);
+  expect(
+    await page.locator('img.prose__hog').evaluate((img: HTMLImageElement) => img.naturalWidth),
+  ).toBeGreaterThan(0);
 });

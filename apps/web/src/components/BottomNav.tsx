@@ -1,11 +1,11 @@
 import { NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { BookIcon, BurrowIcon, PlanIcon, TagIcon } from './Icons';
+import { BookIcon, BurrowIcon, JarIcon, TagIcon } from './Icons';
 
 const items = [
   { to: '/', key: 'nav.home', Icon: BurrowIcon, end: true },
+  { to: '/kits', key: 'nav.kits', Icon: JarIcon, end: false },
   { to: '/courses', key: 'nav.shopping', Icon: TagIcon, end: false },
-  { to: '/plan', key: 'nav.plan', Icon: PlanIcon, end: false },
   { to: '/guide', key: 'nav.guide', Icon: BookIcon, end: false },
 ] as const;
 

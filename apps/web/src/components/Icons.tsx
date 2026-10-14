@@ -42,6 +42,16 @@ export function PlanIcon(props: IconProps) {
   );
 }
 
+export function JarIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M8 3h8v3H8z" />
+      <path d="M7 6h10a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z" />
+      <path d="M5 13h14" />
+    </svg>
+  );
+}
+
 export function BookIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>
