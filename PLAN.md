@@ -919,21 +919,24 @@ Préparé dès le départ :
 - [ ] Profil pays `lu.json` et schéma des profils (reporté en phase 1, avec le catalogue)
 - [ ] Dexie et Zod : arrivent en phase 1 avec les premières données
 
-### Phase 1 : MVP hors-ligne (≈ 3 à 4 semaines)
+### Phase 1 : MVP hors-ligne ✅
 
-- [ ] Composants accessibles de base
-- [ ] Catalogue `items.json` complet (§ 2) en FR, avec JSON Schema
-- [ ] Onboarding du foyer et calcul des quantités
-- [ ] Kits (maison et sac d'évacuation), inventaire avec lots, DLC/DDM, FIFO
-- [ ] Suivi des batteries
-- [ ] Tableau de bord, jauges, prochaine action
-- [ ] Liste de courses
-- [ ] Moteur de rappels avec adaptateurs in-app et **.ics**
-- [ ] Export / import JSON
-- [ ] Partage par QR code et URL (liste de courses d'abord)
-- [ ] Page « Soutenir Kitzy » (dons)
-- [ ] Guide : pages principales (72 h, alertes, sirènes, coupure d'électricité)
-- [ ] Audit RAWeb du MVP et corrections
+- [x] Composants accessibles de base : compteur, jauge (`role="meter"` avec valeur textuelle), pastilles d'état (texte + icône), champs avec erreurs liées (`aria-invalid`, `aria-describedby`), zone d'annonce `role="status"`, cases et boutons radio redessinés
+- [x] Catalogue complet (98 articles : 34 officiels, 41 conseillés, 23 confort) en TypeScript typé dans `core`, avec tests d'intégrité ; profil pays `lu`
+- [x] Onboarding du foyer (personnes, animaux, durée de 3 à 14 jours, nombre de sacs) et calcul des quantités
+- [x] Kits (réserve maison et un sac par personne, renommables), inventaire par lots, DLC/DDM, consommation FIFO, objets personnels
+- [x] Suivi des batteries (recharge notée, échéance calculée)
+- [x] Terrier : lucioles calculées sur les articles officiels, prochaine action, « Les prochains jours »
+- [x] Liste de courses fusionnée entre kits, cases à cocher, ajouts manuels
+- [x] Moteur de rappels (péremptions, recharges, mini-check mensuel, check-ups aux changements d'heure) et export **.ics** avec alarmes
+- [x] Sauvegarde et restauration JSON validées (Zod), effacement complet
+- [x] Partage de la liste de courses par QR code, lien, e-mail ou partage natif ; import sur `/partage`
+- [x] Dons (PayPal, Revolut) dans les réglages
+- [x] Guide : 10 pages en langage clair (72 h, risques, coupure d'électricité, LU-Alert, sirènes, s'informer, nucléaire, kit et plan, entraide, contacts)
+- [x] Audit automatisé axe-core sur tous les écrans dans les deux thèmes ; corrections : focus masqué par la barre du bas (`scroll-padding`), cases à cocher à mise à jour immédiate, bandeau hors-ligne qui s'efface
+- [ ] Audit RAWeb manuel complet (lecteurs d'écran NVDA, VoiceOver, TalkBack ; zoom 200 % ; contraste forcé)
+
+Décision prise pendant la phase : le niveau de kit par défaut est **l'essentiel officiel** (34 articles). Le niveau « conseillé » affichait plus de 60 articles dès le départ, ce qui allait à l'encontre du principe « une seule prochaine action, sans anxiété ». La personne élargit le niveau dans les réglages.
 
 ### Phase 2 : Notifications et plan (≈ 2 semaines)
 

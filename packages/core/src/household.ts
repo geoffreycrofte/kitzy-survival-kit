@@ -52,9 +52,41 @@ export interface Targets {
   pets: number;
 }
 
+export interface HouseholdCounts {
+  adults: number;
+  seniors: number;
+  children: number;
+  infants: number;
+  pets: number;
+  /** Humains, nourrissons compris */
+  people: number;
+  /** Humains qui mangent des repas (hors nourrissons) */
+  eaters: number;
+  days: number;
+}
+
 export function clampDuration(days: number): number {
   if (!Number.isFinite(days)) return DEFAULT_DURATION_DAYS;
   return Math.min(MAX_DURATION_DAYS, Math.max(MIN_DURATION_DAYS, Math.round(days)));
+}
+
+export function countMembers(household: Household): HouseholdCounts {
+  const by = (type: MemberType) => household.members.filter((m) => m.type === type).length;
+  const adults = by('adult');
+  const seniors = by('senior');
+  const children = by('child');
+  const infants = by('infant');
+  const pets = by('pet');
+  return {
+    adults,
+    seniors,
+    children,
+    infants,
+    pets,
+    people: adults + seniors + children + infants,
+    eaters: adults + seniors + children,
+    days: clampDuration(household.durationDays),
+  };
 }
 
 function waterPerDay(member: Member): number {
