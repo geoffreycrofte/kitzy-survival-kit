@@ -20,7 +20,7 @@
 | Budget produits | Marqueurs **€ / €€ / €€€** uniquement, sans prix affiché |
 | Affiliation | Amazon (compte existant), AliExpress (compte existant, usage très limité), plus des marchands réputés FR/DE à ouvrir (§ 8.3) |
 | Dons | **Oui**, option de don (§ 8.5) |
-| Design | 2 pistes graphiques proposées en maquette : [Kitzy — pistes graphiques](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB) (§ 11) |
+| Design | 2 nouvelles pistes (« Douillet », « Affiche ») avec le hérisson 3D : [Kitzy — pistes graphiques](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB) (§ 11) |
 - Langue de travail : français
 - Référentiel d'accessibilité : **RAWeb 1.1, niveau AA** (skills `raweb-code` / `raweb-audit` de [luxembourg-accessibility-skillset](https://github.com/geoffreycrofte/luxembourg-accessibility-skillset)), puis **RAAM 1.1** si on publie des apps natives (skills `raam-code` / `raam-audit`)
 
@@ -750,29 +750,28 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 
 ## 11. Design
 
-### 11.1 Deux pistes proposées
+### 11.1 Deux pistes proposées (v2)
 
-Maquettes (écran d'accueil + système visuel) : **[Kitzy — pistes graphiques](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB)**.
+Les premières pistes (« Sous-bois », « Sticker pop ») ont été écartées. Nouvelles pistes, inspirées des références fournies (Kawi, Yanji) : **[Kitzy — pistes graphiques](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB)**.
 
-| | **A · Sous-bois** | **B · Sticker pop** |
+| | **1 · Douillet** (esprit Kawi) | **2 · Affiche** (esprit Yanji) |
 |---|---|---|
-| Ambiance | Garde-manger rangé après une balade en forêt : doux, arrondi, naturel | Autocollants sur une boîte à outils : contours francs, couleurs vives, ton joueur |
-| Couleurs | Sapin `#1F5C45`, Soleil `#F2B33D`, Noisette `#7A5440`, Encre `#1E2B24`, fond Mousse `#F3F5EF` | Nuit `#16163A`, Mandarine `#FF6B3D`, Lagon `#0B6E69`, Citron `#FFD84D`, fond Nuage `#F6F7FB` |
-| Typo | **Fredoka** (titres) + **Atkinson Hyperlegible** (texte) | **Bricolage Grotesque** (titres) + **Lexend** (texte) |
-| Formes | Grands rayons (16 à 28 px), pas de contour, ombres très légères | Contour de 2 px, ombres décalées pleines, rayons moyens |
-| Hérisson | Pointes en festons arrondis, feuille sur le dos ; pose « endormi » pour les états vides | Pointes en zigzag cernées de noir, **lampe frontale** ; pose « badge gagné » avec confettis |
-| Gamification | Paliers sobres (« Prêt·e pour un week-end ») | « Missions » et badges plus présents |
+| Ambiance | Décor illustré en haut d'écran, hérisson 3D qui déborde sur le contenu, boutons « moelleux » avec rebord | Affiche de quartier : bandeau de couleurs, contours noirs épais, ombres pleines, blocs de couleur par catégorie |
+| Couleurs | Terre cuite `#B5532A`, Pré `#3E7A3A`, Miel `#FCF0D4`, Ciel `#E3EEF7`, Lilas `#EEE6F4`, Cacao `#2B211C`, fond `#FFF8EF` | Tomate `#C8423B`, Bleu `#2F4FB5`, Moutarde `#F2C14E`, Abricot `#EEA44F`, Sapin `#3C7D4B`, Encre `#1E1A17`, fond `#FFFAF3` |
+| Typo | **Grandstander** (titres, boutons) + **Nunito** | **Anton** (titres capitales) + **Lilita One** (logo) + **Nunito** |
+| Hérisson | Détouré, en grand sur le décor flouté du jardin | Dans une pastille jaune cerclée de noir, comme un autocollant |
+| Touches locales | Salut « Moien ! » | « Moien ! » et sous-titres luxembourgeois des catégories (Waasser, Liicht, Wäermt : à faire valider) |
+| Gamification | Des **pommes** à gagner pour le hérisson, cartes « D'autres façons de te préparer » | Missions et état par catégorie |
 
-Les contrastes de texte de chaque piste respectent **4,5:1 minimum** (calculés pour chaque paire texte/fond affichée). Les statuts combinent toujours icône, texte et couleur.
-
-Communs aux deux pistes : distinctes du bleu et du rouge gouvernementaux, iconographie au trait (style Phosphor ou Tabler), zones tactiles de 44 px minimum, barre de navigation en bas (Accueil, Kits, Courses, Guide, Plus), thème sombre à décliner, respect de `prefers-reduced-motion` et `prefers-contrast`.
+Les contrastes de chaque couple texte/fond utilisé sont d'au moins 4,5:1.
 
 ### 11.2 Le hérisson
 
-- Dessiné en **SVG vectoriel** à partir de formes simples : ça le rend léger, net à toutes les tailles, animable et déclinable par couleur (thème sombre).
-- Les deux versions des maquettes sont des **bases de travail** cohérentes et utilisables pour le MVP. Pour une identité finale (expressions, poses multiples, icône d'app, stickers), un ou une **illustratrice** peut repartir de ces bases comme brief.
-- Poses prévues : principale, endormi (tout est à jour), content (badge), pensif (aide/guide), avec une lampe (coupure de courant), en boule (erreur ou hors-ligne, sans dramatiser).
-- Toujours décoratif ou doté d'un texte alternatif selon le contexte ; jamais porteur seul d'une information.
+- Mascotte **générée par IA** (modèle d'OpenAI), fournie par Geoffrey, **détourée** automatiquement (rembg, modèle isnet) : `assets/mascot/kitzy-hedgehog.{png,webp}` (fond transparent, 640 px de large).
+- Pour les autres poses (endormi, content, pensif, avec une lampe frontale, en boule), régénérer avec **le même modèle et la même description** (bandana rayé orange et blanc, pelage brun, ventre crème, style 3D doux), puis détourer de la même façon. Garder une feuille de référence pour la cohérence.
+- Formats : WebP transparent pour le web (≈ 100 Ko), PNG pour les stores et l'icône d'app ; versions 1x, 2x et 3x pour React Native.
+- Droits : les conditions d'OpenAI attribuent les images générées à l'utilisateur, mais une image générée par IA est difficilement protégeable par le droit d'auteur. Le **nom « Kitzy »** et le logo, eux, peuvent être déposés comme marque.
+- Le hérisson reste décoratif (`alt=""`) sauf quand il porte un sens ; jamais seul porteur d'une information.
 
 ### 11.3 Livrables design (après choix de la piste)
 
@@ -930,13 +929,13 @@ Hébergement (GitHub Pages) · Serveur (aucun, VPS plus tard) · Langues (FR, EN
 
 ### Encore ouvertes
 
-1. **Piste graphique** : A « Sous-bois » ou B « Sticker pop », ou un mélange (par exemple la palette de A avec le hérisson à lampe frontale de B) ? Voir [les maquettes](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB).
+1. **Piste graphique** : 1 « Douillet » ou 2 « Affiche », ou un mélange ? Voir [les maquettes](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB).
 2. **Domaine** : kitzy.app, kitzy.eu, kitzy.lu… À réserver **avant** le lancement public.
 3. **Marque** : vérifier « Kitzy » sur EUIPO (classe 9, logiciels) et sur les stores.
 4. **Stack** : OK pour l'option B (PWA React + app Expo avec cœur partagé) plutôt qu'Expo universel ?
 5. **Durée cible** : 72 h par défaut, réglable jusqu'à 14 jours : ça te va ?
 6. **Plateforme de dons** : Liberapay, Ko-fi ou GitHub Sponsors ?
-7. **Illustration** : on garde le hérisson SVG pour le MVP, puis un ou une illustratrice pour la version finale ?
+7. **Poses du hérisson** : tu génères les autres poses avec le même modèle (je peux rédiger les descriptions) ?
 
 ---
 
