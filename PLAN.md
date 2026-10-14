@@ -900,16 +900,24 @@ Préparé dès le départ :
 
 ## 14. Feuille de route
 
-### Phase 0 : Fondations (≈ 1 semaine)
+### Phase 0 : Fondations ✅
 
 - [x] Valider le plan (v0.3) et le nom **Kitzy**
 - [x] Piste graphique : **La Veillée** (sombre + clair, mouvement)
-- [ ] Choisir le **domaine** ; vérifier la marque « Kitzy » (EUIPO, stores)
-- [ ] Initialiser le monorepo pnpm : `packages/core` (TS, Zod, i18next, Vitest) et `apps/web` (React, Vite, vite-plugin-pwa, Dexie, Playwright), lint, Prettier
-- [ ] Profil pays `lu.json` et schéma des profils
-- [ ] CI GitHub Actions et déploiement sur GitHub Pages
-- [ ] Manifest PWA et service worker (precache), test hors-ligne en E2E
-- [ ] Installer le skillset accessibilité dans `.claude/skills/`
+- [ ] Choisir le **domaine** (kitzy.lu pressenti) ; vérifier la marque « Kitzy » (EUIPO, stores)
+- [x] Monorepo pnpm : `packages/core` (TS, Vitest) et `apps/web` (React 19, Vite 8, vite-plugin-pwa, React Router, i18next, Playwright), ESLint avec jsx-a11y, Prettier
+- [x] Jetons de couleur des deux thèmes dans `core`, avec **test automatique des contrastes** (4,5:1 minimum)
+- [x] Préférences : thème (système, sombre, clair) et animations d'ambiance (système, activées, désactivées)
+- [x] Coquille de l'app : en-tête, navigation du bas, lien d'évitement, focus sur le titre à chaque navigation, titre de page, page introuvable, bandeau de mise à jour sans rechargement forcé
+- [x] Accueil « La Veillée » : fenêtre du terrier, six lucioles, première mission ; animations désactivées par défaut si le système demande moins de mouvement
+- [x] Polices auto-hébergées (Young Serif, Figtree) et 6 poses du hérisson mises en cache pour le hors-ligne
+- [x] Manifest PWA, icônes (dont maskable), service worker avec precache ; `404.html` pour les routes sur GitHub Pages
+- [x] Tests de bout en bout : parcours, axe-core dans les deux thèmes, focus, lien d'évitement, mouvement réduit, **hors-ligne**
+- [x] CI GitHub Actions (format, lint, types, tests, e2e) et déploiement GitHub Pages (`/survival-kit/`, ou `kitzy.lu` via variables de dépôt)
+- [x] Skills d'accessibilité installés dans `.claude/skills/` (raweb-code, raweb-audit, raam-code, raam-audit)
+- [ ] Activer GitHub Pages dans les réglages du dépôt (Source : GitHub Actions)
+- [ ] Profil pays `lu.json` et schéma des profils (reporté en phase 1, avec le catalogue)
+- [ ] Dexie et Zod : arrivent en phase 1 avec les premières données
 
 ### Phase 1 : MVP hors-ligne (≈ 3 à 4 semaines)
 

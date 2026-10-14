@@ -100,6 +100,10 @@ Pose: close-up portrait of the head and the top of the bandana only, facing the 
 ```
 Pour l'icône, remplace « Portrait format 2:3 » par « Square format 1:1 » dans le bloc « Personnage ».
 
+## Remarque sur la cohérence
+
+Les six poses livrées sont cohérentes entre elles (moustaches, petites dents, pelage roux), mais diffèrent un peu de la toute première image (`kitzy-hedgehog`, sans moustaches, pelage plus clair). Pour les prochaines poses, utilise **`kitzy-bonjour.png` comme image de référence**. `kitzy-hedgehog` n'est plus utilisée dans l'app.
+
 ## Après la génération
 
 Envoie-moi les images : je les détoure, les recadre et les exporte pour le web (WebP transparent) et pour React Native (PNG 1x, 2x et 3x). Elles seront rangées dans `assets/mascot/` sous la forme `kitzy-<pose>.webp`, par exemple `kitzy-lanterne.webp`.
@@ -107,12 +111,12 @@ Envoie-moi les images : je les détoure, les recadre et les exporte pour le web 
 | N° | Fichier | Pose |
 |---|---|---|
 | 0 | `kitzy-hedgehog` | Pose principale (déjà fournie) |
-| 1 | `kitzy-bonjour` | Bonjour |
-| 2 | `kitzy-endormi` | Endormi en boule |
-| 3 | `kitzy-lanterne` | Avec sa lanterne |
-| 4 | `kitzy-inventaire` | Compte ses provisions |
-| 5 | `kitzy-fete` | Fête |
-| 6 | `kitzy-lecture` | Lit le guide |
+| 1 | `kitzy-bonjour` | Bonjour ✅ |
+| 2 | `kitzy-endormi` | Endormi en boule ✅ |
+| 3 | `kitzy-lanterne` | Avec sa lanterne ✅ |
+| 4 | `kitzy-provisions` | Panier de provisions ✅ (remplace le bloc-notes) |
+| 5 | `kitzy-fete` | Fête ✅ |
+| 6 | `kitzy-lecture` | Lit le guide ✅ |
 | 7 | `kitzy-sac` | Sac sur le dos |
 | 8 | `kitzy-radio` | Écoute la radio |
 | 9 | `kitzy-eau` | La bouteille d'eau |
