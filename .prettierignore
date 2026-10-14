@@ -1,0 +1,9 @@
+pnpm-lock.yaml
+dist/
+dev-dist/
+playwright-report/
+test-results/
+.claude/
+assets/
+PLAN.md
+docs/

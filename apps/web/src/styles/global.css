@@ -1,0 +1,419 @@
+/* Kitzy, direction « La Veillée ».
+   Les couleurs viennent de @kitzy/core (variables --kz-*), posées par preferences.ts. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --kz-font-display: 'Young Serif', Georgia, serif;
+  --kz-font-body: 'Figtree', system-ui, sans-serif;
+  --kz-radius-card: 26px;
+  --kz-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  color-scheme: dark;
+}
+
+:root[data-theme='clair'] {
+  color-scheme: light;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  background: var(--kz-bg, #12302b);
+  color: var(--kz-text, #fff4e2);
+  font-family: var(--kz-font-body);
+  font-size: 1.0625rem;
+  line-height: 1.5;
+}
+
+h1,
+h2 {
+  font-family: var(--kz-font-display);
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: 1.875rem;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 3px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+:focus-visible {
+  outline: 3px solid var(--kz-btn);
+  outline-offset: 3px;
+}
+
+h1:focus,
+main:focus {
+  outline: none;
+}
+
+/* Mise en page */
+
+.app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.app__main {
+  flex: 1;
+  padding: 8px 20px 24px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -100px;
+  z-index: 10;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--kz-btn);
+  color: var(--kz-btn-text);
+  font-weight: 700;
+}
+
+.skip-link:focus {
+  top: 12px;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* En-tête */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px 0;
+}
+
+.header__brand {
+  margin-right: auto;
+  font-family: var(--kz-font-display);
+  font-size: 1.75rem;
+  text-decoration: none;
+}
+
+.icon-button {
+  width: 46px;
+  height: 46px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  border: 2px solid var(--kz-line);
+  background: var(--kz-surface);
+  color: var(--kz-text);
+  cursor: pointer;
+}
+
+/* Boutons */
+
+.button {
+  align-self: flex-start;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--kz-btn);
+  color: var(--kz-btn-text);
+  font: 700 1rem / 1.2 var(--kz-font-body);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button--ghost {
+  background: transparent;
+  color: var(--kz-text);
+  border: 2px solid var(--kz-text);
+}
+
+/* Cartes */
+
+.card {
+  background: var(--kz-surface);
+  border-radius: var(--kz-radius-card);
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border: 0;
+  margin: 0;
+}
+
+.card__label {
+  font-family: var(--kz-font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--kz-label);
+}
+
+.card__text {
+  font-family: var(--kz-font-display);
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+
+/* Accueil */
+
+.home__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+
+.home__hello {
+  display: block;
+  font-size: 1.125rem;
+  color: var(--kz-label);
+  margin-bottom: 4px;
+}
+
+.home__status {
+  color: var(--kz-muted);
+}
+
+/* La fenêtre du terrier et ses lucioles */
+
+.lantern {
+  position: relative;
+  width: min(350px, 100%);
+  aspect-ratio: 350 / 262;
+}
+
+.lantern__window {
+  position: absolute;
+  left: 17.14%;
+  top: 8.4%;
+  width: 65.7%;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 6px var(--kz-ring),
+    0 0 60px 6px var(--kz-halo);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.lantern__glow {
+  position: absolute;
+  inset: -8%;
+  border-radius: 999px;
+  background: var(--kz-glow);
+}
+
+.lantern__hog {
+  position: relative;
+  width: 74%;
+  margin-bottom: -40%;
+  transform-origin: 50% 100%;
+}
+
+.lantern__fly {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+}
+
+.fly {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+}
+
+.fly--on {
+  background: var(--kz-fly);
+  border: 2px solid var(--kz-fly-edge);
+  box-shadow: 0 0 14px 4px var(--kz-fly-glow);
+}
+
+.fly--off {
+  border: 2px solid var(--kz-fly-off);
+}
+
+/* Pages provisoires */
+
+.soon {
+  align-items: center;
+  text-align: center;
+  padding-top: 24px;
+}
+
+.soon__hog {
+  width: 200px;
+}
+
+.soon .button {
+  align-self: center;
+}
+
+/* Réglages */
+
+.choice {
+  gap: 4px;
+}
+
+.choice__legend {
+  padding: 0;
+  font-family: var(--kz-font-display);
+  font-size: 1.25rem;
+  margin-bottom: 6px;
+}
+
+.choice__help {
+  color: var(--kz-muted);
+  margin-bottom: 6px;
+}
+
+.choice__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+/* Bouton radio redessiné : contour au contraste du texte dans les deux thèmes (RAWeb 3.3). */
+.choice__option input {
+  appearance: none;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  border: 2px solid var(--kz-text);
+  border-radius: 999px;
+  display: grid;
+  place-content: center;
+  background: transparent;
+  cursor: pointer;
+}
+
+.choice__option input::before {
+  content: '';
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: var(--kz-text);
+  transform: scale(0);
+}
+
+.choice__option input:checked::before {
+  transform: scale(1);
+}
+
+@media (forced-colors: active) {
+  .choice__option input {
+    appearance: auto;
+  }
+}
+
+/* Navigation du bas */
+
+.bottom-nav {
+  position: sticky;
+  bottom: 0;
+  background: var(--kz-nav);
+  border-top: 1px solid var(--kz-line);
+  padding: 6px 10px calc(10px + env(safe-area-inset-bottom));
+}
+
+.bottom-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.bottom-nav__link {
+  min-height: 52px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 0.8125rem;
+  color: var(--kz-nav-text);
+  text-decoration: none;
+}
+
+.bottom-nav__link[aria-current='page'] {
+  color: var(--kz-nav-active);
+  font-weight: 700;
+}
+
+/* Mises à jour */
+
+.update-banner-region {
+  position: fixed;
+  left: 50%;
+  bottom: 90px;
+  transform: translateX(-50%);
+  width: min(520px, calc(100% - 24px));
+  z-index: 5;
+}
+
+.update-banner {
+  background: var(--kz-surface);
+  border: 1px solid var(--kz-line);
+  border-radius: 18px;
+  padding: 8px 8px 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+}
+
+.update-banner p {
+  flex: 1;
+}
+
+.update-banner__actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.update-banner .button {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 0.9375rem;
+}
