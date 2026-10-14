@@ -36,6 +36,16 @@ test('la vérification en arrière-plan envoie une seule notification regroupée
   await page.getByRole('button', { name: 'Ajouter à ma réserve' }).click();
   await expect(page.getByRole('status').filter({ hasText: 'ajouté' })).toBeVisible();
 
+  // Comme une app installée : Chrome accorde la synchronisation périodique.
+  const target = await context.newCDPSession(page);
+  const { targetInfo } = await target.send('Target.getTargetInfo');
+  const browserCdp = await context.browser()!.newBrowserCDPSession();
+  await browserCdp.send('Browser.grantPermissions', {
+    origin: new URL(page.url()).origin,
+    browserContextId: targetInfo.browserContextId,
+    permissions: ['notifications', 'periodicBackgroundSync'],
+  });
+
   await page.goto('./reglages');
   await page.evaluate(() => navigator.serviceWorker.ready);
   // Le service worker doit voir l'heure du test (hors des heures calmes).
@@ -46,6 +56,10 @@ test('la vérification en arrière-plan envoie une seule notification regroupée
     `heure vue par le service worker : ${workerHour}`,
   ).toBe(true);
   await page.getByRole('checkbox', { name: 'Me prévenir sur cet appareil' }).check();
+  // La case change tout de suite ; l'annonce arrive une fois le réglage enregistré.
+  await expect(
+    page.getByRole('status').filter({ hasText: 'même quand l’app est fermée' }),
+  ).toBeVisible();
 
   // Chrome DevTools déclenche l'événement que le système enverrait une fois par jour.
   const cdp = await context.newCDPSession(page);

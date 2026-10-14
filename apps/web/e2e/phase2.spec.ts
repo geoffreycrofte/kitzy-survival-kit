@@ -129,6 +129,7 @@ test.describe('Phase 2 : plan, gestes, scan, notifications', () => {
     const toggle = page.getByRole('checkbox', { name: 'Me prévenir sur cet appareil' });
     await toggle.check();
     await expect(toggle).toBeChecked();
+    await expect(page.getByRole('status').filter({ hasText: 'C’est activé' })).toBeVisible();
     // App non installée : vérification à l'ouverture seulement, et on le dit.
     await expect(toggle).toHaveAccessibleDescription(/C’est activé/);
     await page.getByRole('button', { name: 'Envoyer une notification d’essai' }).click();

@@ -65,7 +65,11 @@ async function checkReminders(): Promise<void> {
 
 self.addEventListener('periodicsync', (event) => {
   const sync = event as PeriodicSyncEvent;
-  if (sync.tag === PERIODIC_TAG) sync.waitUntil(checkReminders());
+  if (sync.tag !== PERIODIC_TAG) return;
+  // Une erreur ici serait silencieuse : on la consigne pour le débogage.
+  sync.waitUntil(
+    checkReminders().catch((error: unknown) => console.error('Kitzy, rappels :', error)),
+  );
 });
 
 self.addEventListener('push', (event) => {
