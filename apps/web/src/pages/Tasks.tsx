@@ -59,8 +59,10 @@ function TaskRow({ task, doneOn }: { task: TaskTemplate; doneOn: string | undefi
           aria-describedby={`${id}-hint`}
           onChange={() => {
             setDone(!done);
-            void toggleTask(task.id);
-            announce(t(done ? 'tasks.unchecked' : 'tasks.checked', { title: task.title }));
+            // Annoncé une fois l'écriture faite : rien n'est perdu si l'on quitte la page aussitôt.
+            void toggleTask(task.id).then((now) =>
+              announce(t(now ? 'tasks.checked' : 'tasks.unchecked', { title: task.title })),
+            );
           }}
         />
         <label htmlFor={id}>{task.title}</label>

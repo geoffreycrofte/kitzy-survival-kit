@@ -3,6 +3,7 @@ import type { Household } from './household';
 import {
   emptyPlan,
   hasSensitiveData,
+  mergePlanStep,
   planProgress,
   planReviewDate,
   prefillPlan,
@@ -56,6 +57,18 @@ describe('emergency plan', () => {
 
     plan.providers.electricity.name = 'Enovos';
     expect(planProgress(plan).numeros).toBe('started');
+  });
+
+  it('merges one step without overwriting the others', () => {
+    const stored = prefillPlan(emptyPlan(), household, newId);
+    stored.owner.name = 'Famille Muller';
+    // L'étape « maison » a été ouverte avant l'enregistrement du foyer : sa copie est ancienne.
+    const stale = emptyPlan();
+    stale.home.spots.water.where = 'Cave';
+    const merged = mergePlanStep(stored, stale, 'maison');
+    expect(merged.owner.name).toBe('Famille Muller');
+    expect(merged.people).toHaveLength(3);
+    expect(merged.home.spots.water.where).toBe('Cave');
   });
 
   it('removes health data when consent is withdrawn', () => {

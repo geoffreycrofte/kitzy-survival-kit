@@ -22,7 +22,7 @@ import {
 } from '@kitzy/core';
 import { TextField } from '../components/TextField';
 import { useKitzy } from '../data/derived';
-import { deletePlan, savePlan } from '../data/store';
+import { deletePlan, savePlanStep } from '../data/store';
 import { announce } from '../lib/announce';
 import { formatDate } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
@@ -148,18 +148,18 @@ function PlanEditor({ step, initial }: { step: PlanStep; initial: EmergencyPlan 
     latest.current = { plan, dirty };
     if (!dirty) return;
     const timer = setTimeout(() => {
-      void savePlan(plan);
+      void savePlanStep(step, plan);
       setDirty(false);
     }, 600);
     return () => clearTimeout(timer);
-  }, [plan, dirty]);
+  }, [plan, dirty, step]);
 
   useEffect(() => {
     const ref = latest;
     return () => {
-      if (ref.current.dirty) void savePlan(ref.current.plan);
+      if (ref.current.dirty) void savePlanStep(step, ref.current.plan);
     };
-  }, []);
+  }, [step]);
 
   const index = PLAN_STEPS.indexOf(step);
   const previous = PLAN_STEPS[index - 1];

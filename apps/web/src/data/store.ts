@@ -4,10 +4,12 @@ import {
   consumeFifo,
   countMembers,
   createBackup,
+  mergePlanStep,
   todayLocal,
   type BackupData,
   type BarcodeLink,
   type EmergencyPlan,
+  type PlanStep,
   type Household,
   type TaskDone,
   type InventoryItem,
@@ -199,9 +201,17 @@ export async function removeExtra(id: string): Promise<void> {
 
 /* ---------- Plan d'urgence et gestes ---------- */
 
-export async function savePlan(plan: EmergencyPlan): Promise<void> {
-  const today = todayLocal();
-  await setMeta('plan', { ...plan, createdAt: plan.createdAt ?? today, updatedAt: today });
+/**
+ * Enregistre une étape du plan sur la dernière version stockée :
+ * deux étapes ouvertes l'une après l'autre ne s'écrasent jamais.
+ */
+export async function savePlanStep(step: PlanStep, edited: EmergencyPlan): Promise<void> {
+  await db.transaction('rw', db.meta, async () => {
+    const stored = await getMeta<EmergencyPlan | null>('plan', null);
+    const merged = stored ? mergePlanStep(stored, edited, step) : edited;
+    const today = todayLocal();
+    await setMeta('plan', { ...merged, createdAt: merged.createdAt ?? today, updatedAt: today });
+  });
 }
 
 export async function deletePlan(): Promise<void> {

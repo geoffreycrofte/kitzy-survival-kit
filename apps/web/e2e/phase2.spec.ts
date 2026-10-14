@@ -143,6 +143,7 @@ test.describe('Phase 2 : plan, gestes, scan, notifications', () => {
     await setUpHousehold(page);
     await page.goto('./gestes');
     await page.getByRole('checkbox', { name: 'Installer LU-Alert' }).check();
+    await expect(page.getByRole('status').filter({ hasText: 'noté comme fait' })).toBeVisible();
     await page.goto('./plan/foyer');
     await page
       .getByRole('group', { name: 'Ce plan appartient à' })
@@ -162,6 +163,8 @@ test.describe('Phase 2 : plan, gestes, scan, notifications', () => {
   });
 
   test('aucune erreur axe sur les écrans de la phase 2, dans les deux thèmes', async ({ page }) => {
+    // Une vingtaine d'analyses axe : plus long que les autres tests.
+    test.slow();
     await setUpHousehold(page);
     await page.goto('./plan/foyer');
     await page.getByLabel(/J’accepte que Kitzy garde/).check();

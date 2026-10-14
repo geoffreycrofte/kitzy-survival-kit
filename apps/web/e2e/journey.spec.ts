@@ -82,6 +82,8 @@ test.describe('Parcours principal', () => {
   });
 
   test('aucune erreur axe sur les écrans principaux, dans les deux thèmes', async ({ page }) => {
+    // Une vingtaine d'analyses axe : plus long que les autres tests.
+    test.slow();
     await setUpHousehold(page);
     for (const scheme of ['dark', 'light'] as const) {
       await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });

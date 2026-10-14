@@ -233,6 +233,28 @@ export function prefillPlan(
   return next;
 }
 
+/** Les champs que chaque étape modifie : une étape n'écrase jamais les autres. */
+export const PLAN_STEP_FIELDS = {
+  foyer: ['owner', 'healthConsent', 'adults', 'children', 'people', 'pets'],
+  maison: ['home'],
+  quartier: ['helpers', 'toHelp'],
+  urgence: ['emergency'],
+  numeros: ['providers', 'providersComment'],
+} as const satisfies Record<PlanStep, readonly (keyof EmergencyPlan)[]>;
+
+/** Applique les champs d'une étape, édités sur `edited`, au plan enregistré `stored`. */
+export function mergePlanStep(
+  stored: EmergencyPlan,
+  edited: EmergencyPlan,
+  step: PlanStep,
+): EmergencyPlan {
+  const next: EmergencyPlan = { ...stored };
+  for (const field of PLAN_STEP_FIELDS[step]) {
+    (next as unknown as Record<string, unknown>)[field] = edited[field];
+  }
+  return next;
+}
+
 /** Retire toutes les informations de santé et le matricule (retrait du consentement). */
 export function withoutHealthData(plan: EmergencyPlan): EmergencyPlan {
   return {
