@@ -2,7 +2,19 @@
 
 > Application web progressive (PWA), 100 % hors-ligne, pour constituer, suivre et faire tourner sa réserve d'urgence de 72 heures, sur la base de la stratégie nationale de résilience luxembourgeoise « Lëtz prepare! » et des listes de référence internationales.
 
-- Statut : **plan v0.1, à valider** (voir [§ 15 Questions ouvertes](#15-questions-ouvertes))
+- Statut : **plan v0.2**. Décisions validées ci-dessous ; reste le nom de l'app et quelques points au [§ 15](#15-questions-ouvertes)
+
+### Décisions validées (v0.2)
+
+| Sujet | Décision |
+|---|---|
+| Hébergement | **GitHub Pages**, 100 % statique |
+| Serveur | **Aucun pour l'instant**. Le VPS personnel est disponible plus tard pour le Web Push (§ 6.4) |
+| Langues | **FR, EN, LB (luxembourgeois), DE, PT** (§ 12.1) |
+| Stack | Libre, tant qu'on a une PWA, une app store plus tard et une compatibilité GitHub Pages : **SvelteKit statique + Capacitor** retenu (§ 5.1) |
+| Budget produits | Marqueurs **€ / €€ / €€€** uniquement, sans prix affiché |
+| Affiliation | Amazon (compte existant), AliExpress (compte existant, usage très limité), plus des marchands réputés FR/DE à ouvrir (§ 8.3) |
+| Plan d'urgence | Formulaire officiel en 6 pages reçu : champs repris à l'identique (§ 3.6) |
 - Langue de travail : français
 - Référentiel d'accessibilité : **RAWeb 1.1, niveau AA** (skills `raweb-code` / `raweb-audit` de [luxembourg-accessibility-skillset](https://github.com/geoffreycrofte/luxembourg-accessibility-skillset)), puis **RAAM 1.1** si on publie des apps natives (skills `raam-code` / `raam-audit`)
 
@@ -386,13 +398,22 @@ Garde-fous : pas de compte à rebours anxiogène, pas de notifications culpabili
 | Couche | Choix proposé | Pourquoi |
 |---|---|---|
 | Build | **Vite** + **TypeScript** | Rapide, sortie statique, compatible GitHub Pages |
-| UI | **Svelte 5** (SvelteKit, `adapter-static`) | Bundle léger (important hors-ligne et sur mobiles modestes), HTML natif facile à rendre accessible. Alternative : Preact ou vanilla + Web Components. |
+| UI | **Svelte 5** + **SvelteKit** avec `adapter-static` (toutes les pages pré-générées) | Bundle léger (important hors-ligne et sur mobiles modestes), HTML natif facile à rendre accessible ; la même sortie statique sert à GitHub Pages **et** à Capacitor, sans réécriture |
 | PWA | **vite-plugin-pwa** (Workbox) | Precache de toute l'app, stratégies de cache, mise à jour contrôlée |
 | Stockage | **IndexedDB** via **Dexie** | Données structurées, requêtes sur les dates, migrations de schéma |
-| i18n | Fichiers JSON par langue + `Intl.DateTimeFormat` / `Intl.PluralRules` | Sans dépendance lourde |
+| i18n | **Paraglide JS** (inlang) : messages JSON par langue, compilés, typés, tree-shakés ; `Intl` pour les dates et nombres | Léger, statique, intégré à SvelteKit, 5 langues sans surcoût de bundle |
 | Tests | **Vitest** (logique), **Playwright** (E2E et mode hors-ligne), **axe-core** (pré-filtrage a11y) + audit manuel RAWeb | |
 | CI/CD | **GitHub Actions** : lint, tests, build, déploiement Pages, cron de vérification des liens | |
 | Natif (plus tard) | **Capacitor** (iOS + Android) et/ou **TWA** (Android) | Voir § 13 |
+
+**Spécificités GitHub Pages** :
+
+- `paths.base` configuré sur `/survival-kit` (ou vide si domaine personnalisé) ; scope et `start_url` du manifest alignés.
+- Toutes les routes sont pré-générées. Les pages dynamiques (fiche article) utilisent un paramètre (`/article?id=…`) ou un `404.html` de repli : pas de réécriture serveur possible.
+- Fichier `.nojekyll` (sinon les dossiers `_app/` sont ignorés).
+- Déploiement par l'action officielle `actions/deploy-pages`.
+- Pas d'en-têtes HTTP personnalisés : la CSP passe par une balise `<meta http-equiv>`.
+- Un **domaine personnalisé** (HTTPS automatique) est recommandé avant le lancement : changer d'origine ensuite fait perdre aux utilisateurs leurs données locales (IndexedDB est liée à l'origine). Il faut donc choisir le domaine **avant** la première mise en production publique.
 
 ### 5.2 Structure du dépôt (proposée)
 
@@ -454,10 +475,29 @@ Un **moteur de rappels unique**, pur et testé, calcule la liste des rappels à 
 1. **In-app** (toujours) : badge, bandeau et liste « À faire » à chaque ouverture.
 2. **Export calendrier .ics** (toujours, recommandé) : un clic ajoute les échéances et les revues semestrielles au calendrier du téléphone. Fonctionne hors-ligne, sans serveur, sur iOS comme sur Android. Possibilité de régénérer après chaque modification.
 3. **Periodic Background Sync** (Chromium installé) : vérification quotidienne en arrière-plan, puis `showNotification()` locale. Aucun serveur, aucune donnée envoyée.
-4. **Web Push via un mini-serveur** (optionnel, phase 2, voir [question 3](#15-questions-ouvertes)) : par exemple un Cloudflare Worker avec Cron et KV, gratuit à petite échelle. Respect de la vie privée : l'app n'envoie **que** l'abonnement push et une liste de dates/identifiants opaques (« rappel #a1b2 le 2027-03-01 »), **jamais** le contenu de l'inventaire. Le texte de la notification reste générique (« Tu as 2 rappels pour ton kit ») ; le détail s'affiche à l'ouverture.
+4. **Web Push via un mini-serveur** (**plus tard**, sur ton VPS, voir § 6.4). Respect de la vie privée : l'app n'envoie **que** l'abonnement push et une liste de dates/identifiants opaques (« rappel #a1b2 le 2027-03-01 »), **jamais** le contenu de l'inventaire. Le texte de la notification reste générique (« Tu as 2 rappels pour ton kit ») ; le détail s'affiche à l'ouverture.
 5. **Notifications locales natives** (quand l'app sera sur les stores) : même moteur, adaptateur Capacitor. C'est la solution complète.
 
-### 6.3 Règles de rappel par défaut
+### 6.3 Décision : 100 % sans serveur au lancement
+
+Le MVP utilise les couches 1, 2 et 3. Conséquences assumées :
+
+- **iPhone** : pas de notification si l'app est fermée. On compense par l'**export calendrier** (mis en avant dans l'onboarding iOS) et les rappels à l'ouverture.
+- **Android/Chrome** : Periodic Background Sync, si l'app est installée.
+- On mesure le besoin (retours utilisateurs) avant d'ajouter le serveur.
+
+### 6.4 Plus tard : service Web Push sur le VPS
+
+Prévu dès maintenant pour ne rien casser au moment de l'ajouter :
+
+- Petit service **Node** (ou Bun) : bibliothèque `web-push` avec clés VAPID, **SQLite**, tâche cron toutes les heures.
+- API minimale : `POST /subscribe` (abonnement + liste `{id opaque, date}`), `DELETE /subscribe`. CORS limité au domaine de l'app.
+- **Aucune donnée d'inventaire** côté serveur : uniquement des identifiants aléatoires et des dates. Le contenu de la notification est générique, le détail s'affiche à l'ouverture.
+- Purge automatique des abonnements expirés (HTTP 404/410 renvoyé par le service push).
+- L'adaptateur `notify/webpush` existe dans le code, désactivé par configuration tant que l'URL du service n'est pas renseignée.
+- Mise à jour de la politique de confidentialité au moment de l'activation.
+
+### 6.5 Règles de rappel par défaut
 
 | Type | Déclencheurs |
 |---|---|
@@ -530,7 +570,9 @@ Settings { locale; theme; textScale; reminderOffsets; channels; quietHours }
 
 ### 8.1 Principe
 
-Pour chaque modèle d'article, **2 à 4 offres** à différents niveaux de budget : 💶 Essentiel · 💶💶 Équilibré · 💶💶💶 Durable/Premium. Et si possible plusieurs marchands.
+Pour chaque modèle d'article, **2 à 4 offres** à différents niveaux de budget, affichés **uniquement** par des marqueurs : **€** Essentiel · **€€** Équilibré · **€€€** Durable. Et si possible plusieurs marchands par offre.
+
+Accessibilité des marqueurs : le symbole est accompagné d'un texte (« € – Budget essentiel ») ou d'un texte visuellement masqué. Un lecteur d'écran ne doit pas lire « euro euro euro ».
 
 ```jsonc
 // data/catalog/products.json
@@ -553,14 +595,35 @@ Pour chaque modèle d'article, **2 à 4 offres** à différents niveaux de budge
 
 ### 8.2 Règles
 
-- **Pas de prix affichés** en dur : ils deviennent faux vite et les conditions d'Amazon encadrent strictement l'affichage des prix. On affiche des **paliers de budget** (€, €€, €€€) et éventuellement « environ 15 à 25 € ». À valider.
+- **Aucun prix affiché** (décision validée) : seulement les marqueurs €, €€, €€€. Ça évite les prix périmés et les contraintes des programmes sur l'affichage des prix. Le palier est déterminé à la main, par catégorie (un « € » de lampe frontale n'est pas un « € » de radio).
 - Le **Luxembourg n'a pas d'Amazon local** : on proposera amazon.fr et amazon.de (le programme Partenaires est souscrit par marketplace ; voir OneLink pour la redirection selon le pays). On pourra ajouter des réseaux d'affiliation européens (Awin, Tradedoubler, programmes directs de marques ou d'enseignes outdoor), selon disponibilité au Luxembourg.
 - **Transparence** : mention claire sur chaque bloc produit (« Lien affilié : je touche une petite commission, sans surcoût pour toi »), et page dédiée.
 - Les liens s'ouvrent avec `rel="sponsored noopener"` et un texte de lien explicite (« Voir le couteau suisse 12 fonctions sur Amazon.fr », nouvelle fenêtre signalée).
 - **La recommandation ne dépend jamais de l'affiliation** : l'article reste conseillé même sans offre disponible.
 - Hors-ligne, les offres restent visibles (dernière version connue) ; les liens sont simplement inactifs avec un message.
 
-### 8.3 Édition du catalogue
+### 8.3 Marchands et réseaux d'affiliation
+
+Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les résident·es achètent surtout sur des sites français, allemands et belges qui livrent au Luxembourg. La stratégie consiste donc à couvrir **FR + DE**, avec une vérification systématique de la livraison au Luxembourg.
+
+| Marchand | Pertinence pour le kit | Réseau (à confirmer à l'inscription) | Priorité |
+|---|---|---|---|
+| **Amazon.fr / Amazon.de** | Tout le catalogue | Amazon Partenaires (compte existant) ; **un compte par marketplace**, à relier via OneLink | ✅ déjà actif |
+| **Decathlon.fr** | Réchauds, cartouches, frontales, sacs, couchage, couvertures de survie, trousses | Rakuten Advertising (programme « Decathlon National », d'après la page officielle) ; Decathlon DE est sur Awin | Haute |
+| **Bergfreunde.de / .eu** | Outdoor de qualité : frontales, popotes, filtres à eau, paracorde, dry bags | Awin (DE) ou programme direct | Haute |
+| **ManoMano.fr** | Outils, ruban adhésif, bâche, extincteur, détecteurs, seaux | Awin | Moyenne |
+| **Darty / Fnac** | Radios FM/DAB+, power banks, piles, lampes | Awin | Moyenne |
+| **Conrad** (DE/BE) | Radios, piles, panneaux solaires, électronique | Awin | Moyenne |
+| Pharmacies en ligne (Shop Apotheke / Redcare, etc.) | Trousse de secours, sels de réhydratation, tire-tique, masques | Awin (à vérifier, ainsi que la livraison au LU) | Basse |
+| **AliExpress** | Voir ci-dessous | Compte existant | Très limitée |
+
+**Inscription conseillée** : un compte **Awin** (éditeur) ouvre la plupart des marchands FR et DE d'un coup, plus **Rakuten Advertising** pour Decathlon France. L'acceptation se fait marchand par marchand : un site en ligne, une page de transparence et une politique de confidentialité sont généralement demandés. Il faut donc les avoir dès la phase 3.
+
+**Règle AliExpress** : **exclu** pour tout ce qui touche à la sécurité ou à la santé (batteries lithium et power banks, réchauds et gaz, détecteurs, extincteurs, trousses et produits médicaux, filtres à eau, radios) : conformité CE incertaine, contrefaçons possibles, délais de livraison de plusieurs semaines. Toléré au mieux pour des accessoires sans risque (mousquetons non porteurs, sacs zip, organisateurs), et jamais comme offre unique.
+
+**Critères de sélection d'une offre** (documentés dans le JSON) : marchand réputé, livraison au Luxembourg, conformité CE ou norme pertinente, bons avis, retour possible, disponibilité stable.
+
+### 8.4 Édition du catalogue
 
 - Phase 1 : édition directe des JSON dans le dépôt (PR → CI valide le schéma via JSON Schema → déploiement).
 - Phase 2 (si besoin) : petit back-office statique, ou un CMS Git (Decap CMS, Pages CMS) pour éditer sans toucher au JSON.
@@ -655,7 +718,21 @@ Pour chaque modèle d'article, **2 à 4 offres** à différents niveaux de budge
 
 ### 12.1 Langues
 
-Le Luxembourg est multilingue. Proposition : **FR au lancement**, puis **EN, DE**, puis **PT** (communauté importante) et **LB**. Le guide officiel existe en plusieurs langues, ce qui facilitera l'alignement du contenu.
+**Langues validées : FR, EN, LB, DE, PT.**
+
+| Langue | Code | Remarques |
+|---|---|---|
+| Français | `fr` | Langue source, rédigée en premier |
+| English | `en` | |
+| Lëtzebuergesch | `lb` | Relecture par une personne de langue maternelle indispensable (orthographe officielle). Peu de navigateurs ou systèmes ont des données `Intl` complètes pour `lb` : formats de date avec repli sur `de-LU` si besoin. Il n'existe presque pas de voix de synthèse luxembourgeoise ; on garde quand même `lang="lb"` (exigence RAWeb 8.3) |
+| Deutsch | `de` | Variante `de-LU` pour les formats |
+| Português | `pt` | **Portugais européen (`pt-PT`)**, celui de la communauté au Luxembourg |
+
+- Langue proposée par défaut selon `navigator.languages`, changeable à tout moment (sélecteur accessible, chaque langue écrite dans sa propre langue avec son `lang`).
+- Les contenus longs (guide, recettes) sont en Markdown par langue ; l'UI passe par les messages Paraglide.
+- **Ordre de production** : FR complet, puis EN et DE, puis PT et LB. Une langue n'est publiée qu'**entièrement traduite et relue** : pas de mélange de langues dans l'interface (RAWeb 8.7).
+- Récupérer les versions officielles du guide dans ces langues pour reprendre la terminologie (LU-Alert, niveaux de vigilance, noms des signaux de sirène).
+- Les liens affiliés peuvent varier selon la langue (Amazon.de pour DE et LB, Amazon.fr pour FR) : OneLink ou choix du marchand dans les réglages.
 
 ### 12.2 Contenu du guide
 
@@ -698,9 +775,9 @@ Pour que ce soit possible plus tard, sans réécriture :
 
 ### Phase 0 : Fondations (≈ 1 semaine)
 
-- [ ] Valider ce plan et les [questions ouvertes](#15-questions-ouvertes)
-- [ ] Choix du nom, de la palette et de la typographie
-- [ ] Initialiser le projet (Vite, Svelte, TS, lint, Prettier, Vitest, Playwright)
+- [x] Valider le plan (v0.2)
+- [ ] Choix du **nom**, du **domaine**, de la palette et de la typographie
+- [ ] Initialiser le projet (SvelteKit `adapter-static`, TS, Paraglide avec 5 langues déclarées, lint, Prettier, Vitest, Playwright)
 - [ ] CI GitHub Actions et déploiement sur GitHub Pages
 - [ ] Manifest PWA et service worker (precache), test hors-ligne en E2E
 - [ ] Installer le skillset accessibilité dans `.claude/skills/`
@@ -722,7 +799,7 @@ Pour que ce soit possible plus tard, sans réécriture :
 ### Phase 2 : Notifications et plan (≈ 2 semaines)
 
 - [ ] Periodic Background Sync (Chromium)
-- [ ] Web Push avec mini-serveur (si validé)
+- [ ] Adaptateur Web Push prêt mais désactivé (service VPS en option, § 6.4)
 - [ ] Plan personnel d'urgence, impression et PDF
 - [ ] Scan de codes-barres
 - [ ] Tâches et gestes (§ 2.14)
@@ -730,7 +807,7 @@ Pour que ce soit possible plus tard, sans réécriture :
 ### Phase 3 : Affiliation (≈ 1 à 2 semaines)
 
 - [ ] `products.json`, paliers de budget, blocs produits accessibles
-- [ ] Inscription aux programmes (Amazon.fr, Amazon.de, autres réseaux)
+- [ ] Inscription : Awin (éditeur), Rakuten Advertising (Decathlon FR), compte Amazon.de en plus d'Amazon.fr, OneLink
 - [ ] Page de transparence affiliation
 - [ ] Workflow `link-check` (cron, PR bot, issue récapitulative)
 
@@ -744,7 +821,7 @@ Pour que ce soit possible plus tard, sans réécriture :
 
 ### Phase 5 : International et stores
 
-- [ ] Traductions EN, DE, puis PT, LB
+- [ ] Traductions EN et DE, puis PT et LB (relecture native)
 - [ ] TWA Android
 - [ ] Capacitor : notifications locales, iOS
 - [ ] Audit RAAM
@@ -753,20 +830,28 @@ Pour que ce soit possible plus tard, sans réécriture :
 
 ## 15. Questions ouvertes
 
-1. **Hébergement : « Google Pages »** — veux-tu dire **GitHub Pages** (le dépôt est sur GitHub, c'est le plus simple et gratuit) ou **Firebase Hosting** (Google) ? Et as-tu un nom de domaine en tête ?
-2. **Nom de l'app** — des idées ? Quelques pistes : *Mon Kit 72*, *Prêt·e !*, *Placard Malin*, *Réserve*, *Hérisson*. Le nom ne doit pas reprendre « Lëtz prepare » (marque gouvernementale).
-3. **Notifications et serveur** — acceptes-tu un **mini-serveur** (Cloudflare Worker gratuit) pour le Web Push fiable sur iPhone, avec seulement des dates opaques envoyées ? Ou préfères-tu rester **100 % sans serveur** (in-app, .ics, Background Sync Android) jusqu'à la version store ?
-4. **Langues au lancement** — FR seul, ou FR + EN + DE dès la v1 ?
-5. **Framework** — OK pour Svelte 5 ? Ou tu préfères une stack que tu maîtrises déjà (vanilla + Web Components, Vue, React…) ?
-6. **Affiliation** — as-tu déjà des comptes partenaires (Amazon.fr, .de, Awin…) ? Y a-t-il des enseignes locales ou européennes que tu veux privilégier (Decathlon, magasins outdoor, pharmacies en ligne…) ? Veux-tu afficher des fourchettes de prix ou seulement des paliers € / €€ / €€€ ?
-7. **Public cible** — uniquement les résident·es du Luxembourg, ou une app pensée pour s'étendre aux autres pays (FR, BE, DE…) avec des listes officielles par pays ? Ça change la structure du catalogue (sources par pays).
-8. **Partage au sein du foyer** — la synchronisation entre plusieurs téléphones est-elle importante pour toi ? Elle implique un serveur, donc à voir plus tard ; l'export/QR suffit-il au départ ?
-9. **Plan personnel d'urgence** — ✅ formulaire officiel repris (§ 3.6). Le guide mentionne aussi un plan « à compléter en ligne » (QR code) : as-tu l'URL ? Si un formulaire officiel en ligne existe, on peut proposer un lien vers lui en plus de notre version locale.
-10. **Droits sur le contenu du guide** — ✅ PDF complet reçu. Reste à savoir : peut-on reprendre des textes ou illustrations (licence, ou demande au HCPN), ou part-on sur des résumés et des liens ? Faut-il versionner le PDF dans le dépôt ?
-11. **Durée cible** — 72 h par défaut et réglable jusqu'à 14 jours : ça te va ?
-12. **Monétisation complémentaire** — l'affiliation seule, ou aussi un « tip jar » / dons (Ko-fi, GitHub Sponsors) ? Pas de publicité, je suppose ?
-13. **Design** — as-tu des références d'apps dont tu aimes le style, ou veux-tu que je te propose 2 moodboards ?
-14. **Mascotte** — partant·e pour le hérisson, ou on reste sobre ?
+### Réglées
+
+- ~~Hébergement~~ : GitHub Pages · ~~Serveur~~ : aucun pour l'instant, VPS plus tard · ~~Langues~~ : FR, EN, LB, DE, PT · ~~Framework~~ : SvelteKit + Capacitor · ~~Prix~~ : € / €€ / €€€ · ~~Plan d'urgence~~ : formulaire officiel reçu
+
+### Encore ouvertes
+
+1. **Nom de l'app** : court et évocateur, utilisable dans les 5 langues, sans référence à « Lëtz prepare ». Pistes :
+   - **Prett** : « prêt » en luxembourgeois, court, local, se prononce dans toutes les langues
+   - **Bereet** : « prêt » en luxembourgeois (proche de l'allemand *bereit*)
+   - **Stocky** : ludique, évoque la réserve
+   - **Kitzy** : « kit » + diminutif sympa
+   - **Igel** : « hérisson » en allemand et en luxembourgeois, animal qui fait des réserves, mascotte toute trouvée
+
+   À vérifier ensuite : marques déposées (EUIPO), noms sur les stores, domaine disponible (.lu, .app, .eu). Confirmer aussi l'orthographe des mots luxembourgeois avec une personne de langue maternelle.
+2. **Domaine** : à choisir **avant** le lancement public (changer d'origine ensuite efface les données locales des utilisateurs).
+3. **Public cible** : uniquement le Luxembourg, ou une ouverture future à d'autres pays avec leur liste officielle (FR, BE, DE) ? La structure « source par pays » du catalogue peut être prévue dès maintenant à faible coût.
+4. **Partage au sein du foyer** : l'export/QR suffit-il au départ (la synchronisation demanderait le VPS) ?
+5. **Droits sur le guide** : peut-on reprendre des textes et illustrations (demande au HCPN), ou part-on sur des résumés et des liens ? Faut-il versionner les PDF dans le dépôt ?
+6. **Plan « à compléter en ligne »** : le guide mentionne une version en ligne (QR code). As-tu l'URL, pour la proposer en lien ?
+7. **Durée cible** : 72 h par défaut, réglable jusqu'à 14 jours : ça te va ?
+8. **Monétisation complémentaire** : un « tip jar » (Ko-fi, GitHub Sponsors) en plus de l'affiliation ? Pas de publicité, je suppose ?
+9. **Design et mascotte** : des références d'apps que tu aimes ? Je peux proposer 2 moodboards. Mascotte hérisson (et le nom *Igel*) : oui ou non ?
 
 ---
 
@@ -774,6 +859,8 @@ Pour que ce soit possible plus tard, sans réécriture :
 
 - Lëtz prepare! — Guide et checklist 72 h : <https://letzprepare.public.lu/fr/guide.html>
 - Guide PDF : « Mon guide 72h d'autonomie », Lëtz prepare!, HCPN, campagne 2026 (version accessible FR)
+- Formulaire PDF : « Mon plan personnel d'urgence », HCPN, campagne 2026 (version accessible FR, formulaire remplissable de 6 pages)
+- Affiliation : [Programme Decathlon France](https://www.decathlon.fr/affiliation_lp-PBUQMW) · [Darty sur Awin](https://ui.awin.com/merchant-profile/7735) · [ManoMano](https://www.manomano.co.uk/lp/affiliation-program-6078) · [Bergfreunde sur Awin](https://affi.io/m/bergfreunde) · [Fnac](https://affi.io/m/fnac) · [Conrad BE](https://www.affilitizer.com/programs/conrad.be)
 - LU-Alert : <https://lu-alert.lu> · Infocrise : <https://infocrise.lu> · Zones inondables : <https://eau.geoportail.lu> · <https://inondations.lu>
 - Secours et gardes : <https://112.lu> · CIS de proximité : <https://112.public.lu/fr/organisation/secours.html> · Premiers secours : <https://cours.cgdis.lu> · <https://croix-rouge.lu> · Météo : <https://meteolux.lu> · <https://seveso.lu>
 - Cybersécurité : <https://cybersecurity.lu> · <https://cyberfraud.lu> · BEE SECURE <https://bee-secure.lu> (helpline 8002 1234)
