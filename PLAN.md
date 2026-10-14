@@ -20,7 +20,7 @@
 | Budget produits | Marqueurs **€ / €€ / €€€** uniquement, sans prix affiché |
 | Affiliation | Amazon (compte existant), AliExpress (compte existant, usage très limité), plus des marchands réputés FR/DE à ouvrir (§ 8.3) |
 | Dons | **Oui**, option de don (§ 8.5) |
-| Design | 2 nouvelles pistes (« Douillet », « Affiche ») avec le hérisson 3D : [Kitzy — pistes graphiques](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB) (§ 11) |
+| Design | **« La Veillée »** : terrier éclairé et lucioles, thème sombre et thème clair, animations douces respectant le mouvement réduit ([maquettes](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB), § 11) |
 - Langue de travail : français
 - Référentiel d'accessibilité : **RAWeb 1.1, niveau AA** (skills `raweb-code` / `raweb-audit` de [luxembourg-accessibility-skillset](https://github.com/geoffreycrofte/luxembourg-accessibility-skillset)), puis **RAAM 1.1** si on publie des apps natives (skills `raam-code` / `raam-audit`)
 
@@ -366,6 +366,7 @@ Structure officielle du guide, reprise pour l'arborescence de l'aide : **1. Comp
 ### 3.8 Réglages
 
 - Langue, thème (clair, sombre, système), taille de texte
+- **Animations d'ambiance** : activées ou non (désactivées par défaut si le système demande moins de mouvement)
 - Notifications : canaux, délais d'alerte (J-30, J-7, J0), heures calmes
 - Durée cible (72 h par défaut)
 - **Export / import** JSON (sauvegarde, changement de téléphone), export CSV de l'inventaire
@@ -750,22 +751,57 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 
 ## 11. Design
 
-### 11.1 Deux pistes proposées (v2)
+### 11.1 Direction retenue : « La Veillée »
 
-Les premières pistes (« Sous-bois », « Sticker pop ») ont été écartées. Nouvelles pistes, inspirées des références fournies (Kawi, Yanji) : **[Kitzy — pistes graphiques](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB)**.
+Maquettes animées (thème sombre, thème clair, principes de mouvement) : **[Kitzy — pistes graphiques](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB)**, page « La Veillée ». Les pistes écartées (1 Douillet, 2 Affiche, 3 L'Étagère) restent consultables dans les autres pages.
 
-| | **1 · Douillet** (esprit Kawi) | **2 · Affiche** (esprit Yanji) |
-|---|---|---|
-| Ambiance | Décor illustré en haut d'écran, hérisson 3D qui déborde sur le contenu, boutons « moelleux » avec rebord | Affiche de quartier : bandeau de couleurs, contours noirs épais, ombres pleines, blocs de couleur par catégorie |
-| Couleurs | Terre cuite `#B5532A`, Pré `#3E7A3A`, Miel `#FCF0D4`, Ciel `#E3EEF7`, Lilas `#EEE6F4`, Cacao `#2B211C`, fond `#FFF8EF` | Tomate `#C8423B`, Bleu `#2F4FB5`, Moutarde `#F2C14E`, Abricot `#EEA44F`, Sapin `#3C7D4B`, Encre `#1E1A17`, fond `#FFFAF3` |
-| Typo | **Grandstander** (titres, boutons) + **Nunito** | **Anton** (titres capitales) + **Lilita One** (logo) + **Nunito** |
-| Hérisson | Détouré, en grand sur le décor flouté du jardin | Dans une pastille jaune cerclée de noir, comme un autocollant |
-| Touches locales | Salut « Moien ! » | « Moien ! » et sous-titres luxembourgeois des catégories (Waasser, Liicht, Wäermt : à faire valider) |
-| Gamification | Des **pommes** à gagner pour le hérisson, cartes « D'autres façons de te préparer » | Missions et état par catégorie |
+**Concept** : le terrier du hérisson un soir d'automne. La fenêtre ronde du terrier, éclairée comme une lanterne, montre Kitzy. **Six lucioles** l'entourent, une par essentiel (Eau, Repas, Lumière, Chaleur, Soins, Mon plan) : se préparer, c'est les allumer. Ton de livre d'histoires, jamais d'alerte.
 
-Les contrastes de chaque couple texte/fond utilisé sont d'au moins 4,5:1.
+**Typographie** : **Young Serif** (titres, phrases du hérisson) + **Figtree** (interface, listes, dates, quantités ; graisse 400 minimum sur fond sombre).
 
-### 11.2 Le hérisson
+**Couleurs** (jetons communs, deux thèmes) :
+
+| Jeton | Sombre « Veillée » | Clair « Petit matin » | Usage |
+|---|---|---|---|
+| `bg` | `#12302B` forêt de nuit | `#E7F0EC` brume | Fond |
+| `surface` | `#1C4139` mousse | `#FFFFFF` | Cartes |
+| `text` | `#FFF4E2` bougie (13:1) | `#12302B` (12,2:1) | Texte principal |
+| `muted` | `#B9CBC2` (8,4:1) | `#47665D` (5,4:1) | Texte secondaire |
+| `label` | `#9CCB98` fougère | `#2E6B3A` | Réussi, libellés |
+| `btn` / `btnText` | `#F4B860` / `#12302B` (8:1) | identique | Action principale |
+| `fly` | `#FFE08A` + halo | `#F2A93B` cerclé `#8A5300` | Luciole allumée |
+| `flyOff` | `#6E9C90` | `#5E7E74` | Luciole à allumer |
+| `dotA` | `#F59A6A` bandana | `#C9602B` | À consommer |
+| `line` | `#3E6B60` | `#9DB8AF` | Séparateurs (décor) |
+| `glow` | lanterne ambre vers mousse | soleil levant vers brume | Fenêtre du terrier |
+
+Le thème suit `prefers-color-scheme` et reste modifiable dans l'app (bouton soleil/lune, réglages).
+
+### 11.2 Mouvement
+
+Lent comme une flamme : une mise en scène à l'ouverture, des boucles d'ambiance à peine perceptibles, une récompense quand on agit.
+
+| Animation | Déclencheur | Paramètres | Mouvement réduit |
+|---|---|---|---|
+| La lanterne s'allume | Ouverture, une fois | 1,1 s, échelle 0,9 → 1 et opacité | Déjà affichée |
+| Les lucioles apparaissent | Ouverture | 0,5 s chacune, décalage 120 ms | Affichées directement |
+| La lanterne respire | Boucle | 7 s, ±4 % | Halo fixe |
+| Le hérisson respire | Boucle | 4,5 s, 1 px | Immobile |
+| Les lucioles flottent et scintillent | Boucle | 8 à 11 s, ±4 px ; éclat 82 → 100 % en 3,6 s | Immobiles, pleinement allumées |
+| Une luciole s'allume | Action terminée | 0,7 s d'éclosion + onde de 0,9 s + message `role="status"` | Fondu 0,25 s, même message |
+| Les six lucioles brillent | Kit complet, une fois | Vague en cascade de 1,3 s | Message seul |
+| Changement de thème | Bouton ou système | Fondu des couleurs 0,5 s | Instantané |
+| Appui | Bouton | Échelle 0,97, 150 ms | Aucun |
+
+Règles :
+
+- Une seule courbe : `cubic-bezier(.2, .8, .2, 1)`, sans rebond. Seulement `transform` et `opacity` (fluidité sur petits téléphones).
+- Aucun mouvement ne porte seul une information : chaque changement a son texte, annoncé aux lecteurs d'écran.
+- Pas de clignotement (RAWeb 13.7) : variation d'éclat lente, très en dessous de 3 fois par seconde.
+- **Deux interrupteurs** : `prefers-reduced-motion` coupe tout par défaut, **et** un réglage « Animations d'ambiance » permet d'arrêter et de relancer les boucles, quel que soit le système (RAWeb 13.8 : tout mouvement automatique de plus de 5 s doit être contrôlable).
+- React Native : mêmes durées et courbes avec `react-native-reanimated`, en lisant `AccessibilityInfo.isReduceMotionEnabled()`.
+
+### 11.3 Le hérisson
 
 - Mascotte **générée par IA** (modèle d'OpenAI), fournie par Geoffrey, **détourée** automatiquement (rembg, modèle isnet) : `assets/mascot/kitzy-hedgehog.{png,webp}` (fond transparent, 640 px de large).
 - Pour les autres poses (endormi, content, pensif, avec une lampe frontale, en boule), régénérer avec **le même modèle et la même description** (bandana rayé orange et blanc, pelage brun, ventre crème, style 3D doux), puis détourer de la même façon. Garder une feuille de référence pour la cohérence.
@@ -773,7 +809,7 @@ Les contrastes de chaque couple texte/fond utilisé sont d'au moins 4,5:1.
 - Droits : les conditions d'OpenAI attribuent les images générées à l'utilisateur, mais une image générée par IA est difficilement protégeable par le droit d'auteur. Le **nom « Kitzy »** et le logo, eux, peuvent être déposés comme marque.
 - Le hérisson reste décoratif (`alt=""`) sauf quand il porte un sens ; jamais seul porteur d'une information.
 
-### 11.3 Livrables design (après choix de la piste)
+### 11.4 Livrables design
 
 1. Design tokens (couleurs clair/sombre, typo, espacements, rayons) dans `core`, exportés en variables CSS (web) et en thème (React Native)
 2. Maquettes des écrans clés : onboarding, tableau de bord, inventaire, fiche article, liste de courses, partage QR, guide, plan d'urgence
@@ -864,7 +900,8 @@ Préparé dès le départ :
 ### Phase 0 : Fondations (≈ 1 semaine)
 
 - [x] Valider le plan (v0.3) et le nom **Kitzy**
-- [ ] Choisir la **piste graphique** (A ou B) et le **domaine** ; vérifier la marque « Kitzy » (EUIPO, stores)
+- [x] Piste graphique : **La Veillée** (sombre + clair, mouvement)
+- [ ] Choisir le **domaine** ; vérifier la marque « Kitzy » (EUIPO, stores)
 - [ ] Initialiser le monorepo pnpm : `packages/core` (TS, Zod, i18next, Vitest) et `apps/web` (React, Vite, vite-plugin-pwa, Dexie, Playwright), lint, Prettier
 - [ ] Profil pays `lu.json` et schéma des profils
 - [ ] CI GitHub Actions et déploiement sur GitHub Pages
