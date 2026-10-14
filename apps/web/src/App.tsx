@@ -5,6 +5,8 @@ import { Announcer } from './components/Announcer';
 import { BottomNav } from './components/BottomNav';
 import { Header } from './components/Header';
 import { UpdateBanner } from './components/UpdateBanner';
+import { useKitzy } from './data/derived';
+import { syncPush, webPushConfigured } from './lib/webpush';
 import { GuideArticle, GuideIndex } from './pages/Guide';
 import { Home } from './pages/Home';
 import { Household } from './pages/Household';
@@ -16,11 +18,16 @@ import { NotFound } from './pages/NotFound';
 import { Settings } from './pages/Settings';
 import { SharedList } from './pages/SharedList';
 import { Shopping } from './pages/Shopping';
-import { Soon } from './pages/Soon';
+import { PlanOverview, PlanStepPage } from './pages/Plan';
+import { ScanChoose } from './pages/ScanChoose';
+import { PlanPrint } from './pages/PlanPrint';
+import { Tasks } from './pages/Tasks';
 
 /** Après une navigation, le focus va sur le titre de la nouvelle page (RAWeb 12.x). */
 function useFocusOnNavigation() {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
+  // Une page peut demander le focus sur un champ précis (ex. quantité après un scan).
+  const target = (state as { focus?: string } | null)?.focus ?? 'main h1';
   const first = useRef(true);
   useEffect(() => {
     if (first.current) {
@@ -31,13 +38,24 @@ function useFocusOnNavigation() {
     let frames = 0;
     let handle = 0;
     const tryFocus = () => {
-      const heading = document.querySelector<HTMLElement>('main h1');
+      const heading = document.querySelector<HTMLElement>(target);
       if (heading) heading.focus();
       else if (frames++ < 60) handle = requestAnimationFrame(tryFocus);
     };
     tryFocus();
     return () => cancelAnimationFrame(handle);
-  }, [pathname]);
+  }, [pathname, target]);
+}
+
+/** Web Push (service VPS) : renvoie le calendrier des dates quand les rappels changent. */
+function PushSync() {
+  const reminders = useKitzy()?.reminders;
+  useEffect(() => {
+    if (!reminders) return;
+    const timer = setTimeout(() => void syncPush(reminders), 2000);
+    return () => clearTimeout(timer);
+  }, [reminders]);
+  return null;
 }
 
 export function App() {
@@ -57,10 +75,14 @@ export function App() {
           <Route path="/kits" element={<Kits />} />
           <Route path="/kits/:kitId" element={<KitDetail />} />
           <Route path="/kits/:kitId/nouveau" element={<NewItem />} />
+          <Route path="/kits/:kitId/scan/:code" element={<ScanChoose />} />
           <Route path="/kits/:kitId/:key" element={<Item />} />
           <Route path="/courses" element={<Shopping />} />
           <Route path="/partage" element={<SharedList />} />
-          <Route path="/plan" element={<Soon titleKey="pages.plan" />} />
+          <Route path="/plan" element={<PlanOverview />} />
+          <Route path="/plan/imprimer" element={<PlanPrint />} />
+          <Route path="/plan/:step" element={<PlanStepPage />} />
+          <Route path="/gestes" element={<Tasks />} />
           <Route path="/guide" element={<GuideIndex />} />
           <Route path="/guide/:slug" element={<GuideArticle />} />
           <Route path="/reglages" element={<Settings />} />
@@ -70,6 +92,7 @@ export function App() {
       <BottomNav />
       <UpdateBanner />
       <Announcer />
+      {webPushConfigured && <PushSync />}
     </div>
   );
 }

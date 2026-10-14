@@ -7,7 +7,7 @@ import type { CountryProfile } from './country';
 import { addDays, daysBetween, nextMonthly, nthWeekdayOfMonth, type IsoDate } from './dates';
 import type { InventoryItem, Kit } from './inventory';
 
-export type ReminderKind = 'expiry' | 'battery' | 'monthly-check' | 'review';
+export type ReminderKind = 'expiry' | 'battery' | 'monthly-check' | 'review' | 'plan-review';
 
 export interface Reminder {
   id: string;
@@ -29,6 +29,8 @@ export interface ReminderInput {
   items: readonly InventoryItem[];
   country?: CountryProfile;
   today: IsoDate;
+  /** Revue annuelle du plan d'urgence, s'il a été rempli. */
+  planReview?: IsoDate | null;
 }
 
 function itemName(item: InventoryItem, catalog: readonly ItemTemplate[]): string {
@@ -114,6 +116,16 @@ export function buildReminders(input: ReminderInput): Reminder[] {
     title: 'Grand check-up du kit',
     alertDaysBefore: [7, 0],
   });
+
+  if (input.planReview) {
+    reminders.push({
+      id: 'plan-review',
+      kind: 'plan-review',
+      date: input.planReview,
+      title: 'Revue du plan d’urgence',
+      alertDaysBefore: [0],
+    });
+  }
 
   return reminders.sort((a, b) => a.date.localeCompare(b.date) || a.title.localeCompare(b.title));
 }

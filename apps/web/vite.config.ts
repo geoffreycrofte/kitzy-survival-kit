@@ -28,6 +28,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'prompt',
+      strategies: 'injectManifest',
+      srcDir: 'src/sw',
+      filename: 'sw.ts',
       includeAssets: ['icons/*.png', 'mascot/*.webp'],
       manifest: {
         name: 'Kitzy',
@@ -51,11 +54,12 @@ export default defineConfig({
           },
         ],
       },
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,woff2,webp,png,svg}'],
+      injectManifest: {
+        globPatterns: ['**/*.{js,css,html,woff2,webp,png,svg,wasm}'],
         globIgnores: ['404.html'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
       },
+      devOptions: { enabled: false, type: 'module' },
     }),
     spaFallback(),
   ],

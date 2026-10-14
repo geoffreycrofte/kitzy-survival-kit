@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { CATEGORIES } from '../catalog';
 import { CATALOG } from './catalog';
 import { GUIDE } from './guide';
+import { TASKS } from '../tasks';
 import { LU } from './countries/lu';
 
 describe('catalogue', () => {
@@ -22,6 +23,7 @@ describe('catalogue', () => {
   it('only links to existing guide pages', () => {
     const slugs = new Set(GUIDE.map((p) => p.slug));
     for (const t of CATALOG) if (t.guide) expect(slugs.has(t.guide), t.id).toBe(true);
+    for (const t of TASKS) if (t.guide) expect(slugs.has(t.guide), t.id).toBe(true);
   });
 
   it('puts every item in at least one kit', () => {

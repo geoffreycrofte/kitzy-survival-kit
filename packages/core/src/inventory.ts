@@ -41,3 +41,11 @@ export interface ShoppingExtra {
   quantity?: number;
   unit?: Unit;
 }
+
+/** Code-barres scanné une fois, puis reconnu : il mène directement à l'article. */
+export interface BarcodeLink {
+  code: string;
+  kitId: string;
+  /** Clé de ligne du kit : identifiant du modèle, ou `perso-<id>` pour un objet personnel. */
+  key: string;
+}

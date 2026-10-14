@@ -1,10 +1,11 @@
-import { useState, type FormEvent } from 'react';
-import { Link, useParams } from 'react-router';
+import { useCallback, useState, type FormEvent } from 'react';
+import { Link, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { CATEGORIES, kitRows, type KitRow } from '@kitzy/core';
 import { StatusChips } from '../components/StatusChips';
 import { useKitzy } from '../data/derived';
-import { renameKit } from '../data/store';
+import { BarcodeScanner } from '../components/BarcodeScanner';
+import { findBarcode, renameKit } from '../data/store';
 import { announce } from '../lib/announce';
 import { formatProgress } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
@@ -16,6 +17,23 @@ export function KitDetail() {
   const data = useKitzy();
   const kit = data?.kits.find((k) => k.id === kitId);
   usePageTitle(kit?.name ?? t('kits.title'));
+  const navigate = useNavigate();
+  const [scanning, setScanning] = useState(false);
+
+  const onCode = useCallback(
+    async (code: string) => {
+      setScanning(false);
+      if (!kitId) return;
+      const link = await findBarcode(code);
+      const state = { focus: '#lot-quantity', scanned: code };
+      if (!link) navigate(`/kits/${kitId}/scan/${code}`);
+      // Un modèle du catalogue existe dans tous les kits ; un objet personnel, seulement dans le sien.
+      else if (link.key.startsWith('perso-'))
+        navigate(`/kits/${link.kitId}/${link.key}`, { state });
+      else navigate(`/kits/${kitId}/${link.key}`, { state });
+    },
+    [kitId, navigate],
+  );
 
   if (!data) return <p>{t('app.loading')}</p>;
   if (!kit) return <NotFound />;
@@ -37,6 +55,16 @@ export function KitDetail() {
         <Link to="/kits">{t('kits.title')}</Link>
       </p>
       <h1 tabIndex={-1}>{kit.name}</h1>
+      <div className="button-row">
+        <button type="button" className="button" onClick={() => setScanning(true)}>
+          {t('scan.button')}
+        </button>
+      </div>
+      <BarcodeScanner
+        open={scanning}
+        onClose={() => setScanning(false)}
+        onCode={(code) => void onCode(code)}
+      />
 
       {[...groups.entries()].map(([group, items]) => (
         <section key={group} aria-labelledby={`group-${group}`} className="kit-group">

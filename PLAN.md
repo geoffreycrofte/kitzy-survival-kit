@@ -546,7 +546,8 @@ Prévu dès maintenant pour ne rien casser au moment de l'ajouter :
 - API minimale : `POST /subscribe` (abonnement + liste `{id opaque, date}`), `DELETE /subscribe`. CORS limité au domaine de l'app.
 - **Aucune donnée d'inventaire** côté serveur : uniquement des identifiants aléatoires et des dates. Le contenu de la notification est générique, le détail s'affiche à l'ouverture.
 - Purge automatique des abonnements expirés (HTTP 404/410 renvoyé par le service push).
-- L'adaptateur `notify/webpush` existe dans le code, désactivé par configuration tant que l'URL du service n'est pas renseignée.
+- L'adaptateur `apps/web/src/lib/webpush.ts` existe, désactivé tant que `VITE_KITZY_PUSH_URL` et `VITE_KITZY_VAPID_KEY` ne sont pas fournis au build.
+- Contrat attendu : `POST /subscribe` avec `{ subscription, schedule: [{ id, date }], timezone }`, `DELETE /subscribe` avec `{ endpoint }`. Le calendrier ne contient qu'**une entrée par jour d'alerte** (identifiant FNV-1a salé par appareil), jamais un nom d'article. Le service envoie un push vide de contenu ce jour-là, vers 9 h dans le fuseau indiqué ; le service worker calcule et affiche le détail localement.
 - Mise à jour de la politique de confidentialité au moment de l'activation.
 
 ### 6.5 Règles de rappel par défaut
@@ -940,11 +941,16 @@ Décision prise pendant la phase : le niveau de kit par défaut est **l'essentie
 
 ### Phase 2 : Notifications et plan (≈ 2 semaines)
 
-- [ ] Periodic Background Sync (Chromium)
-- [ ] Adaptateur Web Push prêt mais désactivé (service VPS en option, § 6.4)
-- [ ] Plan personnel d'urgence, impression et PDF
-- [ ] Scan de codes-barres
-- [ ] Tâches et gestes (§ 2.14)
+- [x] Service worker personnalisé (Workbox `injectManifest`) : **Periodic Background Sync** sur Chrome et Edge installés, une seule notification regroupée par jour, jamais entre 21 h et 8 h, rappel hebdomadaire de ce qui est en retard ; réglage « Me prévenir sur cet appareil » qui dit honnêtement ce qui marchera (arrière-plan, à l'ouverture seulement, iPhone : agenda), notification d'essai
+- [x] Adaptateur **Web Push** prêt mais désactivé (`VITE_KITZY_PUSH_URL` et `VITE_KITZY_VAPID_KEY` au build) : n'envoie que des dates et des identifiants opaques salés par appareil ; le service worker affiche le détail localement
+- [x] **Plan personnel d'urgence** : assistant en 5 étapes fidèle au formulaire officiel, pré-rempli depuis le foyer, enregistrement automatique, consentement explicite pour la santé et le matricule (retrait = effacement), version imprimable (cases vides à compléter au stylo ; « Enregistrer en PDF » du navigateur), revue annuelle dans les rappels et l'agenda
+- [x] **Scan de codes-barres** : `BarcodeDetector` natif, sinon ZXing en WebAssembly servi par Kitzy et précaché (hors-ligne, aucun CDN) ; saisie manuelle toujours possible ; un code inconnu est associé une fois à un article, puis reconnu
+- [x] **Gestes** (§ 2.14) : 16 gestes à cocher, avec lien vers le guide, l'écran du plan ou le site officiel
+- [x] Sauvegarde v2 (plan, gestes, codes-barres) ; les sauvegardes v1 restent lisibles
+- [x] « Mon plan » rejoint la barre de navigation
+- [x] Tests : 10 tests unitaires de plus ; e2e du plan, des gestes, du scan, des notifications (dont un vrai déclenchement de la vérification en arrière-plan via DevTools) et axe-core sur les 11 nouveaux écrans dans les deux thèmes
+
+Pas fait dans cette phase : l'import de contacts (Contact Picker API) et le service Web Push lui-même sur le VPS. La luciole « Mon plan » reste calculée sur les articles (documents, informations) : la lier au plan rempli est une décision produit à prendre.
 
 ### Phase 3 : Affiliation (≈ 1 à 2 semaines)
 

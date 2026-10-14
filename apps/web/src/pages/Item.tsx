@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent } from 'react';
-import { Link, useNavigate, useParams } from 'react-router';
+import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 import { isIsoDate, kitRows, lotState, sortLotsFifo, type KitRow, type Lot } from '@kitzy/core';
@@ -28,6 +28,7 @@ function parseQuantity(value: string): number {
 export function Item() {
   const { t } = useTranslation();
   const { kitId, key } = useParams();
+  const scanned = (useLocation().state as { scanned?: string } | null)?.scanned;
   const data = useKitzy();
   const kit = data?.kits.find((k) => k.id === kitId);
 
@@ -57,6 +58,7 @@ export function Item() {
         <Link to={`/kits/${kit.id}`}>{kit.name}</Link>
       </p>
       <h1 tabIndex={-1}>{row.name}</h1>
+      {scanned && <p className="note">{t('scan.recognized', { code: scanned })}</p>}
       <p className="tag">{sourceLabel}</p>
       {template?.hint && <p className="lead">{template.hint.fr}</p>}
       {template?.safety && (

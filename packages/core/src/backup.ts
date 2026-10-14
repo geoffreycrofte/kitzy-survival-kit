@@ -4,7 +4,9 @@
 import { z } from 'zod';
 import { isIsoDate } from './dates';
 import type { Household } from './household';
-import type { InventoryItem, Kit, ShoppingExtra } from './inventory';
+import type { BarcodeLink, InventoryItem, Kit, ShoppingExtra } from './inventory';
+import { PlanSchema, type EmergencyPlan } from './plan';
+import type { TaskDone } from './tasks';
 import type { KitLevel } from './catalog';
 
 const isoDate = z.string().refine(isIsoDate, 'Date invalide');
@@ -59,9 +61,16 @@ const ExtraSchema = z.object({
   unit: unit.optional(),
 });
 
+const BarcodeSchema = z.object({
+  code: z.string().max(64),
+  kitId: z.string().max(64),
+  key: z.string().max(120),
+});
+
+/** Version 1 (phase 1) acceptée : les nouveautés prennent leur valeur vide. */
 const BackupSchema = z.object({
   app: z.literal('kitzy'),
-  schemaVersion: z.literal(1),
+  schemaVersion: z.union([z.literal(1), z.literal(2)]),
   exportedAt: z.string(),
   household: HouseholdSchema.nullable(),
   kits: z.array(KitSchema).max(50),
@@ -69,6 +78,9 @@ const BackupSchema = z.object({
   extras: z.array(ExtraSchema).max(500),
   bought: z.array(z.string()).max(5000),
   level: z.enum(['essential', 'recommended', 'complete']),
+  plan: PlanSchema.nullable().default(null),
+  tasks: z.record(z.string().max(64), isoDate).default({}),
+  barcodes: z.array(BarcodeSchema).max(2000).default([]),
 });
 
 export interface BackupData {
@@ -78,12 +90,15 @@ export interface BackupData {
   extras: ShoppingExtra[];
   bought: string[];
   level: KitLevel;
+  plan: EmergencyPlan | null;
+  tasks: TaskDone;
+  barcodes: BarcodeLink[];
 }
 
-export type Backup = BackupData & { app: 'kitzy'; schemaVersion: 1; exportedAt: string };
+export type Backup = BackupData & { app: 'kitzy'; schemaVersion: 2; exportedAt: string };
 
 export function createBackup(data: BackupData, now: Date = new Date()): Backup {
-  return { app: 'kitzy', schemaVersion: 1, exportedAt: now.toISOString(), ...data };
+  return { app: 'kitzy', schemaVersion: 2, exportedAt: now.toISOString(), ...data };
 }
 
 export type ParseResult = { ok: true; data: BackupData } | { ok: false; error: string };
@@ -103,6 +118,9 @@ export function parseBackup(text: string): ParseResult {
         'Ce fichier ne ressemble pas à une sauvegarde Kitzy, ou vient d’une version plus récente.',
     };
   }
-  const { household, kits, items, extras, bought, level } = parsed.data;
-  return { ok: true, data: { household, kits, items, extras, bought, level } };
+  const { household, kits, items, extras, bought, level, plan, tasks, barcodes } = parsed.data;
+  return {
+    ok: true,
+    data: { household, kits, items, extras, bought, level, plan, tasks, barcodes },
+  };
 }
