@@ -9,17 +9,18 @@
 | Sujet | Décision |
 |---|---|
 | Nom | **Kitzy**, avec un **hérisson** pour mascotte (Igel et Prett étaient pris). Dépôt de marque EUIPO et noms sur les stores à vérifier. |
-| Hébergement | **GitHub Pages**, 100 % statique |
+| Hébergement | **GitHub Pages**, 100 % statique, domaine **kitzy.lu** pressenti |
 | Serveur | **Aucun pour l'instant**. Le VPS personnel est disponible plus tard pour le Web Push (§ 6.4) |
 | Langues | **FR, EN, LB (luxembourgeois), DE, PT** (§ 12.1) |
-| Stack | **React** pour la PWA + **React Native (Expo)** pour les stores, avec un **cœur TypeScript partagé**. Pas de Capacitor (mauvaise expérience) (§ 5) |
+| Stack | **Validé** : **React** pour la PWA + **React Native (Expo)** pour les stores, avec un **cœur TypeScript partagé** (§ 5) |
 | Périmètre | **Luxembourg d'abord, compatible avec toute l'Europe** : profils par pays (§ 12.4) |
 | Partage | **QR code et URL** partageable par email (§ 3.9) |
 | Contenu officiel | Repris **reformulé, simplifié et résumé**, avec un lien vers la source (§ 12.2) |
+| Durée cible | **72 h** par défaut, réglable (3 à 14 jours) dans les réglages |
 | Plan d'urgence | Le « plan en ligne » officiel n'est que le PDF : on reprend ses champs à l'identique, avec une bien meilleure expérience (§ 3.6) |
 | Budget produits | Marqueurs **€ / €€ / €€€** uniquement, sans prix affiché |
 | Affiliation | Amazon (compte existant), AliExpress (compte existant, usage très limité), plus des marchands réputés FR/DE à ouvrir (§ 8.3) |
-| Dons | **Oui**, option de don (§ 8.5) |
+| Dons | **PayPal.me/Crofte** et **Revolut.me/crofte** sur la PWA (§ 8.5) |
 | Design | **« La Veillée »** : terrier éclairé et lucioles, thème sombre et thème clair, animations douces respectant le mouvement réduit ([maquettes](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB), § 11) |
 - Langue de travail : français
 - Référentiel d'accessibilité : **RAWeb 1.1, niveau AA** (skills `raweb-code` / `raweb-audit` de [luxembourg-accessibility-skillset](https://github.com/geoffreycrofte/luxembourg-accessibility-skillset)), puis **RAAM 1.1** si on publie des apps natives (skills `raam-code` / `raam-audit`)
@@ -268,7 +269,7 @@ L'app les suivra comme des **tâches**, pas comme des objets :
 | kcal/jour | 2 000 | 1 400 | — | selon fabricant | selon fabricant |
 | Durée | 72 h, réglable (3, 7, 10, 14 jours) pour qui veut aller plus loin |
 
-Le nombre de jours est un réglage, car certains pays (Allemagne, Suède, Suisse) recommandent jusqu'à 7 à 10 jours.
+Décision : **72 h par défaut**. Le nombre de jours est un réglage, car certains pays (Allemagne, Suède, Suisse) recommandent jusqu'à 7 à 10 jours.
 
 ---
 
@@ -460,7 +461,7 @@ Ordre de travail : **la PWA d'abord** (GitHub Pages, phases 0 à 4), l'app Expo 
 - Routes pré-générées ou repli `404.html` qui recharge l'app (pas de réécriture serveur).
 - Fichier `.nojekyll` ; déploiement par l'action officielle `actions/deploy-pages`.
 - Pas d'en-têtes HTTP personnalisés : la CSP passe par une balise `<meta http-equiv>`.
-- **Domaine personnalisé** à choisir **avant** la mise en production publique : IndexedDB est liée à l'origine, et changer de domaine ensuite ferait perdre leurs données aux utilisateurs.
+- **Domaine personnalisé** : **kitzy.lu** pressenti (à réserver). Il doit être branché **avant** la mise en production publique : IndexedDB est liée à l'origine, et changer de domaine ensuite ferait perdre leurs données aux utilisateurs. Avec le domaine, `base` passe à `/` et un fichier `CNAME` est ajouté au déploiement.
 
 ### 5.3 Structure du dépôt
 
@@ -681,8 +682,9 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 
 ### 8.5 Dons
 
-- **Web (PWA)** : page « Soutenir Kitzy » et lien discret dans « À propos ». Plateforme au choix : **Liberapay** (association européenne, sans commission de plateforme), **Ko-fi** ou **GitHub Sponsors**. Jamais de pop-up, jamais pendant une tâche.
+- **Web (PWA)** : page « Soutenir Kitzy » et lien discret dans « À propos », avec deux boutons : **PayPal** (<https://paypal.me/Crofte>) et **Revolut** (<https://revolut.me/crofte?note=Donation%20Kitzy.lu>). Jamais de pop-up, jamais pendant une tâche. Liens ouverts dans un nouvel onglet, signalé aux lecteurs d'écran ; ils sont aussi surveillés par le workflow de vérification des liens (§ 9).
 - **Stores** : Apple impose l'**achat intégré** pour les pourboires versés au développeur, et Google Play a des règles similaires pour les contenus numériques. Dans l'app native, on propose donc soit un « pot à pourboires » en achat intégré (3 montants), soit on masque le lien externe. Règles à revérifier au moment de la publication.
+- Les liens PayPal.me et Revolut.me **ne peuvent pas figurer tels quels dans l'app iOS** (règle 3.1.1 d'Apple : les pourboires au développeur passent par l'achat intégré) : version store = achat intégré ou pas de lien de don. La PWA n'est pas concernée.
 - Ton : « Kitzy est gratuit et sans pub. Si l'app t'aide, tu peux offrir une pomme au hérisson. »
 
 ---
@@ -803,6 +805,7 @@ Règles :
 
 ### 11.3 Le hérisson
 
+- Descriptions des 12 poses à générer : [`docs/mascotte-poses.md`](docs/mascotte-poses.md).
 - Mascotte **générée par IA** (modèle d'OpenAI), fournie par Geoffrey, **détourée** automatiquement (rembg, modèle isnet) : `assets/mascot/kitzy-hedgehog.{png,webp}` (fond transparent, 640 px de large).
 - Pour les autres poses (endormi, content, pensif, avec une lampe frontale, en boule), régénérer avec **le même modèle et la même description** (bandana rayé orange et blanc, pelage brun, ventre crème, style 3D doux), puis détourer de la même façon. Garder une feuille de référence pour la cohérence.
 - Formats : WebP transparent pour le web (≈ 100 Ko), PNG pour les stores et l'icône d'app ; versions 1x, 2x et 3x pour React Native.
@@ -966,12 +969,9 @@ Hébergement (GitHub Pages) · Serveur (aucun, VPS plus tard) · Langues (FR, EN
 
 ### Encore ouvertes
 
-1. **Domaine** : kitzy.app, kitzy.eu, kitzy.lu… À réserver **avant** le lancement public.
+1. **Domaine** : réserver **kitzy.lu** (et éventuellement kitzy.eu en redirection) avant le lancement public.
 2. **Marque** : vérifier « Kitzy » sur EUIPO (classe 9, logiciels) et sur les stores.
-3. **Stack** : OK pour l'option B (PWA React + app Expo avec cœur partagé) plutôt qu'Expo universel ?
-4. **Durée cible** : 72 h par défaut, réglable jusqu'à 14 jours : ça te va ?
-5. **Plateforme de dons** : Liberapay, Ko-fi ou GitHub Sponsors ?
-6. **Poses du hérisson** : tu génères les autres poses avec le même modèle (je peux rédiger les descriptions) ?
+3. **Poses du hérisson** : à générer d'après [`docs/mascotte-poses.md`](docs/mascotte-poses.md), puis à détourer.
 
 ---
 
