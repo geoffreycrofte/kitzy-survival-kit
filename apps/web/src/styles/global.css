@@ -1617,3 +1617,14 @@ fieldset.card > legend + * {
     outline: 2px solid CanvasText;
   }
 }
+
+/* Confidentialité : où vont les données, dit à chaque bloc */
+.privacy__where {
+  align-self: flex-start;
+  padding: 2px 12px;
+  border-radius: 999px;
+  border: 2px solid var(--kz-label);
+  color: var(--kz-text);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
