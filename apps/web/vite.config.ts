@@ -10,6 +10,11 @@ import { VitePWA } from 'vite-plugin-pwa';
  */
 const base = process.env.KITZY_BASE ?? '/';
 
+/** Origine publique : kitzy.lu dès que le domaine est configuré, sinon GitHub Pages. */
+const origin = process.env.KITZY_DOMAIN
+  ? `https://${process.env.KITZY_DOMAIN}`
+  : 'https://geoffreycrofte.github.io';
+
 /** GitHub Pages ne sait pas réécrire les URL : 404.html relance l'app sur la bonne route. */
 function spaFallback(): Plugin {
   return {
@@ -33,6 +38,8 @@ export default defineConfig({
       filename: 'sw.ts',
       includeAssets: ['icons/*.png', 'mascot/*.webp'],
       manifest: {
+        // Identité stable de l'app installée (sinon Chrome se rabat sur start_url).
+        id: base,
         name: 'Kitzy',
         short_name: 'Kitzy',
         description: 'Ta réserve d’urgence de 72 heures, prête et à jour.',
@@ -43,6 +50,8 @@ export default defineConfig({
         orientation: 'portrait',
         background_color: '#12302B',
         theme_color: '#12302B',
+        // Permet à la page de savoir si Kitzy est déjà installée (Chrome Android).
+        related_applications: [{ platform: 'webapp', url: `${origin}${base}manifest.webmanifest` }],
         icons: [
           { src: 'icons/icon-192.png', sizes: '192x192', type: 'image/png' },
           { src: 'icons/icon-512.png', sizes: '512x512', type: 'image/png' },

@@ -2,6 +2,7 @@ import { useRef, useState, type ChangeEvent } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { DONATION_LINKS, buildIcs, parseBackup, type KitLevel } from '@kitzy/core';
+import { InstallSettings } from '../components/InstallSettings';
 import { NotificationSettings } from '../components/NotificationSettings';
 import { COUNTRY, useKitzy } from '../data/derived';
 import { exportData, importData, resetAll, setLevel } from '../data/store';
@@ -120,6 +121,8 @@ export function Settings() {
           ))}
         </fieldset>
       )}
+
+      <InstallSettings />
 
       {data?.household && <NotificationSettings reminders={data.reminders} />}
 

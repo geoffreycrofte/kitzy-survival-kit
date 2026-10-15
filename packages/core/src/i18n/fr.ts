@@ -649,6 +649,23 @@ export const fr = {
     linked: 'Code-barres associé à « {{name}} ».',
     recognized: 'Code-barres {{code}} reconnu. Indique la quantité et la date.',
   },
+  install: {
+    title: 'Installer Kitzy',
+    state: {
+      running:
+        'Tu utilises Kitzy installée. Elle s’ouvre comme une app et fonctionne sans connexion.',
+      installed:
+        'Kitzy est déjà installée sur cet appareil. Cherche-la dans la liste de tes applications, puis ajoute-la à ton écran d’accueil si tu veux.',
+      available:
+        'Installe Kitzy pour l’ouvrir comme une app, sans passer par le navigateur. Elle fonctionne aussi sans connexion.',
+      ios: 'Sur iPhone et iPad : dans Safari, touche le bouton Partager, puis « Sur l’écran d’accueil ».',
+      manual:
+        'Ouvre le menu de ton navigateur et choisis « Installer l’application » ou « Ajouter à l’écran d’accueil ». Chrome et Edge le proposent sur Android et sur ordinateur.',
+    },
+    button: 'Installer Kitzy',
+    accepted: 'Kitzy s’installe.',
+    dismissed: 'Installation annulée.',
+  },
   notify: {
     title: 'Notifications',
     help: 'Kitzy te prévient quand une date approche ou qu’un appareil doit être rechargé. Une seule notification par jour, jamais la nuit. Rien ne quitte ton appareil.',

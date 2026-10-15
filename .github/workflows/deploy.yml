@@ -20,6 +20,8 @@ jobs:
     env:
       # Sans domaine personnalisé : /survival-kit/. Avec kitzy.lu : mettre la variable de dépôt KITZY_BASE à « / ».
       KITZY_BASE: ${{ vars.KITZY_BASE || '/survival-kit/' }}
+      # Domaine définitif (kitzy.lu) : sert aussi à l'identité de l'app installée.
+      KITZY_DOMAIN: ${{ vars.KITZY_DOMAIN }}
       # Web Push (service du VPS) : désactivé tant que ces variables de dépôt sont vides.
       VITE_KITZY_PUSH_URL: ${{ vars.KITZY_PUSH_URL }}
       VITE_KITZY_VAPID_KEY: ${{ vars.KITZY_VAPID_KEY }}
