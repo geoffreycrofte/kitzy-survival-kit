@@ -400,6 +400,8 @@ Sans serveur, sans compte : **les données voyagent dans le lien lui-même**.
 
 ### 3.10 Version bureau (ordinateur portable, grand écran)
 
+> Note sur l'installation : tant que Kitzy est servie depuis `geoffreycrofte.github.io/survival-kit/`, une autre app web installée depuis `geoffreycrofte.github.io` dont la portée (`scope`) couvre tout le site peut faire croire à Chrome que Kitzy est « déjà installée ». Le domaine propre (kitzy.lu) supprime ce conflit : c'est une raison de plus de basculer avant le lancement.
+
 La même PWA, installable depuis Chrome ou Edge sur Windows, macOS et Linux (fenêtre dédiée, icône dans le dock ou le menu Démarrer). Le stockage local (IndexedDB) et les notifications fonctionnent comme sur mobile ; la vérification quotidienne en arrière-plan (Periodic Background Sync) marche sur Chrome et Edge une fois l'app installée. Safari et Firefox : rappels à l'ouverture et export agenda `.ics`.
 
 Mise en page à partir de 960 px de large :
@@ -1014,6 +1016,8 @@ Limites connues : Amazon interdit aux robots ses pages de recherche (robots.txt)
 - [x] Histoire des lucioles à l'accueil quand le foyer n'est pas encore présenté (§ 11.2)
 - [x] Version bureau à partir de 960 px : navigation latérale, accueil en deux colonnes, grilles (§ 3.10)
 - [x] Synchronisation cloud cadrée (§ 7.1), à réaliser dans une phase dédiée
+- [x] Page Confidentialité : chaque bloc dit où vont les données, lien vers le projet
+- [x] Bloc « Installer Kitzy » dans les réglages (bouton quand le navigateur le permet, « déjà installée sur cet appareil » détecté via `getInstalledRelatedApps`, consignes iPhone et autres navigateurs) ; `id` explicite et `related_applications` dans le manifeste
 
 ### Phase 4 : Le côté fun (≈ 2 semaines)
 

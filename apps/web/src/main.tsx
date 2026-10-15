@@ -10,10 +10,12 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import { App } from './App';
 import { initI18n } from './lib/i18n';
+import { initInstall } from './lib/install';
 import { initPreferences } from './lib/preferences';
 
 initPreferences();
 initI18n();
+initInstall();
 
 const root = document.getElementById('root');
 if (!root) throw new Error('Élément #root introuvable');
