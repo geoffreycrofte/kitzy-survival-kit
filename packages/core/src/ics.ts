@@ -104,6 +104,12 @@ function describe(r: Reminder): { summary: string; description: string } {
         description:
           'Contrôle les dates, recharge les appareils et remplace les piles des détecteurs.',
       };
+    case 'plan-review':
+      return {
+        summary: 'Kitzy : relire mon plan d’urgence',
+        description:
+          'Numéros, points de rendez-vous, personnes à aider : vérifie que tout est encore juste, puis réimprime-le.',
+      };
   }
 }
 

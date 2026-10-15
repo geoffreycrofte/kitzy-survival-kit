@@ -1,5 +1,5 @@
 import Dexie, { type EntityTable } from 'dexie';
-import type { InventoryItem, Kit, ShoppingExtra } from '@kitzy/core';
+import type { BarcodeLink, InventoryItem, Kit, ShoppingExtra } from '@kitzy/core';
 
 export interface MetaRow {
   key: string;
@@ -15,6 +15,7 @@ export class KitzyDb extends Dexie {
   kits!: EntityTable<Kit, 'id'>;
   items!: EntityTable<InventoryItem, 'id'>;
   extras!: EntityTable<ShoppingExtra, 'id'>;
+  barcodes!: EntityTable<BarcodeLink, 'code'>;
 
   constructor(name = 'kitzy') {
     super(name);
@@ -24,6 +25,8 @@ export class KitzyDb extends Dexie {
       items: '&id, kitId, [kitId+templateId]',
       extras: '&id',
     });
+    // Phase 2 : codes-barres reconnus. Le plan et les gestes vivent dans `meta`.
+    this.version(2).stores({ barcodes: '&code' });
   }
 }
 

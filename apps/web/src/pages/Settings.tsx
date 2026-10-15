@@ -1,6 +1,7 @@
 import { useRef, useState, type ChangeEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { buildIcs, parseBackup, type KitLevel } from '@kitzy/core';
+import { NotificationSettings } from '../components/NotificationSettings';
 import { COUNTRY, useKitzy } from '../data/derived';
 import { exportData, importData, resetAll, setLevel } from '../data/store';
 import { announce } from '../lib/announce';
@@ -121,6 +122,8 @@ export function Settings() {
           ))}
         </fieldset>
       )}
+
+      {data?.household && <NotificationSettings reminders={data.reminders} />}
 
       {data?.household && (
         <section className="card" aria-labelledby="calendar-title">

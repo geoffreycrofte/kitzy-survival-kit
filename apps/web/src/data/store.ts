@@ -4,68 +4,30 @@ import {
   consumeFifo,
   countMembers,
   createBackup,
+  mergePlanStep,
   todayLocal,
   type BackupData,
+  type BarcodeLink,
+  type EmergencyPlan,
+  type PlanStep,
   type Household,
+  type TaskDone,
   type InventoryItem,
-  type Kit,
   type KitLevel,
   type Lot,
   type ShoppingExtra,
   type Unit,
 } from '@kitzy/core';
 import { db } from './db';
+import { getMeta, loadAll, setMeta, type AppData } from './load';
+
+export { emptyData, type AppData } from './load';
 
 export const HOME_KIT_ID = 'home';
-
-export interface AppData {
-  household: Household | null;
-  kits: Kit[];
-  items: InventoryItem[];
-  extras: ShoppingExtra[];
-  bought: string[];
-  level: KitLevel;
-}
-
-const EMPTY: AppData = {
-  household: null,
-  kits: [],
-  items: [],
-  extras: [],
-  bought: [],
-  level: 'essential',
-};
-
-async function getMeta<T>(key: string, fallback: T): Promise<T> {
-  const row = await db.meta.get(key);
-  return row ? (row.value as T) : fallback;
-}
-
-async function setMeta(key: string, value: unknown): Promise<void> {
-  await db.meta.put({ key, value });
-}
-
-async function loadAll(): Promise<AppData> {
-  const [household, kits, items, extras, bought, level] = await Promise.all([
-    getMeta<Household | null>('household', null),
-    db.kits.toArray(),
-    db.items.toArray(),
-    db.extras.toArray(),
-    getMeta<string[]>('bought', []),
-    getMeta<KitLevel>('level', 'essential'),
-  ]);
-  const order = (k: Kit) => (k.type === 'home' ? '0' : '1' + k.id);
-  kits.sort((a, b) => order(a).localeCompare(order(b), 'fr', { numeric: true }));
-  return { household, kits, items, extras, bought, level };
-}
 
 /** Toutes les données de l'app, mises à jour en direct. `undefined` pendant le chargement. */
 export function useAppData(): AppData | undefined {
   return useLiveQuery(loadAll, [], undefined);
-}
-
-export function emptyData(): AppData {
-  return EMPTY;
 }
 
 function uid(): string {
@@ -237,27 +199,84 @@ export async function removeExtra(id: string): Promise<void> {
   );
 }
 
+/* ---------- Plan d'urgence et gestes ---------- */
+
+/**
+ * Enregistre une étape du plan sur la dernière version stockée :
+ * deux étapes ouvertes l'une après l'autre ne s'écrasent jamais.
+ */
+export async function savePlanStep(step: PlanStep, edited: EmergencyPlan): Promise<void> {
+  await db.transaction('rw', db.meta, async () => {
+    const stored = await getMeta<EmergencyPlan | null>('plan', null);
+    const merged = stored ? mergePlanStep(stored, edited, step) : edited;
+    const today = todayLocal();
+    await setMeta('plan', { ...merged, createdAt: merged.createdAt ?? today, updatedAt: today });
+  });
+}
+
+export async function deletePlan(): Promise<void> {
+  await db.meta.delete('plan');
+}
+
+export async function toggleTask(id: string): Promise<boolean> {
+  const tasks = await getMeta<TaskDone>('tasks', {});
+  const done = !tasks[id];
+  const next = { ...tasks };
+  if (done) next[id] = todayLocal();
+  else delete next[id];
+  await setMeta('tasks', next);
+  return done;
+}
+
+/* ---------- Codes-barres ---------- */
+
+export async function linkBarcode(link: BarcodeLink): Promise<void> {
+  await db.barcodes.put(link);
+}
+
+export async function findBarcode(code: string): Promise<BarcodeLink | undefined> {
+  return db.barcodes.get(code);
+}
+
 /* ---------- Sauvegarde ---------- */
+
+const DATA_TABLES = () => [db.meta, db.kits, db.items, db.extras, db.barcodes];
+
+/** Réglages propres à l'appareil, conservés lors d'une restauration. */
+const DEVICE_KEYS = ['notify', 'pushSalt'];
 
 export async function exportData(): Promise<string> {
   const data = await loadAll();
   return JSON.stringify(createBackup(data), null, 2);
 }
 
+async function clearData(): Promise<void> {
+  await Promise.all([
+    db.meta.where('key').noneOf(DEVICE_KEYS).delete(),
+    db.kits.clear(),
+    db.items.clear(),
+    db.extras.clear(),
+    db.barcodes.clear(),
+  ]);
+}
+
 export async function importData(data: BackupData): Promise<void> {
-  await db.transaction('rw', db.meta, db.kits, db.items, db.extras, async () => {
-    await Promise.all([db.meta.clear(), db.kits.clear(), db.items.clear(), db.extras.clear()]);
+  await db.transaction('rw', DATA_TABLES(), async () => {
+    await clearData();
     await setMeta('household', data.household);
     await setMeta('bought', data.bought);
     await setMeta('level', data.level);
+    if (data.plan) await setMeta('plan', data.plan);
+    await setMeta('tasks', data.tasks);
     await db.kits.bulkPut(data.kits);
     await db.items.bulkPut(data.items);
     await db.extras.bulkPut(data.extras);
+    await db.barcodes.bulkPut(data.barcodes);
   });
 }
 
 export async function resetAll(): Promise<void> {
-  await db.transaction('rw', db.meta, db.kits, db.items, db.extras, async () => {
-    await Promise.all([db.meta.clear(), db.kits.clear(), db.items.clear(), db.extras.clear()]);
+  await db.transaction('rw', DATA_TABLES(), async () => {
+    await clearData();
   });
 }

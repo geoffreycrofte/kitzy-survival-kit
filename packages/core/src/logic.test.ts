@@ -16,6 +16,7 @@ import { consumeFifo, itemStatus, lotState, targetFor } from './status';
 import { buildIcs, utf8Length } from './ics';
 import { decodeShare, encodeShare } from './share';
 import { createBackup, parseBackup } from './backup';
+import { emptyPlan } from './plan';
 
 const TODAY = '2026-10-14';
 
@@ -303,10 +304,37 @@ describe('share and backup', () => {
       extras: [],
       bought: [],
       level: 'recommended',
+      plan: emptyPlan(),
+      tasks: { 'lu-alert': TODAY },
+      barcodes: [{ code: '5410000000000', kitId: 'home', key: 'drinking-water' }],
     });
     const result = parseBackup(JSON.stringify(backup));
     expect(result.ok && result.data.kits).toEqual([home]);
+    expect(result.ok && result.data.plan).toEqual(emptyPlan());
+    expect(result.ok && result.data.tasks).toEqual({ 'lu-alert': TODAY });
+    expect(result.ok && result.data.barcodes).toHaveLength(1);
     expect(parseBackup('{"app":"autre"}').ok).toBe(false);
     expect(parseBackup('pas du json').ok).toBe(false);
+  });
+
+  it('still reads a phase 1 backup (schema version 1)', () => {
+    const v1 = {
+      app: 'kitzy',
+      schemaVersion: 1,
+      exportedAt: '2026-10-01T10:00:00.000Z',
+      household,
+      kits: [home],
+      items: [],
+      extras: [],
+      bought: [],
+      level: 'essential',
+    };
+    const result = parseBackup(JSON.stringify(v1));
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.data.plan).toBeNull();
+      expect(result.data.tasks).toEqual({});
+      expect(result.data.barcodes).toEqual([]);
+    }
   });
 });

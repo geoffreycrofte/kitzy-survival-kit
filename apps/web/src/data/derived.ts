@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import {
   CATALOG,
-  LU,
-  buildReminders,
   essentialsProgress,
   essentialsState,
   nextAction,
@@ -14,6 +12,7 @@ import {
   type NextAction,
   type Reminder,
 } from '@kitzy/core';
+import { COUNTRY, remindersFor } from './load';
 import { useAppData, type AppData } from './store';
 
 export interface Kitzy extends AppData {
@@ -26,7 +25,7 @@ export interface Kitzy extends AppData {
   today: string;
 }
 
-export const COUNTRY = LU;
+export { COUNTRY };
 
 /** Données et calculs dérivés. `undefined` pendant le premier chargement. */
 export function useKitzy(): Kitzy | undefined {
@@ -51,13 +50,7 @@ export function useKitzy(): Kitzy | undefined {
       progress,
       essentials: essentialsState(progress),
       next: nextAction(progress),
-      reminders: buildReminders({
-        catalog: CATALOG,
-        kits: data.kits,
-        items: data.items,
-        country: COUNTRY,
-        today,
-      }),
+      reminders: remindersFor(data, today),
       today,
     };
   }, [data, today]);

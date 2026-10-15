@@ -22,7 +22,8 @@ export default defineConfig({
       name: 'mobile-chromium',
       use: {
         ...devices['Pixel 7'],
-        ...(executablePath ? { launchOptions: { executablePath } } : {}),
+        // Chromium complet (nouveau mode headless) : le « headless shell » refuse les notifications.
+        ...(executablePath ? { launchOptions: { executablePath } } : { channel: 'chromium' }),
       },
     },
   ],

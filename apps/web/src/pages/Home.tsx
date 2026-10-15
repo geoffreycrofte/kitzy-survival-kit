@@ -118,7 +118,11 @@ function Upcoming({ reminders, today }: { reminders: Reminder[]; today: string }
               {formatDay(r.date, today)}
               {overdue && <span className="timeline__overdue">, {t('home.overdue')}</span>}
             </span>
-            {r.itemId && r.kitId ? (
+            {r.kind === 'plan-review' ? (
+              <Link className="timeline__title" to="/plan">
+                {title}
+              </Link>
+            ) : r.itemId && r.kitId ? (
               <Link className="timeline__title" to={`/kits/${r.kitId}/${itemKeyFor(r)}`}>
                 {title}
               </Link>
