@@ -378,6 +378,8 @@ main:focus {
 
 .bottom-nav {
   order: 2;
+  /* Au-dessus du contenu qui défile (la navigation est avant le contenu dans le code). */
+  z-index: 4;
   position: sticky;
   bottom: 0;
   background: var(--kz-nav);

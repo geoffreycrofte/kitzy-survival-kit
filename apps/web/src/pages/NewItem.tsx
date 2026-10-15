@@ -6,6 +6,7 @@ import { useKitzy } from '../data/derived';
 import { createCustomItem } from '../data/store';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
+import { Loading } from '../components/Loading';
 
 const UNITS: Unit[] = ['piece', 'pack', 'set', 'portion', 'L'];
 
@@ -21,7 +22,7 @@ export function NewItem() {
   const ref = useRef<HTMLInputElement>(null);
   const kit = data?.kits.find((k) => k.id === kitId);
 
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
   if (!kit) return <NotFound />;
 
   const submit = async (e: FormEvent) => {

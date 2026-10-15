@@ -12,6 +12,7 @@ import {
   type Reminder,
 } from '@kitzy/core';
 import { Lantern } from '../components/Lantern';
+import { Loading } from '../components/Loading';
 import { useKitzy } from '../data/derived';
 import { HOME_KIT_ID } from '../data/store';
 import { formatDay, formatQuantity } from '../lib/format';
@@ -72,6 +73,8 @@ export function Home() {
           )
         )}
       </section>
+
+      {!data && <Loading />}
 
       {data && !data.household && (
         <section className="card reveal reveal--late" aria-labelledby="home-mission">

@@ -8,13 +8,14 @@ import { toggleTask } from '../data/store';
 import { announce } from '../lib/announce';
 import { formatDate } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
+import { Loading } from '../components/Loading';
 
 /** Les gestes de préparation (§ 2.14 du plan) : ce qui ne s'achète pas. */
 export function Tasks() {
   const { t } = useTranslation();
   usePageTitle(t('tasks.title'));
   const data = useKitzy();
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
   const progress = tasksProgress(data.tasks);
 
   return (

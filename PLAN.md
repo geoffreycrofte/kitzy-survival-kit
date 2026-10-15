@@ -1018,6 +1018,7 @@ Limites connues : Amazon interdit aux robots ses pages de recherche (robots.txt)
 - [x] Synchronisation cloud cadrée (§ 7.1), à réaliser dans une phase dédiée
 - [x] Page Confidentialité : chaque bloc dit où vont les données, lien vers le projet
 - [x] Bloc « Installer Kitzy » dans les réglages (bouton quand le navigateur le permet, « déjà installée sur cet appareil » détecté via `getInstalledRelatedApps`, consignes iPhone et autres navigateurs) ; `id` explicite et `related_applications` dans le manifeste
+- [x] Correctifs après test sur Android : barre du bas toujours au premier plan ; base locale libérée quand Android met un onglet en pause (`freeze`) ; chargement bloqué expliqué avec un bouton « Recharger Kitzy » et le détail technique, au lieu d'un « Chargement » sans fin
 
 ### Phase 4 : Le côté fun (≈ 2 semaines)
 

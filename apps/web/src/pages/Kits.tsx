@@ -4,13 +4,14 @@ import { kitRows } from '@kitzy/core';
 import { Meter } from '../components/Meter';
 import { useKitzy } from '../data/derived';
 import { usePageTitle } from '../lib/usePageTitle';
+import { Loading } from '../components/Loading';
 
 export function Kits() {
   const { t } = useTranslation();
   usePageTitle(t('kits.title'));
   const data = useKitzy();
 
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
 
   return (
     <div className="page">

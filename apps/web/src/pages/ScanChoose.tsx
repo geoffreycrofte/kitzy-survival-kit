@@ -7,6 +7,7 @@ import { linkBarcode } from '../data/store';
 import { announce } from '../lib/announce';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
+import { Loading } from '../components/Loading';
 
 /** Code inconnu : on choisit l'article une fois, Kitzy le reconnaîtra ensuite. */
 export function ScanChoose() {
@@ -17,7 +18,7 @@ export function ScanChoose() {
   const [filter, setFilter] = useState('');
   usePageTitle(t('scan.chooseTitle'));
 
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
   const kit = data.kits.find((k) => k.id === kitId);
   if (!kit || !code) return <NotFound />;
 
