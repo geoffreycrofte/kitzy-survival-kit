@@ -384,7 +384,7 @@ export const fr = {
     health: {
       legend: 'Informations de santé',
       explain:
-        'Le plan officiel prévoit le groupe sanguin, le matricule, les allergies et les traitements. Ce sont des données sensibles : Kitzy ne les garde qu’avec ton accord, uniquement sur cet appareil.',
+        'Le plan officiel prévoit le groupe sanguin, le matricule, les allergies et les traitements. Ce sont des données sensibles : Kitzy ne les garde qu’avec ton accord, uniquement sur cet appareil, et ne les envoie nulle part.',
       consent:
         'J’accepte que Kitzy garde ces informations de santé et le matricule sur cet appareil',
       withdrawConfirm:
@@ -582,34 +582,47 @@ export const fr = {
     sections: [
       {
         title: 'Ce que Kitzy enregistre',
-        text: 'Ton foyer, tes kits, ta liste de courses, ton plan d’urgence et tes réglages sont enregistrés uniquement dans ton navigateur, sur cet appareil. Kitzy ne les envoie à aucun serveur.',
+        where: 'Uniquement sur ton appareil',
+        text: 'Ton foyer, tes kits, ta liste de courses, ton plan d’urgence et tes réglages sont enregistrés dans ton navigateur, sur cet appareil, et nulle part ailleurs. Kitzy ne les envoie à aucun serveur, ni à Kitzy, ni à un tiers.',
       },
       {
-        title: 'Données de santé',
-        text: 'Les informations de santé et le matricule du plan d’urgence ne sont gardés qu’avec ton accord explicite. Décocher l’accord les efface.',
+        title: 'Données de santé et matricule',
+        where: 'Uniquement sur ton appareil',
+        text: 'Le groupe sanguin, les allergies, les traitements et le matricule de ton plan d’urgence sont enregistrés sur ton appareil, comme le reste, et ne sont envoyés nulle part. Comme ce sont des données sensibles, Kitzy te demande ton accord avant de les garder sur ton appareil. Décocher l’accord les efface de ton appareil.',
       },
       {
-        title: 'Partage et sauvegarde',
-        text: 'Une liste de courses partagée voyage dans le lien lui-même, sans passer par un serveur. Une sauvegarde est un fichier que tu télécharges et gardes où tu veux : il peut contenir des informations sensibles, range-le en lieu sûr.',
+        title: 'Partage d’une liste de courses',
+        where: 'Dans le lien, d’appareil à appareil',
+        text: 'Le contenu de la liste voyage dans le lien lui-même. Il n’est enregistré sur aucun serveur : seulement sur les appareils qui ouvrent le lien et l’ajoutent à leur liste.',
+      },
+      {
+        title: 'Sauvegarde',
+        where: 'Sur ton appareil, puis où tu choisis',
+        text: 'Une sauvegarde est un fichier que ton appareil télécharge. Kitzy n’en garde aucune copie et ne l’envoie nulle part : c’est toi qui décides où le ranger. Il peut contenir tes informations de santé, range-le en lieu sûr.',
       },
       {
         title: 'Hébergement',
-        text: 'Le site est hébergé par GitHub Pages, qui reçoit, comme tout hébergeur, l’adresse IP des visiteurs pour servir les pages. Kitzy n’a pas accès à ces journaux.',
+        where: 'Aucune de tes données',
+        text: 'GitHub Pages fournit seulement les fichiers de l’app (pages, images). Comme tout hébergeur, il reçoit l’adresse IP des visiteurs pour les servir. Il ne reçoit aucune de tes données Kitzy, et Kitzy n’a pas accès à ces journaux.',
       },
       {
         title: 'Liens vers les marchands',
-        text: 'Quand tu suis un lien d’achat, tu quittes Kitzy. Le marchand peut alors déposer ses propres cookies, notamment pour attribuer une commission. Kitzy ne reçoit aucune information sur toi ni sur tes achats.',
+        where: 'Aucune de tes données',
+        text: 'Quand tu suis un lien d’achat, tu quittes Kitzy. Kitzy ne transmet rien au marchand, ni ton kit, ni ton foyer. Le marchand peut déposer ses propres cookies sur son site, notamment pour attribuer une commission. Kitzy ne reçoit aucune information sur toi ni sur tes achats.',
       },
       {
         title: 'Notifications',
-        text: 'Les rappels sont calculés sur ton appareil. Si un service de notifications est un jour ajouté, il ne recevra que des dates et des identifiants anonymes, jamais le contenu de ton kit. Cette page sera mise à jour avant.',
+        where: 'Uniquement sur ton appareil',
+        text: 'Les rappels sont calculés et affichés par ton appareil. Si un service de notifications est un jour ajouté, il ne recevra que des dates et des identifiants anonymes, jamais le contenu de ton kit. Cette page sera mise à jour avant.',
       },
       {
         title: 'Effacer tes données',
-        text: 'Dans les réglages, « Tout effacer » supprime toutes les données de Kitzy de cet appareil. Désinstaller l’app ou vider les données du site fait de même.',
+        where: 'Sur ton appareil',
+        text: 'Comme tout est sur ton appareil, c’est là qu’on efface : dans les réglages, « Tout effacer » supprime toutes les données de Kitzy. Désinstaller l’app ou vider les données du site fait de même.',
       },
     ],
-    contact: 'Une question ? Écris sur la page du projet sur GitHub.',
+    contact: 'Une question ou une remarque ?',
+    contactLink: 'Écris-nous sur la page du projet sur GitHub',
     updated: 'Dernière mise à jour : octobre 2026.',
   },
   scan: {

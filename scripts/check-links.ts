@@ -17,6 +17,7 @@ import {
   LINK_CHECK_AGENT,
   MERCHANTS,
   PRODUCTS,
+  PROJECT_ISSUES_URL,
   ROBOTS_DETAIL,
   TASKS,
   classify,
@@ -71,6 +72,11 @@ function targets(): Target[] {
   }
   list.push({ url: DONATION_LINKS.paypal, label: 'Don PayPal', productPage: false });
   list.push({ url: DONATION_LINKS.revolut, label: 'Don Revolut', productPage: false });
+  list.push({
+    url: PROJECT_ISSUES_URL,
+    label: 'Page du projet (confidentialité)',
+    productPage: false,
+  });
   const seen = new Set<string>();
   return list.filter((t) => !seen.has(t.url) && seen.add(t.url));
 }

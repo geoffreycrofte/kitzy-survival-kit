@@ -32,6 +32,14 @@ test.describe('Phase 3 : conseils d’achat, transparence, hiérarchie', () => {
     ).toBeFocused();
     await page.getByRole('link', { name: 'Lire la politique de confidentialité' }).click();
     await expect(page.getByRole('heading', { level: 1, name: 'Confidentialité' })).toBeFocused();
+    // Chaque bloc dit où vont les données, et le contact mène au projet.
+    await expect(page.locator('.privacy__where')).toHaveCount(8);
+    await expect(page.getByRole('region', { name: 'Données de santé et matricule' })).toContainText(
+      'Uniquement sur ton appareil',
+    );
+    await expect(
+      page.getByRole('link', { name: /Écris-nous sur la page du projet sur GitHub/ }),
+    ).toHaveAttribute('href', 'https://github.com/geoffreycrofte/survival-kit/issues');
   });
 
   test('pas de bloc d’achat pour ce qui ne s’achète pas', async ({ page }) => {
