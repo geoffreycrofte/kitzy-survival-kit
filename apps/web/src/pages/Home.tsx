@@ -89,10 +89,13 @@ export function Home() {
             reminders={upcoming(data.reminders, data.today).slice(0, 4)}
             today={data.today}
           />
-          <Link to="/foyer" className="text-link">
-            {t('home.editHousehold')}
-          </Link>
         </section>
+      )}
+
+      {data?.household && (
+        <Link to="/foyer" className="text-link">
+          {t('home.editHousehold')}
+        </Link>
       )}
     </div>
   );

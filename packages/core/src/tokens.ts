@@ -16,6 +16,8 @@ export interface ThemeTokens {
   muted: string;
   /** Libellés et éléments réussis */
   label: string;
+  /** Titres de section : ambre de la lanterne, pour hiérarchiser les blocs */
+  heading: string;
   /** Fond de l'action principale */
   btn: string;
   /** Texte de l'action principale */
@@ -51,6 +53,7 @@ export const themes: Record<ThemeName, ThemeTokens> = {
     text: '#FFF4E2',
     muted: '#B9CBC2',
     label: '#9CCB98',
+    heading: '#F4B860',
     btn: '#F4B860',
     btnText: '#12302B',
     line: '#3E6B60',
@@ -73,6 +76,7 @@ export const themes: Record<ThemeName, ThemeTokens> = {
     text: '#12302B',
     muted: '#47665D',
     label: '#2E6B3A',
+    heading: '#8A5300',
     btn: '#F4B860',
     btnText: '#12302B',
     line: '#9DB8AF',
@@ -98,6 +102,8 @@ export const textPairs: ReadonlyArray<[keyof ThemeTokens, keyof ThemeTokens]> = 
   ['muted', 'bg'],
   ['muted', 'surface'],
   ['label', 'surface'],
+  ['heading', 'bg'],
+  ['heading', 'surface'],
   ['btnText', 'btn'],
   ['navText', 'nav'],
   ['navActive', 'nav'],

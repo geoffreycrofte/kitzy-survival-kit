@@ -111,7 +111,8 @@ function ShoppingRow({ entry, bought: stored }: { entry: ShoppingEntry; bought: 
           }}
         />
         <label htmlFor={id}>
-          {t('shopping.item', { label: entry.label, quantity })}
+          <span className="shop-row__name">{entry.label}</span>
+          <span className="shop-row__qty">, {quantity}</span>
           {details && <span className="shop-row__details">{details}</span>}
         </label>
       </div>

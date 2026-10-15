@@ -22,6 +22,8 @@ import { PlanOverview, PlanStepPage } from './pages/Plan';
 import { ScanChoose } from './pages/ScanChoose';
 import { PlanPrint } from './pages/PlanPrint';
 import { Tasks } from './pages/Tasks';
+import { Transparency } from './pages/Transparency';
+import { Privacy } from './pages/Privacy';
 
 /** Après une navigation, le focus va sur le titre de la nouvelle page (RAWeb 12.x). */
 function useFocusOnNavigation() {
@@ -86,6 +88,8 @@ export function App() {
           <Route path="/guide" element={<GuideIndex />} />
           <Route path="/guide/:slug" element={<GuideArticle />} />
           <Route path="/reglages" element={<Settings />} />
+          <Route path="/transparence" element={<Transparency />} />
+          <Route path="/confidentialite" element={<Privacy />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>

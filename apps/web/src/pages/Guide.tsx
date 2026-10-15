@@ -36,31 +36,67 @@ export function GuideIndex() {
   );
 }
 
+/** « Logement : plus de lumière… » : le terme avant les deux-points ressort en gras. */
+function Term({ text }: { text: string }) {
+  const match = /^([^:]{2,40}?)[\u00a0\u202f ]:\s(.+)$/.exec(text);
+  if (!match) return <>{text}</>;
+  return (
+    <>
+      <strong>{match[1]}</strong>&#8239;: {match[2]}
+    </>
+  );
+}
+
+/** « Jour 1. Un lundi… » devient une étape d'histoire avec son repère. */
+function Paragraph({ text }: { text: string }) {
+  const day = /^(Jour \d+)\.\s(.+)$/.exec(text);
+  if (!day) return <p>{text}</p>;
+  return (
+    <p className="story">
+      <span className="story__day">{day[1]}.</span> {day[2]}
+    </p>
+  );
+}
+
 function Block({ block }: { block: GuideBlock }) {
   switch (block.type) {
     case 'h2':
       return <h2 className="section-title">{block.text}</h2>;
     case 'p':
-      return <p>{block.text}</p>;
+      return <Paragraph text={block.text} />;
     case 'note':
       return <p className="note">{block.text}</p>;
     case 'list':
       return (
         <ul className="prose-list">
           {block.items.map((item, i) => (
-            <li key={i}>{item}</li>
+            <li key={i}>
+              <Term text={item} />
+            </li>
           ))}
         </ul>
       );
     case 'steps':
       return (
-        <ol className="prose-list">
+        <ol className="prose-list prose-list--steps">
           {block.items.map((item, i) => (
-            <li key={i}>{item}</li>
+            <li key={i}>
+              <Term text={item} />
+            </li>
           ))}
         </ol>
       );
   }
+}
+
+/** Découpe la page en sections : chaque titre ouvre un bloc visuellement détaché. */
+function sections(blocks: GuideBlock[]): GuideBlock[][] {
+  const out: GuideBlock[][] = [[]];
+  for (const block of blocks) {
+    if (block.type === 'h2') out.push([]);
+    out[out.length - 1]!.push(block);
+  }
+  return out.filter((section) => section.length > 0);
 }
 
 export function GuideArticle() {
@@ -80,11 +116,19 @@ export function GuideArticle() {
         <img className="prose__hog" src={mascot(page.pose)} alt="" width={640} height={1000} />
       )}
       <p className="lead">{page.summary}</p>
-      {page.blocks.map((block, i) => (
-        <Block key={i} block={block} />
-      ))}
+      {sections(page.blocks).map((section, i) =>
+        section[0]?.type === 'h2' ? (
+          <section key={i} className="prose-section">
+            {section.map((block, j) => (
+              <Block key={j} block={block} />
+            ))}
+          </section>
+        ) : (
+          section.map((block, j) => <Block key={`${i}-${j}`} block={block} />)
+        ),
+      )}
       {page.links && page.links.length > 0 && (
-        <section aria-labelledby="guide-links">
+        <section aria-labelledby="guide-links" className="prose-section prose-section--links">
           <h2 id="guide-links" className="section-title">
             {t('guide.links')}
           </h2>

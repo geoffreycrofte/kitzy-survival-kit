@@ -1,6 +1,7 @@
 import { useRef, useState, type ChangeEvent } from 'react';
+import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { buildIcs, parseBackup, type KitLevel } from '@kitzy/core';
+import { DONATION_LINKS, buildIcs, parseBackup, type KitLevel } from '@kitzy/core';
 import { NotificationSettings } from '../components/NotificationSettings';
 import { COUNTRY, useKitzy } from '../data/derived';
 import { exportData, importData, resetAll, setLevel } from '../data/store';
@@ -29,10 +30,7 @@ const motionOptions: ReadonlyArray<[MotionPref, string]> = [
 
 const levels: KitLevel[] = ['essential', 'recommended', 'complete'];
 
-const DONATIONS = {
-  paypal: 'https://paypal.me/Crofte',
-  revolut: 'https://revolut.me/crofte?note=Donation%20Kitzy.lu',
-};
+const DONATIONS = DONATION_LINKS;
 
 export function Settings() {
   const { t } = useTranslation();
@@ -241,6 +239,14 @@ export function Settings() {
           {t('settings.about')}
         </h2>
         <p className="choice__help">{t('settings.aboutText')}</p>
+        <div className="button-row">
+          <Link to="/transparence" className="text-link">
+            {t('settings.transparency')}
+          </Link>
+          <Link to="/confidentialite" className="text-link">
+            {t('settings.privacy')}
+          </Link>
+        </div>
       </section>
     </div>
   );
