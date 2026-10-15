@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 import { isIsoDate, kitRows, lotState, sortLotsFifo, type KitRow, type Lot } from '@kitzy/core';
 import { Meter } from '../components/Meter';
+import { BuyingAdvice } from '../components/BuyingAdvice';
 import { StatusChips } from '../components/StatusChips';
 import { useKitzy } from '../data/derived';
 import {
@@ -124,6 +125,8 @@ export function Item() {
           </button>
         </section>
       )}
+
+      {template && <BuyingAdvice templateId={template.id} />}
 
       {!template && item && <CustomItemSettings itemId={item.id} row={row} kitId={kit.id} />}
     </div>

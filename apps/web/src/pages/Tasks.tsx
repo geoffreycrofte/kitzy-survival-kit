@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { TASKS, tasksProgress, type TaskTemplate } from '@kitzy/core';
+import { TASK_GROUPS, TASKS, tasksProgress, type TaskTemplate } from '@kitzy/core';
 import { Meter } from '../components/Meter';
 import { useKitzy } from '../data/derived';
 import { toggleTask } from '../data/store';
@@ -30,15 +30,22 @@ export function Tasks() {
         valueText={t('tasks.progress', progress)}
       />
 
-      <ul className="row-list task-list">
-        {TASKS.map((task) => (
-          <TaskRow
-            key={`${task.id}-${data.tasks[task.id] ?? ''}`}
-            task={task}
-            doneOn={data.tasks[task.id]}
-          />
-        ))}
-      </ul>
+      {TASK_GROUPS.map((group) => (
+        <section key={group} className="task-group" aria-labelledby={`tasks-${group}`}>
+          <h2 id={`tasks-${group}`} className="section-title">
+            {t(`tasks.groups.${group}`)}
+          </h2>
+          <ul className="row-list task-list">
+            {TASKS.filter((task) => task.group === group).map((task) => (
+              <TaskRow
+                key={`${task.id}-${data.tasks[task.id] ?? ''}`}
+                task={task}
+                doneOn={data.tasks[task.id]}
+              />
+            ))}
+          </ul>
+        </section>
+      ))}
     </div>
   );
 }
@@ -65,7 +72,9 @@ function TaskRow({ task, doneOn }: { task: TaskTemplate; doneOn: string | undefi
             );
           }}
         />
-        <label htmlFor={id}>{task.title}</label>
+        <label htmlFor={id} className="shop-row__name">
+          {task.title}
+        </label>
       </div>
       <p id={`${id}-hint`} className="task__hint">
         {task.hint}

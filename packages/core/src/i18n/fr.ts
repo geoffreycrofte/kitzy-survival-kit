@@ -302,6 +302,8 @@ export const fr = {
     languageSoon:
       'Kitzy parle français pour l’instant. L’anglais, le luxembourgeois, l’allemand et le portugais arrivent.',
     about: 'À propos',
+    transparency: 'Liens d’achat et transparence',
+    privacy: 'Confidentialité',
     aboutText:
       'Kitzy est une application indépendante, non affiliée au Gouvernement du Luxembourg. Les conseils s’appuient sur le guide officiel Lëtz prepare!.',
   },
@@ -508,6 +510,11 @@ export const fr = {
     intro:
       'Ce qui ne s’achète pas : quelques gestes à faire une fois, pour être prêt le jour où ça compte.',
     progress: '{{done}} sur {{total}} faits',
+    groups: {
+      alerte: 'Être alerté',
+      maison: 'Chez moi',
+      entourage: 'Avec mes proches',
+    },
     official: 'Conseil officiel',
     recommended: 'Conseillé',
     doneOn: 'Fait le {{date}}',
@@ -519,6 +526,85 @@ export const fr = {
     siteLabel: 'Ouvrir le site : {{title}}',
     checked: '« {{title}} » noté comme fait.',
     unchecked: '« {{title}} » à refaire.',
+  },
+  buy: {
+    title: 'Où l’acheter',
+    intro:
+      'Des pistes à différents budgets, sans prix affiché : les prix changent trop vite. Choisis ce qui te convient, ou ce que tu as déjà.',
+    tiers: {
+      '1': 'Budget essentiel',
+      '2': 'Budget équilibré',
+      '3': 'Budget durable',
+    },
+    search: 'Chercher sur {{merchant}}',
+    searchLabel: 'Chercher « {{name}} » sur {{merchant}}',
+    affiliate:
+      'Certains de ces liens sont affiliés : Kitzy touche une petite commission, sans surcoût pour toi.',
+    amazon:
+      'En tant que Partenaire Amazon, Kitzy réalise un bénéfice sur les achats remplissant les conditions requises.',
+    transparency: 'Comment Kitzy choisit ces conseils',
+    noOffer: 'Pas de lien pour l’instant : cherche-le dans le magasin de ton choix.',
+    offline: 'Hors connexion : les liens s’ouvriront quand tu seras en ligne.',
+  },
+  transparency: {
+    title: 'Liens d’achat et transparence',
+    intro:
+      'Kitzy est gratuit, sans publicité et sans compte. Certains liens d’achat aident à le financer. Voici comment ça marche, sans détour.',
+    chooseTitle: 'Comment les conseils sont choisis',
+    choose: [
+      'Chaque conseil décrit ce qu’il faut chercher (par exemple « lampe frontale à piles AAA »), pas une marque imposée.',
+      'Les articles restent conseillés même quand aucun lien n’est disponible : la recommandation ne dépend jamais d’une commission.',
+      'Trois paliers, sans prix : € pour l’essentiel, €€ pour un bon équilibre, €€€ pour du matériel qui dure. Les prix changent trop vite pour être affichés honnêtement.',
+      'Pour la sécurité et la santé (gaz, batteries, détecteurs, premiers secours), Kitzy ne propose que des marchands réputés qui livrent au Luxembourg, et des produits aux normes européennes.',
+    ],
+    linksTitle: 'Les liens affiliés',
+    links: [
+      'Quand tu achètes après avoir cliqué sur un lien affilié, le marchand verse une petite commission à Kitzy. Le prix reste le même pour toi.',
+      'Les liens affiliés sont signalés sous chaque bloc de conseils.',
+      'Kitzy vérifie chaque semaine que les liens fonctionnent encore, et masque ceux qui ne mènent plus nulle part.',
+    ],
+    amazonTitle: 'Programme Partenaires d’Amazon',
+    privacyTitle: 'Et tes données ?',
+    privacy:
+      'Kitzy ne sait pas ce que tu achètes. Le lien t’emmène sur le site du marchand, qui applique ses propres règles de confidentialité et ses cookies.',
+    privacyLink: 'Lire la politique de confidentialité',
+  },
+  privacy: {
+    title: 'Confidentialité',
+    intro:
+      'En bref : tes données restent sur ton appareil. Kitzy n’a pas de compte, pas de publicité et pas de mesure d’audience.',
+    sections: [
+      {
+        title: 'Ce que Kitzy enregistre',
+        text: 'Ton foyer, tes kits, ta liste de courses, ton plan d’urgence et tes réglages sont enregistrés uniquement dans ton navigateur, sur cet appareil. Kitzy ne les envoie à aucun serveur.',
+      },
+      {
+        title: 'Données de santé',
+        text: 'Les informations de santé et le matricule du plan d’urgence ne sont gardés qu’avec ton accord explicite. Décocher l’accord les efface.',
+      },
+      {
+        title: 'Partage et sauvegarde',
+        text: 'Une liste de courses partagée voyage dans le lien lui-même, sans passer par un serveur. Une sauvegarde est un fichier que tu télécharges et gardes où tu veux : il peut contenir des informations sensibles, range-le en lieu sûr.',
+      },
+      {
+        title: 'Hébergement',
+        text: 'Le site est hébergé par GitHub Pages, qui reçoit, comme tout hébergeur, l’adresse IP des visiteurs pour servir les pages. Kitzy n’a pas accès à ces journaux.',
+      },
+      {
+        title: 'Liens vers les marchands',
+        text: 'Quand tu suis un lien d’achat, tu quittes Kitzy. Le marchand peut alors déposer ses propres cookies, notamment pour attribuer une commission. Kitzy ne reçoit aucune information sur toi ni sur tes achats.',
+      },
+      {
+        title: 'Notifications',
+        text: 'Les rappels sont calculés sur ton appareil. Si un service de notifications est un jour ajouté, il ne recevra que des dates et des identifiants anonymes, jamais le contenu de ton kit. Cette page sera mise à jour avant.',
+      },
+      {
+        title: 'Effacer tes données',
+        text: 'Dans les réglages, « Tout effacer » supprime toutes les données de Kitzy de cet appareil. Désinstaller l’app ou vider les données du site fait de même.',
+      },
+    ],
+    contact: 'Une question ? Écris sur la page du projet sur GitHub.',
+    updated: 'Dernière mise à jour : octobre 2026.',
   },
   scan: {
     button: 'Scanner un code-barres',

@@ -1,7 +1,7 @@
 {
   "name": "kitzy",
   "private": true,
-  "description": "Kitzy : constituer, suivre et faire tourner sa réserve d'urgence de 72 heures.",
+  "description": "Kitzy : constituer, suivre et faire tourner sa r\u00e9serve d'urgence de 72 heures.",
   "type": "module",
   "packageManager": "pnpm@10.28.0",
   "engines": {
@@ -14,17 +14,20 @@
     "test": "pnpm -r test",
     "e2e": "pnpm --filter @kitzy/web e2e",
     "lint": "eslint .",
-    "typecheck": "pnpm -r typecheck",
+    "typecheck": "pnpm -r typecheck && tsc -p scripts/tsconfig.json",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "check-links": "tsx scripts/check-links.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
+    "@types/node": "^24.19.2",
     "eslint": "9.39.5",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-react-hooks": "7.1.1",
     "globals": "17.13.0",
     "prettier": "3.9.10",
+    "tsx": "4.23.15",
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.2"
   }

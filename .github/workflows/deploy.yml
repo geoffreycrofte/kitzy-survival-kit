@@ -23,6 +23,9 @@ jobs:
       # Web Push (service du VPS) : désactivé tant que ces variables de dépôt sont vides.
       VITE_KITZY_PUSH_URL: ${{ vars.KITZY_PUSH_URL }}
       VITE_KITZY_VAPID_KEY: ${{ vars.KITZY_VAPID_KEY }}
+      # Affiliation Amazon : liens directs, non affiliés, tant que ces variables sont vides.
+      VITE_KITZY_AMAZON_TAG_FR: ${{ vars.KITZY_AMAZON_TAG_FR }}
+      VITE_KITZY_AMAZON_TAG_DE: ${{ vars.KITZY_AMAZON_TAG_DE }}
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6

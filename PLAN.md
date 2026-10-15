@@ -954,10 +954,17 @@ Pas fait dans cette phase : l'import de contacts (Contact Picker API) et le serv
 
 ### Phase 3 : Affiliation (≈ 1 à 2 semaines)
 
-- [ ] `products.json`, paliers de budget, blocs produits accessibles
-- [ ] Inscription : Awin (éditeur), Rakuten Advertising (Decathlon FR), compte Amazon.de en plus d'Amazon.fr, OneLink
-- [ ] Page de transparence affiliation
-- [ ] Workflow `link-check` (cron, PR bot, issue récapitulative)
+- [x] Conseils d'achat dans `core` (`data/products.ts`) : 38 conseils sur 30 articles, en paliers €, €€, €€€ décrits par leurs caractéristiques (pas de marque imposée, aucun prix), avec les normes pour la sécurité (EN 14604, EN 50291, EN 1869, EN 3, DIN 13157, EN 149)
+- [x] Liens vers une recherche chez Amazon.fr, Amazon.de et Decathlon.fr ; une page produit précise peut remplacer la recherche (`url`) une fois choisie et vérifiée
+- [x] Affiliation Amazon activée seulement si `KITZY_AMAZON_TAG_FR` / `KITZY_AMAZON_TAG_DE` sont fournis au build ; sinon liens directs, sans mention trompeuse
+- [x] Bloc « Où l'acheter » accessible sur la page article : palier dit en toutes lettres (le symbole € est décoratif), lien explicite (« Chercher « … » sur Amazon.fr (nouvelle fenêtre) »), `rel="sponsored"` sur les liens affiliés, mention d'affiliation et texte obligatoire du programme Partenaires Amazon, avertissement hors-ligne
+- [x] Pages « Liens d'achat et transparence » et « Confidentialité » (demandées par les réseaux d'affiliation), liées depuis les réglages
+- [x] Workflow `link-check` (chaque lundi et à la demande) : robots.txt respecté, User-Agent honnête, une requête à la fois par site, deux passages avant de conclure ; PR du bot avec `link-status.json`, issue récapitulative unique ; l'app masque les offres cassées ou indisponibles
+- [x] Hiérarchie visuelle (retour utilisateur) : titres de section ambrés (jeton `heading`, contraste testé dans les deux thèmes), sections du guide détachées en cartes, termes clés en gras, jours du scénario repérés, « Les prochains jours » en carte, gestes regroupés par thème, noms d'articles mis en avant dans les courses
+- [ ] Inscription : Awin (éditeur), Rakuten Advertising (Decathlon FR), compte Amazon.de en plus d'Amazon.fr, OneLink (à faire de ton côté)
+- [ ] Remplacer progressivement les recherches par des pages produits choisies (et suivies par la surveillance des liens)
+
+Limites connues : Amazon interdit aux robots ses pages de recherche (robots.txt) ; ces liens ne sont donc pas visités automatiquement et restent à revoir à la main chaque trimestre, comme prévu au § 9.1. L'API officielle d'Amazon ne sera accessible qu'après les premières ventes qualifiées.
 
 ### Phase 4 : Le côté fun (≈ 2 semaines)
 

@@ -4,8 +4,13 @@
  */
 import type { IsoDate } from './dates';
 
+export const TASK_GROUPS = ['alerte', 'maison', 'entourage'] as const;
+export type TaskGroup = (typeof TASK_GROUPS)[number];
+
 export interface TaskTemplate {
   id: string;
+  /** Regroupement à l'écran : être alerté, chez moi, avec mes proches. */
+  group: TaskGroup;
   source: 'official' | 'recommended';
   title: string;
   hint: string;
@@ -18,6 +23,7 @@ export interface TaskTemplate {
 export const TASKS: readonly TaskTemplate[] = [
   {
     id: 'lu-alert',
+    group: 'alerte',
     source: 'official',
     title: 'Installer LU-Alert',
     hint: 'L’app officielle d’alerte. Choisis les communes qui te concernent : maison, travail, école.',
@@ -26,6 +32,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'plan',
+    group: 'maison',
     source: 'official',
     title: 'Remplir mon plan personnel d’urgence',
     hint: 'Qui appeler, où se retrouver, où sont les robinets. Puis l’imprimer.',
@@ -33,6 +40,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'sirens',
+    group: 'alerte',
     source: 'official',
     title: 'Reconnaître les signaux des sirènes',
     hint: 'Elles sont testées le premier lundi de chaque mois à midi.',
@@ -40,6 +48,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'shutoffs',
+    group: 'maison',
     source: 'recommended',
     title: 'Savoir couper le gaz, l’eau et l’électricité',
     hint: 'Repère les robinets et le disjoncteur, et essaie une fois.',
@@ -47,6 +56,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'flood-zones',
+    group: 'alerte',
     source: 'official',
     title: 'Vérifier si ma maison est en zone inondable',
     hint: 'La carte des zones inondables est sur le géoportail de l’eau.',
@@ -54,6 +64,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'meeting-point',
+    group: 'entourage',
     source: 'recommended',
     title: 'Choisir deux points de rendez-vous',
     hint: 'Un près de la maison, un autre hors du quartier, si le foyer est séparé.',
@@ -61,6 +72,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'nearby-services',
+    group: 'entourage',
     source: 'official',
     title: 'Repérer le centre de secours, la police et l’hôpital les plus proches',
     hint: 'Près de la maison et près du travail.',
@@ -68,6 +80,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'radio',
+    group: 'alerte',
     source: 'official',
     title: 'Noter les fréquences de RTL et de la radio 100,7',
     hint: 'Les radios officielles en cas de crise. Les fréquences changent selon la région.',
@@ -75,6 +88,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'garage-exit',
+    group: 'maison',
     source: 'official',
     title: 'Savoir ouvrir la porte du garage sans électricité',
     hint: 'Et prévoir une autre sortie si la porte principale est bloquée.',
@@ -82,6 +96,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'neighbors',
+    group: 'entourage',
     source: 'official',
     title: 'Noter qui peut aider, et qui aura besoin d’aide',
     hint: 'Une voisine qui bricole, un voisin âgé qui vit seul…',
@@ -89,12 +104,14 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'car-tank',
+    group: 'maison',
     source: 'recommended',
     title: 'Garder le réservoir de la voiture au moins à moitié plein',
     hint: 'Les stations-service ne fonctionnent plus sans électricité.',
   },
   {
     id: 'backups',
+    group: 'maison',
     source: 'official',
     title: 'Faire des copies de mes documents et photos',
     hint: 'Sur une clé USB dans le kit, et une copie ailleurs.',
@@ -102,6 +119,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'passwords',
+    group: 'maison',
     source: 'official',
     title: 'Utiliser un gestionnaire de mots de passe et la double authentification',
     hint: 'La meilleure protection contre les attaques informatiques.',
@@ -109,6 +127,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'first-aid',
+    group: 'entourage',
     source: 'official',
     title: 'Suivre un cours de premiers secours',
     hint: 'La Croix-Rouge et le CGDIS en proposent toute l’année.',
@@ -116,6 +135,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'empty-bag',
+    group: 'maison',
     source: 'official',
     title: 'Préparer un sac vide, prêt à remplir',
     hint: 'Pour emporter l’essentiel en quelques minutes en cas d’évacuation.',
@@ -123,6 +143,7 @@ export const TASKS: readonly TaskTemplate[] = [
   },
   {
     id: 'talk',
+    group: 'entourage',
     source: 'official',
     title: 'Parler du kit à mes proches',
     hint: 'Surtout aux personnes âgées ou isolées. « Parlez-en autour de vous. »',

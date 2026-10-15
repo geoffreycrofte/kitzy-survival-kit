@@ -1,0 +1,59 @@
+name: Surveillance des liens
+
+# Chaque lundi matin, et à la demande.
+on:
+  schedule:
+    - cron: '17 5 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+concurrency:
+  group: link-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm check-links
+
+      # Les statuts mis à jour arrivent par une PR : l'app masque ensuite les offres cassées.
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          branch: bot/statut-des-liens
+          add-paths: packages/core/src/data/link-status.json
+          commit-message: 'Statut des liens : vérification hebdomadaire'
+          title: 'Statut des liens : vérification hebdomadaire'
+          body: |
+            Mise à jour automatique de `link-status.json` par le workflow « Surveillance des liens ».
+            Les offres déclarées cassées ou indisponibles (deux passages consécutifs) seront masquées dans l’app après la fusion.
+          delete-branch: true
+
+      # Une seule issue récapitulative, mise à jour chaque semaine, fermée quand tout va bien.
+      - name: Issue récapitulative
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Liens à vérifier"
+          gh label create liens --color FBCA04 --description "Surveillance des liens" --force
+          NUMBER=$(gh issue list --label liens --state open --search "in:title \"$TITLE\"" --json number --jq '.[0].number')
+          if [ -s link-report.md ]; then
+            if [ -n "$NUMBER" ]; then
+              gh issue edit "$NUMBER" --body-file link-report.md
+            else
+              gh issue create --title "$TITLE" --label liens --body-file link-report.md
+            fi
+          elif [ -n "$NUMBER" ]; then
+            gh issue close "$NUMBER" --comment "Tous les liens répondent à nouveau."
+          fi
