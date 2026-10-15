@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
@@ -16,10 +17,33 @@ import { HOME_KIT_ID } from '../data/store';
 import { formatDay, formatQuantity } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
 
+const INTRO_KEY = 'kitzy.intro';
+
+/** L'histoire des lucioles ne se joue qu'une fois par session. */
+function useIntroOnce(): boolean {
+  const [play] = useState(() => {
+    try {
+      return sessionStorage.getItem(INTRO_KEY) !== 'vue';
+    } catch {
+      return false;
+    }
+  });
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(INTRO_KEY, 'vue');
+    } catch {
+      // Stockage indisponible : l'animation se rejouera, ce n'est pas grave.
+    }
+  }, []);
+  return play;
+}
+
 export function Home() {
   const { t } = useTranslation();
   usePageTitle(t('home.title'));
   const data = useKitzy();
+  const introOnce = useIntroOnce();
+  const intro = data && !data.household ? (introOnce ? 'play' : 'still') : undefined;
 
   const essentials = data?.household ? data.essentials : emptyEssentials();
   const count = litCount(essentials);
@@ -27,20 +51,30 @@ export function Home() {
   const allLit = remaining === 0;
 
   return (
-    <div className="page home">
+    <div className={`page home${intro === 'play' ? ' home--intro-play' : ''}`}>
       <section className="home__hero" aria-labelledby="home-title">
-        <Lantern essentials={essentials} pose={allLit ? 'fete' : 'bonjour'} />
+        <Lantern essentials={essentials} pose={allLit ? 'fete' : 'bonjour'} intro={intro} />
         <h1 id="home-title" tabIndex={-1}>
           <span className="home__hello">{t('home.hello')}</span>{' '}
           {t(`home.stage.${stageFor(count)}`)}
         </h1>
-        <p className="home__status">
-          {allLit ? t('home.allLit') : t('home.remaining', { count: remaining })}
-        </p>
+        {intro ? (
+          <div className="home__story reveal">
+            <p>{t('home.story.watch')}</p>
+            <p>{t('home.story.fade')}</p>
+            <p className="home__story-end">{t('home.story.allGood')}</p>
+          </div>
+        ) : (
+          data && (
+            <p className="home__status">
+              {allLit ? t('home.allLit') : t('home.remaining', { count: remaining })}
+            </p>
+          )
+        )}
       </section>
 
       {data && !data.household && (
-        <section className="card" aria-labelledby="home-mission">
+        <section className="card reveal reveal--late" aria-labelledby="home-mission">
           <h2 id="home-mission" className="card__label">
             {t('home.firstMissionLabel')}
           </h2>

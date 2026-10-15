@@ -70,6 +70,8 @@ export function App() {
         {t('app.skipLink')}
       </a>
       <Header />
+      {/* Avant le contenu dans le code : barre du bas sur mobile, colonne latérale sur bureau. */}
+      <BottomNav />
       <main id="main" className="app__main" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -93,7 +95,6 @@ export function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
-      <BottomNav />
       <UpdateBanner />
       <Announcer />
       {webPushConfigured && <PushSync />}
