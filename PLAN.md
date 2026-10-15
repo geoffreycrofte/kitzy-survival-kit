@@ -22,6 +22,8 @@
 | Affiliation | Amazon (compte existant), AliExpress (compte existant, usage très limité), plus des marchands réputés FR/DE à ouvrir (§ 8.3) |
 | Dons | **PayPal.me/Crofte** et **Revolut.me/crofte** sur la PWA (§ 8.5) |
 | Design | **« La Veillée »** : terrier éclairé et lucioles, thème sombre et thème clair, animations douces respectant le mouvement réduit ([maquettes](https://claude.ai/artifact/Sg3NGkrGHWi7xQpJ3iVhvB), § 11) |
+| Ordinateur | **Version bureau** de la même PWA, installable depuis Chrome et Edge, navigation latérale à partir de 960 px (§ 3.10) |
+| Synchronisation | **Sur le cloud de la personne** (Google Drive, Dropbox, OneDrive, iCloud ou dossier synchronisé), **chiffrée de bout en bout**, sans compte ni serveur Kitzy (§ 7.1, phase 6) |
 - Langue de travail : français
 - Référentiel d'accessibilité : **RAWeb 1.1, niveau AA** (skills `raweb-code` / `raweb-audit` de [luxembourg-accessibility-skillset](https://github.com/geoffreycrofte/luxembourg-accessibility-skillset)), puis **RAAM 1.1** si on publie des apps natives (skills `raam-code` / `raam-audit`)
 
@@ -35,7 +37,7 @@
 4. [Rendre la préparation « fun » et normale](#4-rendre-la-préparation-fun-et-normale)
 5. [Architecture technique](#5-architecture-technique)
 6. [Hors-ligne et notifications : contraintes et stratégie](#6-hors-ligne-et-notifications--contraintes-et-stratégie)
-7. [Modèle de données](#7-modèle-de-données)
+7. [Modèle de données et synchronisation](#7-modèle-de-données-et-synchronisation)
 8. [Affiliation et catalogue produits](#8-affiliation-et-catalogue-produits)
 9. [Surveillance des liens](#9-surveillance-des-liens)
 10. [Accessibilité](#10-accessibilité)
@@ -396,6 +398,19 @@ Sans serveur, sans compte : **les données voyagent dans le lien lui-même**.
 
 ---
 
+### 3.10 Version bureau (ordinateur portable, grand écran)
+
+La même PWA, installable depuis Chrome ou Edge sur Windows, macOS et Linux (fenêtre dédiée, icône dans le dock ou le menu Démarrer). Le stockage local (IndexedDB) et les notifications fonctionnent comme sur mobile ; la vérification quotidienne en arrière-plan (Periodic Background Sync) marche sur Chrome et Edge une fois l'app installée. Safari et Firefox : rappels à l'ouverture et export agenda `.ics`.
+
+Mise en page à partir de 960 px de large :
+
+- **Navigation latérale** à gauche (les mêmes cinq entrées), placée avant le contenu dans le code : même ordre au clavier sur mobile et sur bureau.
+- **Accueil en deux colonnes** : la fenêtre du terrier et ses lucioles à gauche (fixe au défilement), la mission, « Les prochains jours » et la suite à droite.
+- **Grilles** à deux colonnes pour le guide, les kits et les gestes ; largeur de lecture limitée (≈ 52 rem) pour les pages de texte et les formulaires.
+- Le reste de l'expérience est identique : pas de fonction réservée au bureau, pas de survol indispensable.
+
+Plus tard, si besoin : raccourcis clavier (ajout rapide d'un article), impression du plan et de la liste de courses mises en avant, glisser-déposer d'une sauvegarde. Une app de bureau empaquetée (Tauri) n'apporterait rien de plus pour l'instant.
+
 ## 4. Rendre la préparation « fun » et normale
 
 L'idée générale : traiter le kit comme **une habitude de foyer**, au même titre que la trousse de pharmacie ou le sac de camping, et pas comme un abri antiatomique.
@@ -567,7 +582,7 @@ Tout est modifiable. Les rappels du même jour sont **regroupés** (une seule no
 
 ---
 
-## 7. Modèle de données
+## 7. Modèle de données et synchronisation
 
 ```ts
 // Foyer
@@ -618,6 +633,32 @@ Settings { locale; theme; textScale; reminderOffsets; channels; quietHours }
 - L'**export** JSON reprend tout (`schemaVersion` inclus) ; l'import valide le schéma et propose « fusionner » ou « remplacer ».
 
 ---
+
+### 7.1 Synchronisation entre appareils (à venir)
+
+Objectif : retrouver son kit sur le téléphone, la tablette et l'ordinateur, sans compte Kitzy et **sans serveur Kitzy**, en s'appuyant sur le cloud que la personne utilise déjà. Le cloud ne voit jamais les données en clair.
+
+**Fournisseurs et techniques (toutes côté navigateur, compatibles avec un hébergement statique)**
+
+| Fournisseur | Technique | Accès demandé | Remarques |
+|---|---|---|---|
+| **Google Drive** | OAuth 2.0 PKCE (Google Identity Services) + API Drive | `drive.appdata` : un dossier caché propre à Kitzy, invisible du reste du Drive | Écran de consentement Google à faire valider |
+| **Dropbox** | OAuth PKCE (sans secret) + API Dropbox | « App folder » : `Applications/Kitzy` seulement | Le plus simple à mettre en place |
+| **OneDrive** | MSAL.js (PKCE) + Microsoft Graph | Dossier spécial `approot` | Comptes personnels et professionnels |
+| **iCloud** | CloudKit JS (web) ; iCloud natif dans l'app Expo | Base privée de la personne | Demande un compte Apple Developer et un conteneur CloudKit ; prévu d'abord dans l'app native |
+| **Dossier synchronisé** (tout cloud) | File System Access API : la personne choisit un fichier dans son dossier iCloud Drive, Dropbox, OneDrive ou Google Drive installé sur l'ordinateur | Ce seul fichier | Chrome et Edge sur ordinateur ; zéro OAuth |
+| Partout | Export / import du fichier de sauvegarde (déjà disponible) | — | Solution de secours |
+
+**Principes**
+
+- **Chiffrement de bout en bout** : une phrase secrète choisie par la personne, dérivée par PBKDF2 (ou Argon2 en WebAssembly), chiffrement AES-GCM avec WebCrypto. Le fichier `kitzy-sync.enc` contient la sauvegarde chiffrée et un en-tête minimal (version, sel, appareil). Phrase oubliée = données du cloud illisibles (avertissement clair) ; les données locales restent intactes.
+- **Données de santé** du plan d'urgence : synchronisées seulement chiffrées, et avec un consentement distinct.
+- **Fusion** par enregistrement, « le plus récent gagne » : chaque kit, article, ajout de courses, geste et étape du plan porte un `updatedAt` ; les suppressions laissent une **pierre tombale** (`deletedAt`) gardée 90 jours. Le plan fusionne étape par étape (`mergePlanStep` existe déjà). Le moteur de fusion est pur et testé dans `core`, partagé avec l'app Expo.
+- **Quand** : à l'ouverture, 10 s après une modification, au retour sur l'onglet ; hors-ligne, la synchro attend la connexion. Jamais de blocage de l'app pendant une synchro.
+- **Jetons** OAuth gardés dans IndexedDB, révocables depuis les réglages (« Déconnecter Google Drive ») ; portées minimales.
+- **Prérequis** : le domaine définitif (kitzy.lu) pour déclarer les adresses de retour OAuth ; mise à jour de la page de confidentialité avant l'activation.
+
+**Ordre proposé** : moteur de fusion et chiffrement (`core`) → Dropbox et dossier synchronisé → Google Drive → OneDrive → iCloud (app Expo, puis CloudKit JS si la demande existe).
 
 ## 8. Affiliation et catalogue produits
 
@@ -788,6 +829,7 @@ Lent comme une flamme : une mise en scène à l'ouverture, des boucles d'ambianc
 |---|---|---|---|
 | La lanterne s'allume | Ouverture, une fois | 1,1 s, échelle 0,9 → 1 et opacité | Déjà affichée |
 | Les lucioles apparaissent | Ouverture | 0,5 s chacune, décalage 120 ms | Affichées directement |
+| **Histoire des lucioles** (foyer pas encore présenté) | Accueil, une fois par session | Les six lucioles s'allument, puis s'éteignent une à une (0,6 s chacune, décalage 300 ms, à partir de 1,8 s), la fenêtre faiblit, puis le texte apparaît (3,9 s) et la carte « Présenter mon foyer » (4,3 s) ; moins de 5 s au total | Lucioles déjà éteintes, texte affiché d'emblée |
 | La lanterne respire | Boucle | 7 s, ±4 % | Halo fixe |
 | Le hérisson respire | Boucle | 4,5 s, 1 px | Immobile |
 | Les lucioles flottent et scintillent | Boucle | 8 à 11 s, ±4 px ; éclat 82 → 100 % en 3,6 s | Immobiles, pleinement allumées |
@@ -803,6 +845,7 @@ Règles :
 - Pas de clignotement (RAWeb 13.7) : variation d'éclat lente, très en dessous de 3 fois par seconde.
 - **Deux interrupteurs** : `prefers-reduced-motion` coupe tout par défaut, **et** un réglage « Animations d'ambiance » permet d'arrêter et de relancer les boucles, quel que soit le système (RAWeb 13.8 : tout mouvement automatique de plus de 5 s doit être contrôlable).
 - React Native : mêmes durées et courbes avec `react-native-reanimated`, en lisant `AccessibilityInfo.isReduceMotionEnabled()`.
+- Texte de l'histoire des lucioles : « Six lucioles veillent sur ton terrier : l'eau, les repas, la lumière, la chaleur, les soins et ton plan. Quand une réserve manque, sa luciole s'éteint. Prépare les réserves de ton foyer pour les rallumer, une à une. **Tant qu'elles brillent toutes, tout va bien.** » Le texte est dans la page dès le départ (lecteurs d'écran), seule son apparition visuelle est différée ; un élément qui reçoit le focus pendant l'animation s'affiche aussitôt.
 
 ### 11.3 Le hérisson
 
@@ -966,6 +1009,12 @@ Pas fait dans cette phase : l'import de contacts (Contact Picker API) et le serv
 
 Limites connues : Amazon interdit aux robots ses pages de recherche (robots.txt) ; ces liens ne sont donc pas visités automatiquement et restent à revoir à la main chaque trimestre, comme prévu au § 9.1. L'API officielle d'Amazon ne sera accessible qu'après les premières ventes qualifiées.
 
+### Retouches après la phase 3 ✅
+
+- [x] Histoire des lucioles à l'accueil quand le foyer n'est pas encore présenté (§ 11.2)
+- [x] Version bureau à partir de 960 px : navigation latérale, accueil en deux colonnes, grilles (§ 3.10)
+- [x] Synchronisation cloud cadrée (§ 7.1), à réaliser dans une phase dédiée
+
 ### Phase 4 : Le côté fun (≈ 2 semaines)
 
 - [ ] Paliers de progression et badges
@@ -984,6 +1033,13 @@ Limites connues : Amazon interdit aux robots ses pages de recherche (robots.txt)
 - [ ] Profils pays supplémentaires (FR, BE, DE, NL)
 
 ---
+
+### Phase 6 : Synchronisation entre appareils (§ 7.1)
+
+- [ ] `updatedAt` et pierres tombales sur tous les enregistrements, moteur de fusion testé dans `core`
+- [ ] Chiffrement de bout en bout (phrase secrète, AES-GCM)
+- [ ] Adaptateurs Dropbox et dossier synchronisé, puis Google Drive, OneDrive, iCloud (Expo)
+- [ ] Réglages « Synchroniser mes appareils », page de confidentialité mise à jour
 
 ## 15. Questions ouvertes
 

@@ -16,15 +16,24 @@ const POSITIONS: ReadonlyArray<[number, number]> = [
 interface LanternProps {
   essentials: EssentialsState;
   pose?: MascotPose;
+  /**
+   * Foyer pas encore présenté : les lucioles s'éteignent une à une (`play`),
+   * ou sont déjà éteintes (`still`, après la première fois ou sans animation).
+   */
+  intro?: 'play' | 'still';
 }
 
 /** La fenêtre éclairée du terrier, entourée des six lucioles. */
-export function Lantern({ essentials, pose = 'bonjour' }: LanternProps) {
+export function Lantern({ essentials, pose = 'bonjour', intro }: LanternProps) {
   const { t } = useTranslation();
   const count = litCount(essentials);
 
   return (
-    <div className="lantern" role="img" aria-label={t('home.fliesLabel', { count })}>
+    <div
+      className={`lantern${intro ? ` lantern--intro lantern--intro-${intro}` : ''}`}
+      role="img"
+      aria-label={t('home.fliesLabel', { count })}
+    >
       <div className="lantern__window">
         <div className="lantern__glow" />
         <img className="lantern__hog" src={mascot(pose)} alt="" width={640} height={1060} />
@@ -40,13 +49,17 @@ export function Lantern({ essentials, pose = 'bonjour' }: LanternProps) {
         const dotStyle = {
           '--kz-appear-delay': `${0.9 + i * 0.12}s`,
           '--kz-twinkle-delay': `${i * 0.5}s`,
+          // Extinction une à une, dans l'ordre des essentiels.
+          '--kz-out-delay': `${1.8 + i * 0.3}s`,
         } as CSSProperties;
         return (
           <span key={essential} className="lantern__fly" style={wrapStyle}>
             <span
               className={essentials[essential] ? 'fly fly--on' : 'fly fly--off'}
               style={dotStyle}
-            />
+            >
+              {intro === 'play' && <span className="fly__light" />}
+            </span>
           </span>
         );
       })}

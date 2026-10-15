@@ -47,6 +47,68 @@ html[data-motion='full'] .button:active {
   transform: scale(0.97);
 }
 
+/* Histoire d'accueil (foyer pas encore présenté), moins de 5 secondes, une fois par session :
+   les six lucioles brillent, s'éteignent une à une, la fenêtre faiblit,
+   puis le texte explique comment les rallumer. */
+
+html[data-motion='full'] .lantern--intro-play .fly__light {
+  display: block;
+  position: absolute;
+  inset: -2px;
+  border-radius: 999px;
+  background: var(--kz-fly);
+  box-shadow: 0 0 14px 4px var(--kz-fly-glow);
+  animation: kz-out 0.6s ease-in var(--kz-out-delay, 2s) both;
+}
+
+html[data-motion='full'] .lantern--intro-play .lantern__glow {
+  animation:
+    kz-dim 1.2s ease-in-out 2.4s both,
+    kz-breathe 7s ease-in-out infinite;
+}
+
+html[data-motion='full'] .home--intro-play .reveal {
+  animation: kz-reveal 0.6s var(--kz-ease) 3.9s both;
+}
+
+html[data-motion='full'] .home--intro-play .reveal--late {
+  animation-delay: 4.3s;
+}
+
+/* Un élément qui reçoit le focus pendant l'animation apparaît tout de suite. */
+html[data-motion='full'] .home--intro-play .reveal:focus-within {
+  animation: none;
+}
+
+@keyframes kz-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes kz-dim {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.45;
+  }
+}
+
+@keyframes kz-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes kz-dawn {
   from {
     opacity: 0;

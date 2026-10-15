@@ -84,6 +84,7 @@ main:focus {
 }
 
 .app__main {
+  order: 1;
   flex: 1;
   padding: 8px 20px 24px;
 }
@@ -268,7 +269,33 @@ main:focus {
 }
 
 .fly--off {
+  position: relative;
   border: 2px solid var(--kz-fly-off);
+}
+
+/* Lumière de départ, qui s'éteint pendant l'histoire d'accueil (motion.css) */
+.fly__light {
+  display: none;
+}
+
+/* Foyer pas encore présenté : la fenêtre est plus sombre */
+.lantern--intro .lantern__glow {
+  opacity: 0.45;
+}
+
+.home__story {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 30rem;
+  color: var(--kz-muted);
+  font-size: 1.0625rem;
+}
+
+.home__story-end {
+  color: var(--kz-heading);
+  font-family: var(--kz-font-display);
+  font-size: 1.1875rem;
 }
 
 /* Pages provisoires */
@@ -350,6 +377,7 @@ main:focus {
 /* Navigation du bas */
 
 .bottom-nav {
+  order: 2;
   position: sticky;
   bottom: 0;
   background: var(--kz-nav);
@@ -1462,4 +1490,130 @@ fieldset.card > legend + * {
   border-top: 1px solid var(--kz-line);
   color: var(--kz-muted);
   font-size: 0.875rem;
+}
+
+/* ---------- Bureau (≥ 960 px) : navigation latérale, contenu plus large ---------- */
+
+@media (min-width: 60rem) {
+  html {
+    scroll-padding-bottom: 24px;
+  }
+
+  .app {
+    max-width: 1240px;
+    display: grid;
+    grid-template-columns: 232px minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'header header'
+      'nav main';
+    column-gap: 24px;
+    padding: 0 24px;
+  }
+
+  .header {
+    grid-area: header;
+    padding: 24px 12px 16px;
+  }
+
+  .app__main {
+    grid-area: main;
+    padding: 8px 8px 64px;
+  }
+
+  .bottom-nav {
+    grid-area: nav;
+    position: sticky;
+    top: 24px;
+    align-self: start;
+    padding: 0;
+    background: transparent;
+    border: 0;
+  }
+
+  .bottom-nav ul {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .bottom-nav__link {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 14px;
+    min-height: 52px;
+    padding: 0 16px;
+    border-radius: 16px;
+    font-size: 1.0625rem;
+  }
+
+  .bottom-nav__link:hover {
+    background: var(--kz-surface);
+  }
+
+  .bottom-nav__link[aria-current='page'] {
+    background: var(--kz-surface);
+  }
+
+  .update-banner-region {
+    bottom: 24px;
+  }
+
+  /* Largeur de lecture confortable pour les pages courantes */
+  .page {
+    max-width: 52rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  /* Accueil : la fenêtre du terrier à gauche, la suite à droite */
+  .home {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    grid-auto-rows: min-content;
+    gap: 20px 56px;
+    align-items: start;
+  }
+
+  .home__hero {
+    grid-column: 1;
+    grid-row: 1 / span 6;
+    position: sticky;
+    top: 24px;
+    padding-top: 12px;
+  }
+
+  .home > :not(.home__hero) {
+    grid-column: 2;
+  }
+
+  .home .lantern {
+    width: min(440px, 100%);
+  }
+
+  /* Listes en grille */
+  .kit-list,
+  .guide-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .task-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .plan-editor,
+  .plan-print {
+    max-width: 52rem;
+  }
+}
+
+@media (min-width: 60rem) and (forced-colors: active) {
+  .bottom-nav__link[aria-current='page'] {
+    outline: 2px solid CanvasText;
+  }
 }
