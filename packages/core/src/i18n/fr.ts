@@ -15,6 +15,11 @@ export const fr = {
     offlineReady: 'Kitzy fonctionne maintenant sans connexion.',
     dismiss: 'Fermer',
     loading: 'Chargement de ton terrier…',
+    stuckTitle: 'Le chargement prend trop de temps',
+    stuckText:
+      'Kitzy n’arrive pas à lire tes données sur cet appareil. Elles ne sont pas perdues : recharge la page, ou ferme les autres onglets et fenêtres de Kitzy ouverts sur ce téléphone.',
+    stuckReload: 'Recharger Kitzy',
+    stuckDetail: 'Détail technique : {{error}}',
   },
   nav: {
     home: 'Terrier',

@@ -27,6 +27,7 @@ import { announce } from '../lib/announce';
 import { formatDate } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
+import { Loading } from '../components/Loading';
 
 const uid = () => crypto.randomUUID();
 
@@ -40,7 +41,7 @@ export function PlanOverview() {
   const { t } = useTranslation();
   usePageTitle(t('plan.title'));
   const data = useKitzy();
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
 
   const progress = planProgress(data.plan);
   const started = PLAN_STEPS.some((s) => progress[s] !== 'empty');
@@ -121,7 +122,7 @@ export function PlanStepPage() {
   const data = useKitzy();
   usePageTitle(isStep(step) ? `${t(`plan.steps.${step}`)}, ${t('plan.title')}` : t('plan.title'));
   if (!isStep(step)) return <NotFound />;
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
   const initial = data.plan ?? prefillPlan(emptyPlan(), data.household, uid);
   return <PlanEditor key={step} step={step} initial={initial} />;
 }

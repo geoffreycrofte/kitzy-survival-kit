@@ -20,6 +20,7 @@ import { announce } from '../lib/announce';
 import { formatDate, formatQuantity } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
+import { Loading } from '../components/Loading';
 
 /** Lit « 4,5 » comme « 4.5 ». */
 function parseQuantity(value: string): number {
@@ -44,7 +45,7 @@ export function Item() {
   }
   usePageTitle(row?.name ?? t('kits.title'));
 
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
   if (!kit || !row) return <NotFound />;
 
   const { template, item, status, unit } = row;

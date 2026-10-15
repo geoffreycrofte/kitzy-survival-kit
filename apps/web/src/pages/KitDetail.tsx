@@ -10,6 +10,7 @@ import { announce } from '../lib/announce';
 import { formatProgress } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
+import { Loading } from '../components/Loading';
 
 export function KitDetail() {
   const { t } = useTranslation();
@@ -35,7 +36,7 @@ export function KitDetail() {
     [kitId, navigate],
   );
 
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
   if (!kit) return <NotFound />;
 
   const rows = kitRows(kit, data.ctx);

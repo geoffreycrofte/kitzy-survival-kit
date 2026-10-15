@@ -19,15 +19,29 @@ import {
   type Unit,
 } from '@kitzy/core';
 import { db } from './db';
+import { reportDataError } from './health';
 import { getMeta, loadAll, setMeta, type AppData } from './load';
 
 export { emptyData, type AppData } from './load';
 
 export const HOME_KIT_ID = 'home';
 
+// Android met en pause les onglets en arrière-plan (« freeze ») : un onglet figé qui garde
+// la base ouverte peut bloquer l'app installée. On rend la main ; Dexie rouvre au besoin.
+document.addEventListener('freeze', () => db.close({ disableAutoOpen: false }));
+
 /** Toutes les données de l'app, mises à jour en direct. `undefined` pendant le chargement. */
 export function useAppData(): AppData | undefined {
-  return useLiveQuery(loadAll, [], undefined);
+  return useLiveQuery(
+    () =>
+      loadAll().catch((error: unknown) => {
+        // Une erreur de lecture ne doit pas tout casser : on la signale à l'écran.
+        reportDataError(error);
+        return undefined;
+      }),
+    [],
+    undefined,
+  );
 }
 
 function uid(): string {

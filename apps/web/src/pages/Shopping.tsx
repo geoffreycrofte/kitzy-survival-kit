@@ -8,6 +8,7 @@ import { addExtras, clearBought, removeExtra, toggleBought } from '../data/store
 import { announce } from '../lib/announce';
 import { formatQuantity } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
+import { Loading } from '../components/Loading';
 
 export function Shopping() {
   const { t } = useTranslation();
@@ -19,7 +20,7 @@ export function Shopping() {
     [data],
   );
 
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
 
   const toBuy = entries.filter((e) => !data.bought.includes(e.key));
   const groups = new Map<string, ShoppingEntry[]>();

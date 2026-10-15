@@ -13,6 +13,7 @@ import {
 import { useKitzy } from '../data/derived';
 import { formatDate } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
+import { Loading } from '../components/Loading';
 
 /**
  * Version papier du plan, structurée comme le formulaire officiel.
@@ -22,7 +23,7 @@ export function PlanPrint() {
   const { t } = useTranslation();
   usePageTitle(t('plan.printPage.title'));
   const data = useKitzy();
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
 
   const plan = data.plan ?? prefillPlan(emptyPlan(), data.household, () => crypto.randomUUID());
   const e = plan.emergency;

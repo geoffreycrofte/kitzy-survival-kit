@@ -15,6 +15,7 @@ import { useKitzy } from '../data/derived';
 import { saveHousehold, suggestedBags } from '../data/store';
 import { announce } from '../lib/announce';
 import { usePageTitle } from '../lib/usePageTitle';
+import { Loading } from '../components/Loading';
 
 interface Counts {
   adults: number;
@@ -72,7 +73,7 @@ export function Household() {
   const { t } = useTranslation();
   usePageTitle(t('household.title'));
   const data = useKitzy();
-  if (!data) return <p>{t('app.loading')}</p>;
+  if (!data) return <Loading />;
   return (
     <HouseholdForm
       initialCounts={data.household ? fromHousehold(data.household) : { ...EMPTY, adults: 1 }}
