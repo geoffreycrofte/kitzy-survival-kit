@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ACHIEVEMENTS, type Achievement } from '@kitzy/core';
+import { ACHIEVEMENTS, PREP_TIERS, planProgress, prepTierFor, type Achievement } from '@kitzy/core';
 import { TrophyIcon } from '../components/Icons';
 import { Loading } from '../components/Loading';
 import { Meter } from '../components/Meter';
@@ -7,7 +7,7 @@ import { useKitzy } from '../data/derived';
 import { formatDate } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
 
-const GROUPS: Achievement['group'][] = ['reserves', 'plan', 'gestes'];
+const GROUPS: Achievement['group'][] = ['reserves', 'plan', 'gestes', 'activites'];
 
 /** Les succès : ceux qui sont acquis brillent, les autres disent comment les obtenir. */
 export function Achievements() {
@@ -17,6 +17,12 @@ export function Achievements() {
   if (!data) return <Loading />;
   const done = ACHIEVEMENTS.filter((a) => data.achievements[a.id]).length;
   const progress = t('achievements.progress', { done, total: ACHIEVEMENTS.length });
+  const tier = prepTierFor({
+    essentials: data.essentials,
+    neighbourhood: planProgress(data.plan).quartier,
+    tasks: data.tasks,
+  });
+  const tierIndex = PREP_TIERS.indexOf(tier);
 
   return (
     <div className="page">
@@ -27,6 +33,46 @@ export function Achievements() {
         label={t('achievements.title')}
         valueText={progress}
       />
+
+      <section className="card tiers" aria-labelledby="tier-title">
+        <h2 id="tier-title" className="card__label">
+          {t('achievements.tierTitle')}
+        </h2>
+        <p className="card__text">
+          {t('achievements.tierLabel', {
+            current: tierIndex + 1,
+            total: PREP_TIERS.length,
+            name: t(`achievements.tiers.${tier}.name`),
+          })}
+        </p>
+        <ol className="tiers__list">
+          {PREP_TIERS.map((id, i) => {
+            const state = i < tierIndex ? 'reached' : i === tierIndex ? 'current' : 'next';
+            return (
+              <li
+                key={id}
+                className={`tiers__step tiers__step--${state}`}
+                aria-current={state === 'current' ? 'step' : undefined}
+              >
+                <span className="tiers__dot" />
+                <span className="tiers__body">
+                  <span className="tiers__name">{t(`achievements.tiers.${id}.name`)}</span>
+                  <span className="tiers__hint">{t(`achievements.tiers.${id}.hint`)}</span>
+                  <span className="tiers__state">
+                    {t(
+                      state === 'current'
+                        ? 'achievements.tierCurrent'
+                        : state === 'reached'
+                          ? 'achievements.tierReached'
+                          : 'achievements.tierNext',
+                    )}
+                  </span>
+                </span>
+              </li>
+            );
+          })}
+        </ol>
+      </section>
 
       {GROUPS.map((group) => (
         <section key={group} className="kit-group" aria-labelledby={`badges-${group}`}>

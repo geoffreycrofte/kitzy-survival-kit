@@ -25,6 +25,7 @@ export function AchievementWatcher() {
         hasItems: data.items.some((i) => i.lots.some((l) => l.quantity > 0)),
         essentials: data.essentials,
         dashboard: data.dashboard,
+        activities: data.activities,
       },
       data.achievements,
     ).filter((id) => !pending.current.has(id));

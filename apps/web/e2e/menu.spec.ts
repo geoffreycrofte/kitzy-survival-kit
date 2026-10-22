@@ -30,7 +30,7 @@ test.describe('Tableau de bord, menu et succès', () => {
       'aria-valuetext',
       '1 sur 16 faits',
     );
-    await expect(dash.getByRole('link', { name: /Mes succès\s: 2 sur 12/ })).toBeVisible();
+    await expect(dash.getByRole('link', { name: /Mes succès\s: 2 sur 18/ })).toBeVisible();
   });
 
   test('le menu plein écran : thème, pages, Échap rend le focus', async ({ page }) => {
@@ -63,7 +63,7 @@ test.describe('Tableau de bord, menu et succès', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'Mes succès' })).toBeVisible();
     await expect(page.getByRole('meter', { name: 'Mes succès' })).toHaveAttribute(
       'aria-valuetext',
-      '1 sur 12 débloqués',
+      '1 sur 18 débloqués',
     );
     const welcome = page.getByRole('listitem').filter({ hasText: 'Bienvenue au terrier' });
     await expect(welcome).toContainText('Débloqué le');

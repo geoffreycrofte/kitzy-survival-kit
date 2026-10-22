@@ -4,6 +4,8 @@ import {
   consumeFifo,
   countMembers,
   createBackup,
+  type ActivitiesDone,
+  type ActivityId,
   mergePlanStep,
   todayLocal,
   type BackupData,
@@ -259,6 +261,31 @@ const DATA_TABLES = () => [db.meta, db.kits, db.items, db.extras, db.barcodes];
 /** Réglages propres à l'appareil, conservés lors d'une restauration. */
 const DEVICE_KEYS = ['notify', 'pushSalt'];
 
+/* ---------- Activités ---------- */
+
+/** Note une activité faite aujourd'hui (rituel, défi, simulation, quiz, recette). */
+export async function recordActivity(id: ActivityId | 'quiz-parfait'): Promise<void> {
+  await db.transaction('rw', db.meta, async () => {
+    const done = await getMeta<ActivitiesDone>('activities', {});
+    await setMeta('activities', { ...done, [id]: todayLocal() });
+  });
+}
+
+/** Tous les appareils suivis sont notés comme rechargés aujourd'hui. */
+export async function chargeAll(): Promise<number> {
+  const today = todayLocal();
+  const items = (await db.items.toArray()).filter((i) => i.battery);
+  await Promise.all(
+    items.map((i) =>
+      db.items.update(i.id, {
+        battery: { ...i.battery!, lastChargedAt: today },
+        updatedAt: now(),
+      }),
+    ),
+  );
+  return items.length;
+}
+
 /** Note les succès qui viennent d'être atteints, avec la date du jour. */
 export async function recordAchievements(ids: readonly string[]): Promise<void> {
   if (ids.length === 0) return;
@@ -294,6 +321,7 @@ export async function importData(data: BackupData): Promise<void> {
     if (data.plan) await setMeta('plan', data.plan);
     await setMeta('tasks', data.tasks);
     await setMeta('achievements', data.achievements);
+    await setMeta('activities', data.activities);
     await db.kits.bulkPut(data.kits);
     await db.items.bulkPut(data.items);
     await db.extras.bulkPut(data.extras);

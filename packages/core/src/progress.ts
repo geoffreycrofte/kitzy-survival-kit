@@ -2,6 +2,7 @@
  * Tableau de bord de l'accueil et succès à débloquer.
  * Tout est calculé à partir des données : rien à saisir en plus.
  */
+import type { ActivitiesDone } from './activities';
 import type { IsoDate } from './dates';
 import { ESSENTIALS, litCount, type EssentialsState } from './essentials';
 import type { Kit } from './inventory';
@@ -77,12 +78,13 @@ export interface AchievementInput {
   hasItems: boolean;
   essentials: EssentialsState;
   dashboard: Dashboard;
+  activities: ActivitiesDone;
 }
 
 export interface Achievement {
   id: string;
   /** Regroupement à l'écran. */
-  group: 'reserves' | 'plan' | 'gestes';
+  group: 'reserves' | 'plan' | 'gestes' | 'activites';
   test: (input: AchievementInput) => boolean;
 }
 
@@ -120,6 +122,12 @@ export const ACHIEVEMENTS: readonly Achievement[] = [
     group: 'gestes',
     test: (i) => i.dashboard.tasks.total > 0 && i.dashboard.tasks.done === i.dashboard.tasks.total,
   },
+  { id: 'premier-lundi', group: 'activites', test: (i) => Boolean(i.activities['mini-check']) },
+  { id: 'grand-check-up', group: 'activites', test: (i) => Boolean(i.activities['check-up']) },
+  { id: 'soiree-conserves', group: 'activites', test: (i) => Boolean(i.activities.recettes) },
+  { id: 'soiree-lanterne', group: 'activites', test: (i) => Boolean(i.activities.defi) },
+  { id: 'trois-jours', group: 'activites', test: (i) => Boolean(i.activities.simulation) },
+  { id: 'sans-faute', group: 'activites', test: (i) => Boolean(i.activities['quiz-parfait']) },
 ];
 
 /** Succès débloqués : identifiant → date du premier déblocage. */

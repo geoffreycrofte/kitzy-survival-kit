@@ -9,6 +9,12 @@ import { UpdateBanner } from './components/UpdateBanner';
 import { useKitzy } from './data/derived';
 import { syncPush, webPushConfigured } from './lib/webpush';
 import { Achievements } from './pages/Achievements';
+import { Activities } from './pages/Activities';
+import { Challenge } from './pages/Challenge';
+import { Quiz } from './pages/Quiz';
+import { RecipeIndex, RecipePage } from './pages/Recipes';
+import { CheckUp, MiniCheck } from './pages/Rituals';
+import { Simulation } from './pages/Simulation';
 import { GuideArticle, GuideIndex } from './pages/Guide';
 import { Home } from './pages/Home';
 import { Household } from './pages/Household';
@@ -93,6 +99,14 @@ export function App() {
           <Route path="/guide" element={<GuideIndex />} />
           <Route path="/guide/:slug" element={<GuideArticle />} />
           <Route path="/succes" element={<Achievements />} />
+          <Route path="/activites" element={<Activities />} />
+          <Route path="/mini-check" element={<MiniCheck />} />
+          <Route path="/check-up" element={<CheckUp />} />
+          <Route path="/recettes" element={<RecipeIndex />} />
+          <Route path="/recettes/:id" element={<RecipePage />} />
+          <Route path="/defi" element={<Challenge />} />
+          <Route path="/simulation" element={<Simulation />} />
+          <Route path="/quiz" element={<Quiz />} />
           <Route path="/reglages" element={<Settings />} />
           <Route path="/transparence" element={<Transparency />} />
           <Route path="/confidentialite" element={<Privacy />} />
