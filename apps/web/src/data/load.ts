@@ -15,6 +15,7 @@ import {
   type IsoDate,
   type Kit,
   type KitLevel,
+  type Locale,
   type Reminder,
   type ShoppingExtra,
   type TaskDone,
@@ -108,7 +109,7 @@ export function emptyData(): AppData {
 }
 
 /** Tous les rappels du foyer (péremptions, recharges, check-ups, revue du plan). */
-export function remindersFor(data: AppData, today: IsoDate): Reminder[] {
+export function remindersFor(data: AppData, today: IsoDate, locale: Locale = 'fr'): Reminder[] {
   return buildReminders({
     catalog: CATALOG,
     kits: data.kits,
@@ -116,6 +117,7 @@ export function remindersFor(data: AppData, today: IsoDate): Reminder[] {
     country: COUNTRY,
     today,
     planReview: planReviewDate(data.plan),
+    locale,
   });
 }
 

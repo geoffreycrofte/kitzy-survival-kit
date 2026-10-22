@@ -381,6 +381,7 @@ Structure officielle du guide, reprise pour l'arborescence de l'aide : **1. Comp
 ### 3.8 Réglages
 
 - Langue, thème (clair, sombre, système), taille de texte
+- **Langue** (fait) : par défaut celle de l'appareil si Kitzy la parle, sinon le français ; choix gardé sur l'appareil et copié dans la base locale pour que les notifications suivent. Chaque langue est écrite dans sa propre langue (`lang`). Lien « Demander une langue » vers le profil LinkedIn de l'auteur
 - **Animations d'ambiance** : activées ou non (désactivées par défaut si le système demande moins de mouvement)
 - Notifications : canaux, délais d'alerte (J-30, J-7, J0), heures calmes
 - Durée cible (72 h par défaut)
@@ -1057,7 +1058,8 @@ Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fi
 
 ### Phase 5 : International et stores
 
-- [ ] Traductions EN et DE, puis PT et LB (relecture native)
+- [x] **Traductions EN, LB, DE, PT** de toute l'app : interface, catalogue, guide, gestes, recettes, quiz, simulation, conseils d'achat, notifications, fichier agenda. Le français reste la source ; un texte manquant retombe sur le français, et un test vérifie pour chaque langue que toutes les clés, tous les `{{…}}` et tous les contenus sont là
+- [ ] Relecture native des quatre langues (traductions faites par l'IA ; le luxembourgeois en priorité)
 - [ ] App **Expo** (`apps/mobile`) branchée sur `core` : SQLite, notifications locales, scan
 - [ ] Pot à pourboires en achat intégré (ou lien masqué)
 - [ ] EAS Build et Submit (Google Play, App Store)

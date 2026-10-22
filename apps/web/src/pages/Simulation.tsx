@@ -1,23 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import {
-  SIMULATION,
-  simulationReport,
-  type SimulationCheck,
-  type SimulationInput,
-} from '@kitzy/core';
+import { simulationReport, type SimulationCheck, type SimulationInput } from '@kitzy/core';
 import { ChoiceQuestion } from '../components/ChoiceQuestion';
 import { Loading } from '../components/Loading';
 import { useKitzy } from '../data/derived';
 import { addExtras, recordActivity } from '../data/store';
 import { announce } from '../lib/announce';
+import { useContent } from '../lib/content';
 import { usePageTitle } from '../lib/usePageTitle';
 
 /** Simulation 72 h : le scénario du guide, une étape à la fois, relié aux données du foyer. */
 export function Simulation() {
   const { t } = useTranslation();
   usePageTitle(t('simulation.title'));
+  const { simulation: SIMULATION } = useContent();
   const data = useKitzy();
   const [index, setIndex] = useState<number | null>(null);
   const [good, setGood] = useState<Record<string, boolean>>({});
@@ -106,6 +103,7 @@ function SimulationStepView({
   onNext: () => void;
 }) {
   const { t } = useTranslation();
+  const { simulation: SIMULATION } = useContent();
   const step = SIMULATION[index]!;
   const good = step.choice.options.find((o) => o.good)!;
   const last = index === SIMULATION.length - 1;
@@ -165,9 +163,10 @@ function SimulationReportView({
   onRestart: () => void;
 }) {
   const { t } = useTranslation();
+  const { simulation: SIMULATION } = useContent();
   const ref = useRef<HTMLHeadingElement>(null);
   const [added, setAdded] = useState(false);
-  const report = simulationReport(input);
+  const report = simulationReport(input, SIMULATION);
   const toBuy = report.missing
     .map((c) => c.shopping)
     .filter((label): label is string => Boolean(label && !existing.includes(label)));

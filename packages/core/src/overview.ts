@@ -1,10 +1,12 @@
 /**
  * Vue d'ensemble : lignes d'un kit, lucioles, prochaine action, liste de courses.
  */
+import type { Locale } from './i18n/locales';
 import {
   CATEGORIES,
   categoryById,
   sourcesForLevel,
+  tx,
   type CategoryId,
   type ItemTemplate,
   type KitLevel,
@@ -34,6 +36,8 @@ export interface Context {
   items: readonly InventoryItem[];
   level: KitLevel;
   today: IsoDate;
+  /** Langue des noms d'articles (français par défaut). */
+  locale?: Locale;
 }
 
 /** Clé d'un article de kit, utilisée dans les URL. */
@@ -58,7 +62,7 @@ export function kitRows(kit: Kit, ctx: Context, levelOverride?: KitLevel): KitRo
       kit,
       template,
       item,
-      name: template.name.fr,
+      name: tx(template.name, ctx.locale),
       unit: item?.unit ?? rule?.unit ?? 'piece',
       category: template.category,
       status: itemStatus(item, target, ctx.today),

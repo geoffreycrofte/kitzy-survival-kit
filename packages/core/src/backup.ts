@@ -107,19 +107,25 @@ export function createBackup(data: BackupData, now: Date = new Date()): Backup {
   return { app: 'kitzy', schemaVersion: 2, exportedAt: now.toISOString(), ...data };
 }
 
-export type ParseResult = { ok: true; data: BackupData } | { ok: false; error: string };
+export type ParseResult =
+  { ok: true; data: BackupData } | { ok: false; code: 'unreadable' | 'notKitzy'; error: string };
 
 export function parseBackup(text: string): ParseResult {
   let json: unknown;
   try {
     json = JSON.parse(text);
   } catch {
-    return { ok: false, error: 'Ce fichier n’est pas une sauvegarde Kitzy lisible.' };
+    return {
+      ok: false,
+      code: 'unreadable',
+      error: 'Ce fichier n’est pas une sauvegarde Kitzy lisible.',
+    };
   }
   const parsed = BackupSchema.safeParse(json);
   if (!parsed.success) {
     return {
       ok: false,
+      code: 'notKitzy',
       error:
         'Ce fichier ne ressemble pas à une sauvegarde Kitzy, ou vient d’une version plus récente.',
     };

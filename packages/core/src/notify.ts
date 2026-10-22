@@ -5,6 +5,8 @@
  * plus tard, par l'app Expo et le service Web Push.
  */
 import { addDays, daysBetween, type IsoDate } from './dates';
+import { fr, type Messages } from './i18n/fr';
+import { fill } from './i18n/fill';
 import type { Reminder } from './reminders';
 
 /** Une alerte en retard est rappelée une fois par semaine, pas tous les jours. */
@@ -28,42 +30,46 @@ export interface Digest {
   tag: string;
 }
 
-function line(r: Reminder, today: IsoDate): string {
+export type NotifyTexts = Messages['system']['notify'];
+
+function line(r: Reminder, today: IsoDate, texts: NotifyTexts): string {
   const days = daysBetween(today, r.date);
   const when =
     days < 0
-      ? 'en retard'
+      ? texts.overdue
       : days === 0
-        ? 'aujourd’hui'
+        ? texts.today
         : days === 1
-          ? 'demain'
-          : `dans ${days} jours`;
+          ? texts.tomorrow
+          : fill(texts.inDays, { days });
   switch (r.kind) {
     case 'expiry':
-      return r.expiryType === 'dlc'
-        ? `${r.title}\u202f: date limite ${when}`
-        : `${r.title}\u202f: à consommer de préférence, ${when}`;
+      return fill(r.expiryType === 'dlc' ? texts.dlc : texts.ddm, { title: r.title, when });
     case 'battery':
-      return `Recharger «\u202f${r.title}\u202f», ${when}`;
+      return fill(texts.battery, { title: r.title, when });
     case 'monthly-check':
-      return 'Mini-check du mois, pendant le test des sirènes';
+      return texts.monthly;
     case 'review':
-      return days === 0 ? 'Grand check-up du kit aujourd’hui' : `Grand check-up du kit ${when}`;
+      return days === 0 ? texts.reviewToday : fill(texts.review, { when });
     case 'plan-review':
-      return 'Relire et mettre à jour ton plan d’urgence';
+      return texts.plan;
   }
 }
 
 /** Les rappels du même jour sont regroupés : une notification, pas dix. */
-export function digest(due: readonly Reminder[], today: IsoDate): Digest | null {
+export function digest(
+  due: readonly Reminder[],
+  today: IsoDate,
+  texts: NotifyTexts = fr.system.notify,
+): Digest | null {
   if (due.length === 0) return null;
   const tag = 'kitzy-rappels';
-  if (due.length === 1) return { title: 'Kitzy', body: line(due[0]!, today), tag };
-  const lines = due.slice(0, 3).map((r) => line(r, today));
+  if (due.length === 1) return { title: 'Kitzy', body: line(due[0]!, today, texts), tag };
+  const lines = due.slice(0, 3).map((r) => line(r, today, texts));
   const more = due.length - lines.length;
   return {
-    title: `Kitzy\u202f: ${due.length} rappels pour ton kit`,
-    body: lines.join('\n') + (more > 0 ? `\net ${more} de plus` : ''),
+    title: fill(texts.manyTitle, { count: due.length }),
+    body: lines.join('\n') + (more > 0 ? `\n${fill(texts.more, { count: more })}` : ''),
     tag,
   };
 }

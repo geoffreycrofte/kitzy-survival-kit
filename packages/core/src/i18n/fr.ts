@@ -62,6 +62,7 @@ export const fr = {
     pack_other: 'paquets',
     set_one: 'lot',
     set_other: 'lots',
+    progress: '{{have}} sur {{target}}',
   },
   essentials: {
     water: 'Eau',
@@ -196,6 +197,7 @@ export const fr = {
     batterySoon: 'Recharge bientôt',
   },
   item: {
+    warning: 'Attention.',
     official: 'Liste officielle',
     recommended: 'Conseillé',
     optional: 'Confort',
@@ -353,8 +355,12 @@ export const fr = {
     paypal: 'Faire un don avec PayPal',
     revolut: 'Faire un don avec Revolut',
     language: 'Langue',
-    languageSoon:
-      'Kitzy parle français pour l’instant. L’anglais, le luxembourgeois, l’allemand et le portugais arrivent.',
+    languageHelp: 'Par défaut, Kitzy suit la langue de ton appareil.',
+    languageAuto: 'Comme mon appareil',
+    languageReview:
+      'Les traductions sont toutes neuves. Une tournure bizarre ? Dis-le-moi, je corrige.',
+    requestLanguage: 'Demander une langue',
+    requestLanguageHelp: 'Ta langue n’est pas là ? Écris-moi sur LinkedIn.',
     about: 'À propos',
     transparency: 'Liens d’achat et transparence',
     privacy: 'Confidentialité',
@@ -1011,6 +1017,60 @@ export const fr = {
   notFound: {
     body: 'Cette page n’existe pas, ou plus. Le terrier, lui, est toujours là.',
   },
+  system: {
+    notify: {
+      overdue: 'en retard',
+      today: 'aujourd’hui',
+      tomorrow: 'demain',
+      inDays: 'dans {{days}} jours',
+      dlc: '{{title}} : date limite {{when}}',
+      ddm: '{{title}} : à consommer de préférence, {{when}}',
+      battery: 'Recharger « {{title}} », {{when}}',
+      monthly: 'Mini-check du mois, pendant le test des sirènes',
+      reviewToday: 'Grand check-up du kit aujourd’hui',
+      review: 'Grand check-up du kit {{when}}',
+      plan: 'Relire et mettre à jour ton plan d’urgence',
+      manyTitle: 'Kitzy : {{count}} rappels pour ton kit',
+      more: 'et {{count}} de plus',
+    },
+    ics: {
+      dlcSummary: 'Kitzy : {{title}}{{quantity}}, date limite de consommation',
+      dlcDescription:
+        'Date limite de consommation. À consommer avant, puis à remplacer dans ta réserve.',
+      ddmSummary: 'Kitzy : {{title}}{{quantity}}, à consommer de préférence avant ce jour',
+      ddmDescription:
+        'Date de durabilité minimale. Mange-le bientôt et rachète-en pour ta réserve.',
+      batterySummary: 'Kitzy : recharger {{title}}',
+      batteryDescription:
+        'Recharge ou teste cet appareil pour qu’il soit prêt le jour où tu en as besoin.',
+      monthlySummary: 'Kitzy : mini-check du mois',
+      monthlyDescription: 'Deux minutes pour vérifier ta réserve, pendant le test des sirènes.',
+      reviewSummary: 'Kitzy : grand check-up du kit',
+      reviewDescription:
+        'Contrôle les dates, recharge les appareils et remplace les piles des détecteurs.',
+      planSummary: 'Kitzy : relire mon plan d’urgence',
+      planDescription:
+        'Numéros, points de rendez-vous, personnes à aider : vérifie que tout est encore juste, puis réimprime-le.',
+    },
+    errors: {
+      backup: {
+        unreadable: 'Ce fichier n’est pas une sauvegarde Kitzy lisible.',
+        notKitzy:
+          'Ce fichier ne ressemble pas à une sauvegarde Kitzy, ou vient d’une version plus récente.',
+      },
+      share: {
+        notKitzy: 'Ce lien de partage n’est pas un lien Kitzy.',
+        incomplete: 'Le contenu de ce lien est incomplet.',
+        damaged: 'Ce lien de partage est abîmé : il a peut-être été coupé en route.',
+      },
+    },
+    kits: {
+      home: 'Réserve maison',
+      bag: 'Sac {{n}}',
+    },
+  },
 } as const;
 
-export type Messages = typeof fr;
+/** Même structure que le français, avec des textes libres : chaque langue a les mêmes clés. */
+type Widen<T> = { readonly [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };
+export type Messages = Widen<typeof fr>;

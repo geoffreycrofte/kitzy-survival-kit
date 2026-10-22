@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { CATALOG, addDays } from '@kitzy/core';
+import { CATALOG, addDays, tx } from '@kitzy/core';
 import { Loading } from '../components/Loading';
 import { useKitzy } from '../data/derived';
 import { chargeAll, recordActivity } from '../data/store';
@@ -162,8 +162,10 @@ export function CheckUp() {
   const horizon = addDays(data.today, 183);
   const expiring = data.reminders.filter((r) => r.kind === 'expiry' && r.date <= horizon);
   const batteries = data.items.filter((i) => i.battery);
-  const nameOf = (templateId: string | undefined, custom: string | undefined) =>
-    CATALOG.find((c) => c.id === templateId)?.name.fr ?? custom ?? '';
+  const nameOf = (templateId: string | undefined, custom: string | undefined) => {
+    const template = CATALOG.find((c) => c.id === templateId);
+    return template ? tx(template.name, data.ctx.locale) : (custom ?? '');
+  };
 
   return (
     <div className="page">

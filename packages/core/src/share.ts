@@ -32,21 +32,25 @@ export function encodeShare(payload: SharedShopping): string {
   return PREFIX + toBase64Url(deflateSync(strToU8(json), { level: 9 }));
 }
 
-export type DecodeResult = { ok: true; data: SharedShopping } | { ok: false; error: string };
+export type DecodeResult =
+  | { ok: true; data: SharedShopping }
+  | { ok: false; code: 'notKitzy' | 'incomplete' | 'damaged'; error: string };
 
 export function decodeShare(fragment: string): DecodeResult {
   const value = fragment.replace(/^#/, '');
   if (!value.startsWith(PREFIX)) {
-    return { ok: false, error: 'Ce lien de partage n’est pas un lien Kitzy.' };
+    return { ok: false, code: 'notKitzy', error: 'Ce lien de partage n’est pas un lien Kitzy.' };
   }
   try {
     const json = strFromU8(inflateSync(fromBase64Url(value.slice(PREFIX.length))));
     const parsed = SharedShoppingSchema.safeParse(JSON.parse(json));
-    if (!parsed.success) return { ok: false, error: 'Le contenu de ce lien est incomplet.' };
+    if (!parsed.success)
+      return { ok: false, code: 'incomplete', error: 'Le contenu de ce lien est incomplet.' };
     return { ok: true, data: parsed.data };
   } catch {
     return {
       ok: false,
+      code: 'damaged',
       error: 'Ce lien de partage est abîmé : il a peut-être été coupé en route.',
     };
   }

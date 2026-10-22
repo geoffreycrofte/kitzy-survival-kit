@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { QUIZ, quizScore } from '@kitzy/core';
+import { quizScore } from '@kitzy/core';
+import { useContent } from '../lib/content';
 import { ChoiceQuestion } from '../components/ChoiceQuestion';
 import { recordActivity } from '../data/store';
 import { usePageTitle } from '../lib/usePageTitle';
@@ -10,6 +11,7 @@ import { usePageTitle } from '../lib/usePageTitle';
 export function Quiz() {
   const { t } = useTranslation();
   usePageTitle(t('quiz.title'));
+  const { quiz: QUIZ } = useContent();
   const [index, setIndex] = useState<number | null>(null);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const finished = index !== null && index >= QUIZ.length;
@@ -60,6 +62,7 @@ function QuizStep({
   onNext: () => void;
 }) {
   const { t } = useTranslation();
+  const { quiz: QUIZ } = useContent();
   const q = QUIZ[index]!;
   const answer = q.options.find((o) => o.id === q.answer)!.text;
   const last = index === QUIZ.length - 1;
@@ -95,6 +98,7 @@ function QuizStep({
 
 function QuizResult({ score, onRestart }: { score: number; onRestart: () => void }) {
   const { t } = useTranslation();
+  const { quiz: QUIZ } = useContent();
   const ref = useRef<HTMLElement>(null);
   const perfect = score === QUIZ.length;
   useEffect(() => {

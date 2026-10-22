@@ -1,7 +1,15 @@
 import { useRef, useState, type ChangeEvent, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { DONATION_LINKS, buildIcs, parseBackup, type KitLevel } from '@kitzy/core';
+import {
+  DONATION_LINKS,
+  LOCALES,
+  buildIcs,
+  messagesFor,
+  parseBackup,
+  type KitLevel,
+} from '@kitzy/core';
+import { setLocalePref, useLocale, type LocalePref } from '../lib/locale';
 import { InstallSettings } from '../components/InstallSettings';
 import { NotificationSettings } from '../components/NotificationSettings';
 import { COUNTRY, useKitzy } from '../data/derived';
@@ -33,9 +41,13 @@ const levels: KitLevel[] = ['essential', 'recommended', 'complete'];
 
 const DONATIONS = DONATION_LINKS;
 
+/** Pour demander une langue : le profil LinkedIn de l'auteur. */
+const LINKEDIN = 'https://www.linkedin.com/in/geoffreycrofte/';
+
 export function Settings() {
   const { t } = useTranslation();
   const { themePref, motionPref } = usePreferences();
+  const { pref: localePref, locale } = useLocale();
   const data = useKitzy();
   const fileRef = useRef<HTMLInputElement>(null);
   const [importError, setImportError] = useState('');
@@ -47,7 +59,7 @@ export function Settings() {
     if (!file) return;
     const result = parseBackup(await file.text());
     if (!result.ok) {
-      setImportError(result.error);
+      setImportError(t(`system.errors.backup.${result.code}`));
       return;
     }
     setImportError('');
@@ -118,12 +130,36 @@ export function Settings() {
           ))}
         </fieldset>
 
-        <section className="card" aria-labelledby="language-title">
-          <h3 id="language-title" className="choice__legend">
-            {t('settings.language')}
-          </h3>
-          <p className="choice__help">{t('settings.languageSoon')}</p>
-        </section>
+        <fieldset className="card choice" aria-describedby="language-help">
+          <legend className="choice__legend">{t('settings.language')}</legend>
+          <p id="language-help" className="choice__help">
+            {t('settings.languageHelp')}
+          </p>
+          {(['auto', ...LOCALES.filter((l) => l.enabled).map((l) => l.code)] as LocalePref[]).map(
+            (value) => {
+              const info = LOCALES.find((l) => l.code === value);
+              return (
+                <label key={value} className="choice__option">
+                  <input
+                    type="radio"
+                    name="language"
+                    value={value}
+                    checked={localePref === value}
+                    onChange={() => setLocalePref(value)}
+                  />
+                  {/* Chaque langue est écrite dans sa propre langue, avec son attribut lang. */}
+                  {info ? <span lang={info.code}>{info.label}</span> : t('settings.languageAuto')}
+                </label>
+              );
+            },
+          )}
+          {locale !== 'fr' && <p className="choice__help">{t('settings.languageReview')}</p>}
+          <p className="choice__help">{t('settings.requestLanguageHelp')}</p>
+          <a className="text-link" href={LINKEDIN} target="_blank" rel="noopener noreferrer">
+            {t('settings.requestLanguage')}
+            <span className="visually-hidden"> {t('guide.newWindow')}</span>
+          </a>
+        </fieldset>
       </SettingsGroup>
 
       <SettingsGroup id="kits" title={groups[1]!.title}>
@@ -168,7 +204,10 @@ export function Settings() {
               onClick={() => {
                 downloadFile(
                   'kitzy-rappels.ics',
-                  buildIcs(data.reminders, { country: COUNTRY }),
+                  buildIcs(data.reminders, {
+                    country: COUNTRY,
+                    texts: messagesFor(locale).system.ics,
+                  }),
                   'text/calendar;charset=utf-8',
                 );
                 announce(t('settings.calendarDone'));

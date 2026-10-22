@@ -283,8 +283,11 @@ export interface SimulationReport {
 }
 
 /** Le bilan : ce que le foyer avait, et ce qui lui a manqué. */
-export function simulationReport(input: SimulationInput): SimulationReport {
-  const checks = SIMULATION.flatMap((s) => s.checks);
+export function simulationReport(
+  input: SimulationInput,
+  steps: readonly SimulationStep[] = SIMULATION,
+): SimulationReport {
+  const checks = steps.flatMap((s) => s.checks);
   return {
     ready: checks.filter((c) => c.ok(input)),
     missing: checks.filter((c) => !c.ok(input)),

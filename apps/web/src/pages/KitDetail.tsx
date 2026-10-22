@@ -1,7 +1,7 @@
 import { useCallback, useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { CATEGORIES, kitRows, type KitRow } from '@kitzy/core';
+import { categoryName, kitRows, type CategoryId, type KitRow } from '@kitzy/core';
 import { StatusChips } from '../components/StatusChips';
 import { useKitzy } from '../data/derived';
 import { BarcodeScanner } from '../components/BarcodeScanner';
@@ -46,9 +46,7 @@ export function KitDetail() {
     groups.set(group, [...(groups.get(group) ?? []), row]);
   }
   const groupName = (id: string) =>
-    id === 'custom'
-      ? t('kits.customCategory')
-      : (CATEGORIES.find((c) => c.id === id)?.name.fr ?? id);
+    id === 'custom' ? t('kits.customCategory') : categoryName(id as CategoryId, data.ctx.locale);
 
   return (
     <div className="page">

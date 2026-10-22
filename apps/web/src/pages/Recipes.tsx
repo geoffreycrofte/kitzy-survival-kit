@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { RECIPES, recipesFor, type Recipe } from '@kitzy/core';
+import { recipesFor, tx, type Recipe } from '@kitzy/core';
+import { useContent } from '../lib/content';
 import { Loading } from '../components/Loading';
 import { useKitzy } from '../data/derived';
 import { recordActivity } from '../data/store';
@@ -54,6 +55,7 @@ function RecipeCards({
 export function RecipeIndex() {
   const { t } = useTranslation();
   usePageTitle(t('recipes.title'));
+  const { recipes: RECIPES } = useContent();
   const data = useKitzy();
   if (!data) return <Loading />;
   const soon = data.rotate;
@@ -113,6 +115,7 @@ export function RecipeIndex() {
 export function RecipePage() {
   const { t } = useTranslation();
   const { id } = useParams();
+  const { recipes: RECIPES } = useContent();
   const recipe = RECIPES.find((r) => r.id === id);
   usePageTitle(recipe?.title ?? t('recipes.title'));
   const data = useKitzy();
@@ -180,7 +183,10 @@ export function RecipePage() {
                 {usedRows.map(({ kit, key }) => (
                   <li key={key}>
                     <Link to={`/kits/${kit.id}/${key}`}>
-                      {data.ctx.catalog.find((c) => c.id === key)?.name.fr ?? key}
+                      {tx(
+                        data.ctx.catalog.find((c) => c.id === key)?.name ?? { fr: key },
+                        data.ctx.locale,
+                      )}
                     </Link>
                   </li>
                 ))}
