@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { renderSVG } from 'uqr';
 import { CATEGORIES, encodeShare, shoppingList, type ShoppingEntry } from '@kitzy/core';
 import { useKitzy } from '../data/derived';
+import { BagIcon, BurrowIcon } from '../components/Icons';
 import { addExtras, clearBought, removeExtra, toggleBought } from '../data/store';
 import { announce } from '../lib/announce';
 import { formatQuantity } from '../lib/format';
@@ -53,7 +54,7 @@ export function Shopping() {
               <h2 id={`shop-${group}`} className="section-title">
                 {groupName(group)}
               </h2>
-              <ul className="row-list">
+              <ul className="shop-list">
                 {items.map((entry) => (
                   <ShoppingRow
                     key={`${entry.key}-${data.bought.includes(entry.key)}`}
@@ -89,51 +90,75 @@ function ShoppingRow({ entry, bought: stored }: { entry: ShoppingEntry; bought: 
   const [bought, setBought] = useState(stored);
   const id = `buy-${entry.key}`;
   const quantity = formatQuantity(entry.quantity, entry.unit);
-  const details = [
-    entry.kitNames.length ? t('shopping.forKits', { kits: entry.kitNames.join(', ') }) : '',
-    entry.replaces > 0
-      ? t('shopping.replaces', { quantity: formatQuantity(entry.replaces, entry.unit) })
-      : '',
-  ]
-    .filter(Boolean)
-    .join(', ');
 
   return (
-    <li className={`row shop-row${bought ? ' shop-row--bought' : ''}`}>
-      <div className="shop-row__check">
+    <li className={`shop-card${bought ? ' shop-card--bought' : ''}`}>
+      <div className="shop-card__main">
         <input
           id={id}
           type="checkbox"
           className="checkbox"
           checked={bought}
+          // Nom et quantité en deux blocs visuels : on donne la phrase complète aux lecteurs d'écran.
+          aria-label={t('shopping.item', { label: entry.label, quantity })}
           onChange={() => {
             setBought(!bought);
             void toggleBought(entry.key);
           }}
         />
-        <label htmlFor={id}>
-          <span className="shop-row__name">{entry.label}</span>
-          <span className="shop-row__qty">, {quantity}</span>
-          {details && <span className="shop-row__details">{details}</span>}
+        <label htmlFor={id} className="shop-card__label">
+          <span className="shop-card__name">{entry.label}</span>
+          <span className="shop-card__qty">{quantity}</span>
         </label>
+        {entry.category === 'extra' && (
+          <button
+            type="button"
+            className="button button--small button--ghost"
+            aria-label={t('shopping.removeExtra', { label: entry.label })}
+            onClick={() => void removeExtra(entry.key.replace(/^extra-/, ''))}
+          >
+            {t('shopping.remove')}
+          </button>
+        )}
       </div>
-      {entry.target && (
-        <Link
-          to={`/kits/${entry.target.kitId}/${entry.target.key}`}
-          className="text-link"
-          aria-label={t('shopping.storeLabel', { label: entry.label })}
-        >
-          {t('shopping.store')}
-        </Link>
+
+      {entry.replaces > 0 && (
+        <p className="shop-card__note">
+          {t('shopping.replaces', { quantity: formatQuantity(entry.replaces, entry.unit) })}
+        </p>
       )}
-      {entry.category === 'extra' && (
-        <button
-          type="button"
-          className="button button--small button--ghost"
-          onClick={() => void removeExtra(entry.key.replace(/^extra-/, ''))}
-        >
-          {t('shopping.removeExtra', { label: entry.label })}
-        </button>
+
+      {entry.destinations.length > 0 && (
+        <div className="shop-card__dest">
+          <p id={`${id}-dest`} className="shop-card__dest-label">
+            {bought ? t('shopping.storeNow') : t('shopping.storeIn')}
+          </p>
+          <ul aria-labelledby={`${id}-dest`} className="shop-card__dest-list">
+            {entry.destinations.map((d) => {
+              const place = d.kitType === 'home' ? t('shopping.home') : d.kitName;
+              const Icon = d.kitType === 'home' ? BurrowIcon : BagIcon;
+              const part = formatQuantity(d.quantity, entry.unit);
+              return (
+                <li key={d.kitId}>
+                  <Link
+                    to={`/kits/${d.kitId}/${d.key}`}
+                    className="dest"
+                    aria-label={t('shopping.storeLabel', {
+                      quantity: part,
+                      label: entry.label,
+                      kit: d.kitName,
+                    })}
+                  >
+                    <Icon width={18} height={18} />
+                    <span className="dest__place">{place}</span>
+                    {/* Une seule destination : la quantité est déjà dite en haut de la carte. */}
+                    {entry.destinations.length > 1 && <span className="dest__qty">{part}</span>}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       )}
     </li>
   );

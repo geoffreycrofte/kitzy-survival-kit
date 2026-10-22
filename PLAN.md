@@ -304,6 +304,8 @@ Décision : **72 h par défaut**. Le nombre de jours est un réglage, car certai
 
 ### 3.4 Liste de courses
 
+> Organisation d'une carte (retour utilisateur) : 1. ce qu'on achète (nom, quantité totale) ; 2. une remarque éventuelle (quantité à remplacer) ; 3. **où le ranger**, kit par kit, chaque destination ouvrant la page de l'article dans ce kit pour y noter l'achat et ses dates. Le mot « Ranger » est remplacé par ces destinations explicites.
+
 - Générée automatiquement : manquants, expirés et à remplacer
 - Cochable en magasin, hors-ligne
 - Pour chaque article, des **suggestions produit** à plusieurs budgets (voir § 8)
@@ -1019,6 +1021,7 @@ Limites connues : Amazon interdit aux robots ses pages de recherche (robots.txt)
 - [x] Page Confidentialité : chaque bloc dit où vont les données, lien vers le projet
 - [x] Bloc « Installer Kitzy » dans les réglages (bouton quand le navigateur le permet, « déjà installée sur cet appareil » détecté via `getInstalledRelatedApps`, consignes iPhone et autres navigateurs) ; `id` explicite et `related_applications` dans le manifeste
 - [x] Correctifs après test sur Android : barre du bas toujours au premier plan ; base locale libérée quand Android met un onglet en pause (`freeze`) ; chargement bloqué expliqué avec un bouton « Recharger Kitzy » et le détail technique, au lieu d'un « Chargement » sans fin
+- [x] Cartes de la liste de courses repensées : nom et quantité en tête (lisibles en magasin), remarque éventuelle, puis « Où le ranger » avec une destination par kit (« Maison », « Sac 1 · 1,5 L »…) menant chacune à la page de l'article dans ce kit ; une fois coché, « Acheté ! Range-le pour suivre ses dates »
 
 ### Phase 4 : Le côté fun (≈ 2 semaines)
 

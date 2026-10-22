@@ -223,7 +223,15 @@ describe('overview', () => {
     const list = shoppingList([home, bag], ctx(items), [{ id: 'e', label: 'Piles AA' }]);
     const food = list.find((e) => e.key === 'canned-meals');
     expect(food?.quantity).toBe(15);
-    expect(list.find((e) => e.key === 'drinking-water')?.kitNames).toEqual(['Sac 1']);
+    expect(
+      list.find((e) => e.key === 'drinking-water')?.destinations.map((d) => d.kitName),
+    ).toEqual(['Sac 1']);
+    // La quantité totale est la somme des destinations, chacune avec sa page d'article.
+    for (const entry of list.filter((e) => e.category !== 'extra')) {
+      const sum = entry.destinations.reduce((s, d) => s + d.quantity, 0);
+      expect(Math.round(sum * 10) / 10, entry.key).toBe(entry.quantity);
+      for (const d of entry.destinations) expect(d.key).toBe(entry.key);
+    }
     expect(list.at(-1)?.label).toBe('Piles AA');
   });
 });
