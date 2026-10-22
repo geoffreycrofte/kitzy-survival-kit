@@ -14,6 +14,7 @@ export * from './share';
 export * from './backup';
 export * from './plan';
 export * from './tasks';
+export * from './progress';
 export * from './notify';
 export * from './products';
 export * from './linkcheck';

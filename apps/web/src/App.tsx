@@ -1,12 +1,14 @@
 import { useEffect, useRef } from 'react';
 import { Route, Routes, useLocation } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { AchievementWatcher } from './components/Achievements';
 import { Announcer } from './components/Announcer';
 import { BottomNav } from './components/BottomNav';
 import { Header } from './components/Header';
 import { UpdateBanner } from './components/UpdateBanner';
 import { useKitzy } from './data/derived';
 import { syncPush, webPushConfigured } from './lib/webpush';
+import { Achievements } from './pages/Achievements';
 import { GuideArticle, GuideIndex } from './pages/Guide';
 import { Home } from './pages/Home';
 import { Household } from './pages/Household';
@@ -73,6 +75,7 @@ export function App() {
       {/* Avant le contenu dans le code : barre du bas sur mobile, colonne latérale sur bureau. */}
       <BottomNav />
       <main id="main" className="app__main" tabIndex={-1}>
+        <AchievementWatcher />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/foyer" element={<Household />} />
@@ -89,6 +92,7 @@ export function App() {
           <Route path="/gestes" element={<Tasks />} />
           <Route path="/guide" element={<GuideIndex />} />
           <Route path="/guide/:slug" element={<GuideArticle />} />
+          <Route path="/succes" element={<Achievements />} />
           <Route path="/reglages" element={<Settings />} />
           <Route path="/transparence" element={<Transparency />} />
           <Route path="/confidentialite" element={<Privacy />} />

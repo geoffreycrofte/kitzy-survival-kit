@@ -173,3 +173,34 @@ html[data-motion='full'] .home--intro-play .reveal:focus-within {
     opacity: 1;
   }
 }
+
+/* Menu plein écran : le panneau monte, puis les entrées arrivent l'une après l'autre. */
+html[data-motion='full'] .menu[open] {
+  animation: kz-menu-in 0.35s var(--kz-ease) both;
+}
+
+html[data-motion='full'] .menu[open] .menu__item {
+  animation: kz-rise 0.45s var(--kz-ease) calc(0.08s + 0.06s * var(--i, 0)) both;
+}
+
+html[data-motion='full'] .unlock {
+  animation: kz-rise 0.5s var(--kz-ease) both;
+}
+
+html[data-motion='full'] .meter__fill {
+  transition: width 0.6s var(--kz-ease);
+}
+
+@keyframes kz-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+
+@keyframes kz-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

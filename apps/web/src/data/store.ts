@@ -259,6 +259,17 @@ const DATA_TABLES = () => [db.meta, db.kits, db.items, db.extras, db.barcodes];
 /** Réglages propres à l'appareil, conservés lors d'une restauration. */
 const DEVICE_KEYS = ['notify', 'pushSalt'];
 
+/** Note les succès qui viennent d'être atteints, avec la date du jour. */
+export async function recordAchievements(ids: readonly string[]): Promise<void> {
+  if (ids.length === 0) return;
+  const today = todayLocal();
+  await db.transaction('rw', db.meta, async () => {
+    const done = await getMeta<Record<string, string>>('achievements', {});
+    for (const id of ids) done[id] ??= today;
+    await setMeta('achievements', done);
+  });
+}
+
 export async function exportData(): Promise<string> {
   const data = await loadAll();
   return JSON.stringify(createBackup(data), null, 2);
@@ -282,6 +293,7 @@ export async function importData(data: BackupData): Promise<void> {
     await setMeta('level', data.level);
     if (data.plan) await setMeta('plan', data.plan);
     await setMeta('tasks', data.tasks);
+    await setMeta('achievements', data.achievements);
     await db.kits.bulkPut(data.kits);
     await db.items.bulkPut(data.items);
     await db.extras.bulkPut(data.extras);

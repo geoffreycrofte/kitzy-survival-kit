@@ -9,9 +9,9 @@ export function InstallSettings() {
 
   return (
     <section className="card" aria-labelledby="install-title">
-      <h2 id="install-title" className="choice__legend">
+      <h3 id="install-title" className="choice__legend">
         {t('install.title')}
-      </h2>
+      </h3>
       <p className="choice__help">{t(`install.state.${state}`)}</p>
       {state === 'available' && (
         <button

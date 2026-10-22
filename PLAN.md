@@ -290,6 +290,16 @@ Décision : **72 h par défaut**. Le nombre de jours est un réglage, car certai
 - **À faire bientôt** : ce qui périme, ce qui doit être rechargé, la prochaine revue
 - **Prochaine action conseillée**, une seule à la fois (« Ajoute 6 L d'eau pour atteindre 72 h »)
 - Raccourcis : ajouter un article, liste de courses, guide
+- **Où j'en suis** (fait) : trois jauges sous la prochaine action, chacune menant à sa page. *Courses* (articles réunis dans tous les kits), *Mon plan* (étapes faites, une étape commencée compte pour moitié), *Mes gestes*. Puis un lien « Mes succès : 2 sur 12 »
+
+### 3.2 bis Menu
+
+Le cinquième onglet de la barre du bas (ou de la colonne sur bureau) est **Menu**, à la place de Guide. Il ouvre un menu plein écran (`<dialog>` modal : reste de la page inerte, Échap ferme, le focus revient au bouton) avec :
+- le choix de l'ambiance (Auto, Veillée, Jour), en interrupteur à trois positions ;
+- Succès, Guide, Mes gestes, Réglages, chacun avec une ligne d'explication ;
+- en pied, Transparence et Confidentialité.
+
+Le thème et les réglages quittent l'en-tête, qui ne garde que le nom Kitzy. Le bouton Menu s'allume quand la page affichée vient du menu. Avec les animations d'ambiance, le panneau monte et les entrées arrivent l'une après l'autre.
 
 ### 3.3 Inventaire
 
@@ -377,6 +387,7 @@ Structure officielle du guide, reprise pour l'arborescence de l'aide : **1. Comp
 - **Export / import** JSON (sauvegarde, changement de téléphone), export CSV de l'inventaire
 - Réinitialiser
 - À propos, sources, mentions d'affiliation, déclaration d'accessibilité, confidentialité
+- **Organisation** (fait) : un sommaire en pastilles, puis quatre groupes titrés en jaune. *Affichage* (thème, animations, langue), *Kits et rappels* (niveau, notifications, agenda), *Cet appareil et mes données* (installer, sauvegarde, puis « Repartir de zéro » dans une carte à part, bordée de rouge), *Kitzy* (soutenir, à propos)
 
 ### 3.9 Partage par QR code ou URL
 
@@ -430,7 +441,7 @@ L'idée générale : traiter le kit comme **une habitude de foyer**, au même ti
 | **Défi « soirée sans électricité »** | Mode jeu en famille : on coupe tout pendant une soirée en n'utilisant que le kit. Petite checklist d'observations (« Qu'est-ce qui nous a manqué ? ») ajoutée à la liste de courses. | v1 |
 | **Simulation 72 h interactive** | Le scénario officiel (janvier, un lundi, au travail, coupure générale ; jour 1 retour à la maison, jour 2 l'eau ne coule plus, jour 3 entraide et retour du courant) raconté en histoire « dont tu es le héros ». À chaque étape : « As-tu ce qu'il faut ? », relié à ton inventaire et à ton plan. Le guide le dit lui-même : *« Les enfants vivent la situation comme une grande aventure. »* La simulation se termine sur la question officielle « De quoi avez-vous manqué ? » et alimente la liste de courses. | v2 |
 | **Quiz** | Signaux des sirènes, niveaux de vigilance, bons réflexes cyber : courts, sans chronomètre (accessibilité). | v2 |
-| **Badges discrets** | « Eau OK », « Lumière OK », « Plan d'urgence rempli », « 1 an de rotation ». Désactivables. | v2 |
+| **Succès** | Fait : 12 succès en trois groupes (réserves, plan, gestes), de « Bienvenue au terrier » à « Nuit étoilée » et « Bons réflexes ». Calculés à partir des données, datés au premier déblocage et gardés même si une date passe ensuite (sauvegardés dans l'export). Un bandeau dans le flux de la page, sans rien masquer, annonce chaque déblocage. Ceux qui restent à débloquer disent comment les obtenir. À venir : « 1 an de rotation », premiers secours. | v2 |
 | **Mode foyer partagé** | Partager la liste de courses, l'inventaire ou le plan par QR code ou par URL (§ 3.9). La synchronisation automatique viendra éventuellement plus tard, via le VPS. | v1 |
 | **Voisinage** | Fiche imprimable « Je suis votre voisin·e, voici mon numéro » à glisser dans les boîtes aux lettres. Elle alimente la section « Le quartier » du plan (personnes aidantes et à aider). Étape 3 officielle : « Parlez-en autour de vous et proposez votre aide ». | v2 |
 | **« Aide un proche à faire son kit »** | Générer une checklist imprimable ou partageable, pré-remplie pour un parent âgé (le guide insiste sur les plus vulnérables). | v2 |
@@ -1022,10 +1033,15 @@ Limites connues : Amazon interdit aux robots ses pages de recherche (robots.txt)
 - [x] Bloc « Installer Kitzy » dans les réglages (bouton quand le navigateur le permet, « déjà installée sur cet appareil » détecté via `getInstalledRelatedApps`, consignes iPhone et autres navigateurs) ; `id` explicite et `related_applications` dans le manifeste
 - [x] Correctifs après test sur Android : barre du bas toujours au premier plan ; base locale libérée quand Android met un onglet en pause (`freeze`) ; chargement bloqué expliqué avec un bouton « Recharger Kitzy » et le détail technique, au lieu d'un « Chargement » sans fin
 - [x] Cartes de la liste de courses repensées : nom et quantité en tête (lisibles en magasin), remarque éventuelle, puis « Où le ranger » avec une destination par kit (« Maison », « Sac 1 · 1,5 L »…) menant chacune à la page de l'article dans ce kit ; une fois coché, « Acheté ! Range-le pour suivre ses dates »
+- [x] Accueil : tableau de bord « Où j'en suis » (courses, plan, gestes) (§ 3.2)
+- [x] Menu plein écran à la place de l'onglet Guide : ambiance, succès, guide, gestes, réglages (§ 3.2 bis)
+- [x] Succès à débloquer (§ 4)
+- [x] Réglages regroupés et titrés, avec un sommaire (§ 3.8)
+- [x] Cartes des gestes : case, titre et origine du conseil en tête, explication, puis « Pour passer à l'action » avec des pastilles à icône (guide, écran de l'app, site externe affiché par son domaine)
 
 ### Phase 4 : Le côté fun (≈ 2 semaines)
 
-- [ ] Paliers de progression et badges
+- [ ] Paliers de progression (les succès sont faits, § 4)
 - [ ] Recettes « soirée conserves »
 - [ ] Rituel du premier lundi, check-up semestriel
 - [ ] Défi « soirée sans électricité »

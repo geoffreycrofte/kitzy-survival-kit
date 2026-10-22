@@ -6,6 +6,7 @@ import {
   LU,
   buildReminders,
   planReviewDate,
+  type AchievementsDone,
   type BarcodeLink,
   type EmergencyPlan,
   type Household,
@@ -31,6 +32,7 @@ export interface AppData {
   plan: EmergencyPlan | null;
   tasks: TaskDone;
   barcodes: BarcodeLink[];
+  achievements: AchievementsDone;
 }
 
 const EMPTY: AppData = {
@@ -43,6 +45,7 @@ const EMPTY: AppData = {
   plan: null,
   tasks: {},
   barcodes: [],
+  achievements: {},
 };
 
 export async function getMeta<T>(key: string, fallback: T): Promise<T> {
@@ -55,20 +58,22 @@ export async function setMeta(key: string, value: unknown): Promise<void> {
 }
 
 export async function loadAll(): Promise<AppData> {
-  const [household, kits, items, extras, bought, level, plan, tasks, barcodes] = await Promise.all([
-    getMeta<Household | null>('household', null),
-    db.kits.toArray(),
-    db.items.toArray(),
-    db.extras.toArray(),
-    getMeta<string[]>('bought', []),
-    getMeta<KitLevel>('level', 'essential'),
-    getMeta<EmergencyPlan | null>('plan', null),
-    getMeta<TaskDone>('tasks', {}),
-    db.barcodes.toArray(),
-  ]);
+  const [household, kits, items, extras, bought, level, plan, tasks, barcodes, achievements] =
+    await Promise.all([
+      getMeta<Household | null>('household', null),
+      db.kits.toArray(),
+      db.items.toArray(),
+      db.extras.toArray(),
+      getMeta<string[]>('bought', []),
+      getMeta<KitLevel>('level', 'essential'),
+      getMeta<EmergencyPlan | null>('plan', null),
+      getMeta<TaskDone>('tasks', {}),
+      db.barcodes.toArray(),
+      getMeta<AchievementsDone>('achievements', {}),
+    ]);
   const order = (k: Kit) => (k.type === 'home' ? '0' : '1' + k.id);
   kits.sort((a, b) => order(a).localeCompare(order(b), 'fr', { numeric: true }));
-  return { household, kits, items, extras, bought, level, plan, tasks, barcodes };
+  return { household, kits, items, extras, bought, level, plan, tasks, barcodes, achievements };
 }
 
 export function emptyData(): AppData {
