@@ -25,14 +25,17 @@ test.describe('Accueil', () => {
     });
   }
 
-  test('le bouton de thème bascule et garde le choix', async ({ page }) => {
+  test('le thème se choisit dans le menu et reste choisi', async ({ page }) => {
     await page.emulateMedia({ colorScheme: 'dark' });
     await page.goto('./');
-    await page.getByRole('button', { name: 'Passer en thème clair' }).click();
+    await page.getByRole('button', { name: 'Menu' }).click();
+    const menu = page.getByRole('dialog', { name: 'Menu' });
+    await menu.getByRole('radio', { name: 'Jour' }).check();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'clair');
     await page.reload();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'clair');
-    await expect(page.getByRole('button', { name: 'Passer en thème sombre' })).toBeVisible();
+    await page.getByRole('button', { name: 'Menu' }).click();
+    await expect(menu.getByRole('radio', { name: 'Jour' })).toBeChecked();
   });
 });
 

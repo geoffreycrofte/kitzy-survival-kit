@@ -315,12 +315,14 @@ describe('share and backup', () => {
       plan: emptyPlan(),
       tasks: { 'lu-alert': TODAY },
       barcodes: [{ code: '5410000000000', kitId: 'home', key: 'drinking-water' }],
+      achievements: { terrier: TODAY },
     });
     const result = parseBackup(JSON.stringify(backup));
     expect(result.ok && result.data.kits).toEqual([home]);
     expect(result.ok && result.data.plan).toEqual(emptyPlan());
     expect(result.ok && result.data.tasks).toEqual({ 'lu-alert': TODAY });
     expect(result.ok && result.data.barcodes).toHaveLength(1);
+    expect(result.ok && result.data.achievements).toEqual({ terrier: TODAY });
     expect(parseBackup('{"app":"autre"}').ok).toBe(false);
     expect(parseBackup('pas du json').ok).toBe(false);
   });
@@ -343,6 +345,7 @@ describe('share and backup', () => {
       expect(result.data.plan).toBeNull();
       expect(result.data.tasks).toEqual({});
       expect(result.data.barcodes).toEqual([]);
+      expect(result.data.achievements).toEqual({});
     }
   });
 });

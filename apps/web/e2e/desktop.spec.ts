@@ -32,7 +32,8 @@ test.describe('Version bureau', () => {
     const navBox = await nav.boundingBox();
     const mainBox = await page.locator('main').boundingBox();
     expect(navBox && mainBox && navBox.x + navBox.width <= mainBox.x).toBe(true);
-    await expect(nav.getByRole('link', { name: 'Guide' })).toHaveAttribute('aria-current', 'page');
+    // Le guide s'ouvre depuis le menu : c'est le bouton Menu qui est mis en avant.
+    await expect(nav.getByRole('button', { name: 'Menu' })).toHaveClass(/bottom-nav__link--active/);
     // Les cartes du guide passent sur deux colonnes.
     const cards = page.locator('.guide-card');
     const [a, b] = await Promise.all([cards.nth(0).boundingBox(), cards.nth(1).boundingBox()]);
@@ -52,6 +53,8 @@ test.describe('Version bureau', () => {
         './gestes',
         './guide',
         './plan',
+        './succes',
+        './reglages',
       ]) {
         await page.goto(path);
         await expect(page.getByRole('heading', { level: 1 })).toBeVisible();

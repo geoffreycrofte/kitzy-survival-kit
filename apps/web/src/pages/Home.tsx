@@ -3,15 +3,19 @@ import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
 import {
+  ACHIEVEMENTS,
   ESSENTIALS,
   emptyEssentials,
   isOverdue,
   litCount,
   stageFor,
   upcoming,
+  type Dashboard as DashboardData,
   type Reminder,
 } from '@kitzy/core';
+import { CheckListIcon, PlanIcon, TagIcon, TrophyIcon } from '../components/Icons';
 import { Lantern } from '../components/Lantern';
+import { Meter } from '../components/Meter';
 import { Loading } from '../components/Loading';
 import { useKitzy } from '../data/derived';
 import { HOME_KIT_ID } from '../data/store';
@@ -118,6 +122,13 @@ export function Home() {
       )}
 
       {data?.household && (
+        <Dashboard
+          dashboard={data.dashboard}
+          unlocked={ACHIEVEMENTS.filter((a) => data.achievements[a.id]).length}
+        />
+      )}
+
+      {data?.household && (
         <section className="timeline-section" aria-labelledby="home-upcoming">
           <h2 id="home-upcoming" className="section-title">
             {t('home.upcoming')}
@@ -135,6 +146,71 @@ export function Home() {
         </Link>
       )}
     </div>
+  );
+}
+
+/** Où j'en suis : courses, plan, gestes. Chaque ligne mène à sa page. */
+function Dashboard({ dashboard, unlocked }: { dashboard: DashboardData; unlocked: number }) {
+  const { t } = useTranslation();
+  const { stock, plan, tasks } = dashboard;
+  const rows = [
+    {
+      id: 'stock',
+      to: '/courses',
+      Icon: TagIcon,
+      title: t('home.dashStock'),
+      label: t('home.dashStockLabel'),
+      value: stock.value,
+      text: t('home.dashStockText', { done: stock.done, total: stock.total }),
+    },
+    {
+      id: 'plan',
+      to: '/plan',
+      Icon: PlanIcon,
+      title: t('home.dashPlan'),
+      label: t('home.dashPlanLabel'),
+      value: plan.value,
+      text:
+        t('home.dashPlanText', { done: plan.done, total: plan.total }) +
+        (plan.started > 0 ? t('home.dashPlanStarted', { count: plan.started }) : ''),
+    },
+    {
+      id: 'tasks',
+      to: '/gestes',
+      Icon: CheckListIcon,
+      title: t('home.dashTasks'),
+      label: t('home.dashTasksLabel'),
+      value: tasks.value,
+      text: t('home.dashTasksText', { done: tasks.done, total: tasks.total }),
+    },
+  ];
+  return (
+    <section className="dash" aria-labelledby="home-dashboard">
+      <h2 id="home-dashboard" className="section-title">
+        {t('home.dashboard')}
+      </h2>
+      <ul className="dash__list">
+        {rows.map(({ id, to, Icon, title, label, value, text }) => (
+          <li key={id} className={`dash__row${value >= 1 ? ' dash__row--done' : ''}`}>
+            <span className="dash__icon">
+              <Icon />
+            </span>
+            <div className="dash__body">
+              <h3 className="dash__title">
+                <Link to={to} className="dash__link">
+                  {title}
+                </Link>
+              </h3>
+              <Meter value={value} label={label} valueText={text} />
+            </div>
+          </li>
+        ))}
+      </ul>
+      <Link to="/succes" className="dash__trophies">
+        <TrophyIcon />
+        {t('home.dashAchievements', { done: unlocked, total: ACHIEVEMENTS.length })}
+      </Link>
+    </section>
   );
 }
 

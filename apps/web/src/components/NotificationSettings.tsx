@@ -58,9 +58,9 @@ export function NotificationSettings({ reminders }: { reminders: Reminder[] }) {
 
   return (
     <section className="card" aria-labelledby="notify-title">
-      <h2 id="notify-title" className="choice__legend">
+      <h3 id="notify-title" className="choice__legend">
         {t('notify.title')}
-      </h2>
+      </h3>
       {state === 'unsupported' || (support.ios && !support.installed) ? (
         <p className="choice__help">{t(support.ios ? 'notify.ios' : 'notify.unsupported')}</p>
       ) : (

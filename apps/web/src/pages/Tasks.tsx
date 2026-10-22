@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { TASK_GROUPS, TASKS, tasksProgress, type TaskTemplate } from '@kitzy/core';
+import { ArrowIcon, BookIcon, ExternalIcon } from '../components/Icons';
 import { Meter } from '../components/Meter';
 import { useKitzy } from '../data/derived';
 import { toggleTask } from '../data/store';
@@ -36,7 +37,7 @@ export function Tasks() {
           <h2 id={`tasks-${group}`} className="section-title">
             {t(`tasks.groups.${group}`)}
           </h2>
-          <ul className="row-list task-list">
+          <ul className="task-list">
             {TASKS.filter((task) => task.group === group).map((task) => (
               <TaskRow
                 key={`${task.id}-${data.tasks[task.id] ?? ''}`}
@@ -51,14 +52,30 @@ export function Tasks() {
   );
 }
 
+/** Le domaine affiché sur le lien externe : on sait où l'on va avant de cliquer. */
+function domainOf(url: string): string {
+  try {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch {
+    return url;
+  }
+}
+
+/**
+ * Une carte par geste :
+ * 1. la case, le titre et l'origine du conseil ;
+ * 2. l'explication (et la date si c'est fait) ;
+ * 3. « Pour passer à l'action » : les liens, en pastilles, avec ce qui les attend.
+ */
 function TaskRow({ task, doneOn }: { task: TaskTemplate; doneOn: string | undefined }) {
   const { t } = useTranslation();
   // État local immédiat : la case change au clic, la base suit (la clé du composant resynchronise).
   const [done, setDone] = useState(Boolean(doneOn));
   const id = `task-${task.id}`;
+  const hasActions = Boolean(task.route || task.guide || task.url);
   return (
-    <li className={`row task${done ? ' task--done' : ''}`}>
-      <div className="shop-row__check">
+    <li className={`task-card${done ? ' task-card--done' : ''}`}>
+      <div className="task-card__main">
         <input
           id={id}
           type="checkbox"
@@ -73,48 +90,69 @@ function TaskRow({ task, doneOn }: { task: TaskTemplate; doneOn: string | undefi
             );
           }}
         />
-        <label htmlFor={id} className="shop-row__name">
-          {task.title}
-        </label>
+        <div className="task-card__head">
+          <label htmlFor={id} className="task-card__title">
+            {task.title}
+          </label>
+          <span className={`tag tag--${task.source}`}>{t(`tasks.${task.source}`)}</span>
+        </div>
       </div>
-      <p id={`${id}-hint`} className="task__hint">
+      <p id={`${id}-hint`} className="task-card__hint">
         {task.hint}
         {doneOn && (
-          <span className="task__done"> {t('tasks.doneOn', { date: formatDate(doneOn) })}</span>
+          <span className="task-card__done">
+            {' '}
+            {t('tasks.doneOn', { date: formatDate(doneOn) })}
+          </span>
         )}
       </p>
-      <div className="task__meta">
-        <span className="tag">{t(`tasks.${task.source}`)}</span>
-        {task.route && (
-          <Link
-            to={task.route}
-            className="text-link"
-            aria-label={t('tasks.goLabel', { title: task.title })}
-          >
-            {t('tasks.go')}
-          </Link>
-        )}
-        {task.guide && (
-          <Link
-            to={`/guide/${task.guide}`}
-            className="text-link"
-            aria-label={t('tasks.guideLabel', { title: task.title })}
-          >
-            {t('tasks.guide')}
-          </Link>
-        )}
-        {task.url && (
-          <a
-            href={task.url}
-            className="text-link"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${t('tasks.siteLabel', { title: task.title })} ${t('guide.newWindow')}`}
-          >
-            {t('tasks.site')}
-          </a>
-        )}
-      </div>
+      {hasActions && (
+        <div className="task-card__actions">
+          <p id={`${id}-actions`} className="task-card__actions-label">
+            {t('tasks.actions')}
+          </p>
+          <ul className="pill-list" aria-labelledby={`${id}-actions`}>
+            {task.route && (
+              <li>
+                <Link
+                  to={task.route}
+                  className="pill"
+                  aria-label={t('tasks.goLabel', { title: task.title })}
+                >
+                  <ArrowIcon className="pill__icon" />
+                  {t('tasks.go')}
+                </Link>
+              </li>
+            )}
+            {task.guide && (
+              <li>
+                <Link
+                  to={`/guide/${task.guide}`}
+                  className="pill"
+                  aria-label={t('tasks.guideLabel', { title: task.title })}
+                >
+                  <BookIcon className="pill__icon" />
+                  {t('tasks.guide')}
+                </Link>
+              </li>
+            )}
+            {task.url && (
+              <li>
+                <a
+                  href={task.url}
+                  className="pill"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${t('tasks.siteLabel', { title: task.title })}, ${domainOf(task.url)} ${t('guide.newWindow')}`}
+                >
+                  <ExternalIcon className="pill__icon" />
+                  {domainOf(task.url)}
+                </a>
+              </li>
+            )}
+          </ul>
+        </div>
+      )}
     </li>
   );
 }

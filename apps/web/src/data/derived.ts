@@ -1,11 +1,13 @@
 import { useMemo } from 'react';
 import {
   CATALOG,
+  dashboard,
   essentialsProgress,
   essentialsState,
   nextAction,
   todayLocal,
   type Context,
+  type Dashboard,
   type EssentialProgress,
   type EssentialsState,
   type Kit,
@@ -23,6 +25,7 @@ export interface Kitzy extends AppData {
   next: NextAction | null;
   reminders: Reminder[];
   today: string;
+  dashboard: Dashboard;
 }
 
 export { COUNTRY };
@@ -52,6 +55,7 @@ export function useKitzy(): Kitzy | undefined {
       next: nextAction(progress),
       reminders: remindersFor(data, today),
       today,
+      dashboard: dashboard(data.kits, ctx, data.plan, data.tasks),
     };
   }, [data, today]);
 }

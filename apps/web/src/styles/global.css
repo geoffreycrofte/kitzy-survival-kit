@@ -1198,30 +1198,6 @@ main:focus {
 
 /* Gestes */
 
-.task__hint {
-  color: var(--kz-muted);
-  font-size: 0.9375rem;
-  padding-left: 38px;
-}
-
-.task__done {
-  color: var(--kz-text);
-  font-weight: 600;
-}
-
-.task__meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px 16px;
-  padding-left: 38px;
-}
-
-.task--done label {
-  text-decoration: line-through;
-  text-decoration-thickness: 2px;
-}
-
 /* Impression : le plan seul, en noir sur blanc */
 
 @media print {
@@ -1294,10 +1270,6 @@ fieldset.card > legend {
 
 fieldset.card > legend + * {
   clear: both;
-}
-
-.task .shop-row__check {
-  flex: none;
 }
 
 /* Scan de codes-barres */
@@ -1772,5 +1744,601 @@ fieldset.card > legend + * {
   .shop-card__dest,
   .shop-card__note {
     margin-left: 0;
+  }
+}
+
+/* ---------- Tableau de bord, menu, succès, réglages, gestes ---------- */
+
+h3.choice__legend {
+  margin-top: 0;
+  font-weight: 400;
+}
+
+/* Pastilles de lien : une cible nette (44 px), une icône qui dit où l'on va. */
+.pill-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 14px 0 12px;
+  border-radius: 999px;
+  border: 2px solid var(--kz-line);
+  color: var(--kz-text);
+  text-decoration: none;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+.pill:hover {
+  border-color: var(--kz-text);
+}
+
+.pill__icon {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--kz-heading);
+}
+
+.eyebrow,
+.task-card__actions-label,
+.toc__label,
+.menu__label {
+  color: var(--kz-muted);
+  font-family: var(--kz-font-body);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Accueil : où j'en suis */
+
+.dash {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.dash__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Toute la ligne est cliquable ; le lien reste le titre (nom accessible court). */
+.dash__row {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 40px 14px 14px;
+  border-radius: 18px;
+  border: 2px solid transparent;
+  background: var(--kz-surface);
+}
+
+.dash__row::after {
+  content: '›' / '';
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-55%);
+  font-size: 1.5rem;
+  color: var(--kz-muted);
+}
+
+.dash__row:hover {
+  border-color: var(--kz-line);
+}
+
+.dash__row:has(.dash__link:focus-visible) {
+  outline: 3px solid var(--kz-btn);
+  outline-offset: 3px;
+}
+
+.dash__link {
+  text-decoration: none;
+}
+
+.dash__link:focus-visible {
+  outline: none;
+}
+
+.dash__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.dash__icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-content: center;
+  background: var(--kz-bg);
+  color: var(--kz-heading);
+}
+
+.dash__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dash__title {
+  margin: 0;
+  font-family: var(--kz-font-display);
+  font-size: 1.1875rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.dash__row--done .dash__icon {
+  background: var(--kz-heading);
+  color: var(--kz-bg);
+}
+
+.dash__trophies {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  font-weight: 700;
+  color: var(--kz-heading);
+}
+
+@media (forced-colors: active) {
+  .dash__row,
+  .pill {
+    border-color: LinkText;
+  }
+}
+
+/* Barre du bas : le bouton Menu ressemble aux autres onglets. */
+button.bottom-nav__link {
+  width: 100%;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.bottom-nav__link--active {
+  color: var(--kz-nav-active);
+  font-weight: 700;
+}
+
+/* Menu plein écran */
+
+.menu {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow-y: auto;
+  background: var(--kz-bg);
+  color: var(--kz-text);
+}
+
+.menu::backdrop {
+  background: var(--kz-bg);
+}
+
+.menu__inner {
+  max-width: 560px;
+  min-height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  padding: 20px 20px calc(28px + env(safe-area-inset-bottom));
+}
+
+.menu__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.menu__title {
+  font-size: 2.5rem;
+}
+
+.menu__theme {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.menu__label {
+  padding: 0;
+  margin-bottom: 10px;
+}
+
+/* Choix du thème : trois boutons radio présentés en interrupteur. */
+.segmented {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 5px;
+  border-radius: 999px;
+  border: 1px solid var(--kz-line);
+  background: var(--kz-surface);
+}
+
+.segmented__option {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  border-radius: 999px;
+  color: var(--kz-text);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.segmented__option svg {
+  width: 20px;
+  height: 20px;
+}
+
+.segmented__option input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.segmented__option:has(input:checked) {
+  background: var(--kz-btn);
+  color: var(--kz-btn-text);
+}
+
+.segmented__option:has(input:focus-visible) {
+  outline: 3px solid var(--kz-btn);
+  outline-offset: 3px;
+}
+
+@media (forced-colors: active) {
+  .segmented__option:has(input:checked) {
+    outline: 3px solid Highlight;
+  }
+}
+
+.menu__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.menu__link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px 14px 14px;
+  border-radius: 22px;
+  border: 2px solid transparent;
+  background: var(--kz-surface);
+  text-decoration: none;
+}
+
+.menu__link:hover {
+  border-color: var(--kz-line);
+}
+
+.menu__link[aria-current='page'] {
+  border-color: var(--kz-heading);
+}
+
+.menu__link::after {
+  content: '›' / '';
+  margin-left: auto;
+  font-size: 1.5rem;
+  color: var(--kz-muted);
+}
+
+.menu__icon {
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: grid;
+  place-content: center;
+  background: var(--kz-bg);
+  color: var(--kz-heading);
+}
+
+.menu__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.menu__name {
+  font-family: var(--kz-font-display);
+  font-size: 1.375rem;
+  line-height: 1.2;
+}
+
+.menu__hint {
+  color: var(--kz-muted);
+  font-size: 0.9375rem;
+}
+
+.menu__foot {
+  margin-top: auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+  font-size: 0.9375rem;
+}
+
+@media (forced-colors: active) {
+  .menu__link {
+    border-color: LinkText;
+  }
+}
+
+/* Succès débloqué : un bandeau dans le flux de la page, qui ne masque rien. */
+.unlock {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 16px;
+  padding: 8px 8px 8px 14px;
+  border-radius: 18px;
+  border: 2px solid var(--kz-heading);
+  background: var(--kz-surface);
+}
+
+.unlock__icon {
+  flex: none;
+  color: var(--kz-heading);
+}
+
+.unlock__text {
+  flex: 1;
+  min-width: 10rem;
+  font-weight: 700;
+}
+
+.unlock__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.icon-button--small {
+  width: 44px;
+  height: 44px;
+}
+
+/* Page des succès */
+
+.badges {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 10px;
+}
+
+.badge {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  border: 2px dashed var(--kz-line);
+  background: var(--kz-surface);
+}
+
+.badge__medal {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 999px;
+  display: grid;
+  place-content: center;
+  border: 2px dashed var(--kz-muted);
+  color: var(--kz-muted);
+}
+
+.badge__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.badge__title {
+  font-family: var(--kz-font-display);
+  font-size: 1.125rem;
+  line-height: 1.25;
+}
+
+.badge__hint {
+  color: var(--kz-muted);
+  font-size: 0.9375rem;
+}
+
+.badge__state {
+  margin-top: 4px;
+  color: var(--kz-muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge--on {
+  border-style: solid;
+  border-color: var(--kz-heading);
+}
+
+.badge--on .badge__medal {
+  border: 0;
+  background: var(--kz-heading);
+  color: var(--kz-bg);
+  box-shadow: 0 0 18px 2px var(--kz-fly-glow);
+}
+
+.badge--on .badge__state {
+  color: var(--kz-heading);
+}
+
+/* Réglages : des groupes titrés, et un sommaire pour s'y rendre. */
+
+.toc {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.toc__label {
+  margin: 0;
+}
+
+.settings-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 8px;
+  scroll-margin-top: 16px;
+}
+
+.settings-group > .section-title {
+  font-size: 1.5rem;
+}
+
+.card--danger {
+  border: 2px solid var(--kz-dot-a);
+}
+
+/* Gestes : une carte par geste.
+   1. la case, le titre et l'origine du conseil ;
+   2. l'explication ;
+   3. les liens pour passer à l'action, regroupés et annoncés. */
+
+.task-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--kz-surface);
+}
+
+.task-card__main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.task-card__head {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 10px;
+}
+
+.task-card__title {
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  cursor: pointer;
+}
+
+.task-card__hint {
+  margin-left: 38px;
+  color: var(--kz-muted);
+  font-size: 0.9375rem;
+}
+
+.task-card__done {
+  display: block;
+  margin-top: 4px;
+  color: var(--kz-text);
+  font-weight: 600;
+}
+
+.task-card__actions {
+  margin-left: 38px;
+  padding-top: 10px;
+  border-top: 1px solid var(--kz-line);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.task-card--done .task-card__title {
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.tag--official {
+  color: var(--kz-label);
+  border-color: var(--kz-label);
+  font-weight: 600;
+}
+
+@media (max-width: 26rem) {
+  .task-card__hint,
+  .task-card__actions {
+    margin-left: 0;
+  }
+}
+
+@media (min-width: 60rem) {
+  .task-list {
+    align-items: start;
   }
 }
