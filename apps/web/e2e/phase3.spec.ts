@@ -56,6 +56,27 @@ test.describe('Phase 3 : conseils d’achat, transparence, hiérarchie', () => {
     await expect(page.locator('.story__day').first()).toHaveText('Jour 1.');
   });
 
+  test('courses : nom et quantité, puis où ranger, kit par kit', async ({ page }) => {
+    await setUpHousehold(page);
+    await page.goto('./courses');
+    const water = page.getByRole('listitem').filter({ hasText: 'Eau potable en bouteille' });
+    await expect(
+      water.getByRole('checkbox', { name: /^Eau potable en bouteille, \d/ }),
+    ).toBeVisible();
+    const places = water.getByRole('list', { name: 'Où le ranger' }).getByRole('link');
+    // 2 adultes, 1 enfant, 1 chat : la maison et trois sacs.
+    await expect(places).toHaveCount(4);
+    await expect(places.first()).toHaveAccessibleName(
+      /^Ranger 27,9\sL de «\sEau potable en bouteille\s» dans Réserve maison$/,
+    );
+    // Une fois acheté, la liste des destinations devient l'action à faire.
+    await water.getByRole('checkbox').check();
+    const storeNow = water.getByRole('list', { name: /Acheté\s! Range-le pour suivre ses dates/ });
+    await expect(storeNow).toBeVisible();
+    await storeNow.getByRole('link').nth(1).click();
+    await expect(page).toHaveURL(/\/kits\/bag-1\/drinking-water$/);
+  });
+
   test('les gestes sont regroupés par thème', async ({ page }) => {
     await page.goto('./gestes');
     for (const name of ['Être alerté', 'Chez moi', 'Avec mes proches']) {

@@ -138,16 +138,24 @@ export function nextAction(progress: readonly EssentialProgress[]): NextAction |
   return null;
 }
 
+/** Où ranger un achat : un kit, et la quantité qui lui manque. */
+export interface ShoppingDestination {
+  kitId: string;
+  kitName: string;
+  kitType: Kit['type'];
+  /** Clé de l'article dans ce kit, pour ouvrir sa page. */
+  key: string;
+  quantity: number;
+}
+
 export interface ShoppingEntry {
   key: string;
   label: string;
   quantity: number;
   unit?: Unit;
   category: CategoryId | 'extra';
-  /** Kits concernés */
-  kitNames: string[];
-  /** Pour ranger l'achat : kit et article à ouvrir */
-  target?: { kitId: string; key: string };
+  /** Répartition de la quantité entre les kits (vide pour un ajout manuel). */
+  destinations: ShoppingDestination[];
   /** Dont quantité périmée à remplacer */
   replaces: number;
 }
@@ -163,11 +171,18 @@ export function shoppingList(
     for (const row of kitRows(kit, ctx)) {
       const missing = Math.round((row.status.target - row.status.usable) * 10) / 10;
       if (missing <= 0) continue;
+      const destination: ShoppingDestination = {
+        kitId: kit.id,
+        kitName: kit.name,
+        kitType: kit.type,
+        key: row.key,
+        quantity: missing,
+      };
       const existing = byKey.get(row.key);
       if (existing) {
         existing.quantity = Math.round((existing.quantity + missing) * 10) / 10;
         existing.replaces += row.status.expiredQuantity;
-        if (!existing.kitNames.includes(kit.name)) existing.kitNames.push(kit.name);
+        existing.destinations.push(destination);
         continue;
       }
       byKey.set(row.key, {
@@ -176,8 +191,7 @@ export function shoppingList(
         quantity: missing,
         unit: row.unit,
         category: row.category,
-        kitNames: [kit.name],
-        target: { kitId: kit.id, key: row.key },
+        destinations: [destination],
         replaces: row.status.expiredQuantity,
       });
     }
@@ -193,7 +207,7 @@ export function shoppingList(
       quantity: extra.quantity ?? 1,
       unit: extra.unit,
       category: 'extra',
-      kitNames: [],
+      destinations: [],
       replaces: 0,
     });
   }

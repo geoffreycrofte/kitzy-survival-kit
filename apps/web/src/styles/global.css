@@ -1630,3 +1630,147 @@ fieldset.card > legend + * {
   font-size: 0.875rem;
   font-weight: 700;
 }
+
+/* Courses : une carte par article.
+   1. ce qu'on achète (nom + quantité, lisibles d'un coup d'œil en magasin),
+   2. une éventuelle remarque,
+   3. où le ranger, kit par kit, chaque destination menant à sa page. */
+
+.shop-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.shop-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: 18px;
+  background: var(--kz-surface);
+}
+
+.shop-card__main {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.shop-card__label {
+  flex: 1;
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: baseline;
+  column-gap: 12px;
+  cursor: pointer;
+}
+
+.shop-card__name {
+  font-weight: 700;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+}
+
+.shop-card__qty {
+  font-family: var(--kz-font-display);
+  font-size: 1.1875rem;
+  white-space: nowrap;
+}
+
+.shop-card__note {
+  margin-left: 38px;
+  color: var(--kz-muted);
+  font-size: 0.9375rem;
+}
+
+.shop-card__dest {
+  margin-left: 38px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.shop-card__dest-label {
+  color: var(--kz-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.shop-card__dest-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.dest {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 12px 0 10px;
+  border-radius: 999px;
+  border: 2px solid var(--kz-line);
+  color: var(--kz-text);
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.dest:hover {
+  border-color: var(--kz-text);
+}
+
+.dest__place {
+  font-weight: 600;
+}
+
+.dest__qty {
+  color: var(--kz-muted);
+}
+
+.dest::after {
+  content: '›' / '';
+  margin-left: -2px;
+  font-size: 1.25rem;
+  line-height: 1;
+  color: var(--kz-muted);
+}
+
+/* Acheté : l'article s'efface, les destinations deviennent l'action à faire. */
+.shop-card--bought .shop-card__name,
+.shop-card--bought .shop-card__qty {
+  color: var(--kz-muted);
+  text-decoration: line-through;
+  text-decoration-thickness: 2px;
+}
+
+.shop-card--bought .shop-card__dest-label {
+  color: var(--kz-heading);
+}
+
+.shop-card--bought .dest {
+  border-color: var(--kz-heading);
+}
+
+@media (forced-colors: active) {
+  .dest {
+    border-color: LinkText;
+  }
+}
+
+/* Petits écrans : les destinations prennent toute la largeur de la carte. */
+@media (max-width: 26rem) {
+  .shop-card__dest,
+  .shop-card__note {
+    margin-left: 0;
+  }
+}
