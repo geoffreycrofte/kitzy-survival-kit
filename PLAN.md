@@ -580,6 +580,12 @@ Prévu dès maintenant pour ne rien casser au moment de l'ajouter :
 - L'adaptateur `apps/web/src/lib/webpush.ts` existe, désactivé tant que `VITE_KITZY_PUSH_URL` et `VITE_KITZY_VAPID_KEY` ne sont pas fournis au build.
 - Contrat attendu : `POST /subscribe` avec `{ subscription, schedule: [{ id, date }], timezone }`, `DELETE /subscribe` avec `{ endpoint }`. Le calendrier ne contient qu'**une entrée par jour d'alerte** (identifiant FNV-1a salé par appareil), jamais un nom d'article. Le service envoie un push vide de contenu ce jour-là, vers 9 h dans le fuseau indiqué ; le service worker calcule et affiche le détail localement.
 - Mise à jour de la politique de confidentialité au moment de l'activation.
+- **Le VPS (OVH)** : Ubuntu, nginx, vhosts gérés avec **WordOps**. Déploiement prévu :
+  - DNS : `push.kitzy.lu` en A (et AAAA) vers l'IP du VPS ;
+  - le service écoute en local (ex. `127.0.0.1:8787`), lancé par **systemd** (redémarrage automatique, utilisateur dédié sans droits) ;
+  - un vhost WordOps en proxy inverse vers ce port avec certificat Let's Encrypt (WordOps sait créer un site « proxy » ; syntaxe exacte à vérifier au moment de l'installation) ;
+  - SQLite dans un dossier du service, sauvegardé avec le reste du VPS ;
+  - clés VAPID générées une fois sur le VPS ; la clé publique va dans la variable de dépôt `KITZY_VAPID_KEY`, l'adresse dans `KITZY_PUSH_URL`.
 
 ### 6.5 Règles de rappel par défaut
 
