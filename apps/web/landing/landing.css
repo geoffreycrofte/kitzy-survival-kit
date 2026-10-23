@@ -216,57 +216,62 @@ main > section + section {
   gap: 12px;
 }
 
-.window {
+/* Kitzy en entier, sans cadre : c'est sa lanterne qui éclaire la page. */
+.stage {
   position: relative;
-  width: min(420px, 82vw);
-  aspect-ratio: 1;
+  width: min(300px, 64vw);
   justify-self: center;
+  isolation: isolate;
 }
 
-/* Le halo de la lanterne déborde de la fenêtre, comme une lumière dans la nuit. */
-.window__glow {
+/* Le halo part de la lanterne (à gauche, à mi-hauteur) et déborde librement. */
+.stage__light {
   position: absolute;
-  inset: -18%;
+  left: 12%;
+  top: 57%;
+  width: 230%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
   border-radius: 50%;
-  background: radial-gradient(circle, var(--kz-halo) 0%, transparent 62%);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--kz-fly) 60%, transparent) 0%,
+    var(--kz-halo) 24%,
+    transparent 62%
+  );
+  z-index: -1;
   pointer-events: none;
 }
 
-.window__pane {
+/* L'ombre au sol, portée à l'opposé de la lanterne. */
+.stage__ground {
   position: absolute;
-  inset: 0;
+  left: 58%;
+  bottom: -2%;
+  width: 78%;
+  height: 7%;
+  translate: -50% 0;
   border-radius: 50%;
-  overflow: hidden;
-  background: radial-gradient(
-    circle at 50% 58%,
-    var(--kz-glow) 0%,
-    var(--kz-glow) 30%,
-    var(--kz-surface) 72%
-  );
-  box-shadow: 0 0 0 8px var(--kz-ring);
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.28), transparent);
+  z-index: -1;
 }
 
-.window__pane img {
-  position: absolute;
-  left: 50%;
-  bottom: -4%;
-  width: 66%;
-  transform: translateX(-50%);
+.stage__hog {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
-/* Un seul moment orchestré : la lumière monte, le hérisson apparaît, puis le texte. */
-html[data-motion='full'] .window__pane {
-  animation: kz-dusk 1.4s var(--kz-ease) both;
-}
-
-html[data-motion='full'] .window__glow {
+/* Un seul moment orchestré : la lanterne s'allume, Kitzy arrive, puis le texte. */
+html[data-motion='full'] .stage__light {
   animation:
-    kz-glow-in 1.8s var(--kz-ease) 0.2s both,
-    kz-breathe 9s ease-in-out 2s infinite;
+    kz-glow-in 1.6s var(--kz-ease) 0.3s both,
+    kz-flicker 7s ease-in-out 2s infinite;
 }
 
-html[data-motion='full'] .window__pane img {
-  animation: kz-peek 1s var(--kz-ease) 0.5s both;
+html[data-motion='full'] .stage__hog,
+html[data-motion='full'] .stage__ground {
+  animation: kz-arrive 1s var(--kz-ease) both;
 }
 
 html[data-motion='full'] .hero__text > * {
@@ -281,33 +286,33 @@ html[data-motion='full'] .actions {
   animation-delay: 0.24s;
 }
 
-@keyframes kz-dusk {
-  from {
-    filter: brightness(0.35) saturate(0.6);
-  }
-}
-
 @keyframes kz-glow-in {
   from {
     opacity: 0;
-    transform: scale(0.6);
+    scale: 0.4;
   }
 }
 
-@keyframes kz-breathe {
+@keyframes kz-flicker {
   0%,
   100% {
-    transform: scale(1);
+    scale: 1;
+    opacity: 1;
   }
-  50% {
-    transform: scale(1.06);
+  40% {
+    scale: 1.05;
+    opacity: 0.9;
+  }
+  70% {
+    scale: 0.98;
+    opacity: 1;
   }
 }
 
-@keyframes kz-peek {
+@keyframes kz-arrive {
   from {
     opacity: 0;
-    transform: translate(-50%, 18%);
+    translate: 0 24px;
   }
 }
 
@@ -861,8 +866,8 @@ html[data-motion='full'] .result__n--bump {
     min-height: min(78vh, 760px);
   }
 
-  .window {
-    width: min(460px, 100%);
+  .stage {
+    width: min(340px, 100%);
   }
 
   /* La maisonnée : les membres à gauche, les quantités à droite, côte à côte. */
