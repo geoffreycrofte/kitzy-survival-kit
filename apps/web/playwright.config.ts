@@ -13,7 +13,8 @@ export default defineConfig({
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['github'], ['html', { open: 'never' }]] : 'list',
   use: {
-    baseURL: 'http://localhost:4173/',
+    // L'app vit sous /app/ ; la page de présentation est à la racine du site.
+    baseURL: 'http://localhost:4173/app/',
     trace: 'retain-on-failure',
     locale: 'fr-LU',
   },

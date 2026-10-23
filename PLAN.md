@@ -9,7 +9,7 @@
 | Sujet | Décision |
 |---|---|
 | Nom | **Kitzy**, avec un **hérisson** pour mascotte (Igel et Prett étaient pris). Dépôt de marque EUIPO et noms sur les stores à vérifier. |
-| Hébergement | **GitHub Pages**, 100 % statique, sur **kitzy.lu** (DNS chez OVH) ; le VPS OVH servira seulement au service Web Push |
+| Hébergement | **GitHub Pages**, 100 % statique, sur **kitzy.lu** (DNS chez OVH) : page de présentation à la racine, app dans `/app/` ; le VPS OVH servira seulement au service Web Push |
 | Serveur | **Aucun pour l'instant**. Le VPS personnel est disponible plus tard pour le Web Push (§ 6.4) |
 | Langues | **FR, EN, LB (luxembourgeois), DE, PT** (§ 12.1) |
 | Stack | **Validé** : **React** pour la PWA + **React Native (Expo)** pour les stores, avec un **cœur TypeScript partagé** (§ 5) |
@@ -1056,6 +1056,13 @@ Tout est réuni dans **Activités** (menu), en trois groupes : les rituels, en f
 - [x] Accessibilité : une question = un groupe de boutons radio, le focus va sur la question puis sur le retour ; la bonne réponse est dite en texte, pas seulement en couleur
 
 Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fiche voisinage imprimable (§ 4).
+
+### Retouches : page de présentation ✅
+
+- [x] **kitzy.lu** : une page de présentation (ce qu'est Kitzy, ce qu'elle fait, la confidentialité, comment l'installer sur Android, iPhone et ordinateur, l'appareil de la personne en premier), dans les cinq langues, avec la même langue et le même thème que l'app
+- [x] L'app déménage dans **`/app/`** : `start_url` et `scope` y pointent, l'identité de l'app installée (`id: /`) ne change pas. Une app installée ouverte à la racine, ou une ancienne adresse (lien de partage…), mène à la même page dans `/app/`
+- [x] L'ancien service worker de la racine est remplacé par un `sw.js` qui efface ses caches, se désinscrit et recharge la page ; les données (même site) ne bougent pas
+- [x] Tests sur un serveur qui imite GitHub Pages (`scripts/serve-dist.mjs` : 404.html, statut 404)
 
 ### Phase 5 : International et stores
 

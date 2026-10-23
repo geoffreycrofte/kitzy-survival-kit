@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="fr" data-theme="sombre" data-motion="reduced">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title data-i18n="title">Kitzy, ta réserve d’urgence de 72 heures</title>
+    <meta
+      name="description"
+      data-i18n-content="description"
+      content="Kitzy t’aide à préparer, suivre et faire tourner ta réserve d’urgence de 72 heures, d’après le guide officiel Lëtz prepare! Gratuit, sans compte, hors ligne."
+    />
+    <meta property="og:title" content="Kitzy" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="app/icons/icon-512.png" />
+    <meta name="theme-color" content="#12302B" />
+    <meta name="color-scheme" content="dark light" />
+    <link rel="icon" type="image/png" href="app/icons/favicon-64.png" />
+    <link rel="apple-touch-icon" href="app/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="app/manifest.webmanifest" />
+    <script>
+      // App installée ouverte sur l'ancienne adresse : direction l'app, sans afficher cette page.
+      if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true) {
+        location.replace('app/');
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#contenu" data-i18n="skip">Aller au contenu</a>
+    <header class="top">
+      <a class="brand" href="./">Kitzy</a>
+      <div class="top__actions">
+        <label class="lang">
+          <span class="visually-hidden" data-i18n="language">Langue</span>
+          <select id="lang" class="lang__select">
+            <option value="fr" lang="fr">Français</option>
+            <option value="en" lang="en">English</option>
+            <option value="lb" lang="lb">Lëtzebuergesch</option>
+            <option value="de" lang="de">Deutsch</option>
+            <option value="pt" lang="pt">Português</option>
+          </select>
+        </label>
+        <a class="button button--small" href="app/" data-i18n="openApp">Ouvrir l’app</a>
+      </div>
+    </header>
+
+    <main id="contenu" tabindex="-1">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero__text">
+          <p class="eyebrow" data-i18n="hero.eyebrow">Kit d’urgence 72 h, Luxembourg</p>
+          <h1 id="hero-title" data-i18n="hero.title">Ta réserve d’urgence, prête et à jour.</h1>
+          <p class="lead" data-i18n="hero.lead">
+            Kitzy t’aide à préparer de quoi tenir trois jours chez toi : eau, repas, lumière,
+            chaleur, soins et un plan. Puis il pense aux dates à ta place, en douceur.
+          </p>
+          <div class="actions">
+            <a class="button" href="app/" data-i18n="hero.open">Ouvrir Kitzy</a>
+            <a class="button button--ghost" href="#installer" data-i18n="hero.install">
+              Installer l’app
+            </a>
+          </div>
+        </div>
+        <div class="lantern" aria-hidden="true">
+          <div class="lantern__window">
+            <img src="app/mascot/kitzy-bonjour.webp" alt="" width="640" height="1060" />
+          </div>
+          <span class="fly" style="--x: 6%; --y: 70%; --d: 0s"></span>
+          <span class="fly" style="--x: 6%; --y: 30%; --d: -1.3s"></span>
+          <span class="fly" style="--x: 27%; --y: 2%; --d: -2.6s"></span>
+          <span class="fly" style="--x: 68%; --y: 2%; --d: -3.9s"></span>
+          <span class="fly" style="--x: 88%; --y: 30%; --d: -5.2s"></span>
+          <span class="fly" style="--x: 88%; --y: 70%; --d: -6.5s"></span>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="features-title">
+        <h2 id="features-title" class="section__title" data-i18n="features.title">
+          Ce que fait Kitzy
+        </h2>
+        <ul class="features">
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 3v2M12 19v2M3 12h2M19 12h2" />
+              </svg>
+            </span>
+            <h3 data-i18n="features.items.0.title">Six lucioles</h3>
+            <p data-i18n="features.items.0.text">
+              Une par essentiel. Elles s’allument au fur et à mesure que ta réserve se remplit.
+            </p>
+          </li>
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 7l4-4h12v12l-4 4H4z" />
+                <circle cx="9" cy="12" r="1.5" />
+              </svg>
+            </span>
+            <h3 data-i18n="features.items.1.title">Une liste de courses</h3>
+            <p data-i18n="features.items.1.text">
+              Calculée pour ton foyer, avec l’endroit où ranger chaque article.
+            </p>
+          </li>
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z" />
+                <path d="M10 20a2 2 0 0 0 4 0" />
+              </svg>
+            </span>
+            <h3 data-i18n="features.items.2.title">Des rappels</h3>
+            <p data-i18n="features.items.2.text">
+              Dates de péremption, recharges, mini-check du premier lundi : Kitzy y pense pour toi.
+            </p>
+          </li>
+          <li class="feature">
+            <span class="feature__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"
+                />
+              </svg>
+            </span>
+            <h3 data-i18n="features.items.3.title">Le guide officiel</h3>
+            <p data-i18n="features.items.3.text">
+              Les conseils de Lëtz prepare! en langage clair, et ton plan d’urgence à imprimer.
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="section privacy" aria-labelledby="privacy-title">
+        <h2 id="privacy-title" class="section__title" data-i18n="privacy.title">
+          Tout reste chez toi
+        </h2>
+        <p class="lead" data-i18n="privacy.text">
+          Pas de compte, pas de publicité : tes données restent sur ton appareil. Kitzy fonctionne
+          même sans connexion.
+        </p>
+      </section>
+
+      <section id="installer" class="section" aria-labelledby="install-title" tabindex="-1">
+        <h2 id="install-title" class="section__title" data-i18n="install.title">Installer Kitzy</h2>
+        <p class="lead" data-i18n="install.intro">
+          Kitzy est une app web : pas besoin de store. Une fois installée, elle s’ouvre comme une
+          app, fonctionne hors ligne et peut te prévenir.
+        </p>
+        <p id="install-state" class="note" role="status"></p>
+        <button id="install-now" type="button" class="button" hidden data-i18n="install.now">
+          Installer maintenant
+        </button>
+        <ul class="platforms">
+          <li class="platform" data-platform="android">
+            <h3>
+              <span data-i18n="install.platforms.android.title">Android</span>
+              <span class="platform__yours" data-i18n="install.yours">Ton appareil</span>
+            </h3>
+            <ol>
+              <li data-i18n="install.platforms.android.steps.0">Ouvre kitzy.lu dans Chrome.</li>
+              <li data-i18n="install.platforms.android.steps.1">
+                Touche le menu ⋮ en haut à droite.
+              </li>
+              <li data-i18n="install.platforms.android.steps.2">
+                Choisis « Installer l’application » ou « Ajouter à l’écran d’accueil ».
+              </li>
+            </ol>
+          </li>
+          <li class="platform" data-platform="ios">
+            <h3>
+              <span data-i18n="install.platforms.ios.title">iPhone et iPad</span>
+              <span class="platform__yours" data-i18n="install.yours">Ton appareil</span>
+            </h3>
+            <ol>
+              <li data-i18n="install.platforms.ios.steps.0">Ouvre kitzy.lu dans Safari.</li>
+              <li data-i18n="install.platforms.ios.steps.1">
+                Touche le bouton Partager, le carré avec une flèche.
+              </li>
+              <li data-i18n="install.platforms.ios.steps.2">
+                Choisis « Sur l’écran d’accueil », puis « Ajouter ».
+              </li>
+            </ol>
+          </li>
+          <li class="platform" data-platform="desktop">
+            <h3>
+              <span data-i18n="install.platforms.desktop.title">Ordinateur</span>
+              <span class="platform__yours" data-i18n="install.yours">Ton appareil</span>
+            </h3>
+            <ol>
+              <li data-i18n="install.platforms.desktop.steps.0">
+                Ouvre kitzy.lu dans Chrome ou Edge.
+              </li>
+              <li data-i18n="install.platforms.desktop.steps.1">
+                Clique sur l’icône d’installation dans la barre d’adresse.
+              </li>
+              <li data-i18n="install.platforms.desktop.steps.2">Confirme avec « Installer ».</li>
+            </ol>
+          </li>
+        </ul>
+        <p class="browser">
+          <span data-i18n="install.browser">
+            Tu préfères ton navigateur ? Kitzy marche aussi très bien sans installation.
+          </span>
+          <a href="app/" data-i18n="install.browserLink">Ouvrir Kitzy dans le navigateur</a>
+        </p>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p data-i18n="footer.source">
+        Conseils tirés du guide officiel Lëtz prepare! Kitzy est une app indépendante, non affiliée
+        au Gouvernement du Luxembourg.
+      </p>
+      <ul class="footer__links">
+        <li><a href="app/confidentialite" data-i18n="footer.privacy">Confidentialité</a></li>
+        <li>
+          <a href="app/transparence" data-i18n="footer.transparency"
+            >Liens d’achat et transparence</a
+          >
+        </li>
+        <li>
+          <a href="https://github.com/geoffreycrofte/survival-kit" data-i18n="footer.project">
+            Le projet sur GitHub
+          </a>
+        </li>
+      </ul>
+    </footer>
+    <script type="module" src="./main.ts"></script>
+  </body>
+</html>

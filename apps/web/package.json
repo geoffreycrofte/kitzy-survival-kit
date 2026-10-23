@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -p tsconfig.json && tsc -p tsconfig.sw.json && vite build",
-    "preview": "vite preview",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig.sw.json && node -e \"require('node:fs').rmSync('dist',{recursive:true,force:true})\" && vite build && vite build -c vite.landing.config.ts",
+    "preview": "node scripts/serve-dist.mjs",
     "test": "echo \"Pas de tests unitaires web pour l'instant\"",
     "typecheck": "tsc -p tsconfig.json && tsc -p tsconfig.sw.json",
     "e2e": "playwright test"
