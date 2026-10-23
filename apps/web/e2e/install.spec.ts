@@ -3,7 +3,10 @@ import { expect, test } from '@playwright/test';
 test.describe('Installer Kitzy', () => {
   test('le manifeste a une identité stable et se déclare comme app liée', async ({ request }) => {
     const manifest = await (await request.get('./manifest.webmanifest')).json();
-    expect(manifest.id).toBe(manifest.start_url);
+    // Identité inchangée depuis la première version (racine du site), l'app démarre dans app/.
+    expect(manifest.id).toBe('/');
+    expect(manifest.start_url).toBe('/app/');
+    expect(manifest.scope).toBe('/app/');
     expect(manifest.related_applications).toEqual([
       { platform: 'webapp', url: expect.stringMatching(/\/manifest\.webmanifest$/) },
     ]);

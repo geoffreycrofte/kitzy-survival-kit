@@ -9,7 +9,7 @@
 | Sujet | Décision |
 |---|---|
 | Nom | **Kitzy**, avec un **hérisson** pour mascotte (Igel et Prett étaient pris). Dépôt de marque EUIPO et noms sur les stores à vérifier. |
-| Hébergement | **GitHub Pages**, 100 % statique, domaine **kitzy.lu** pressenti |
+| Hébergement | **GitHub Pages**, 100 % statique, sur **kitzy.lu** (DNS chez OVH) : page de présentation à la racine, app dans `/app/` ; le VPS OVH servira seulement au service Web Push |
 | Serveur | **Aucun pour l'instant**. Le VPS personnel est disponible plus tard pour le Web Push (§ 6.4) |
 | Langues | **FR, EN, LB (luxembourgeois), DE, PT** (§ 12.1) |
 | Stack | **Validé** : **React** pour la PWA + **React Native (Expo)** pour les stores, avec un **cœur TypeScript partagé** (§ 5) |
@@ -492,7 +492,7 @@ Ordre de travail : **la PWA d'abord** (GitHub Pages, phases 0 à 4), l'app Expo 
 - Routes pré-générées ou repli `404.html` qui recharge l'app (pas de réécriture serveur).
 - Fichier `.nojekyll` ; déploiement par l'action officielle `actions/deploy-pages`.
 - Pas d'en-têtes HTTP personnalisés : la CSP passe par une balise `<meta http-equiv>`.
-- **Domaine personnalisé** : **kitzy.lu** pressenti (à réserver). Il doit être branché **avant** la mise en production publique : IndexedDB est liée à l'origine, et changer de domaine ensuite ferait perdre leurs données aux utilisateurs. Avec le domaine, `base` passe à `/` et un fichier `CNAME` est ajouté au déploiement.
+- **Domaine personnalisé** : **kitzy.lu**, réservé chez OVH et branché sur GitHub Pages (enregistrements A/AAAA vers GitHub, `www` en CNAME, domaine vérifié sur le compte GitHub, variables `KITZY_DOMAIN=kitzy.lu` et `KITZY_BASE=/`). Il doit être branché **avant** la mise en production publique : IndexedDB est liée à l'origine, et changer de domaine ensuite ferait perdre leurs données aux utilisateurs. Avec le domaine, `base` passe à `/` et un fichier `CNAME` est ajouté au déploiement.
 
 ### 5.3 Structure du dépôt
 
@@ -580,6 +580,12 @@ Prévu dès maintenant pour ne rien casser au moment de l'ajouter :
 - L'adaptateur `apps/web/src/lib/webpush.ts` existe, désactivé tant que `VITE_KITZY_PUSH_URL` et `VITE_KITZY_VAPID_KEY` ne sont pas fournis au build.
 - Contrat attendu : `POST /subscribe` avec `{ subscription, schedule: [{ id, date }], timezone }`, `DELETE /subscribe` avec `{ endpoint }`. Le calendrier ne contient qu'**une entrée par jour d'alerte** (identifiant FNV-1a salé par appareil), jamais un nom d'article. Le service envoie un push vide de contenu ce jour-là, vers 9 h dans le fuseau indiqué ; le service worker calcule et affiche le détail localement.
 - Mise à jour de la politique de confidentialité au moment de l'activation.
+- **Le VPS (OVH)** : Ubuntu, nginx, vhosts gérés avec **WordOps**. Déploiement prévu :
+  - DNS : `push.kitzy.lu` en A (et AAAA) vers l'IP du VPS ;
+  - le service écoute en local (ex. `127.0.0.1:8787`), lancé par **systemd** (redémarrage automatique, utilisateur dédié sans droits) ;
+  - un vhost WordOps en proxy inverse vers ce port avec certificat Let's Encrypt (WordOps sait créer un site « proxy » ; syntaxe exacte à vérifier au moment de l'installation) ;
+  - SQLite dans un dossier du service, sauvegardé avec le reste du VPS ;
+  - clés VAPID générées une fois sur le VPS ; la clé publique va dans la variable de dépôt `KITZY_VAPID_KEY`, l'adresse dans `KITZY_PUSH_URL`.
 
 ### 6.5 Règles de rappel par défaut
 
@@ -964,7 +970,8 @@ Préparé dès le départ :
 
 - [x] Valider le plan (v0.3) et le nom **Kitzy**
 - [x] Piste graphique : **La Veillée** (sombre + clair, mouvement)
-- [ ] Choisir le **domaine** (kitzy.lu pressenti) ; vérifier la marque « Kitzy » (EUIPO, stores)
+- [x] **Domaine** kitzy.lu réservé et branché sur GitHub Pages
+- [ ] Vérifier la marque « Kitzy » (EUIPO, stores)
 - [x] Monorepo pnpm : `packages/core` (TS, Vitest) et `apps/web` (React 19, Vite 8, vite-plugin-pwa, React Router, i18next, Playwright), ESLint avec jsx-a11y, Prettier
 - [x] Jetons de couleur des deux thèmes dans `core`, avec **test automatique des contrastes** (4,5:1 minimum)
 - [x] Préférences : thème (système, sombre, clair) et animations d'ambiance (système, activées, désactivées)
@@ -1056,6 +1063,13 @@ Tout est réuni dans **Activités** (menu), en trois groupes : les rituels, en f
 
 Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fiche voisinage imprimable (§ 4).
 
+### Retouches : page de présentation ✅
+
+- [x] **kitzy.lu** : une page de présentation (ce qu'est Kitzy, ce qu'elle fait, la confidentialité, comment l'installer sur Android, iPhone et ordinateur, l'appareil de la personne en premier), dans les cinq langues, avec la même langue et le même thème que l'app
+- [x] L'app déménage dans **`/app/`** : `start_url` et `scope` y pointent, l'identité de l'app installée (`id: /`) ne change pas. Une app installée ouverte à la racine, ou une ancienne adresse (lien de partage…), mène à la même page dans `/app/`
+- [x] L'ancien service worker de la racine est remplacé par un `sw.js` qui efface ses caches, se désinscrit et recharge la page ; les données (même site) ne bougent pas
+- [x] Tests sur un serveur qui imite GitHub Pages (`scripts/serve-dist.mjs` : 404.html, statut 404)
+
 ### Phase 5 : International et stores
 
 - [x] **Traductions EN, LB, DE, PT** de toute l'app : interface, catalogue, guide, gestes, recettes, quiz, simulation, conseils d'achat, notifications, fichier agenda. Le français reste la source ; un texte manquant retombe sur le français, et un test vérifie pour chaque langue que toutes les clés, tous les `{{…}}` et tous les contenus sont là
@@ -1083,7 +1097,7 @@ Hébergement (GitHub Pages) · Serveur (aucun, VPS plus tard) · Langues (FR, EN
 
 ### Encore ouvertes
 
-1. **Domaine** : réserver **kitzy.lu** (et éventuellement kitzy.eu en redirection) avant le lancement public.
+1. **Domaine** : ~~réserver **kitzy.lu**~~ fait ; éventuellement kitzy.eu en redirection.
 2. **Marque** : vérifier « Kitzy » sur EUIPO (classe 9, logiciels) et sur les stores.
 3. **Poses du hérisson** : à générer d'après [`docs/mascotte-poses.md`](docs/mascotte-poses.md), puis à détourer.
 

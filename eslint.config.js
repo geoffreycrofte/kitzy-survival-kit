@@ -26,7 +26,15 @@ export default tseslint.config(
     },
   },
   {
-    files: ['**/*.config.{js,ts}', 'apps/web/e2e/**/*.ts'],
+    files: ['apps/web/landing/**/*.ts'],
+    languageOptions: { globals: globals.browser },
+  },
+  {
+    files: ['apps/web/landing/public/sw.js'],
+    languageOptions: { globals: globals.serviceworker },
+  },
+  {
+    files: ['**/*.config.{js,ts}', 'apps/web/e2e/**/*.ts', 'apps/web/scripts/**/*.mjs'],
     languageOptions: { globals: globals.node },
   },
 );

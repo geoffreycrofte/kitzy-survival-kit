@@ -1,34 +1,45 @@
-import { copyFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 /**
- * Chemin de publication. GitHub Pages sans domaine : `/survival-kit/`.
- * Avec kitzy.lu : `/`.
+ * Racine du site (`KITZY_BASE`) : `/` avec kitzy.lu, `/survival-kit/` sur GitHub Pages sans domaine.
+ * La page de présentation est à la racine ; l'app vit dans `app/` juste en dessous.
  */
-const base = process.env.KITZY_BASE ?? '/';
+const siteBase = process.env.KITZY_BASE ?? '/';
+const base = `${siteBase}app/`;
 
 /** Origine publique : kitzy.lu dès que le domaine est configuré, sinon GitHub Pages. */
 const origin = process.env.KITZY_DOMAIN
   ? `https://${process.env.KITZY_DOMAIN}`
   : 'https://geoffreycrofte.github.io';
 
-/** GitHub Pages ne sait pas réécrire les URL : 404.html relance l'app sur la bonne route. */
+/**
+ * GitHub Pages ne sait pas réécrire les URL : le 404.html du site relance l'app sur la bonne route.
+ * Une ancienne adresse hors de `app/` (lien de partage, app installée avant le déménagement)
+ * est renvoyée vers la même page dans `app/`.
+ */
 function spaFallback(): Plugin {
   return {
     name: 'kitzy-spa-fallback',
     apply: 'build',
     closeBundle() {
-      const dist = resolve(import.meta.dirname, 'dist');
-      copyFileSync(resolve(dist, 'index.html'), resolve(dist, '404.html'));
+      const out = resolve(import.meta.dirname, 'dist/app');
+      const html = readFileSync(resolve(out, 'index.html'), 'utf8');
+      const redirect = `<script>(function(){var s=${JSON.stringify(siteBase)},a=${JSON.stringify(base)},p=location.pathname;if(p.indexOf(a)!==0){location.replace(a+p.slice(s.length)+location.search+location.hash);}})();</script>`;
+      writeFileSync(
+        resolve(out, '../404.html'),
+        html.replace('<meta charset="utf-8" />', `<meta charset="utf-8" />\n    ${redirect}`),
+      );
     },
   };
 }
 
 export default defineConfig({
   base,
+  build: { outDir: 'dist/app', emptyOutDir: true },
   plugins: [
     react(),
     VitePWA({
@@ -38,8 +49,9 @@ export default defineConfig({
       filename: 'sw.ts',
       includeAssets: ['icons/*.png', 'mascot/*.webp'],
       manifest: {
-        // Identité stable de l'app installée (sinon Chrome se rabat sur start_url).
-        id: base,
+        // Identité stable de l'app installée : la racine du site, inchangée depuis la première
+        // version. L'app installée garde ainsi son identité alors que start_url passe à `app/`.
+        id: siteBase,
         name: 'Kitzy',
         short_name: 'Kitzy',
         description: 'Ta réserve d’urgence de 72 heures, prête et à jour.',
@@ -65,7 +77,6 @@ export default defineConfig({
       },
       injectManifest: {
         globPatterns: ['**/*.{js,css,html,woff2,webp,png,svg,wasm}'],
-        globIgnores: ['404.html'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
       },
       devOptions: { enabled: false, type: 'module' },
