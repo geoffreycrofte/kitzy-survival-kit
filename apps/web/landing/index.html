@@ -3,12 +3,8 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title data-i18n="title">Kitzy, ta réserve d’urgence de 72 heures</title>
-    <meta
-      name="description"
-      data-i18n-content="description"
-      content="Kitzy t’aide à préparer, suivre et faire tourner ta réserve d’urgence de 72 heures, d’après le guide officiel Lëtz prepare! Gratuit, sans compte, hors ligne."
-    />
+    <title data-i18n="title"></title>
+    <meta name="description" data-i18n-content="description" content="" />
     <meta property="og:title" content="Kitzy" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="app/icons/icon-512.png" />
@@ -18,209 +14,309 @@
     <link rel="apple-touch-icon" href="app/icons/apple-touch-icon.png" />
     <link rel="manifest" href="app/manifest.webmanifest" />
     <script>
-      // App installée ouverte sur l'ancienne adresse : direction l'app, sans afficher cette page.
+      // App installée ouverte sur l'ancienne adresse : direction l'app, sans afficher cette page.
       if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true) {
         location.replace('app/');
       }
     </script>
   </head>
   <body>
-    <a class="skip-link" href="#contenu" data-i18n="skip">Aller au contenu</a>
+    <a class="skip-link" href="#contenu" data-i18n="skip"></a>
+
     <header class="top">
       <a class="brand" href="./">Kitzy</a>
-      <div class="top__actions">
-        <label class="lang">
-          <span class="visually-hidden" data-i18n="language">Langue</span>
-          <select id="lang" class="lang__select">
-            <option value="fr" lang="fr">Français</option>
-            <option value="en" lang="en">English</option>
-            <option value="lb" lang="lb">Lëtzebuergesch</option>
-            <option value="de" lang="de">Deutsch</option>
-            <option value="pt" lang="pt">Português</option>
-          </select>
-        </label>
-        <a class="button button--small" href="app/" data-i18n="openApp">Ouvrir l’app</a>
-      </div>
+      <label class="lang">
+        <span class="visually-hidden" data-i18n="language"></span>
+        <select id="lang" class="lang__select">
+          <option value="fr" lang="fr">Français</option>
+          <option value="en" lang="en">English</option>
+          <option value="lb" lang="lb">Lëtzebuergesch</option>
+          <option value="de" lang="de">Deutsch</option>
+          <option value="pt" lang="pt">Português</option>
+        </select>
+      </label>
+      <a class="button button--small top__open" href="app/" data-i18n="openApp"></a>
     </header>
 
     <main id="contenu" tabindex="-1">
+      <!-- Le soir tombe : la fenêtre du terrier s'allume, une seule fois au chargement. -->
       <section class="hero" aria-labelledby="hero-title">
         <div class="hero__text">
-          <p class="eyebrow" data-i18n="hero.eyebrow">Kit d’urgence 72 h, Luxembourg</p>
-          <h1 id="hero-title" data-i18n="hero.title">Ta réserve d’urgence, prête et à jour.</h1>
-          <p class="lead" data-i18n="hero.lead">
-            Kitzy t’aide à préparer de quoi tenir trois jours chez toi : eau, repas, lumière,
-            chaleur, soins et un plan. Puis il pense aux dates à ta place, en douceur.
+          <h1 id="hero-title" class="hero__title" data-i18n="hero.title"></h1>
+          <p class="hero__lead" data-i18n="hero.lead"></p>
+          <p class="actions">
+            <a class="button" href="app/" data-i18n="hero.open"></a>
+            <a class="button button--ghost" href="#installer" data-i18n="hero.install"></a>
           </p>
-          <div class="actions">
-            <a class="button" href="app/" data-i18n="hero.open">Ouvrir Kitzy</a>
-            <a class="button button--ghost" href="#installer" data-i18n="hero.install">
-              Installer l’app
-            </a>
-          </div>
         </div>
-        <div class="lantern" aria-hidden="true">
-          <div class="lantern__window">
+        <div class="window" aria-hidden="true">
+          <div class="window__glow"></div>
+          <div class="window__pane">
             <img src="app/mascot/kitzy-bonjour.webp" alt="" width="640" height="1060" />
           </div>
-          <span class="fly" style="--x: 6%; --y: 70%; --d: 0s"></span>
-          <span class="fly" style="--x: 6%; --y: 30%; --d: -1.3s"></span>
-          <span class="fly" style="--x: 27%; --y: 2%; --d: -2.6s"></span>
-          <span class="fly" style="--x: 68%; --y: 2%; --d: -3.9s"></span>
-          <span class="fly" style="--x: 88%; --y: 30%; --d: -5.2s"></span>
-          <span class="fly" style="--x: 88%; --y: 70%; --d: -6.5s"></span>
         </div>
       </section>
 
-      <section class="section" aria-labelledby="features-title">
-        <h2 id="features-title" class="section__title" data-i18n="features.title">
-          Ce que fait Kitzy
-        </h2>
-        <ul class="features">
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M12 3v2M12 19v2M3 12h2M19 12h2" />
-              </svg>
-            </span>
-            <h3 data-i18n="features.items.0.title">Six lucioles</h3>
-            <p data-i18n="features.items.0.text">
-              Une par essentiel. Elles s’allument au fur et à mesure que ta réserve se remplit.
+      <!-- La pièce maîtresse : la réserve se calcule sous les yeux. -->
+      <section class="household" aria-labelledby="household-title">
+        <div class="household__intro">
+          <h2 id="household-title" class="title" data-i18n="household.title"></h2>
+          <p class="lead" data-i18n="household.lead"></p>
+        </div>
+        <div class="household__board">
+          <fieldset class="members">
+            <legend class="members__legend" data-i18n="household.legend"></legend>
+            <div class="member" data-member="adults" data-value="2">
+              <span class="member__name" id="m-adults" data-i18n="household.members.adults"></span>
+              <span class="stepper">
+                <button type="button" class="stepper__btn" data-step="-1">−</button>
+                <output class="stepper__value" aria-labelledby="m-adults">2</output>
+                <button type="button" class="stepper__btn" data-step="1">+</button>
+              </span>
+            </div>
+            <div class="member" data-member="children" data-value="1">
+              <span
+                class="member__name"
+                id="m-children"
+                data-i18n="household.members.children"
+              ></span>
+              <span class="stepper">
+                <button type="button" class="stepper__btn" data-step="-1">−</button>
+                <output class="stepper__value" aria-labelledby="m-children">1</output>
+                <button type="button" class="stepper__btn" data-step="1">+</button>
+              </span>
+            </div>
+            <div class="member" data-member="babies" data-value="0">
+              <span class="member__name" id="m-babies" data-i18n="household.members.babies"></span>
+              <span class="stepper">
+                <button type="button" class="stepper__btn" data-step="-1">−</button>
+                <output class="stepper__value" aria-labelledby="m-babies">0</output>
+                <button type="button" class="stepper__btn" data-step="1">+</button>
+              </span>
+            </div>
+            <div class="member" data-member="dogs" data-value="0">
+              <span class="member__name" id="m-dogs" data-i18n="household.members.dogs"></span>
+              <span class="stepper">
+                <button type="button" class="stepper__btn" data-step="-1">−</button>
+                <output class="stepper__value" aria-labelledby="m-dogs">0</output>
+                <button type="button" class="stepper__btn" data-step="1">+</button>
+              </span>
+            </div>
+            <div class="member" data-member="cats" data-value="1">
+              <span class="member__name" id="m-cats" data-i18n="household.members.cats"></span>
+              <span class="stepper">
+                <button type="button" class="stepper__btn" data-step="-1">−</button>
+                <output class="stepper__value" aria-labelledby="m-cats">1</output>
+                <button type="button" class="stepper__btn" data-step="1">+</button>
+              </span>
+            </div>
+          </fieldset>
+          <div class="results" aria-live="polite" aria-atomic="true">
+            <p class="result result--water">
+              <span class="result__n" data-result="water">27,9</span>
+              <span class="result__label" data-result-label="water"></span>
             </p>
+            <p class="result">
+              <span class="result__n" data-result="meals">27</span>
+              <span class="result__label" data-result-label="meals"></span>
+            </p>
+            <p class="result" data-result-row="pets">
+              <span class="result__n" data-result="pets">6</span>
+              <span class="result__label" data-result-label="pets"></span>
+            </p>
+            <p class="result">
+              <span class="result__n" data-result="bags">3</span>
+              <span class="result__label" data-result-label="bags"></span>
+            </p>
+          </div>
+        </div>
+        <p class="household__note" data-i18n="household.note"></p>
+        <p class="household__lists" data-i18n="household.lists"></p>
+      </section>
+
+      <section class="split" aria-labelledby="split-title">
+        <div class="split__intro">
+          <h2 id="split-title" class="title" data-i18n="split.title"></h2>
+          <p class="lead" data-i18n="split.lead"></p>
+        </div>
+        <div class="split__home">
+          <h3 class="split__title" data-i18n="split.home.title"></h3>
+          <ul class="split__list">
+            <li data-i18n="split.home.items.0"></li>
+            <li data-i18n="split.home.items.1"></li>
+            <li data-i18n="split.home.items.2"></li>
+            <li data-i18n="split.home.items.3"></li>
+          </ul>
+        </div>
+        <img
+          class="split__hog"
+          src="app/mascot/kitzy-sac.webp"
+          alt=""
+          width="640"
+          height="1139"
+          loading="lazy"
+        />
+        <div class="split__bag">
+          <h3 class="split__title" data-i18n="split.bag.title"></h3>
+          <ul class="split__list">
+            <li data-i18n="split.bag.items.0"></li>
+            <li data-i18n="split.bag.items.1"></li>
+            <li data-i18n="split.bag.items.2"></li>
+            <li data-i18n="split.bag.items.3"></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="buy" aria-labelledby="buy-title">
+        <h2 id="buy-title" class="title" data-i18n="buy.title"></h2>
+        <p class="lead" data-i18n="buy.text"></p>
+        <ul class="tiers">
+          <li class="tier">
+            <span class="tier__mark" aria-hidden="true" data-i18n="buy.tiers.0.mark"></span>
+            <span class="tier__name" data-i18n="buy.tiers.0.name"></span>
+            <span class="tier__text" data-i18n="buy.tiers.0.text"></span>
           </li>
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M4 7l4-4h12v12l-4 4H4z" />
-                <circle cx="9" cy="12" r="1.5" />
-              </svg>
-            </span>
-            <h3 data-i18n="features.items.1.title">Une liste de courses</h3>
-            <p data-i18n="features.items.1.text">
-              Calculée pour ton foyer, avec l’endroit où ranger chaque article.
-            </p>
+          <li class="tier">
+            <span class="tier__mark" aria-hidden="true" data-i18n="buy.tiers.1.mark"></span>
+            <span class="tier__name" data-i18n="buy.tiers.1.name"></span>
+            <span class="tier__text" data-i18n="buy.tiers.1.text"></span>
           </li>
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z" />
-                <path d="M10 20a2 2 0 0 0 4 0" />
-              </svg>
-            </span>
-            <h3 data-i18n="features.items.2.title">Des rappels</h3>
-            <p data-i18n="features.items.2.text">
-              Dates de péremption, recharges, mini-check du premier lundi : Kitzy y pense pour toi.
-            </p>
-          </li>
-          <li class="feature">
-            <span class="feature__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <path
-                  d="M4 5h6a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H4zM20 5h-6a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h6z"
-                />
-              </svg>
-            </span>
-            <h3 data-i18n="features.items.3.title">Le guide officiel</h3>
-            <p data-i18n="features.items.3.text">
-              Les conseils de Lëtz prepare! en langage clair, et ton plan d’urgence à imprimer.
-            </p>
+          <li class="tier">
+            <span class="tier__mark" aria-hidden="true" data-i18n="buy.tiers.2.mark"></span>
+            <span class="tier__name" data-i18n="buy.tiers.2.name"></span>
+            <span class="tier__text" data-i18n="buy.tiers.2.text"></span>
           </li>
         </ul>
+        <p class="buy__fair" data-i18n="buy.fair"></p>
       </section>
 
-      <section class="section privacy" aria-labelledby="privacy-title">
-        <h2 id="privacy-title" class="section__title" data-i18n="privacy.title">
-          Tout reste chez toi
-        </h2>
-        <p class="lead" data-i18n="privacy.text">
-          Pas de compte, pas de publicité : tes données restent sur ton appareil. Kitzy fonctionne
-          même sans connexion.
-        </p>
+      <section class="reminders" aria-labelledby="reminders-title">
+        <div class="reminders__intro">
+          <h2 id="reminders-title" class="title" data-i18n="reminders.title"></h2>
+          <p class="lead" data-i18n="reminders.lead"></p>
+        </div>
+        <ol class="agenda">
+          <li class="agenda__item">
+            <span class="agenda__when" data-i18n="reminders.samples.0.when"></span>
+            <span class="agenda__what" data-i18n="reminders.samples.0.what"></span>
+          </li>
+          <li class="agenda__item">
+            <span class="agenda__when" data-i18n="reminders.samples.1.when"></span>
+            <span class="agenda__what" data-i18n="reminders.samples.1.what"></span>
+          </li>
+          <li class="agenda__item">
+            <span class="agenda__when" data-i18n="reminders.samples.2.when"></span>
+            <span class="agenda__what" data-i18n="reminders.samples.2.what"></span>
+          </li>
+        </ol>
+        <div class="reminders__how">
+          <p data-i18n="reminders.notify"></p>
+          <p data-i18n="reminders.ics"></p>
+        </div>
       </section>
 
-      <section id="installer" class="section" aria-labelledby="install-title" tabindex="-1">
-        <h2 id="install-title" class="section__title" data-i18n="install.title">Installer Kitzy</h2>
-        <p class="lead" data-i18n="install.intro">
-          Kitzy est une app web : pas besoin de store. Une fois installée, elle s’ouvre comme une
-          app, fonctionne hors ligne et peut te prévenir.
-        </p>
-        <p id="install-state" class="note" role="status"></p>
-        <button id="install-now" type="button" class="button" hidden data-i18n="install.now">
-          Installer maintenant
-        </button>
+      <section class="evening" aria-labelledby="evening-title">
+        <div class="evening__intro">
+          <h2 id="evening-title" class="title" data-i18n="evening.title"></h2>
+          <p class="lead" data-i18n="evening.lead"></p>
+        </div>
+        <ol class="programme">
+          <li class="programme__item">
+            <span class="programme__time" data-i18n="evening.programme.0.time"></span>
+            <h3 class="programme__title" data-i18n="evening.programme.0.title"></h3>
+            <p class="programme__text" data-i18n="evening.programme.0.text"></p>
+          </li>
+          <li class="programme__item">
+            <span class="programme__time" data-i18n="evening.programme.1.time"></span>
+            <h3 class="programme__title" data-i18n="evening.programme.1.title"></h3>
+            <p class="programme__text" data-i18n="evening.programme.1.text"></p>
+          </li>
+          <li class="programme__item">
+            <span class="programme__time" data-i18n="evening.programme.2.time"></span>
+            <h3 class="programme__title" data-i18n="evening.programme.2.title"></h3>
+            <p class="programme__text" data-i18n="evening.programme.2.text"></p>
+          </li>
+          <li class="programme__item">
+            <span class="programme__time" data-i18n="evening.programme.3.time"></span>
+            <h3 class="programme__title" data-i18n="evening.programme.3.title"></h3>
+            <p class="programme__text" data-i18n="evening.programme.3.text"></p>
+          </li>
+        </ol>
+        <p class="evening__after" data-i18n="evening.after"></p>
+      </section>
+
+      <section class="privacy" aria-labelledby="privacy-title">
+        <h2 id="privacy-title" class="privacy__title" data-i18n="privacy.title"></h2>
+        <p class="privacy__text" data-i18n="privacy.text"></p>
+      </section>
+
+      <section id="installer" class="install" aria-labelledby="install-title" tabindex="-1">
+        <h2 id="install-title" class="title" data-i18n="install.title"></h2>
+        <p class="lead" data-i18n="install.intro"></p>
+        <p id="install-state" class="install__state" role="status"></p>
+        <button
+          id="install-now"
+          type="button"
+          class="button"
+          hidden
+          data-i18n="install.now"
+        ></button>
         <ul class="platforms">
           <li class="platform" data-platform="android">
-            <h3>
-              <span data-i18n="install.platforms.android.title">Android</span>
-              <span class="platform__yours" data-i18n="install.yours">Ton appareil</span>
+            <h3 class="platform__title">
+              <span data-i18n="install.platforms.android.title"></span>
+              <span class="platform__yours" data-i18n="install.yours"></span>
             </h3>
             <ol>
-              <li data-i18n="install.platforms.android.steps.0">Ouvre kitzy.lu dans Chrome.</li>
-              <li data-i18n="install.platforms.android.steps.1">
-                Touche le menu ⋮ en haut à droite.
-              </li>
-              <li data-i18n="install.platforms.android.steps.2">
-                Choisis « Installer l’application » ou « Ajouter à l’écran d’accueil ».
-              </li>
+              <li data-i18n="install.platforms.android.steps.0"></li>
+              <li data-i18n="install.platforms.android.steps.1"></li>
+              <li data-i18n="install.platforms.android.steps.2"></li>
             </ol>
           </li>
           <li class="platform" data-platform="ios">
-            <h3>
-              <span data-i18n="install.platforms.ios.title">iPhone et iPad</span>
-              <span class="platform__yours" data-i18n="install.yours">Ton appareil</span>
+            <h3 class="platform__title">
+              <span data-i18n="install.platforms.ios.title"></span>
+              <span class="platform__yours" data-i18n="install.yours"></span>
             </h3>
             <ol>
-              <li data-i18n="install.platforms.ios.steps.0">Ouvre kitzy.lu dans Safari.</li>
-              <li data-i18n="install.platforms.ios.steps.1">
-                Touche le bouton Partager, le carré avec une flèche.
-              </li>
-              <li data-i18n="install.platforms.ios.steps.2">
-                Choisis « Sur l’écran d’accueil », puis « Ajouter ».
-              </li>
+              <li data-i18n="install.platforms.ios.steps.0"></li>
+              <li data-i18n="install.platforms.ios.steps.1"></li>
+              <li data-i18n="install.platforms.ios.steps.2"></li>
             </ol>
           </li>
           <li class="platform" data-platform="desktop">
-            <h3>
-              <span data-i18n="install.platforms.desktop.title">Ordinateur</span>
-              <span class="platform__yours" data-i18n="install.yours">Ton appareil</span>
+            <h3 class="platform__title">
+              <span data-i18n="install.platforms.desktop.title"></span>
+              <span class="platform__yours" data-i18n="install.yours"></span>
             </h3>
             <ol>
-              <li data-i18n="install.platforms.desktop.steps.0">
-                Ouvre kitzy.lu dans Chrome ou Edge.
-              </li>
-              <li data-i18n="install.platforms.desktop.steps.1">
-                Clique sur l’icône d’installation dans la barre d’adresse.
-              </li>
-              <li data-i18n="install.platforms.desktop.steps.2">Confirme avec « Installer ».</li>
+              <li data-i18n="install.platforms.desktop.steps.0"></li>
+              <li data-i18n="install.platforms.desktop.steps.1"></li>
+              <li data-i18n="install.platforms.desktop.steps.2"></li>
             </ol>
           </li>
         </ul>
-        <p class="browser">
-          <span data-i18n="install.browser">
-            Tu préfères ton navigateur ? Kitzy marche aussi très bien sans installation.
-          </span>
-          <a href="app/" data-i18n="install.browserLink">Ouvrir Kitzy dans le navigateur</a>
+        <p class="install__browser">
+          <span data-i18n="install.browser"></span>
+          <a href="app/" data-i18n="install.browserLink"></a>
         </p>
       </section>
     </main>
 
     <footer class="footer">
-      <p data-i18n="footer.source">
-        Conseils tirés du guide officiel Lëtz prepare! Kitzy est une app indépendante, non affiliée
-        au Gouvernement du Luxembourg.
+      <p class="footer__credits">
+        <span data-i18n="footer.studio.before"></span
+        ><a href="https://geoffreycrofte.com">Crofte Studio</a
+        ><span data-i18n="footer.studio.after"></span>
+        <span data-i18n="footer.checkfox.before"></span><a href="https://checkfox.eu">CheckFox.eu</a
+        ><span data-i18n="footer.checkfox.after"></span>
       </p>
+      <p class="footer__source" data-i18n="footer.source"></p>
       <ul class="footer__links">
-        <li><a href="app/confidentialite" data-i18n="footer.privacy">Confidentialité</a></li>
+        <li><a href="app/confidentialite" data-i18n="footer.privacy"></a></li>
+        <li><a href="app/transparence" data-i18n="footer.transparency"></a></li>
         <li>
-          <a href="app/transparence" data-i18n="footer.transparency"
-            >Liens d’achat et transparence</a
-          >
-        </li>
-        <li>
-          <a href="https://github.com/geoffreycrofte/survival-kit" data-i18n="footer.project">
-            Le projet sur GitHub
-          </a>
+          <a href="https://github.com/geoffreycrofte/survival-kit" data-i18n="footer.project"></a>
         </li>
       </ul>
     </footer>

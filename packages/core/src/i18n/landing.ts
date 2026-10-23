@@ -4,16 +4,55 @@
  */
 import type { Locale } from './locales';
 
+/** Un mot qui s'accorde avec un nombre. */
+export interface Plural {
+  one: string;
+  other: string;
+}
+
 export interface LandingTexts {
   title: string;
   description: string;
   skip: string;
   language: string;
   openApp: string;
-  hero: { eyebrow: string; title: string; lead: string; open: string; install: string };
-  features: {
+  hero: { title: string; lead: string; open: string; install: string };
+  household: {
     title: string;
-    items: Array<{ title: string; text: string }>;
+    lead: string;
+    legend: string;
+    members: { adults: string; children: string; babies: string; dogs: string; cats: string };
+    /** Noms accessibles des boutons, avec `{{label}}`. */
+    more: string;
+    less: string;
+    results: { water: Plural; meals: Plural; pets: Plural; bags: Plural };
+    note: string;
+    lists: string;
+  };
+  split: {
+    title: string;
+    lead: string;
+    home: { title: string; items: string[] };
+    bag: { title: string; items: string[] };
+  };
+  buy: {
+    title: string;
+    text: string;
+    tiers: Array<{ mark: string; name: string; text: string }>;
+    fair: string;
+  };
+  reminders: {
+    title: string;
+    lead: string;
+    samples: Array<{ when: string; what: string }>;
+    notify: string;
+    ics: string;
+  };
+  evening: {
+    title: string;
+    lead: string;
+    programme: Array<{ time: string; title: string; text: string }>;
+    after: string;
   };
   privacy: { title: string; text: string };
   install: {
@@ -32,6 +71,8 @@ export interface LandingTexts {
   };
   footer: {
     source: string;
+    studio: { before: string; after: string };
+    checkfox: { before: string; after: string };
     privacy: string;
     transparency: string;
     project: string;
@@ -41,41 +82,114 @@ export interface LandingTexts {
 const fr: LandingTexts = {
   title: 'Kitzy, ta réserve d’urgence de 72 heures',
   description:
-    'Kitzy t’aide à préparer, suivre et faire tourner ta réserve d’urgence de 72 heures, d’après le guide officiel Lëtz prepare! Gratuit, sans compte, hors ligne.',
+    'Kitzy t’aide à préparer, suivre et faire tourner ta réserve d’urgence de 72 heures, d’après le guide officiel Lëtz prepare!. Gratuit, sans compte, hors ligne.',
   skip: 'Aller au contenu',
   language: 'Langue',
   openApp: 'Ouvrir l’app',
   hero: {
-    eyebrow: 'Kit d’urgence 72 h, Luxembourg',
-    title: 'Ta réserve d’urgence, prête et à jour.',
-    lead: 'Kitzy t’aide à préparer de quoi tenir trois jours chez toi : eau, repas, lumière, chaleur, soins et un plan. Puis il pense aux dates à ta place, en douceur.',
+    title: 'Trois jours d’avance sur l’imprévu.',
+    lead: 'Kitzy t’aide à préparer de quoi tenir 72 heures chez toi, à la mesure de ton foyer, puis garde un œil sur les dates. Gratuit, sans compte, et ça marche hors ligne.',
     open: 'Ouvrir Kitzy',
-    install: 'Installer l’app',
+    install: 'L’installer',
   },
-  features: {
-    title: 'Ce que fait Kitzy',
-    items: [
+  household: {
+    title: 'Calculé pour ta maisonnée',
+    lead: 'Dis à Kitzy qui vit chez toi, animaux compris : il calcule les quantités à réunir. Essaie.',
+    legend: 'Chez moi, il y a',
+    members: {
+      adults: 'Adultes',
+      children: 'Enfants',
+      babies: 'Bébés',
+      dogs: 'Chiens',
+      cats: 'Chats',
+    },
+    more: '{{label}} : un de plus',
+    less: '{{label}} : un de moins',
+    results: {
+      water: { one: 'litre d’eau', other: 'litres d’eau' },
+      meals: { one: 'repas', other: 'repas' },
+      pets: { one: 'ration pour les animaux', other: 'rations pour les animaux' },
+      bags: { one: 'sac à dos prêt à partir', other: 'sacs à dos prêts à partir' },
+    },
+    note: 'Pour 72 heures, d’après les repères officiels : 3 litres d’eau par personne et par jour.',
+    lists:
+      'Par défaut, Kitzy suit la liste officielle du Luxembourg. Tu peux activer en un geste la liste conseillée par des experts, ou la version complète, confort compris.',
+  },
+  split: {
+    title: 'La maison, et les sacs à dos',
+    lead: 'Le gros de la réserve reste chez toi. Un sac par personne attend près de la porte, au cas où il faudrait partir. Kitzy répartit chaque article et te dit où le ranger.',
+    home: {
+      title: 'À la maison',
+      items: [
+        'L’eau et les repas pour trois jours',
+        'Le réchaud, les lampes, les piles',
+        'Couvertures et vêtements chauds',
+        'La trousse de soins et les médicaments',
+      ],
+    },
+    bag: {
+      title: 'Dans chaque sac',
+      items: [
+        'Une bouteille d’eau et des en-cas',
+        'Lampe frontale et batterie externe',
+        'Copies des papiers et un peu d’argent liquide',
+        'Les médicaments du quotidien',
+      ],
+    },
+  },
+  buy: {
+    title: 'Quoi acheter, à ton budget',
+    text: 'Pour beaucoup d’articles, Kitzy propose des pistes à trois budgets. Sans prix affiché, sans marque imposée : des caractéristiques à chercher, ou ce que tu as déjà.',
+    tiers: [
+      { mark: '€', name: 'Essentiel', text: 'L’indispensable, simple et efficace.' },
+      { mark: '€€', name: 'Équilibré', text: 'Plus pratique au quotidien.' },
+      { mark: '€€€', name: 'Durable', text: 'Fait pour durer des années.' },
+    ],
+    fair: 'Un conseil ne dépend jamais d’un lien d’affiliation, et chaque lien le dit.',
+  },
+  reminders: {
+    title: 'Les dates, sans y penser',
+    lead: 'Péremptions, recharges, check-ups : Kitzy note tout et te prévient au bon moment.',
+    samples: [
+      { when: 'Premier lundi du mois, midi', what: 'Mini-check pendant le test des sirènes' },
+      { when: 'Dans 30 jours', what: 'Conserves à consommer, puis à racheter' },
+      { when: 'Changement d’heure', what: 'Grand check-up de la réserve' },
+    ],
+    notify:
+      'Quand ton navigateur le permet, les notifications sont calculées sur ton appareil : aucune donnée ne part ailleurs.',
+    ics: 'Sinon, ou en plus, exporte tes rappels dans un fichier agenda (.ics) pour ton téléphone.',
+  },
+  evening: {
+    title: 'Se préparer, en s’amusant',
+    lead: 'Programme d’une soirée au terrier, à vivre en famille.',
+    programme: [
       {
-        title: 'Six lucioles',
-        text: 'Une par essentiel. Elles s’allument au fur et à mesure que ta réserve se remplit.',
+        time: '19 h',
+        title: 'Soirée « boîtes »',
+        text: 'Une recette avec les conserves qui approchent de leur date. Chili, soupe ou riz au lait.',
       },
       {
-        title: 'Une liste de courses',
-        text: 'Calculée pour ton foyer, avec l’endroit où ranger chaque article.',
+        time: '20 h',
+        title: 'Défi sans électricité',
+        text: 'On éteint tout et on vit avec le kit. Ce qui manque part dans la liste de courses.',
       },
       {
-        title: 'Des rappels',
-        text: 'Dates de péremption, recharges, mini-check du premier lundi : Kitzy y pense pour toi.',
+        time: '21 h',
+        title: 'Simulation 72 h',
+        text: 'Trois jours sans courant, choix après choix, avec ce que ton foyer a vraiment.',
       },
       {
-        title: 'Le guide officiel',
-        text: 'Les conseils de Lëtz prepare! en langage clair, et ton plan d’urgence à imprimer.',
+        time: '21 h 30',
+        title: 'Quiz des bons réflexes',
+        text: 'Sirènes, alertes, rumeurs : dix questions, sans chronomètre.',
       },
     ],
+    after:
+      'Et chaque premier lundi à midi, un mini-check de deux minutes. Des succès se débloquent au fil des progrès.',
   },
   privacy: {
     title: 'Tout reste chez toi',
-    text: 'Pas de compte, pas de publicité : tes données restent sur ton appareil. Kitzy fonctionne même sans connexion.',
+    text: 'Pas de compte, pas de publicité, pas de suivi. Tes données restent sur ton appareil, et Kitzy fonctionne même sans connexion.',
   },
   install: {
     title: 'Installer Kitzy',
@@ -116,6 +230,8 @@ const fr: LandingTexts = {
   footer: {
     source:
       'Conseils tirés du guide officiel Lëtz prepare! Kitzy est une app indépendante, non affiliée au Gouvernement du Luxembourg.',
+    studio: { before: 'Distribué gratuitement par ', after: '.' },
+    checkfox: { before: 'Rendu accessible grâce à ', after: '.' },
     privacy: 'Confidentialité',
     transparency: 'Liens d’achat et transparence',
     project: 'Le projet sur GitHub',
@@ -130,36 +246,109 @@ const en: LandingTexts = {
   language: 'Language',
   openApp: 'Open the app',
   hero: {
-    eyebrow: '72-hour emergency kit, Luxembourg',
-    title: 'Your emergency supply, ready and up to date.',
-    lead: 'Kitzy helps you get what you need to manage three days at home: water, meals, light, warmth, care and a plan. Then it keeps an eye on the dates for you, gently.',
+    title: 'Three days ahead of the unexpected.',
+    lead: 'Kitzy helps you get what you need to manage 72 hours at home, sized to your household, then keeps an eye on the dates. Free, no account, and it works offline.',
     open: 'Open Kitzy',
-    install: 'Install the app',
+    install: 'Install it',
   },
-  features: {
-    title: 'What Kitzy does',
-    items: [
+  household: {
+    title: 'Worked out for your household',
+    lead: 'Tell Kitzy who lives with you, pets included: it works out the quantities to gather. Give it a try.',
+    legend: 'At home, there are',
+    members: {
+      adults: 'Adults',
+      children: 'Children',
+      babies: 'Babies',
+      dogs: 'Dogs',
+      cats: 'Cats',
+    },
+    more: '{{label}}: one more',
+    less: '{{label}}: one fewer',
+    results: {
+      water: { one: 'litre of water', other: 'litres of water' },
+      meals: { one: 'meal', other: 'meals' },
+      pets: { one: 'pet ration', other: 'pet rations' },
+      bags: { one: 'grab bag ready to go', other: 'grab bags ready to go' },
+    },
+    note: 'For 72 hours, based on official guidance: 3 litres of water per person per day.',
+    lists:
+      'By default, Kitzy follows Luxembourg’s official list. In one tap, you can switch on the list recommended by experts, or the complete version with home comforts.',
+  },
+  split: {
+    title: 'Your home, and your grab bags',
+    lead: 'Most of the supply stays at home. One bag per person waits by the door, in case you have to leave. Kitzy sorts every item and tells you where to put it.',
+    home: {
+      title: 'At home',
+      items: [
+        'Water and meals for three days',
+        'The camping stove, torches, batteries',
+        'Blankets and warm clothes',
+        'The first-aid kit and medicines',
+      ],
+    },
+    bag: {
+      title: 'In each bag',
+      items: [
+        'A bottle of water and snacks',
+        'A head torch and a power bank',
+        'Copies of documents and some cash',
+        'Everyday medicines',
+      ],
+    },
+  },
+  buy: {
+    title: 'What to buy, on your budget',
+    text: 'For many items, Kitzy suggests ideas at three budgets. No prices, no brands pushed: features to look for, or what you already own.',
+    tiers: [
+      { mark: '€', name: 'Essential', text: 'The basics, simple and effective.' },
+      { mark: '€€', name: 'Balanced', text: 'Handier day to day.' },
+      { mark: '€€€', name: 'Lasting', text: 'Built to last for years.' },
+    ],
+    fair: 'Advice never depends on an affiliate link, and every link says so.',
+  },
+  reminders: {
+    title: 'Dates, without the worry',
+    lead: 'Use-by dates, recharging, check-ups: Kitzy keeps track and lets you know at the right time.',
+    samples: [
+      { when: 'First Monday of the month, noon', what: 'Mini-check during the siren test' },
+      { when: 'In 30 days', what: 'Tins to eat, then to replace' },
+      { when: 'When the clocks change', what: 'Big check-up of your supply' },
+    ],
+    notify:
+      'When your browser allows it, notifications are worked out on your device: no data goes anywhere else.',
+    ics: 'Otherwise, or as well, export your reminders to a calendar file (.ics) for your phone.',
+  },
+  evening: {
+    title: 'Getting ready, the fun way',
+    lead: 'An evening at the burrow, to share with the family.',
+    programme: [
       {
-        title: 'Six fireflies',
-        text: 'One per essential. They light up as your supply fills up.',
+        time: '7 pm',
+        title: 'Tinned-food night',
+        text: 'A recipe with the tins nearing their date. Chilli, soup or rice pudding.',
       },
       {
-        title: 'A shopping list',
-        text: 'Worked out for your household, with where to store each item.',
+        time: '8 pm',
+        title: 'No-electricity challenge',
+        text: 'Switch everything off and live with the kit. Whatever’s missing goes on the shopping list.',
       },
       {
-        title: 'Reminders',
-        text: 'Use-by dates, recharging, the first-Monday mini-check: Kitzy remembers for you.',
+        time: '9 pm',
+        title: '72-hour simulation',
+        text: 'Three days without power, choice by choice, with what your household really has.',
       },
       {
-        title: 'The official guide',
-        text: 'Lëtz prepare! advice in plain language, and your emergency plan ready to print.',
+        time: '9.30 pm',
+        title: 'Good-reflexes quiz',
+        text: 'Sirens, alerts, rumours: ten questions, no timer.',
       },
     ],
+    after:
+      'And every first Monday at noon, a two-minute mini-check. Achievements unlock as you progress.',
   },
   privacy: {
     title: 'Everything stays with you',
-    text: 'No account, no ads: your data stays on your device. Kitzy even works offline.',
+    text: 'No account, no ads, no tracking. Your data stays on your device, and Kitzy even works offline.',
   },
   install: {
     title: 'Install Kitzy',
@@ -200,262 +389,15 @@ const en: LandingTexts = {
   footer: {
     source:
       'Advice based on the official Lëtz prepare! guide. Kitzy is an independent app, not affiliated with the Government of Luxembourg.',
+    studio: { before: 'Distributed free of charge by ', after: '.' },
+    checkfox: { before: 'Made accessible thanks to ', after: '.' },
     privacy: 'Privacy',
     transparency: 'Shopping links and transparency',
     project: 'The project on GitHub',
   },
 };
 
-const de: LandingTexts = {
-  title: 'Kitzy, dein Notvorrat für 72 Stunden',
-  description:
-    'Kitzy hilft dir, deinen Notvorrat für 72 Stunden anzulegen, im Blick zu behalten und rechtzeitig zu erneuern, nach dem offiziellen Ratgeber Lëtz prepare! Kostenlos, ohne Konto, offline nutzbar.',
-  skip: 'Zum Inhalt springen',
-  language: 'Sprache',
-  openApp: 'App öffnen',
-  hero: {
-    eyebrow: '72-Stunden-Notvorrat, Luxemburg',
-    title: 'Dein Notvorrat, bereit und aktuell.',
-    lead: 'Kitzy hilft dir, alles für drei Tage zu Hause bereitzuhalten: Wasser, Mahlzeiten, Licht, Wärme, Pflege und einen Plan. Danach behält es die Daten für dich im Blick, ganz entspannt.',
-    open: 'Kitzy öffnen',
-    install: 'App installieren',
-  },
-  features: {
-    title: 'Was Kitzy kann',
-    items: [
-      {
-        title: 'Sechs Glühwürmchen',
-        text: 'Eins pro Grundbedarf. Sie leuchten auf, sobald dein Vorrat wächst.',
-      },
-      {
-        title: 'Eine Einkaufsliste',
-        text: 'Für deinen Haushalt berechnet, mit dem Platz für jeden Artikel.',
-      },
-      {
-        title: 'Erinnerungen',
-        text: 'Haltbarkeitsdaten, Aufladen, der Mini-Check am ersten Montag: Kitzy denkt für dich daran.',
-      },
-      {
-        title: 'Der offizielle Ratgeber',
-        text: 'Die Tipps von Lëtz prepare! in einfacher Sprache und dein Notfallplan zum Ausdrucken.',
-      },
-    ],
-  },
-  privacy: {
-    title: 'Alles bleibt bei dir',
-    text: 'Kein Konto, keine Werbung: Deine Daten bleiben auf deinem Gerät. Kitzy funktioniert sogar offline.',
-  },
-  install: {
-    title: 'Kitzy installieren',
-    intro:
-      'Kitzy ist eine Web-App: kein App Store nötig. Einmal installiert, öffnet sie sich wie eine App, funktioniert offline und kann dich erinnern.',
-    yours: 'Dein Gerät',
-    now: 'Jetzt installieren',
-    installed: 'Kitzy ist schon installiert: Öffne sie über deinen Startbildschirm.',
-    platforms: {
-      android: {
-        title: 'Android',
-        steps: [
-          'Öffne kitzy.lu in Chrome.',
-          'Tippe oben rechts auf das Menü ⋮.',
-          'Wähle „App installieren“ oder „Zum Startbildschirm hinzufügen“.',
-        ],
-      },
-      ios: {
-        title: 'iPhone und iPad',
-        steps: [
-          'Öffne kitzy.lu in Safari.',
-          'Tippe auf „Teilen“, das Quadrat mit dem Pfeil.',
-          'Wähle „Zum Home-Bildschirm“ und dann „Hinzufügen“.',
-        ],
-      },
-      desktop: {
-        title: 'Computer',
-        steps: [
-          'Öffne kitzy.lu in Chrome oder Edge.',
-          'Klicke auf das Installationssymbol in der Adressleiste.',
-          'Bestätige mit „Installieren“.',
-        ],
-      },
-    },
-    browser: 'Lieber im Browser? Kitzy funktioniert auch ohne Installation.',
-    browserLink: 'Kitzy im Browser öffnen',
-  },
-  footer: {
-    source:
-      'Tipps nach dem offiziellen Ratgeber Lëtz prepare! Kitzy ist eine unabhängige App, nicht mit der luxemburgischen Regierung verbunden.',
-    privacy: 'Datenschutz',
-    transparency: 'Kauflinks und Transparenz',
-    project: 'Das Projekt auf GitHub',
-  },
-};
-
-const lb: LandingTexts = {
-  title: 'Kitzy, däi Noutvirrot fir 72 Stonnen',
-  description:
-    'Kitzy hëlleft dir, däi Noutvirrot fir 72 Stonnen unzeleeën, am A ze behalen an z’erneieren, nom offiziellen Guide Lëtz prepare! Gratis, ouni Kont, och offline.',
-  skip: 'Direkt bei den Inhalt',
-  language: 'Sprooch',
-  openApp: 'App opmaachen',
-  hero: {
-    eyebrow: '72-Stonne-Kit, Lëtzebuerg',
-    title: 'Däi Noutvirrot, prett an aktuell.',
-    lead: 'Kitzy hëlleft dir, alles fir dräi Deeg doheem prett ze hunn: Waasser, Iessen, Liicht, Wäermt, Fleeg an e Plang. Duerno denkt et fir dech un d’Datumer, ganz entspaant.',
-    open: 'Kitzy opmaachen',
-    install: 'App installéieren',
-  },
-  features: {
-    title: 'Wat Kitzy mécht',
-    items: [
-      {
-        title: 'Sechs Liichtwiermercher',
-        text: 'Eent fir all Basisbesoin. Si ginn un, esou wéi däi Virrot méi grouss gëtt.',
-      },
-      {
-        title: 'Eng Akafslëscht',
-        text: 'Fir däin Haushalt ausgerechent, mat der Plaz fir all Artikel.',
-      },
-      {
-        title: 'Erënnerungen',
-        text: 'Haltbarkeetsdatumer, Oplueden, de Mini-Check um éischte Méindeg: Kitzy denkt fir dech drun.',
-      },
-      {
-        title: 'Den offizielle Guide',
-        text: 'D’Rotschléi vu Lëtz prepare! a kloerer Sprooch, an däin Noutfallplang fir auszedrécken.',
-      },
-    ],
-  },
-  privacy: {
-    title: 'Alles bleift bei dir',
-    text: 'Kee Kont, keng Reklamm: Deng Donnéeë bleiwen op dengem Apparat. Kitzy funktionéiert souguer offline.',
-  },
-  install: {
-    title: 'Kitzy installéieren',
-    intro:
-      'Kitzy ass eng Web-App: Du brauchs keen App Store. Eemol installéiert, geet se op wéi eng App, funktionéiert offline a kann dech erënneren.',
-    yours: 'Däin Apparat',
-    now: 'Elo installéieren',
-    installed: 'Kitzy ass schonn installéiert: maach se iwwer däin Startbildschierm op.',
-    platforms: {
-      android: {
-        title: 'Android',
-        steps: [
-          'Maach kitzy.lu a Chrome op.',
-          'Dréck uewe riets op de Menü ⋮.',
-          'Wiel „App installéieren“ oder „Zum Startbildschierm bäisetzen“.',
-        ],
-      },
-      ios: {
-        title: 'iPhone an iPad',
-        steps: [
-          'Maach kitzy.lu a Safari op.',
-          'Dréck op „Deelen“, de Quadrat mam Feil.',
-          'Wiel „Zum Home-Bildschirm“ an dann „Hinzufügen“.',
-        ],
-      },
-      desktop: {
-        title: 'Computer',
-        steps: [
-          'Maach kitzy.lu a Chrome oder Edge op.',
-          'Klick op d’Installatiounsikon an der Adressläischt.',
-          'Confirméier mat „Installéieren“.',
-        ],
-      },
-    },
-    browser: 'Léiwer am Browser? Kitzy funktionéiert och ganz gutt ouni Installatioun.',
-    browserLink: 'Kitzy am Browser opmaachen',
-  },
-  footer: {
-    source:
-      'Rotschléi nom offiziellen Guide Lëtz prepare! Kitzy ass eng onofhängeg App, net mat der Lëtzebuerger Regierung verbonnen.',
-    privacy: 'Dateschutz',
-    transparency: 'Akafslinken an Transparenz',
-    project: 'De Projet op GitHub',
-  },
-};
-
-const pt: LandingTexts = {
-  title: 'Kitzy, a tua reserva de emergência para 72 horas',
-  description:
-    'O Kitzy ajuda-te a preparar, acompanhar e renovar a tua reserva de emergência para 72 horas, com base no guia oficial Lëtz prepare! Gratuito, sem conta, funciona offline.',
-  skip: 'Ir para o conteúdo',
-  language: 'Língua',
-  openApp: 'Abrir a app',
-  hero: {
-    eyebrow: 'Kit de emergência 72 horas, Luxemburgo',
-    title: 'A tua reserva de emergência, pronta e em dia.',
-    lead: 'O Kitzy ajuda-te a ter em casa o necessário para três dias: água, refeições, luz, calor, cuidados e um plano. Depois, lembra-se das datas por ti, com calma.',
-    open: 'Abrir o Kitzy',
-    install: 'Instalar a app',
-  },
-  features: {
-    title: 'O que faz o Kitzy',
-    items: [
-      {
-        title: 'Seis pirilampos',
-        text: 'Um por cada essencial. Acendem-se à medida que a tua reserva cresce.',
-      },
-      {
-        title: 'Uma lista de compras',
-        text: 'Calculada para a tua casa, com o sítio onde guardar cada artigo.',
-      },
-      {
-        title: 'Lembretes',
-        text: 'Datas de validade, carregamentos, o mini-check da primeira segunda-feira: o Kitzy lembra-se por ti.',
-      },
-      {
-        title: 'O guia oficial',
-        text: 'Os conselhos do Lëtz prepare! em linguagem simples, e o teu plano de emergência pronto a imprimir.',
-      },
-    ],
-  },
-  privacy: {
-    title: 'Tudo fica contigo',
-    text: 'Sem conta, sem publicidade: os teus dados ficam no teu aparelho. O Kitzy funciona até sem ligação à internet.',
-  },
-  install: {
-    title: 'Instalar o Kitzy',
-    intro:
-      'O Kitzy é uma app web: não precisas de loja de apps. Depois de instalado, abre como uma app, funciona offline e pode avisar-te.',
-    yours: 'O teu aparelho',
-    now: 'Instalar agora',
-    installed: 'O Kitzy já está instalado: abre-o a partir do teu ecrã principal.',
-    platforms: {
-      android: {
-        title: 'Android',
-        steps: [
-          'Abre kitzy.lu no Chrome.',
-          'Toca no menu ⋮ em cima, à direita.',
-          'Escolhe «Instalar aplicação» ou «Adicionar ao ecrã principal».',
-        ],
-      },
-      ios: {
-        title: 'iPhone e iPad',
-        steps: [
-          'Abre kitzy.lu no Safari.',
-          'Toca no botão Partilhar, o quadrado com uma seta.',
-          'Escolhe «Adicionar ao ecrã principal» e depois «Adicionar».',
-        ],
-      },
-      desktop: {
-        title: 'Computador',
-        steps: [
-          'Abre kitzy.lu no Chrome ou no Edge.',
-          'Clica no ícone de instalação na barra de endereço.',
-          'Confirma com «Instalar».',
-        ],
-      },
-    },
-    browser: 'Preferes o navegador? O Kitzy também funciona muito bem sem instalação.',
-    browserLink: 'Abrir o Kitzy no navegador',
-  },
-  footer: {
-    source:
-      'Conselhos baseados no guia oficial Lëtz prepare! O Kitzy é uma app independente, sem ligação ao Governo do Luxemburgo.',
-    privacy: 'Privacidade',
-    transparency: 'Links de compra e transparência',
-    project: 'O projeto no GitHub',
-  },
-};
+// Allemand, luxembourgeois et portugais : traduits à partir du français (voir plus bas).
+import { de, lb, pt } from './landing.more';
 
 export const LANDING: Readonly<Record<Locale, LandingTexts>> = { fr, en, de, lb, pt };

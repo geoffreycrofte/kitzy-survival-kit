@@ -1,5 +1,6 @@
 /* Page de présentation de Kitzy, direction « La Veillée ».
-   Les couleurs viennent de @kitzy/core (variables --kz-*), posées par main.ts. */
+   Les couleurs viennent de @kitzy/core (variables --kz-*), posées par main.ts.
+   Une seule pièce forte : la maisonnée qui se calcule. Le reste reste calme et aéré. */
 
 *,
 *::before,
@@ -11,6 +12,8 @@
   --kz-font-display: 'Young Serif', Georgia, serif;
   --kz-font-body: 'Figtree', system-ui, sans-serif;
   --kz-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --page: min(1180px, 100% - 40px);
+  --gap-section: clamp(88px, 13vw, 168px);
   color-scheme: dark;
 }
 
@@ -33,7 +36,8 @@ body {
   color: var(--kz-text, #fff4e2);
   font-family: var(--kz-font-body);
   font-size: 1.0625rem;
-  line-height: 1.55;
+  line-height: 1.6;
+  overflow-x: clip;
 }
 
 h1,
@@ -41,12 +45,13 @@ h2,
 h3 {
   font-family: var(--kz-font-display);
   font-weight: 400;
-  line-height: 1.15;
   margin: 0;
   text-wrap: balance;
 }
 
-p {
+p,
+ul,
+ol {
   margin: 0;
 }
 
@@ -95,53 +100,19 @@ section:focus {
   top: 12px;
 }
 
-/* En-tête */
-
-.top {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 16px 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.brand {
-  margin-right: auto;
-  font-family: var(--kz-font-display);
-  font-size: 1.75rem;
-  text-decoration: none;
-}
-
-.top__actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.lang__select {
-  min-height: 44px;
-  padding: 0 12px;
-  border-radius: 999px;
-  border: 2px solid var(--kz-line);
-  background: var(--kz-surface);
-  color: var(--kz-text);
-  font: 600 0.9375rem / 1 var(--kz-font-body);
-}
-
-/* Boutons */
+/* ---------- Boutons ---------- */
 
 .button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 0 22px;
+  min-height: 52px;
+  padding: 0 26px;
   border: 0;
   border-radius: 999px;
   background: var(--kz-btn);
   color: var(--kz-btn-text);
-  font: 700 1rem / 1.2 var(--kz-font-body);
+  font: 700 1.0625rem / 1.2 var(--kz-font-body);
   text-decoration: none;
   cursor: pointer;
 }
@@ -158,235 +129,612 @@ section:focus {
 
 .button--small {
   min-height: 44px;
-  padding: 0 16px;
+  padding: 0 18px;
   font-size: 0.9375rem;
 }
 
-/* Contenu */
+/* ---------- En-tête ---------- */
 
-main {
-  max-width: 1120px;
+.top {
+  width: var(--page);
   margin: 0 auto;
-  padding: 8px 20px 48px;
+  padding: 18px 0;
   display: flex;
-  flex-direction: column;
-  gap: 56px;
-}
-
-.eyebrow {
-  color: var(--kz-label);
-  font-weight: 700;
-  font-size: 0.9375rem;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.lead {
-  color: var(--kz-muted);
-  font-size: 1.125rem;
-  max-width: 42rem;
-}
-
-.actions {
-  display: flex;
-  flex-wrap: wrap;
+  align-items: center;
   gap: 10px;
 }
 
-/* Le haut de page : le texte, puis la fenêtre du terrier et ses lucioles */
-
-.hero {
-  display: grid;
-  gap: 32px;
-  align-items: center;
+.brand {
+  margin-right: auto;
+  font-family: var(--kz-font-display);
+  font-size: 1.75rem;
+  text-decoration: none;
 }
 
-.hero__text {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
+.lang__select {
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 2px solid var(--kz-line);
+  background: var(--kz-surface);
+  color: var(--kz-text);
+  font: 600 0.9375rem / 1 var(--kz-font-body);
 }
 
-.hero h1 {
-  font-size: clamp(2.25rem, 7vw, 3.75rem);
-}
+/* ---------- Contenu commun ---------- */
 
-.lantern {
-  position: relative;
-  width: min(340px, 80vw);
-  aspect-ratio: 1;
+main {
+  width: var(--page);
   margin: 0 auto;
 }
 
-.lantern__window {
-  position: absolute;
-  inset: 12%;
-  border-radius: 50%;
-  overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 55%, var(--kz-glow) 0%, var(--kz-glow) 35%, transparent 70%),
-    var(--kz-surface);
-  box-shadow:
-    0 0 0 6px var(--kz-ring),
-    0 0 60px 6px var(--kz-halo);
+main > section + section {
+  margin-top: var(--gap-section);
 }
 
-.lantern__window img {
+.title {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.08;
+  color: var(--kz-heading);
+  max-width: 18ch;
+}
+
+.lead {
+  margin-top: 16px;
+  max-width: 38rem;
+  color: var(--kz-muted);
+  font-size: 1.1875rem;
+}
+
+/* ---------- Le haut de page : la fenêtre du terrier s'allume ---------- */
+
+.hero {
+  display: grid;
+  gap: 40px;
+  align-items: center;
+  padding-top: clamp(16px, 5vw, 56px);
+}
+
+.hero__title {
+  font-size: clamp(2.75rem, 9vw, 6rem);
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  max-width: 11ch;
+}
+
+.hero__lead {
+  margin-top: 24px;
+  max-width: 34rem;
+  color: var(--kz-muted);
+  font-size: 1.25rem;
+}
+
+.actions {
+  margin-top: 32px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.window {
+  position: relative;
+  width: min(420px, 82vw);
+  aspect-ratio: 1;
+  justify-self: center;
+}
+
+/* Le halo de la lanterne déborde de la fenêtre, comme une lumière dans la nuit. */
+.window__glow {
+  position: absolute;
+  inset: -18%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--kz-halo) 0%, transparent 62%);
+  pointer-events: none;
+}
+
+.window__pane {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  overflow: hidden;
+  background: radial-gradient(
+    circle at 50% 58%,
+    var(--kz-glow) 0%,
+    var(--kz-glow) 30%,
+    var(--kz-surface) 72%
+  );
+  box-shadow: 0 0 0 8px var(--kz-ring);
+}
+
+.window__pane img {
   position: absolute;
   left: 50%;
-  bottom: -6%;
-  width: 70%;
+  bottom: -4%;
+  width: 66%;
   transform: translateX(-50%);
 }
 
-.fly {
-  position: absolute;
-  left: var(--x);
-  top: var(--y);
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  background: var(--kz-fly);
-  border: 2px solid var(--kz-fly-edge);
-  box-shadow: 0 0 14px 4px var(--kz-fly-glow);
+/* Un seul moment orchestré : la lumière monte, le hérisson apparaît, puis le texte. */
+html[data-motion='full'] .window__pane {
+  animation: kz-dusk 1.4s var(--kz-ease) both;
 }
 
-html[data-motion='full'] .fly {
-  animation: kz-drift 9s ease-in-out var(--d) infinite;
+html[data-motion='full'] .window__glow {
+  animation:
+    kz-glow-in 1.8s var(--kz-ease) 0.2s both,
+    kz-breathe 9s ease-in-out 2s infinite;
+}
+
+html[data-motion='full'] .window__pane img {
+  animation: kz-peek 1s var(--kz-ease) 0.5s both;
 }
 
 html[data-motion='full'] .hero__text > * {
-  animation: kz-rise 0.6s var(--kz-ease) both;
+  animation: kz-rise 0.8s var(--kz-ease) both;
 }
 
-html[data-motion='full'] .hero__text > :nth-child(2) {
-  animation-delay: 0.08s;
+html[data-motion='full'] .hero__lead {
+  animation-delay: 0.12s;
 }
 
-html[data-motion='full'] .hero__text > :nth-child(3) {
-  animation-delay: 0.16s;
-}
-
-html[data-motion='full'] .hero__text > :nth-child(4) {
+html[data-motion='full'] .actions {
   animation-delay: 0.24s;
 }
 
-@keyframes kz-drift {
+@keyframes kz-dusk {
+  from {
+    filter: brightness(0.35) saturate(0.6);
+  }
+}
+
+@keyframes kz-glow-in {
+  from {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+}
+
+@keyframes kz-breathe {
   0%,
   100% {
-    transform: translate(0, 0);
-    opacity: 1;
+    transform: scale(1);
   }
   50% {
-    transform: translate(4px, -8px);
-    opacity: 0.75;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes kz-peek {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 18%);
   }
 }
 
 @keyframes kz-rise {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(16px);
   }
 }
 
-/* Sections */
+/* ---------- La maisonnée : la réserve se calcule sous les yeux ---------- */
 
-.section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  scroll-margin-top: 16px;
-}
-
-.section__title {
-  font-size: clamp(1.625rem, 4vw, 2.25rem);
-  color: var(--kz-heading);
-}
-
-.features,
-.platforms {
-  margin: 0;
-  padding: 0;
-  list-style: none;
+.household__board {
+  margin-top: 40px;
   display: grid;
-  gap: 12px;
+  gap: 8px;
+  border-radius: 36px;
+  background: var(--kz-surface);
+  overflow: hidden;
 }
 
-.feature {
+.members {
+  margin: 0;
+  padding: 28px 24px;
+  border: 0;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: 20px;
-  border-radius: 22px;
+  gap: 4px;
+}
+
+.members__legend {
+  float: left;
+  width: 100%;
+  padding: 0;
+  margin-bottom: 12px;
+  font-family: var(--kz-font-display);
+  font-size: 1.375rem;
+}
+
+.member {
+  clear: both;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--kz-line);
+}
+
+.member:last-child {
+  border-bottom: 0;
+}
+
+.member__name {
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--kz-bg);
+}
+
+.stepper__btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  border: 0;
+  background: transparent;
+  color: var(--kz-text);
+  font: 700 1.375rem / 1 var(--kz-font-body);
+  cursor: pointer;
+}
+
+.stepper__btn:hover:not(:disabled) {
   background: var(--kz-surface);
 }
 
-.feature h3 {
-  font-size: 1.3125rem;
+.stepper__btn:disabled {
+  color: var(--kz-line);
+  cursor: default;
 }
 
-.feature p {
-  color: var(--kz-muted);
+.stepper__value {
+  min-width: 2ch;
+  text-align: center;
+  font-family: var(--kz-font-display);
+  font-size: 1.375rem;
 }
 
-.feature__icon {
-  width: 48px;
-  height: 48px;
-  border-radius: 16px;
+.results {
+  padding: 28px 24px 32px;
   display: grid;
-  place-content: center;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px 20px;
+  align-content: center;
   background: var(--kz-bg);
-  color: var(--kz-heading);
+  border-radius: 28px;
+  margin: 0 8px 8px;
 }
 
-.feature__icon svg {
-  width: 24px;
-  height: 24px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.result {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
-.privacy {
-  padding: 28px 24px;
-  border-radius: 26px;
-  border: 2px solid var(--kz-label);
-}
-
-.note:empty {
+.result[hidden] {
   display: none;
 }
 
-.note {
-  padding: 12px 14px;
+.result__n {
+  font-family: var(--kz-font-display);
+  font-size: clamp(2.5rem, 7vw, 3.5rem);
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--kz-text);
+}
+
+.result__label {
+  color: var(--kz-muted);
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+/* L'eau d'abord : c'est la quantité qui surprend le plus. */
+.result--water {
+  grid-column: 1 / -1;
+}
+
+.result--water .result__n {
+  font-size: clamp(4rem, 15vw, 7.5rem);
+  color: var(--kz-heading);
+}
+
+html[data-motion='full'] .result__n--bump {
+  animation: kz-bump 0.42s var(--kz-ease);
+}
+
+@keyframes kz-bump {
+  40% {
+    transform: translateY(-4px);
+  }
+}
+
+.household__note {
+  margin-top: 20px;
+  color: var(--kz-muted);
+  font-size: 0.9375rem;
+}
+
+.household__lists {
+  margin-top: 28px;
+  max-width: 40rem;
+  padding-left: 20px;
+  border-left: 3px solid var(--kz-label);
+  font-size: 1.125rem;
+}
+
+/* ---------- La maison et les sacs : de part et d'autre du hérisson ---------- */
+
+.split {
+  display: grid;
+  gap: 32px;
+}
+
+.split__title {
+  font-size: 1.625rem;
+  margin-bottom: 12px;
+}
+
+.split__list {
+  padding: 0;
+  list-style: none;
+}
+
+.split__list li {
+  padding: 12px 0;
+  border-top: 1px solid var(--kz-line);
+  font-size: 1.0625rem;
+}
+
+.split__hog {
+  width: min(240px, 60vw);
+  justify-self: center;
+}
+
+/* ---------- Conseils d'achat : trois paliers, sans prix ---------- */
+
+.tiers {
+  margin-top: 40px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 28px;
+}
+
+.tier {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  column-gap: 16px;
+  align-items: baseline;
+}
+
+.tier__mark {
+  grid-row: span 2;
+  font-family: var(--kz-font-display);
+  font-size: 2.25rem;
+  line-height: 1;
+  color: var(--kz-heading);
+  white-space: nowrap;
+}
+
+.tier__name {
+  font-weight: 700;
+  font-size: 1.1875rem;
+}
+
+.tier__text {
+  color: var(--kz-muted);
+}
+
+.buy__fair {
+  margin-top: 32px;
+  font-size: 0.9375rem;
+  color: var(--kz-muted);
+}
+
+/* ---------- Les rappels : une petite frise ---------- */
+
+.reminders {
+  display: grid;
+  gap: 32px;
+}
+
+.agenda {
+  padding: 0;
+  list-style: none;
+  border-left: 2px solid var(--kz-line);
+}
+
+.agenda__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 24px 24px;
+}
+
+.agenda__item::before {
+  content: '';
+  position: absolute;
+  left: -8px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--kz-bg);
+  border: 3px solid var(--kz-heading);
+}
+
+.agenda__when {
+  color: var(--kz-label);
+  font-weight: 700;
+  font-size: 0.9375rem;
+}
+
+.agenda__what {
+  font-family: var(--kz-font-display);
+  font-size: 1.3125rem;
+  line-height: 1.3;
+}
+
+.reminders__how {
+  display: grid;
+  gap: 16px;
+  max-width: 40rem;
+  color: var(--kz-muted);
+}
+
+/* ---------- La soirée : un programme, comme sur un carton d'invitation ---------- */
+
+.evening {
+  /* Bande pleine largeur : le contenu reste aligné sur la colonne de la page. */
+  margin-inline: calc(50% - 50vw);
+  padding: clamp(56px, 9vw, 112px) max(20px, (100vw - 1180px) / 2);
+  background: var(--kz-nav);
+}
+
+.evening__intro .lead {
+  color: var(--kz-nav-text);
+}
+
+.programme {
+  position: relative;
+  margin-top: 48px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 36px;
+}
+
+.programme__item {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  column-gap: 20px;
+}
+
+.programme__time {
+  grid-row: span 2;
+  font-family: var(--kz-font-display);
+  font-size: 1.5rem;
+  line-height: 1.2;
+  color: var(--kz-heading);
+}
+
+.programme__title {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.programme__text {
+  margin-top: 6px;
+  max-width: 34rem;
+  color: var(--kz-nav-text);
+}
+
+.evening__after {
+  margin-top: 48px;
+  max-width: 40rem;
+  font-size: 1.125rem;
+}
+
+/* Au défilement, le fil de la soirée se dessine (navigateurs récents seulement). */
+@supports (animation-timeline: view()) {
+  html[data-motion='full'] .programme::before {
+    content: '';
+    position: absolute;
+    left: calc(5.5rem + 8px);
+    top: 0.6rem;
+    bottom: 0.6rem;
+    width: 2px;
+    background: var(--kz-heading);
+    transform-origin: top;
+    animation: kz-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 20% cover 60%;
+  }
+
+  @keyframes kz-draw {
+    from {
+      transform: scaleY(0);
+    }
+  }
+}
+
+/* ---------- Tout reste chez toi ---------- */
+
+.privacy {
+  max-width: 48rem;
+}
+
+.privacy__title {
+  font-size: clamp(2.25rem, 6vw, 4rem);
+  line-height: 1.05;
+}
+
+.privacy__text {
+  margin-top: 20px;
+  font-size: 1.25rem;
+  color: var(--kz-muted);
+}
+
+/* ---------- Installer ---------- */
+
+.install {
+  scroll-margin-top: 16px;
+}
+
+.install__state:empty {
+  display: none;
+}
+
+.install__state {
+  margin-top: 20px;
+  padding: 12px 16px;
   border-radius: 16px;
   border: 2px solid var(--kz-heading);
-  background: var(--kz-surface);
+}
+
+#install-now {
+  margin-top: 24px;
+}
+
+.platforms {
+  margin-top: 40px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 16px;
 }
 
 .platform {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 20px;
-  border-radius: 22px;
-  border: 2px solid transparent;
+  padding: 24px;
+  border-radius: 28px;
+  border: 2px solid var(--kz-line);
+}
+
+.platform--yours {
+  border-color: var(--kz-heading);
   background: var(--kz-surface);
 }
 
-.platform h3 {
+.platform__title {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
   gap: 6px 12px;
-  font-size: 1.3125rem;
+  margin-bottom: 12px;
+  font-size: 1.5rem;
 }
 
 .platform ol {
-  margin: 0;
   padding-left: 1.4em;
   display: flex;
   flex-direction: column;
@@ -405,51 +753,56 @@ html[data-motion='full'] .hero__text > :nth-child(4) {
   border: 2px solid var(--kz-heading);
   color: var(--kz-heading);
   font-family: var(--kz-font-body);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 700;
-}
-
-.platform--yours {
-  border-color: var(--kz-heading);
 }
 
 .platform--yours .platform__yours {
   display: inline-block;
 }
 
-.browser {
+.install__browser {
+  margin-top: 24px;
   display: flex;
   flex-wrap: wrap;
   gap: 4px 12px;
   color: var(--kz-muted);
 }
 
-.browser a {
+.install__browser a {
   color: var(--kz-text);
   font-weight: 600;
 }
 
-/* Pied de page */
+/* ---------- Pied de page ---------- */
 
 .footer {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 24px 20px 40px;
+  width: var(--page);
+  margin: var(--gap-section) auto 0;
+  padding: 32px 0 48px;
   border-top: 1px solid var(--kz-line);
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   color: var(--kz-muted);
   font-size: 0.9375rem;
 }
 
+.footer__credits {
+  color: var(--kz-text);
+  font-size: 1rem;
+}
+
+.footer__credits a {
+  font-weight: 700;
+}
+
 .footer__links {
-  margin: 0;
   padding: 0;
   list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 4px 20px;
+  gap: 0 24px;
 }
 
 .footer__links a {
@@ -459,48 +812,148 @@ html[data-motion='full'] .hero__text > :nth-child(4) {
   color: var(--kz-text);
 }
 
-/* Petits écrans : le bouton d'en-tête laisse la place au choix de langue. */
+/* ---------- Petits écrans ---------- */
+
 @media (max-width: 26rem) {
-  .top .button {
+  .top__open {
     display: none;
   }
 }
 
-/* Écrans moyens et grands */
+/* ---------- Tablettes et ordinateurs ---------- */
+
 @media (min-width: 48rem) {
-  .features {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .tiers {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .tier {
+    grid-template-columns: 1fr;
+    row-gap: 4px;
+  }
+
+  .tier__mark {
+    grid-row: auto;
+    font-size: 3.25rem;
+    margin-bottom: 8px;
   }
 
   .platforms {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .programme__item {
+    grid-template-columns: 8rem 1fr;
+    column-gap: 40px;
+  }
+
+  @supports (animation-timeline: view()) {
+    html[data-motion='full'] .programme::before {
+      left: calc(8rem + 18px);
+    }
+  }
 }
 
 @media (min-width: 60rem) {
-  main {
-    gap: 80px;
-    padding-top: 24px;
-  }
-
   .hero {
-    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
-    gap: 56px;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: 64px;
+    min-height: min(78vh, 760px);
   }
 
-  .lantern {
-    width: min(420px, 100%);
+  .window {
+    width: min(460px, 100%);
+  }
+
+  /* La maisonnée : les membres à gauche, les quantités à droite, côte à côte. */
+  .household {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: 64px;
+    align-items: start;
+  }
+
+  .household__intro {
+    grid-row: span 3;
+    position: sticky;
+    top: 32px;
+  }
+
+  .household__board {
+    margin-top: 0;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+
+  .results {
+    margin: 8px 8px 8px 0;
+  }
+
+  .household__note,
+  .household__lists {
+    grid-column: 2;
+  }
+
+  .split {
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    column-gap: 48px;
+    align-items: end;
+  }
+
+  .split__intro {
+    grid-column: 1 / -1;
+    margin-bottom: 24px;
+  }
+
+  .split__hog {
+    width: 260px;
+  }
+
+  .buy {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: 64px;
+  }
+
+  .buy .title,
+  .buy .lead {
+    grid-column: 1;
+  }
+
+  .tiers {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    margin-top: 0;
+  }
+
+  .buy__fair {
+    grid-column: 1;
+  }
+
+  .reminders {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    column-gap: 64px;
+    align-items: start;
+  }
+
+  .agenda {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+
+  .reminders__how {
+    grid-column: 1;
   }
 }
 
 @media (forced-colors: active) {
   .platform--yours,
-  .privacy,
-  .note {
-    border-color: CanvasText;
+  .install__state,
+  .household__board {
+    border: 2px solid CanvasText;
   }
 
-  .fly {
+  .agenda__item::before {
     forced-color-adjust: none;
+    border-color: CanvasText;
   }
 }

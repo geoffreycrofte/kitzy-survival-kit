@@ -1,4 +1,5 @@
-export type MascotPose = 'bonjour' | 'endormi' | 'lanterne' | 'provisions' | 'fete' | 'lecture';
+export type MascotPose =
+  'bonjour' | 'endormi' | 'lanterne' | 'provisions' | 'fete' | 'lecture' | 'sac';
 
 /** Chemin d'une pose du hérisson, compatible avec le chemin de publication. */
 export function mascot(pose: MascotPose): string {
