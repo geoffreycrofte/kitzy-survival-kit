@@ -8,6 +8,7 @@ import type { BarcodeLink, InventoryItem, Kit, ShoppingExtra } from './inventory
 import { PlanSchema, type EmergencyPlan } from './plan';
 import type { TaskDone } from './tasks';
 import type { AchievementsDone } from './progress';
+import type { ActivitiesDone } from './activities';
 import type { KitLevel } from './catalog';
 
 const isoDate = z.string().refine(isIsoDate, 'Date invalide');
@@ -83,6 +84,7 @@ const BackupSchema = z.object({
   tasks: z.record(z.string().max(64), isoDate).default({}),
   barcodes: z.array(BarcodeSchema).max(2000).default([]),
   achievements: z.record(z.string().max(64), isoDate).default({}),
+  activities: z.record(z.string().max(64), isoDate).default({}),
 });
 
 export interface BackupData {
@@ -96,6 +98,7 @@ export interface BackupData {
   tasks: TaskDone;
   barcodes: BarcodeLink[];
   achievements: AchievementsDone;
+  activities: ActivitiesDone;
 }
 
 export type Backup = BackupData & { app: 'kitzy'; schemaVersion: 2; exportedAt: string };
@@ -104,27 +107,56 @@ export function createBackup(data: BackupData, now: Date = new Date()): Backup {
   return { app: 'kitzy', schemaVersion: 2, exportedAt: now.toISOString(), ...data };
 }
 
-export type ParseResult = { ok: true; data: BackupData } | { ok: false; error: string };
+export type ParseResult =
+  { ok: true; data: BackupData } | { ok: false; code: 'unreadable' | 'notKitzy'; error: string };
 
 export function parseBackup(text: string): ParseResult {
   let json: unknown;
   try {
     json = JSON.parse(text);
   } catch {
-    return { ok: false, error: 'Ce fichier n’est pas une sauvegarde Kitzy lisible.' };
+    return {
+      ok: false,
+      code: 'unreadable',
+      error: 'Ce fichier n’est pas une sauvegarde Kitzy lisible.',
+    };
   }
   const parsed = BackupSchema.safeParse(json);
   if (!parsed.success) {
     return {
       ok: false,
+      code: 'notKitzy',
       error:
         'Ce fichier ne ressemble pas à une sauvegarde Kitzy, ou vient d’une version plus récente.',
     };
   }
-  const { household, kits, items, extras, bought, level, plan, tasks, barcodes, achievements } =
-    parsed.data;
+  const {
+    household,
+    kits,
+    items,
+    extras,
+    bought,
+    level,
+    plan,
+    tasks,
+    barcodes,
+    achievements,
+    activities,
+  } = parsed.data;
   return {
     ok: true,
-    data: { household, kits, items, extras, bought, level, plan, tasks, barcodes, achievements },
+    data: {
+      household,
+      kits,
+      items,
+      extras,
+      bought,
+      level,
+      plan,
+      tasks,
+      barcodes,
+      achievements,
+      activities: activities as ActivitiesDone,
+    },
   };
 }

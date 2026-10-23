@@ -2,7 +2,13 @@ import { useMemo, useRef, useState, type FormEvent } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { renderSVG } from 'uqr';
-import { CATEGORIES, encodeShare, shoppingList, type ShoppingEntry } from '@kitzy/core';
+import {
+  categoryName,
+  encodeShare,
+  shoppingList,
+  type CategoryId,
+  type ShoppingEntry,
+} from '@kitzy/core';
 import { useKitzy } from '../data/derived';
 import { BagIcon, BurrowIcon } from '../components/Icons';
 import { addExtras, clearBought, removeExtra, toggleBought } from '../data/store';
@@ -29,7 +35,7 @@ export function Shopping() {
     groups.set(entry.category, [...(groups.get(entry.category) ?? []), entry]);
   }
   const groupName = (id: string) =>
-    id === 'extra' ? t('shopping.extras') : (CATEGORIES.find((c) => c.id === id)?.name.fr ?? id);
+    id === 'extra' ? t('shopping.extras') : categoryName(id as CategoryId, data.ctx.locale);
 
   return (
     <div className="page">

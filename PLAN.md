@@ -381,6 +381,7 @@ Structure officielle du guide, reprise pour l'arborescence de l'aide : **1. Comp
 ### 3.8 Réglages
 
 - Langue, thème (clair, sombre, système), taille de texte
+- **Langue** (fait) : par défaut celle de l'appareil si Kitzy la parle, sinon le français ; choix gardé sur l'appareil et copié dans la base locale pour que les notifications suivent. Chaque langue est écrite dans sa propre langue (`lang`). Lien « Demander une langue » vers le profil LinkedIn de l'auteur
 - **Animations d'ambiance** : activées ou non (désactivées par défaut si le système demande moins de mouvement)
 - Notifications : canaux, délais d'alerte (J-30, J-7, J0), heures calmes
 - Durée cible (72 h par défaut)
@@ -1039,17 +1040,26 @@ Limites connues : Amazon interdit aux robots ses pages de recherche (robots.txt)
 - [x] Réglages regroupés et titrés, avec un sommaire (§ 3.8)
 - [x] Cartes des gestes : case, titre et origine du conseil en tête, explication, puis « Pour passer à l'action » avec des pastilles à icône (guide, écran de l'app, site externe affiché par son domaine)
 
-### Phase 4 : Le côté fun (≈ 2 semaines)
+### Phase 4 : Le côté fun ✅
 
-- [ ] Paliers de progression (les succès sont faits, § 4)
-- [ ] Recettes « soirée conserves »
-- [ ] Rituel du premier lundi, check-up semestriel
-- [ ] Défi « soirée sans électricité »
-- [ ] Simulation 72 h interactive et quiz
+Tout est réuni dans **Activités** (menu), en trois groupes : les rituels, en famille, s'entraîner. Chaque activité garde la date de la dernière fois et débloque un succès (6 de plus, 18 au total).
+
+- [x] **Paliers de progression** sur la page des succès : Débutant → En route (1 luciole) → Prêt pour un week-end (4) → Prêt pour 72 h (6) → Voisin ressource (6 lucioles, quartier noté dans le plan et tous les gestes « avec mes proches »)
+- [x] **Soirée conserves** : 8 recettes écrites pour Kitzy (peu d'eau, peu de vaisselle, avec ou sans réchaud), reliées au catalogue. Les aliments qui approchent de leur date (30 jours) sont listés avec les recettes qui les utilisent ; « On l'a cuisinée ! » renvoie vers les articles utilisés pour noter la consommation
+- [x] **Rendez-vous du premier lundi** : 3 questions pendant le test des sirènes ; « oui » aux batteries note la recharge de tous les appareils suivis
+- [x] **Grand check-up de saison** : dates des six prochains mois, batteries, tour du kit (foyer, vêtements de saison, détecteur de fumée, documents, médicaments, plan)
+- [x] L'accueil propose **un moment pour le terrier** : le check-up pendant 3 semaines après un changement d'heure, sinon le mini-check pendant la semaine du premier lundi, sinon une soirée conserves si des aliments approchent de leur date. Les rappels de la frise y mènent aussi
+- [x] **Défi « soirée sans électricité »** : 7 missions, consignes de sécurité (frigo et chauffage restent branchés), puis « Qu'est-ce qui nous a manqué ? » : une ligne = un article ajouté à la liste de courses
+- [x] **Simulation 72 h** : le scénario officiel en 6 étapes (jour 1 au travail, le retour, le soir ; jour 2 l'eau, la rumeur ; jour 3 l'entraide). À chaque étape un choix expliqué, puis « Et chez toi ? » relié aux lucioles, aux articles, au plan et aux gestes. Bilan : bons réflexes, ce qui aurait manqué (objets ajoutables d'un geste à la liste de courses)
+- [x] **Quiz des bons réflexes** : 10 questions (sirènes, vigilance, radio, monoxyde de carbone, rumeurs, iode, hameçonnage), sans chronomètre, chaque réponse expliquée avec un lien vers la page du guide
+- [x] Accessibilité : une question = un groupe de boutons radio, le focus va sur la question puis sur le retour ; la bonne réponse est dite en texte, pas seulement en couleur
+
+Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fiche voisinage imprimable (§ 4).
 
 ### Phase 5 : International et stores
 
-- [ ] Traductions EN et DE, puis PT et LB (relecture native)
+- [x] **Traductions EN, LB, DE, PT** de toute l'app : interface, catalogue, guide, gestes, recettes, quiz, simulation, conseils d'achat, notifications, fichier agenda. Le français reste la source ; un texte manquant retombe sur le français, et un test vérifie pour chaque langue que toutes les clés, tous les `{{…}}` et tous les contenus sont là
+- [ ] Relecture native des quatre langues (traductions faites par l'IA ; le luxembourgeois en priorité)
 - [ ] App **Expo** (`apps/mobile`) branchée sur `core` : SQLite, notifications locales, scan
 - [ ] Pot à pourboires en achat intégré (ou lien masqué)
 - [ ] EAS Build et Submit (Google Play, App Store)

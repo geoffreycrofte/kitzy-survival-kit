@@ -7,6 +7,7 @@ import {
   buildReminders,
   planReviewDate,
   type AchievementsDone,
+  type ActivitiesDone,
   type BarcodeLink,
   type EmergencyPlan,
   type Household,
@@ -14,6 +15,7 @@ import {
   type IsoDate,
   type Kit,
   type KitLevel,
+  type Locale,
   type Reminder,
   type ShoppingExtra,
   type TaskDone,
@@ -33,6 +35,7 @@ export interface AppData {
   tasks: TaskDone;
   barcodes: BarcodeLink[];
   achievements: AchievementsDone;
+  activities: ActivitiesDone;
 }
 
 const EMPTY: AppData = {
@@ -46,6 +49,7 @@ const EMPTY: AppData = {
   tasks: {},
   barcodes: [],
   achievements: {},
+  activities: {},
 };
 
 export async function getMeta<T>(key: string, fallback: T): Promise<T> {
@@ -58,22 +62,46 @@ export async function setMeta(key: string, value: unknown): Promise<void> {
 }
 
 export async function loadAll(): Promise<AppData> {
-  const [household, kits, items, extras, bought, level, plan, tasks, barcodes, achievements] =
-    await Promise.all([
-      getMeta<Household | null>('household', null),
-      db.kits.toArray(),
-      db.items.toArray(),
-      db.extras.toArray(),
-      getMeta<string[]>('bought', []),
-      getMeta<KitLevel>('level', 'essential'),
-      getMeta<EmergencyPlan | null>('plan', null),
-      getMeta<TaskDone>('tasks', {}),
-      db.barcodes.toArray(),
-      getMeta<AchievementsDone>('achievements', {}),
-    ]);
+  const [
+    household,
+    kits,
+    items,
+    extras,
+    bought,
+    level,
+    plan,
+    tasks,
+    barcodes,
+    achievements,
+    activities,
+  ] = await Promise.all([
+    getMeta<Household | null>('household', null),
+    db.kits.toArray(),
+    db.items.toArray(),
+    db.extras.toArray(),
+    getMeta<string[]>('bought', []),
+    getMeta<KitLevel>('level', 'essential'),
+    getMeta<EmergencyPlan | null>('plan', null),
+    getMeta<TaskDone>('tasks', {}),
+    db.barcodes.toArray(),
+    getMeta<AchievementsDone>('achievements', {}),
+    getMeta<ActivitiesDone>('activities', {}),
+  ]);
   const order = (k: Kit) => (k.type === 'home' ? '0' : '1' + k.id);
   kits.sort((a, b) => order(a).localeCompare(order(b), 'fr', { numeric: true }));
-  return { household, kits, items, extras, bought, level, plan, tasks, barcodes, achievements };
+  return {
+    household,
+    kits,
+    items,
+    extras,
+    bought,
+    level,
+    plan,
+    tasks,
+    barcodes,
+    achievements,
+    activities,
+  };
 }
 
 export function emptyData(): AppData {
@@ -81,7 +109,7 @@ export function emptyData(): AppData {
 }
 
 /** Tous les rappels du foyer (péremptions, recharges, check-ups, revue du plan). */
-export function remindersFor(data: AppData, today: IsoDate): Reminder[] {
+export function remindersFor(data: AppData, today: IsoDate, locale: Locale = 'fr'): Reminder[] {
   return buildReminders({
     catalog: CATALOG,
     kits: data.kits,
@@ -89,6 +117,7 @@ export function remindersFor(data: AppData, today: IsoDate): Reminder[] {
     country: COUNTRY,
     today,
     planReview: planReviewDate(data.plan),
+    locale,
   });
 }
 

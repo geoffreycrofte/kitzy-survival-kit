@@ -11,12 +11,20 @@ import {
   CloseIcon,
   MoonIcon,
   SettingsIcon,
+  SparkIcon,
   SunIcon,
   TrophyIcon,
 } from './Icons';
 
 /** Pages ouvertes depuis le menu. */
 export const MENU_ROUTES = [
+  '/activites',
+  '/mini-check',
+  '/check-up',
+  '/recettes',
+  '/defi',
+  '/simulation',
+  '/quiz',
   '/succes',
   '/guide',
   '/gestes',
@@ -57,6 +65,12 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
   const close = () => ref.current?.close();
 
   const links = [
+    {
+      to: '/activites',
+      Icon: SparkIcon,
+      title: t('nav.activities'),
+      hint: t('menu.activitiesHint'),
+    },
     {
       to: '/succes',
       Icon: TrophyIcon,

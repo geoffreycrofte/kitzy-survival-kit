@@ -316,6 +316,7 @@ describe('share and backup', () => {
       tasks: { 'lu-alert': TODAY },
       barcodes: [{ code: '5410000000000', kitId: 'home', key: 'drinking-water' }],
       achievements: { terrier: TODAY },
+      activities: { quiz: TODAY },
     });
     const result = parseBackup(JSON.stringify(backup));
     expect(result.ok && result.data.kits).toEqual([home]);
@@ -323,6 +324,7 @@ describe('share and backup', () => {
     expect(result.ok && result.data.tasks).toEqual({ 'lu-alert': TODAY });
     expect(result.ok && result.data.barcodes).toHaveLength(1);
     expect(result.ok && result.data.achievements).toEqual({ terrier: TODAY });
+    expect(result.ok && result.data.activities).toEqual({ quiz: TODAY });
     expect(parseBackup('{"app":"autre"}').ok).toBe(false);
     expect(parseBackup('pas du json').ok).toBe(false);
   });

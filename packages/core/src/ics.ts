@@ -5,6 +5,8 @@
 import type { CountryProfile } from './country';
 import type { IsoDate } from './dates';
 import { addDays } from './dates';
+import { fill } from './i18n/fill';
+import { fr, type Messages } from './i18n/fr';
 import type { Reminder } from './reminders';
 
 export interface IcsOptions {
@@ -13,6 +15,8 @@ export interface IcsOptions {
   now?: Date;
   /** Heure de la notification pour les événements d'une journée (0–23) */
   alertHour?: number;
+  /** Textes des événements (français par défaut). */
+  texts?: IcsTexts;
 }
 
 function escapeText(value: string): string {
@@ -71,45 +75,30 @@ function trigger(daysBefore: number, hour: number): string {
   return `-P${daysBefore - 1}DT${24 - hour}H`;
 }
 
-function describe(r: Reminder): { summary: string; description: string } {
+export type IcsTexts = Messages['system']['ics'];
+
+function describe(r: Reminder, texts: IcsTexts): { summary: string; description: string } {
   switch (r.kind) {
     case 'expiry': {
-      const q = r.quantity !== undefined ? ` (${r.quantity})` : '';
+      const values = {
+        title: r.title,
+        quantity: r.quantity !== undefined ? ` (${r.quantity})` : '',
+      };
       return r.expiryType === 'dlc'
-        ? {
-            summary: `Kitzy : ${r.title}${q}, date limite de consommation`,
-            description:
-              'Date limite de consommation. À consommer avant, puis à remplacer dans ta réserve.',
-          }
-        : {
-            summary: `Kitzy : ${r.title}${q}, à consommer de préférence avant ce jour`,
-            description:
-              'Date de durabilité minimale. Mange-le bientôt et rachète-en pour ta réserve.',
-          };
+        ? { summary: fill(texts.dlcSummary, values), description: texts.dlcDescription }
+        : { summary: fill(texts.ddmSummary, values), description: texts.ddmDescription };
     }
     case 'battery':
       return {
-        summary: `Kitzy : recharger ${r.title}`,
-        description:
-          'Recharge ou teste cet appareil pour qu’il soit prêt le jour où tu en as besoin.',
+        summary: fill(texts.batterySummary, { title: r.title }),
+        description: texts.batteryDescription,
       };
     case 'monthly-check':
-      return {
-        summary: 'Kitzy : mini-check du mois',
-        description: 'Deux minutes pour vérifier ta réserve, pendant le test des sirènes.',
-      };
+      return { summary: texts.monthlySummary, description: texts.monthlyDescription };
     case 'review':
-      return {
-        summary: 'Kitzy : grand check-up du kit',
-        description:
-          'Contrôle les dates, recharge les appareils et remplace les piles des détecteurs.',
-      };
+      return { summary: texts.reviewSummary, description: texts.reviewDescription };
     case 'plan-review':
-      return {
-        summary: 'Kitzy : relire mon plan d’urgence',
-        description:
-          'Numéros, points de rendez-vous, personnes à aider : vérifie que tout est encore juste, puis réimprime-le.',
-      };
+      return { summary: texts.planSummary, description: texts.planDescription };
   }
 }
 
@@ -126,7 +115,7 @@ export function buildIcs(reminders: readonly Reminder[], options: IcsOptions = {
   ];
 
   for (const r of reminders) {
-    const { summary, description } = describe(r);
+    const { summary, description } = describe(r, options.texts ?? fr.system.ics);
     lines.push('BEGIN:VEVENT', `UID:${r.id}@kitzy.lu`, `DTSTAMP:${stamp(now)}`);
     if (r.kind === 'monthly-check' && options.country?.sirenTest) {
       const t = options.country.sirenTest;

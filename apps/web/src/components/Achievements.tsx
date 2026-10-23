@@ -25,12 +25,14 @@ export function AchievementWatcher() {
         hasItems: data.items.some((i) => i.lots.some((l) => l.quantity > 0)),
         essentials: data.essentials,
         dashboard: data.dashboard,
+        activities: data.activities,
       },
       data.achievements,
     ).filter((id) => !pending.current.has(id));
     if (ids.length === 0) return;
     ids.forEach((id) => pending.current.add(id));
-    void recordAchievements(ids).then(() => setUnlocked((prev) => [...prev, ...ids]));
+    // Le bandeau montre le dernier déblocage : un succès arrivé juste après le remplace.
+    void recordAchievements(ids).then(() => setUnlocked(ids));
   }, [data]);
 
   // Sur la page des succès, le bandeau n'a plus lieu d'être.

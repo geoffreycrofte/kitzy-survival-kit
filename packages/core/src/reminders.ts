@@ -2,7 +2,8 @@
  * Moteur de rappels (§ 6 du plan). Pur et testable : les adaptateurs
  * (affichage, calendrier, notifications) consomment sa sortie.
  */
-import type { ItemTemplate } from './catalog';
+import { tx, type ItemTemplate } from './catalog';
+import type { Locale } from './i18n/locales';
 import type { CountryProfile } from './country';
 import { addDays, daysBetween, nextMonthly, nthWeekdayOfMonth, type IsoDate } from './dates';
 import type { InventoryItem, Kit } from './inventory';
@@ -31,11 +32,15 @@ export interface ReminderInput {
   today: IsoDate;
   /** Revue annuelle du plan d'urgence, s'il a été rempli. */
   planReview?: IsoDate | null;
+  /** Langue des noms d'articles. */
+  locale?: Locale;
 }
 
-function itemName(item: InventoryItem, catalog: readonly ItemTemplate[]): string {
-  if (item.templateId)
-    return catalog.find((t) => t.id === item.templateId)?.name.fr ?? item.templateId;
+function itemName(item: InventoryItem, catalog: readonly ItemTemplate[], locale?: Locale): string {
+  if (item.templateId) {
+    const template = catalog.find((t) => t.id === item.templateId);
+    return template ? tx(template.name, locale) : item.templateId;
+  }
   return item.customName ?? '';
 }
 
@@ -65,7 +70,7 @@ export function buildReminders(input: ReminderInput): Reminder[] {
   const reminders: Reminder[] = [];
 
   for (const item of input.items) {
-    const name = itemName(item, input.catalog);
+    const name = itemName(item, input.catalog, input.locale);
     // Lots regroupés par date et type
     const groups = new Map<string, { date: IsoDate; type: 'dlc' | 'ddm'; quantity: number }>();
     for (const lot of item.lots) {

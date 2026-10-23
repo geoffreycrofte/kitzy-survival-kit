@@ -79,6 +79,7 @@ describe('achievements', () => {
     hasItems: false,
     essentials: emptyEssentials(),
     dashboard: dashboard([home], ctx([]), null, {}),
+    activities: {},
   });
 
   it('unlocks the first step and keeps what was already reached', () => {

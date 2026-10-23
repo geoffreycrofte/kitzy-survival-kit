@@ -2,7 +2,8 @@ import { useRef, useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
-import { isIsoDate, kitRows, lotState, sortLotsFifo, type KitRow, type Lot } from '@kitzy/core';
+import { isIsoDate, kitRows, lotState, sortLotsFifo, tx, type KitRow, type Lot } from '@kitzy/core';
+import { useLocale } from '../lib/locale';
 import { Meter } from '../components/Meter';
 import { BuyingAdvice } from '../components/BuyingAdvice';
 import { StatusChips } from '../components/StatusChips';
@@ -29,6 +30,7 @@ function parseQuantity(value: string): number {
 
 export function Item() {
   const { t } = useTranslation();
+  const { locale } = useLocale();
   const { kitId, key } = useParams();
   const scanned = (useLocation().state as { scanned?: string } | null)?.scanned;
   const data = useKitzy();
@@ -62,10 +64,10 @@ export function Item() {
       <h1 tabIndex={-1}>{row.name}</h1>
       {scanned && <p className="note">{t('scan.recognized', { code: scanned })}</p>}
       <p className="tag">{sourceLabel}</p>
-      {template?.hint && <p className="lead">{template.hint.fr}</p>}
+      {template?.hint && <p className="lead">{tx(template.hint, locale)}</p>}
       {template?.safety && (
         <p className="note">
-          <strong>Attention.</strong> {template.safety.fr}
+          <strong>{t('item.warning')}</strong> {tx(template.safety, locale)}
         </p>
       )}
 

@@ -157,3 +157,68 @@ export function CloseIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function BellIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z" />
+      <path d="M10 20a2 2 0 0 0 4 0" />
+    </svg>
+  );
+}
+
+export function ClockIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.5V12l3 2" />
+    </svg>
+  );
+}
+
+export function PotIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 10h16v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5z" />
+      <path d="M2 10h2M20 10h2M9 6c0-1 1-1 1-2M14 6c0-1 1-1 1-2" />
+    </svg>
+  );
+}
+
+export function LanternIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M9 3h6M12 3v2" />
+      <path d="M8 7h8l1 11H7z" />
+      <path d="M6 21h12M12 11v3" />
+    </svg>
+  );
+}
+
+export function StoryIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M4 18l4-12 4 8 3-5 5 9z" />
+      <circle cx="17" cy="6" r="1.5" />
+    </svg>
+  );
+}
+
+export function QuestionIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5v.7" />
+      <path d="M12 17h.01" />
+    </svg>
+  );
+}
+
+export function SparkIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z" />
+      <path d="M19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z" />
+    </svg>
+  );
+}

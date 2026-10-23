@@ -11,10 +11,12 @@ import { BrowserRouter } from 'react-router';
 import { App } from './App';
 import { initI18n } from './lib/i18n';
 import { initInstall } from './lib/install';
+import { initLocale } from './lib/locale';
 import { initPreferences } from './lib/preferences';
 
 initPreferences();
 initI18n();
+initLocale();
 initInstall();
 
 const root = document.getElementById('root');

@@ -12,8 +12,14 @@ import {
   precacheAndRoute,
 } from 'workbox-precaching';
 import { NavigationRoute, registerRoute } from 'workbox-routing';
-import { digest, dueOn, shouldNotify, todayLocal } from '@kitzy/core';
-import { getNotifySettings, loadAll, remindersFor, updateNotifySettings } from '../data/load';
+import { digest, dueOn, isLocale, messagesFor, shouldNotify, todayLocal } from '@kitzy/core';
+import {
+  getMeta,
+  getNotifySettings,
+  loadAll,
+  remindersFor,
+  updateNotifySettings,
+} from '../data/load';
 import { PERIODIC_TAG } from './types';
 
 declare const self: ServiceWorkerGlobalScope & {
@@ -49,7 +55,14 @@ async function checkReminders(): Promise<void> {
   if (!shouldNotify(settings.lastNotified, today)) return;
   const data = await loadAll();
   if (!data.household) return;
-  const message = digest(dueOn(remindersFor(data, today), today), today);
+  // La langue choisie dans l'app (copiée dans la base locale), sinon le français.
+  const stored = await getMeta<string>('locale', 'fr');
+  const locale = isLocale(stored) ? stored : 'fr';
+  const message = digest(
+    dueOn(remindersFor(data, today, locale), today),
+    today,
+    messagesFor(locale).system.notify,
+  );
   // On note la vérification même sans rappel : une seule par jour.
   await updateNotifySettings({ lastNotified: today });
   if (!message) return;

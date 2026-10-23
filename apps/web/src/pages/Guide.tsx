@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { GUIDE, type GuideBlock, type GuidePage } from '@kitzy/core';
+import type { GuideBlock, GuidePage } from '@kitzy/core';
+import { useContent } from '../lib/content';
 import { mascot } from '../lib/assets';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
@@ -9,6 +10,7 @@ const CHAPTERS: GuidePage['chapter'][] = ['comprendre', 'alerte', 'preparer'];
 
 export function GuideIndex() {
   const { t } = useTranslation();
+  const { guide: GUIDE } = useContent();
   usePageTitle(t('guide.title'));
   return (
     <div className="page">
@@ -38,18 +40,22 @@ export function GuideIndex() {
 
 /** « Logement : plus de lumière… » : le terme avant les deux-points ressort en gras. */
 function Term({ text }: { text: string }) {
-  const match = /^([^:]{2,40}?)[\u00a0\u202f ]:\s(.+)$/.exec(text);
+  const { i18n } = useTranslation();
+  // Espace fine insécable avant les deux-points en français seulement.
+  const colon = i18n.language === 'fr' ? '\u202f:' : ':';
+  const match = /^([^:]{2,40}?)[\u00a0\u202f ]?:\s(.+)$/.exec(text);
   if (!match) return <>{text}</>;
   return (
     <>
-      <strong>{match[1]}</strong>&#8239;: {match[2]}
+      <strong>{match[1]}</strong>
+      {colon} {match[2]}
     </>
   );
 }
 
 /** « Jour 1. Un lundi… » devient une étape d'histoire avec son repère. */
 function Paragraph({ text }: { text: string }) {
-  const day = /^(Jour \d+)\.\s(.+)$/.exec(text);
+  const day = /^(\p{L}+ \d+)\.\s(.+)$/u.exec(text);
   if (!day) return <p>{text}</p>;
   return (
     <p className="story">
@@ -101,6 +107,7 @@ function sections(blocks: GuideBlock[]): GuideBlock[][] {
 
 export function GuideArticle() {
   const { t } = useTranslation();
+  const { guide: GUIDE } = useContent();
   const { slug } = useParams();
   const page = GUIDE.find((p) => p.slug === slug);
   usePageTitle(page?.title ?? t('guide.title'));

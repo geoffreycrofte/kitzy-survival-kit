@@ -31,6 +31,7 @@ export const fr = {
     menu: 'Menu',
     achievements: 'Succès',
     tasks: 'Mes gestes',
+    activities: 'Activités',
   },
   menu: {
     title: 'Menu',
@@ -42,6 +43,7 @@ export const fr = {
     achievementsHint: '{{done}} sur {{total}} débloqués',
     guideHint: 'Le guide officiel, en plus simple',
     tasksHint: 'Ce qui ne s’achète pas',
+    activitiesHint: 'Rituels, recettes, défi, simulation, quiz',
     settingsHint: 'Rappels, sauvegarde, niveau du kit',
     about: 'Transparence et confidentialité',
   },
@@ -60,6 +62,7 @@ export const fr = {
     pack_other: 'paquets',
     set_one: 'lot',
     set_other: 'lots',
+    progress: '{{have}} sur {{target}}',
   },
   essentials: {
     water: 'Eau',
@@ -194,6 +197,7 @@ export const fr = {
     batterySoon: 'Recharge bientôt',
   },
   item: {
+    warning: 'Attention.',
     official: 'Liste officielle',
     recommended: 'Conseillé',
     optional: 'Confort',
@@ -351,8 +355,12 @@ export const fr = {
     paypal: 'Faire un don avec PayPal',
     revolut: 'Faire un don avec Revolut',
     language: 'Langue',
-    languageSoon:
-      'Kitzy parle français pour l’instant. L’anglais, le luxembourgeois, l’allemand et le portugais arrivent.',
+    languageHelp: 'Par défaut, Kitzy suit la langue de ton appareil.',
+    languageAuto: 'Comme mon appareil',
+    languageReview:
+      'Les traductions sont toutes neuves. Une tournure bizarre ? Dis-le-moi, je corrige.',
+    requestLanguage: 'Demander une langue',
+    requestLanguageHelp: 'Ta langue n’est pas là ? Écris-moi sur LinkedIn.',
     about: 'À propos',
     transparency: 'Liens d’achat et transparence',
     privacy: 'Confidentialité',
@@ -566,6 +574,7 @@ export const fr = {
       reserves: 'Réserves',
       plan: 'Mon plan',
       gestes: 'Mes gestes',
+      activites: 'Activités',
     },
     unlocked: 'Débloqué le {{date}}',
     locked: 'À débloquer',
@@ -594,7 +603,230 @@ export const fr = {
       'plan-au-point': { title: 'Plan au point', hint: 'Terminer les cinq étapes du plan.' },
       'premier-geste': { title: 'Premier geste', hint: 'Cocher un premier geste de préparation.' },
       'bons-reflexes': { title: 'Bons réflexes', hint: 'Faire tous les gestes de préparation.' },
+      'premier-lundi': {
+        title: 'Rendez-vous de midi',
+        hint: 'Faire un mini-check du premier lundi.',
+      },
+      'grand-check-up': { title: 'Grand ménage de saison', hint: 'Faire un grand check-up.' },
+      'soiree-conserves': {
+        title: 'Soirée conserves',
+        hint: 'Cuisiner une recette de la réserve.',
+      },
+      'soiree-lanterne': {
+        title: 'Soirée à la lanterne',
+        hint: 'Relever le défi sans électricité.',
+      },
+      'trois-jours': {
+        title: 'Trois jours plus tard',
+        hint: 'Aller au bout de la simulation 72 h.',
+      },
+      'sans-faute': { title: 'Sans faute', hint: 'Réussir le quiz sans une erreur.' },
     },
+    tierTitle: 'Ton palier',
+    tierLabel: 'Palier {{current}} sur {{total}} : {{name}}',
+    tiers: {
+      debut: { name: 'Débutant', hint: 'Tout commence par une luciole.' },
+      'en-route': { name: 'En route', hint: 'Au moins une luciole brille.' },
+      'week-end': { name: 'Prêt pour un week-end', hint: 'Quatre lucioles allumées.' },
+      pret: { name: 'Prêt pour 72 h', hint: 'Les six lucioles brillent.' },
+      voisin: {
+        name: 'Voisin ressource',
+        hint: 'Prêt pour 72 h, avec ton quartier noté dans le plan et tous les gestes « avec mes proches ».',
+      },
+    },
+    tierCurrent: 'Tu es ici',
+    tierReached: 'Atteint',
+    tierNext: 'À venir',
+  },
+  activities: {
+    title: 'Activités',
+    intro:
+      'Des petits moments pour garder le kit vivant : un rituel par mois, un par saison, et de quoi s’entraîner en famille.',
+    rituals: 'Les rituels',
+    together: 'En famille',
+    learn: 'S’entraîner',
+    lastDone: 'Fait le {{date}}',
+    never: 'Pas encore fait',
+    due: 'C’est le moment',
+    homeLabel: 'Un moment pour le terrier',
+    homeMiniCheck: 'Les sirènes ont sonné ce lundi : 2 minutes pour le mini-check du mois ?',
+    homeCheckUp: 'L’heure a changé : c’est le moment du grand check-up de saison.',
+    homeRecipes_one:
+      '{{count}} article de ta réserve approche de sa date. Et si tu en faisais le repas de ce soir ?',
+    homeRecipes_other:
+      '{{count}} articles de ta réserve approchent de leur date. Et si tu en faisais le repas de ce soir ?',
+    homeMiniCheckCta: 'Faire le mini-check',
+    homeCheckUpCta: 'Faire le check-up',
+    homeRecipesCta: 'Voir les recettes',
+    items: {
+      'mini-check': {
+        title: 'Rendez-vous du premier lundi',
+        summary: 'Le jour du test des sirènes : 2 minutes, 3 questions.',
+      },
+      'check-up': {
+        title: 'Grand check-up',
+        summary:
+          'Deux fois par an, aux changements d’heure : dates, batteries, vêtements de saison.',
+      },
+      recettes: {
+        title: 'Soirée conserves',
+        summary: 'Des recettes simples avec ta réserve, pour faire tourner les dates.',
+      },
+      defi: {
+        title: 'Défi soirée sans électricité',
+        summary: 'Une soirée avec le kit seulement. Ce qui manque part dans la liste de courses.',
+      },
+      simulation: {
+        title: 'Simulation 72 h',
+        summary: 'Trois jours sans courant, étape par étape, avec ce que ton foyer a déjà.',
+      },
+      quiz: {
+        title: 'Quiz des bons réflexes',
+        summary: 'Sirènes, alertes, rumeurs : 10 questions, sans chronomètre.',
+      },
+    },
+    yes: 'Oui',
+    notYet: 'Pas encore',
+    finished: 'C’est noté. Merci pour ce moment au terrier !',
+    toDo: 'À faire ensuite',
+  },
+  miniCheck: {
+    intro:
+      'Chaque premier lundi du mois, à midi, les sirènes sonnent pour leur test. C’est le bon moment pour vérifier trois choses.',
+    questions: {
+      light: 'La lampe et la radio s’allument ?',
+      charge: 'Les batteries sont chargées (batterie externe, lampe ou radio rechargeable) ?',
+      stock: 'Rien n’a été pris dans la réserve ce mois-ci ?',
+    },
+    chargeHelp: 'Si tu réponds oui, Kitzy note la recharge d’aujourd’hui.',
+    fixes: {
+      light: 'Change les piles ou remplace la lampe ou la radio.',
+      charge: 'Recharge-les ce soir, puis note-le sur la page de l’article.',
+      stock: 'Mets tes kits à jour : ce qui a été pris doit être remplacé.',
+    },
+    submit: 'C’est fait pour ce mois',
+    saved: 'Mini-check du mois noté.',
+  },
+  checkUp: {
+    intro:
+      'Deux fois par an, quand on change l’heure, on fait le tour du kit. Coche au fur et à mesure : rien n’est obligatoire.',
+    dates: 'Les dates des six prochains mois',
+    datesEmpty: 'Rien ne périme d’ici le prochain check-up. Bravo !',
+    batteries: 'Les batteries',
+    batteriesHelp: 'Recharge tout ce qui se recharge, puis note-le.',
+    chargeAll: 'Tout est rechargé',
+    charged: 'Recharge notée pour tous les appareils.',
+    checklist: 'Le tour du kit',
+    list: {
+      household: 'Le foyer n’a pas changé (nouvelle personne, animal, régime)',
+      clothes: 'Les vêtements des sacs sont de saison et à la bonne taille',
+      smoke: 'Le détecteur de fumée sonne quand on appuie sur « test »',
+      documents: 'Les copies des documents sont à jour',
+      plan: 'Le plan d’urgence est toujours juste',
+      meds: 'Les médicaments et ordonnances sont à jour',
+    },
+    submit: 'Terminer le check-up',
+    saved: 'Grand check-up noté. À la prochaine saison !',
+  },
+  recipes: {
+    title: 'Soirée conserves',
+    intro:
+      'Faire tourner sa réserve, c’est aussi se faire un bon repas. Ces recettes demandent peu d’eau et peu de vaisselle.',
+    soon: 'À cuisiner bientôt',
+    soonText: 'Ces articles approchent de leur date :',
+    soonDate: '{{name}}, {{date}}',
+    forSoon: 'Les recettes qui les utilisent',
+    all: 'Toutes les recettes',
+    minutes: '{{count}} min',
+    none: 'Sans cuisson',
+    stove: 'Au réchaud',
+    water: '{{quantity}} d’eau',
+    noWater: 'Sans eau',
+    serves: 'Pour {{count}} personnes',
+    ingredients: 'Ingrédients',
+    steps: 'Étapes',
+    inStock: 'dans ta réserve',
+    safety:
+      'Utilise le réchaud dans une pièce bien aérée. Jamais de barbecue ni de brasero à l’intérieur : ils produisent du monoxyde de carbone.',
+    cooked: 'On l’a cuisinée !',
+    cookedDone: 'Bon appétit ! Pense à noter ce que tu as utilisé :',
+    cookedSaved: 'Soirée conserves notée.',
+    back: 'Toutes les recettes',
+  },
+  challenge: {
+    title: 'Défi soirée sans électricité',
+    intro:
+      'Un soir, on éteint les lumières et les écrans, et on vit avec le kit. C’est le meilleur moyen de voir ce qui manque, en s’amusant.',
+    safety:
+      'Laisse le frigo, le congélateur et le chauffage branchés : on ne touche pas au disjoncteur. Pas de bougie sans surveillance.',
+    missions: 'Les missions',
+    list: {
+      light: 'S’éclairer seulement avec les lampes du kit',
+      meal: 'Préparer un repas avec la réserve (une recette de soirée conserves ?)',
+      radio: 'Écouter les infos à la radio à piles ou à manivelle',
+      phone:
+        'Mettre les téléphones en économie d’énergie et les recharger avec la batterie externe',
+      water: 'Ne boire et ne cuisiner qu’avec l’eau de la réserve',
+      find: 'Retrouver à la lampe le robinet d’eau et le disjoncteur',
+      game: 'Jouer à un jeu de société ou raconter une histoire',
+    },
+    missing: 'Qu’est-ce qui nous a manqué ?',
+    missingHelp: 'Une chose par ligne. Elles iront dans ta liste de courses.',
+    submit: 'Terminer le défi',
+    saved_one: 'Défi terminé ! {{count}} article ajouté à ta liste de courses.',
+    saved_other: 'Défi terminé ! {{count}} articles ajoutés à ta liste de courses.',
+    savedNone: 'Défi terminé ! Rien n’a manqué : bravo.',
+    toShopping: 'Voir ma liste de courses',
+  },
+  simulation: {
+    title: 'Simulation 72 h',
+    intro:
+      'Le scénario du guide officiel, pas à pas : trois jours sans courant. À chaque étape, un choix, et ce que ton foyer a déjà pour y faire face.',
+    start: 'Commencer',
+    step: 'Étape {{current}} sur {{total}}',
+    validate: 'Valider mon choix',
+    choose: 'Choisis une réponse.',
+    good: 'Bon réflexe.',
+    bad: 'Pas tout à fait.',
+    yourHome: 'Et chez toi ?',
+    ready: 'Prêt',
+    missing: 'À prévoir',
+    nothingToCheck: 'Ici, tout se joue dans les réflexes.',
+    next: 'Étape suivante',
+    toReport: 'Voir le bilan',
+    report: 'Le courant revient',
+    reportIntro:
+      'La radio annonce le retour du courant, zone par zone. De retour chez toi, tu fais le point.',
+    score: '{{good}} bons réflexes sur {{total}}',
+    had: 'Ce que ton foyer avait',
+    lacked: 'Ce qui t’aurait manqué',
+    lackedNone: 'Rien ne t’aurait manqué. Ton terrier est prêt !',
+    addMissing: 'Ajouter les objets manquants à ma liste de courses',
+    added: 'Ajouté à ta liste de courses.',
+    restart: 'Recommencer',
+  },
+  quizMarks: {
+    correct: '(bonne réponse)',
+    chosen: '(ta réponse)',
+  },
+  quiz: {
+    title: 'Quiz des bons réflexes',
+    intro:
+      'Dix questions sur les sirènes, les alertes et les bons gestes. Prends ton temps : il n’y a pas de chronomètre.',
+    start: 'Commencer',
+    question: 'Question {{current}} sur {{total}}',
+    validate: 'Valider',
+    choose: 'Choisis une réponse.',
+    good: 'Bonne réponse !',
+    bad: 'Pas tout à fait. La bonne réponse : {{answer}}',
+    readMore: 'En savoir plus dans le guide',
+    next: 'Question suivante',
+    finish: 'Voir mon score',
+    result: 'Ton score',
+    score: '{{score}} sur {{total}}',
+    perfect: 'Sans faute ! Tu connais les bons réflexes.',
+    well: 'Bien joué. Relis le guide pour les questions manquées.',
+    restart: 'Recommencer le quiz',
   },
   tasks: {
     title: 'Mes gestes',
@@ -785,6 +1017,60 @@ export const fr = {
   notFound: {
     body: 'Cette page n’existe pas, ou plus. Le terrier, lui, est toujours là.',
   },
+  system: {
+    notify: {
+      overdue: 'en retard',
+      today: 'aujourd’hui',
+      tomorrow: 'demain',
+      inDays: 'dans {{days}} jours',
+      dlc: '{{title}} : date limite {{when}}',
+      ddm: '{{title}} : à consommer de préférence, {{when}}',
+      battery: 'Recharger « {{title}} », {{when}}',
+      monthly: 'Mini-check du mois, pendant le test des sirènes',
+      reviewToday: 'Grand check-up du kit aujourd’hui',
+      review: 'Grand check-up du kit {{when}}',
+      plan: 'Relire et mettre à jour ton plan d’urgence',
+      manyTitle: 'Kitzy : {{count}} rappels pour ton kit',
+      more: 'et {{count}} de plus',
+    },
+    ics: {
+      dlcSummary: 'Kitzy : {{title}}{{quantity}}, date limite de consommation',
+      dlcDescription:
+        'Date limite de consommation. À consommer avant, puis à remplacer dans ta réserve.',
+      ddmSummary: 'Kitzy : {{title}}{{quantity}}, à consommer de préférence avant ce jour',
+      ddmDescription:
+        'Date de durabilité minimale. Mange-le bientôt et rachète-en pour ta réserve.',
+      batterySummary: 'Kitzy : recharger {{title}}',
+      batteryDescription:
+        'Recharge ou teste cet appareil pour qu’il soit prêt le jour où tu en as besoin.',
+      monthlySummary: 'Kitzy : mini-check du mois',
+      monthlyDescription: 'Deux minutes pour vérifier ta réserve, pendant le test des sirènes.',
+      reviewSummary: 'Kitzy : grand check-up du kit',
+      reviewDescription:
+        'Contrôle les dates, recharge les appareils et remplace les piles des détecteurs.',
+      planSummary: 'Kitzy : relire mon plan d’urgence',
+      planDescription:
+        'Numéros, points de rendez-vous, personnes à aider : vérifie que tout est encore juste, puis réimprime-le.',
+    },
+    errors: {
+      backup: {
+        unreadable: 'Ce fichier n’est pas une sauvegarde Kitzy lisible.',
+        notKitzy:
+          'Ce fichier ne ressemble pas à une sauvegarde Kitzy, ou vient d’une version plus récente.',
+      },
+      share: {
+        notKitzy: 'Ce lien de partage n’est pas un lien Kitzy.',
+        incomplete: 'Le contenu de ce lien est incomplet.',
+        damaged: 'Ce lien de partage est abîmé : il a peut-être été coupé en route.',
+      },
+    },
+    kits: {
+      home: 'Réserve maison',
+      bag: 'Sac {{n}}',
+    },
+  },
 } as const;
 
-export type Messages = typeof fr;
+/** Même structure que le français, avec des textes libres : chaque langue a les mêmes clés. */
+type Widen<T> = { readonly [K in keyof T]: T[K] extends string ? string : Widen<T[K]> };
+export type Messages = Widen<typeof fr>;

@@ -20,7 +20,7 @@ export function SharedList() {
       {!result.ok ? (
         <div className="card">
           <p>
-            <strong>{t('sharePage.error')}</strong> {result.error}
+            <strong>{t('sharePage.error')}</strong> {t(`system.errors.share.${result.code}`)}
           </p>
         </div>
       ) : (

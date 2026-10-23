@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import { TASK_GROUPS, TASKS, tasksProgress, type TaskTemplate } from '@kitzy/core';
+import { TASK_GROUPS, tasksProgress, type TaskTemplate } from '@kitzy/core';
+import { useContent } from '../lib/content';
 import { ArrowIcon, BookIcon, ExternalIcon } from '../components/Icons';
 import { Meter } from '../components/Meter';
 import { useKitzy } from '../data/derived';
@@ -15,6 +16,7 @@ import { Loading } from '../components/Loading';
 export function Tasks() {
   const { t } = useTranslation();
   usePageTitle(t('tasks.title'));
+  const { tasks: TASKS } = useContent();
   const data = useKitzy();
   if (!data) return <Loading />;
   const progress = tasksProgress(data.tasks);

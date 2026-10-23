@@ -55,6 +55,13 @@ export interface Tracking {
 }
 
 /** Texte localisé. Le français est la langue source, les autres langues viendront. */
+import type { Locale } from './i18n/locales';
+
+/** Le texte dans la langue demandée, sinon en français. */
+export function tx(text: LocalizedText, locale: Locale = 'fr'): string {
+  return text[locale] ?? text.fr;
+}
+
 export interface LocalizedText {
   fr: string;
   en?: string;

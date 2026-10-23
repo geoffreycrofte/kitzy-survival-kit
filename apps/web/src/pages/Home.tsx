@@ -5,6 +5,7 @@ import type { TFunction } from 'i18next';
 import {
   ACHIEVEMENTS,
   ESSENTIALS,
+  dueRitual,
   emptyEssentials,
   isOverdue,
   litCount,
@@ -17,7 +18,7 @@ import { CheckListIcon, PlanIcon, TagIcon, TrophyIcon } from '../components/Icon
 import { Lantern } from '../components/Lantern';
 import { Meter } from '../components/Meter';
 import { Loading } from '../components/Loading';
-import { useKitzy } from '../data/derived';
+import { COUNTRY, useKitzy, type Kitzy } from '../data/derived';
 import { HOME_KIT_ID } from '../data/store';
 import { formatDay, formatQuantity } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
@@ -121,6 +122,8 @@ export function Home() {
         </section>
       )}
 
+      {data?.household && <MomentCard data={data} />}
+
       {data?.household && (
         <Dashboard
           dashboard={data.dashboard}
@@ -146,6 +149,39 @@ export function Home() {
         </Link>
       )}
     </div>
+  );
+}
+
+const ROUTES_BY_KIND = {
+  'plan-review': '/plan',
+  'monthly-check': '/mini-check',
+  review: '/check-up',
+} as const;
+
+/**
+ * Un moment pour le terrier : le rituel du moment (check-up de saison, mini-check du mois),
+ * sinon une soirée conserves quand des aliments approchent de leur date.
+ */
+function MomentCard({ data }: { data: Kitzy }) {
+  const { t } = useTranslation();
+  const ritual = dueRitual(data.today, data.activities, COUNTRY);
+  const rotate = data.rotate.length;
+  if (!ritual && rotate === 0) return null;
+  const [text, cta, to] = ritual
+    ? ritual.id === 'check-up'
+      ? [t('activities.homeCheckUp'), t('activities.homeCheckUpCta'), '/check-up']
+      : [t('activities.homeMiniCheck'), t('activities.homeMiniCheckCta'), '/mini-check']
+    : [t('activities.homeRecipes', { count: rotate }), t('activities.homeRecipesCta'), '/recettes'];
+  return (
+    <section className="card card--moment" aria-labelledby="home-moment">
+      <h2 id="home-moment" className="card__label">
+        {t('activities.homeLabel')}
+      </h2>
+      <p className="card__text">{text}</p>
+      <Link to={to} className="button button--ghost">
+        {cta}
+      </Link>
+    </section>
   );
 }
 
@@ -234,8 +270,8 @@ function Upcoming({ reminders, today }: { reminders: Reminder[]; today: string }
               {formatDay(r.date, today)}
               {overdue && <span className="timeline__overdue">, {t('home.overdue')}</span>}
             </span>
-            {r.kind === 'plan-review' ? (
-              <Link className="timeline__title" to="/plan">
+            {r.kind === 'plan-review' || r.kind === 'monthly-check' || r.kind === 'review' ? (
+              <Link className="timeline__title" to={ROUTES_BY_KIND[r.kind]}>
                 {title}
               </Link>
             ) : r.itemId && r.kitId ? (
