@@ -9,7 +9,7 @@
 | Sujet | Décision |
 |---|---|
 | Nom | **Kitzy**, avec un **hérisson** pour mascotte (Igel et Prett étaient pris). Dépôt de marque EUIPO et noms sur les stores à vérifier. |
-| Hébergement | **GitHub Pages**, 100 % statique, domaine **kitzy.lu** pressenti |
+| Hébergement | **GitHub Pages**, 100 % statique, sur **kitzy.lu** (DNS chez OVH) ; le VPS OVH servira seulement au service Web Push |
 | Serveur | **Aucun pour l'instant**. Le VPS personnel est disponible plus tard pour le Web Push (§ 6.4) |
 | Langues | **FR, EN, LB (luxembourgeois), DE, PT** (§ 12.1) |
 | Stack | **Validé** : **React** pour la PWA + **React Native (Expo)** pour les stores, avec un **cœur TypeScript partagé** (§ 5) |
@@ -492,7 +492,7 @@ Ordre de travail : **la PWA d'abord** (GitHub Pages, phases 0 à 4), l'app Expo 
 - Routes pré-générées ou repli `404.html` qui recharge l'app (pas de réécriture serveur).
 - Fichier `.nojekyll` ; déploiement par l'action officielle `actions/deploy-pages`.
 - Pas d'en-têtes HTTP personnalisés : la CSP passe par une balise `<meta http-equiv>`.
-- **Domaine personnalisé** : **kitzy.lu** pressenti (à réserver). Il doit être branché **avant** la mise en production publique : IndexedDB est liée à l'origine, et changer de domaine ensuite ferait perdre leurs données aux utilisateurs. Avec le domaine, `base` passe à `/` et un fichier `CNAME` est ajouté au déploiement.
+- **Domaine personnalisé** : **kitzy.lu**, réservé chez OVH et branché sur GitHub Pages (enregistrements A/AAAA vers GitHub, `www` en CNAME, domaine vérifié sur le compte GitHub, variables `KITZY_DOMAIN=kitzy.lu` et `KITZY_BASE=/`). Il doit être branché **avant** la mise en production publique : IndexedDB est liée à l'origine, et changer de domaine ensuite ferait perdre leurs données aux utilisateurs. Avec le domaine, `base` passe à `/` et un fichier `CNAME` est ajouté au déploiement.
 
 ### 5.3 Structure du dépôt
 
@@ -964,7 +964,8 @@ Préparé dès le départ :
 
 - [x] Valider le plan (v0.3) et le nom **Kitzy**
 - [x] Piste graphique : **La Veillée** (sombre + clair, mouvement)
-- [ ] Choisir le **domaine** (kitzy.lu pressenti) ; vérifier la marque « Kitzy » (EUIPO, stores)
+- [x] **Domaine** kitzy.lu réservé et branché sur GitHub Pages
+- [ ] Vérifier la marque « Kitzy » (EUIPO, stores)
 - [x] Monorepo pnpm : `packages/core` (TS, Vitest) et `apps/web` (React 19, Vite 8, vite-plugin-pwa, React Router, i18next, Playwright), ESLint avec jsx-a11y, Prettier
 - [x] Jetons de couleur des deux thèmes dans `core`, avec **test automatique des contrastes** (4,5:1 minimum)
 - [x] Préférences : thème (système, sombre, clair) et animations d'ambiance (système, activées, désactivées)
@@ -1083,7 +1084,7 @@ Hébergement (GitHub Pages) · Serveur (aucun, VPS plus tard) · Langues (FR, EN
 
 ### Encore ouvertes
 
-1. **Domaine** : réserver **kitzy.lu** (et éventuellement kitzy.eu en redirection) avant le lancement public.
+1. **Domaine** : ~~réserver **kitzy.lu**~~ fait ; éventuellement kitzy.eu en redirection.
 2. **Marque** : vérifier « Kitzy » sur EUIPO (classe 9, logiciels) et sur les stores.
 3. **Poses du hérisson** : à générer d'après [`docs/mascotte-poses.md`](docs/mascotte-poses.md), puis à détourer.
 
