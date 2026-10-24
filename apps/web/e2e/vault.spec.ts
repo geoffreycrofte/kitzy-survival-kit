@@ -137,9 +137,9 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
 
     await expect(data.getByLabel('Protéger la sauvegarde par un code')).toBeChecked();
     await data.getByRole('button', { name: 'Préparer la sauvegarde' }).click();
-    await expect(data.getByText('Le code doit faire au moins 6 caractères.')).toBeVisible();
-    await data.getByLabel('Code de la sauvegarde').fill('482913');
-    await data.getByLabel('Confirme le code').fill('482913');
+    await expect(data.getByText('Le code doit faire au moins 8 caractères.')).toBeVisible();
+    await data.getByLabel('Code de la sauvegarde').fill('48291375');
+    await data.getByLabel('Confirme le code').fill('48291375');
     await data.getByRole('button', { name: 'Préparer la sauvegarde' }).click();
     await expect(data.getByText('Elle est protégée par ton code.')).toBeVisible();
     const download = page.waitForEvent('download');
@@ -163,11 +163,11 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
       buffer: Buffer.from(text),
     });
     await expect(fresh.getByText('Cette sauvegarde est protégée par un code.')).toBeVisible();
-    await fresh.getByLabel('Code de la sauvegarde à ouvrir').fill('000000');
+    await fresh.getByLabel('Code de la sauvegarde à ouvrir').fill('00000000');
     await fresh.getByRole('button', { name: 'Ouvrir la sauvegarde' }).click();
     await expect(fresh.getByText('Ce code n’ouvre pas cette sauvegarde.')).toBeVisible();
     fresh.on('dialog', (dialog) => void dialog.accept());
-    await fresh.getByLabel('Code de la sauvegarde à ouvrir').fill('482913');
+    await fresh.getByLabel('Code de la sauvegarde à ouvrir').fill('48291375');
     await fresh.getByRole('button', { name: 'Ouvrir la sauvegarde' }).click();
     await expect(
       fresh.getByRole('status').filter({ hasText: 'Sauvegarde restaurée.' }),

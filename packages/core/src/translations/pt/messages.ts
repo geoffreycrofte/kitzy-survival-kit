@@ -1027,9 +1027,9 @@ export const messages: Messages = {
     onState: 'O teu plano está encriptado neste aparelho.',
     code: 'Código Kitzy',
     codeHint:
-      'Pelo menos 6 caracteres; quanto mais longo, mais seguro. Anota-o num sítio seguro: sem ele, e sem a tua impressão digital, o plano deixa de poder ser aberto.',
+      'Pelo menos 8 caracteres; quanto mais longo, mais seguro. Anota-o num sítio seguro: sem ele, e sem a tua impressão digital, o plano deixa de poder ser aberto.',
     codeConfirm: 'Confirma o código',
-    codeTooShort: 'O código tem de ter pelo menos 6 caracteres.',
+    codeTooShort: 'O código tem de ter pelo menos 8 caracteres.',
     codeMismatch: 'Os dois códigos não são iguais.',
     enable: 'Proteger o meu plano',
     enabled: 'Plano protegido.',
@@ -1066,7 +1066,7 @@ export const messages: Messages = {
     plainHelp:
       'Sem código, qualquer pessoa que encontre o ficheiro pode ler o teu plano de emergência.',
     code: 'Código da cópia',
-    codeHint: 'Pelo menos 6 caracteres. Pode ser diferente do teu código Kitzy.',
+    codeHint: 'Pelo menos 8 caracteres. Pode ser diferente do teu código Kitzy.',
     prepare: 'Preparar a cópia de segurança',
     ready: 'Cópia pronta.',
     readyProtected: 'Está protegida pelo teu código.',

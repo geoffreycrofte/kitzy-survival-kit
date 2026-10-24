@@ -673,7 +673,7 @@ Une sauvegarde importée ou un lien de partage peuvent venir de n'importe qui : 
 
 - **Ce qui est chiffré** : le plan d'urgence seulement (choix validé). Le stock et les dates restent lisibles : l'app s'ouvre sans déverrouillage, et les rappels en arrière-plan continuent de fonctionner. Un résumé sans donnée personnelle (`planInfo` : avancement des étapes, point de rendez-vous noté ou non, dates) reste en clair pour l'accueil, les succès et la revue annuelle.
 - **Clés** : une clé de données aléatoire (AES-GCM 256) chiffre le plan. Elle est elle-même chiffrée une fois par moyen d'ouverture :
-  - le **code Kitzy**, obligatoire (6 caractères minimum, PBKDF2-SHA-256, 600 000 itérations), qui sert aussi de secours ;
+  - le **code Kitzy**, obligatoire (8 caractères minimum, PBKDF2-SHA-256, 600 000 itérations), qui sert aussi de secours ;
   - en option, la **clé d'accès de l'appareil** (WebAuthn, extension PRF) : empreinte, visage ou code du téléphone. Aucun serveur : l'authentificateur ne livre son secret qu'après vérification de la personne, et ce secret (HKDF-SHA-256) ouvre la clé de données.
 - **Session** : la clé ouverte reste en mémoire seulement ; elle disparaît à la fermeture de l'app et après 5 minutes en arrière-plan, ou avec « Verrouiller maintenant ». Les pages du plan (étapes, impression) demandent l'ouverture ; l'aperçu du plan reste visible.
 - **Support PRF** : Chrome et Edge (Android, ordinateurs avec clés d'accès), Safari 18 et plus (iOS, macOS, trousseau iCloud). Ailleurs, seul le code Kitzy est proposé.

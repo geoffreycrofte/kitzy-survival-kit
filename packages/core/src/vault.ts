@@ -45,8 +45,8 @@ export function randomBytes(length: number): Uint8Array {
 
 /* ---------- Clés ---------- */
 
-/** Un code trop court se devine en quelques heures si le fichier est volé : 6 caractères minimum. */
-export const CODE_MIN_LENGTH = 6;
+/** Un code trop court se devine en quelques heures si le fichier est volé : 8 caractères minimum. */
+export const CODE_MIN_LENGTH = 8;
 /** Recommandation OWASP pour PBKDF2-SHA-256. */
 const ITERATIONS = 600_000;
 /** Bornes acceptées à la lecture : un fichier piégé ne doit pas bloquer le téléphone des heures. */
