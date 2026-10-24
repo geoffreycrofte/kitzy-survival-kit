@@ -218,7 +218,7 @@ export const GUIDE: readonly GuidePage[] = [
     title: 'LU-Alert, l’alerte officielle',
     summary: 'Comment les autorités t’alertent et ce que veulent dire les niveaux de vigilance.',
     chapter: 'alerte',
-    pose: 'bonjour',
+    pose: 'radio',
     blocks: [
       {
         type: 'p',
@@ -350,7 +350,7 @@ export const GUIDE: readonly GuidePage[] = [
     title: 'Bien s’informer',
     summary: 'Trouver les bonnes sources et éviter de partager de fausses informations.',
     chapter: 'alerte',
-    pose: 'lecture',
+    pose: 'radio',
     blocks: [
       {
         type: 'p',
@@ -463,7 +463,7 @@ export const GUIDE: readonly GuidePage[] = [
     title: 'Ton kit et ton plan',
     summary: 'Se préparer en trois étapes : le kit, le plan d’urgence et en parler autour de soi.',
     chapter: 'preparer',
-    pose: 'provisions',
+    pose: 'plan',
     blocks: [
       {
         type: 'p',

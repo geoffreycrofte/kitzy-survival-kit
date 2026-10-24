@@ -23,7 +23,7 @@ export interface GuidePage {
   /** Chapitre, pour regrouper les pages. */
   chapter: 'comprendre' | 'alerte' | 'preparer';
   /** Pose du hérisson illustrant la page. */
-  pose?: 'bonjour' | 'endormi' | 'lanterne' | 'provisions' | 'fete' | 'lecture';
+  pose?: 'bonjour' | 'endormi' | 'lanterne' | 'provisions' | 'fete' | 'lecture' | 'radio' | 'plan';
   blocks: GuideBlock[];
   links?: GuideLink[];
 }

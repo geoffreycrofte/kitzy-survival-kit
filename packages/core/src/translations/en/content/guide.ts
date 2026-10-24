@@ -216,7 +216,7 @@ export const guide: ContentTranslation['guide'] = [
     title: 'LU-Alert, the official alert',
     summary: 'How the authorities alert you and what the alert levels mean.',
     chapter: 'alerte',
-    pose: 'bonjour',
+    pose: 'radio',
     blocks: [
       {
         type: 'p',
@@ -348,7 +348,7 @@ export const guide: ContentTranslation['guide'] = [
     title: 'Staying well informed',
     summary: 'Find the right sources and avoid sharing false information.',
     chapter: 'alerte',
-    pose: 'lecture',
+    pose: 'radio',
     blocks: [
       {
         type: 'p',
@@ -461,7 +461,7 @@ export const guide: ContentTranslation['guide'] = [
     title: 'Your kit and your plan',
     summary: 'Get prepared in three steps: your kit, your emergency plan, and talking about it.',
     chapter: 'preparer',
-    pose: 'provisions',
+    pose: 'plan',
     blocks: [
       {
         type: 'p',

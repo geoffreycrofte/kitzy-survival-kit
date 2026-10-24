@@ -55,11 +55,14 @@ export function Home() {
   const count = litCount(essentials);
   const remaining = ESSENTIALS.length - count;
   const allLit = remaining === 0;
+  // Kitzy montre ce qui manque en premier : l'eau, ou le plan.
+  const next = data?.household ? data.next?.essential : undefined;
+  const pose = allLit ? 'fete' : next === 'water' ? 'eau' : next === 'plan' ? 'plan' : 'bonjour';
 
   return (
     <div className={`page home${intro === 'play' ? ' home--intro-play' : ''}`}>
       <section className="home__hero" aria-labelledby="home-title">
-        <Lantern essentials={essentials} pose={allLit ? 'fete' : 'bonjour'} intro={intro} />
+        <Lantern essentials={essentials} pose={pose} intro={intro} />
         <h1 id="home-title" tabIndex={-1}>
           <span className="home__hello">{t('home.hello')}</span>{' '}
           {t(`home.stage.${stageFor(count)}`)}

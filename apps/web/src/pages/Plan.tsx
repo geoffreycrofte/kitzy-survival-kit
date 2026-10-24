@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import {
   HOME_SPOTS,
   PLAN_STEPS,
-  PROVIDERS,
   emptyNeighbor,
   emptyPerson,
   emptyPet,
@@ -18,12 +17,14 @@ import {
   type PlanNeighbor,
   type PlanPlace,
   type PlanStep,
+  type ProviderKind,
 } from '@kitzy/core';
 import { TextField } from '../components/TextField';
 import { useKitzy } from '../data/derived';
 import { deletePlan, savePlanStep } from '../data/store';
 import { announce } from '../lib/announce';
 import { formatDate } from '../lib/format';
+import { mascotImage } from '../lib/assets';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
 import { Loading } from '../components/Loading';
@@ -50,8 +51,13 @@ export function PlanOverview() {
 
   return (
     <div className="page">
-      <h1 tabIndex={-1}>{t('plan.title')}</h1>
-      <p className="lead">{t('plan.intro')}</p>
+      <header className="page-head">
+        <div className="page-head__text">
+          <h1 tabIndex={-1}>{t('plan.title')}</h1>
+          <p className="lead">{t('plan.intro')}</p>
+        </div>
+        <img className="page-head__hog" {...mascotImage('plan')} alt="" />
+      </header>
 
       <ol className="plan-steps">
         {PLAN_STEPS.map((step, i) => (
@@ -763,52 +769,48 @@ function StepEmergency({ plan, edit }: StepProps) {
   );
 }
 
+/** Les contacts utiles, rangés par thème plutôt qu'en une longue liste. */
+const PROVIDER_GROUPS = [
+  { id: 'home', kinds: ['telecom', 'electricity', 'gas', 'water', 'insurance'] },
+  { id: 'health', kinds: ['doctor', 'specialist'] },
+  { id: 'daily', kinds: ['school', 'work', 'bank'] },
+] as const satisfies ReadonlyArray<{ id: string; kinds: readonly ProviderKind[] }>;
+
 function StepNumbers({ plan, edit }: StepProps) {
   const { t } = useTranslation();
   return (
     <>
-      <section className="card" aria-labelledby="numbers-emergency">
+      <section className="card sos" aria-labelledby="numbers-emergency">
         <h2 id="numbers-emergency" className="form__legend">
           {t('plan.numbers.emergencyLegend')}
         </h2>
-        <ul className="plain-list">
-          <li>{t('plan.numbers.n112')}</li>
-          <li>{t('plan.numbers.n113')}</li>
+        <ul className="sos__list">
+          <li className="sos__item">
+            <span className="sos__number">112</span>
+            <span className="sos__service">{t('plan.numbers.fire')}</span>
+          </li>
+          <li className="sos__item">
+            <span className="sos__number">113</span>
+            <span className="sos__service">{t('plan.numbers.police')}</span>
+          </li>
         </ul>
-        <p className="note">{t('plan.numbers.warning')}</p>
+        <p className="sos__warning">{t('plan.numbers.warning')}</p>
       </section>
+
       <h2 className="section-title">{t('plan.numbers.providersLegend')}</h2>
-      {PROVIDERS.map((kind) => {
-        const value = plan.providers[kind];
-        const set = (field: 'name' | 'customerNo' | 'phone') => (v: string) =>
-          edit((d) => void (d.providers[kind][field] = v));
-        return (
-          <fieldset key={kind} className="card form__group">
-            <legend className="form__legend">{t(`plan.numbers.kinds.${kind}`)}</legend>
-            <TextField
-              label={t('plan.numbers.name')}
-              value={value.name}
-              maxLength={120}
-              onChange={set('name')}
-            />
-            <div className="field-pair">
-              <TextField
-                label={t('plan.numbers.customerNo')}
-                value={value.customerNo}
-                maxLength={60}
-                onChange={set('customerNo')}
-              />
-              <TextField
-                label={t('plan.numbers.phone')}
-                type="tel"
-                value={value.phone}
-                maxLength={40}
-                onChange={set('phone')}
-              />
-            </div>
-          </fieldset>
-        );
-      })}
+      <p className="field__hint">{t('plan.numbers.providersHint')}</p>
+      {PROVIDER_GROUPS.map((group) => (
+        <section key={group.id} className="contact-group" aria-labelledby={`group-${group.id}`}>
+          <h3 id={`group-${group.id}`} className="contact-group__title">
+            {t(`plan.numbers.groups.${group.id}`)}
+          </h3>
+          <div className="card contact-list">
+            {group.kinds.map((kind) => (
+              <ProviderEntry key={kind} kind={kind} plan={plan} edit={edit} />
+            ))}
+          </div>
+        </section>
+      ))}
       <div className="card form__group">
         <TextField
           label={t('plan.numbers.comment')}
@@ -819,5 +821,47 @@ function StepNumbers({ plan, edit }: StepProps) {
         />
       </div>
     </>
+  );
+}
+
+/** Un contact replié sur une ligne (ce qui est noté), déplié pour le modifier. */
+function ProviderEntry({ kind, plan, edit }: StepProps & { kind: ProviderKind }) {
+  const { t } = useTranslation();
+  const value = plan.providers[kind];
+  const summary = [value.name, value.phone].filter((v) => v.trim()).join(' · ');
+  const set = (field: 'name' | 'customerNo' | 'phone') => (v: string) =>
+    edit((d) => void (d.providers[kind][field] = v));
+  return (
+    <details className="contact">
+      <summary className="contact__summary">
+        <span className="contact__kind">{t(`plan.numbers.kinds.${kind}`)}</span>
+        <span className={summary ? 'contact__value' : 'contact__value contact__value--empty'}>
+          {summary || t('plan.numbers.toFill')}
+        </span>
+      </summary>
+      <div className="contact__fields">
+        <TextField
+          label={t('plan.numbers.name')}
+          value={value.name}
+          maxLength={120}
+          onChange={set('name')}
+        />
+        <div className="field-pair">
+          <TextField
+            label={t('plan.numbers.customerNo')}
+            value={value.customerNo}
+            maxLength={60}
+            onChange={set('customerNo')}
+          />
+          <TextField
+            label={t('plan.numbers.phone')}
+            type="tel"
+            value={value.phone}
+            maxLength={40}
+            onChange={set('phone')}
+          />
+        </div>
+      </div>
+    </details>
   );
 }

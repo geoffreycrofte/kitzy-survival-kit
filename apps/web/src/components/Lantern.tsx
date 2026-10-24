@@ -1,7 +1,7 @@
 import type { CSSProperties } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ESSENTIALS, litCount, type EssentialsState } from '@kitzy/core';
-import { mascot, type MascotPose } from '../lib/assets';
+import { mascotImage, type MascotPose } from '../lib/assets';
 
 /** Position des six lucioles autour de la fenêtre, en % de la zone. */
 const POSITIONS: ReadonlyArray<[number, number]> = [
@@ -36,7 +36,7 @@ export function Lantern({ essentials, pose = 'bonjour', intro }: LanternProps) {
     >
       <div className="lantern__window">
         <div className="lantern__glow" />
-        <img className="lantern__hog" src={mascot(pose)} alt="" width={640} height={1060} />
+        <img className="lantern__hog" {...mascotImage(pose)} alt="" />
       </div>
       {ESSENTIALS.map((essential, i) => {
         const [x, y] = POSITIONS[i] ?? [0, 0];

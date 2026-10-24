@@ -981,11 +981,6 @@ main:focus {
   gap: 6px;
 }
 
-.prose__hog {
-  width: 140px;
-  align-self: center;
-}
-
 .disclosure summary {
   min-height: 44px;
   display: flex;
@@ -1139,70 +1134,432 @@ main:focus {
   margin-left: auto;
 }
 
-/* Plan imprimable */
+/* Numéros d'urgence (dernière étape du plan) : les deux numéros d'abord, en grand. */
 
-.sheet {
+.sos__list {
+  list-style: none;
   margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.sos__item {
   display: flex;
   flex-direction: column;
+  gap: 2px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 2px solid var(--kz-line);
 }
 
-.sheet__row {
-  display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-  gap: 12px;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--kz-line);
+.sos__number {
+  font-family: var(--kz-font-display);
+  font-size: 2.25rem;
+  line-height: 1;
+  color: var(--kz-heading);
 }
 
-.sheet__row dt {
+.sos__service {
   font-weight: 600;
 }
 
-.sheet__row dd {
+.sos__warning {
+  color: var(--kz-muted);
+  font-size: 0.9375rem;
+}
+
+/* Contacts utiles : une ligne par contact, dépliée pour la modifier. */
+
+.contact-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-group__title {
+  font-size: 1.0625rem;
+  font-family: var(--kz-font-body);
+  font-weight: 700;
+}
+
+.contact-list {
+  padding-block: 4px;
+  gap: 0;
+}
+
+.contact + .contact {
+  border-top: 1px solid var(--kz-line);
+}
+
+.contact__summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'kind chevron' 'value chevron';
+  align-items: center;
+  column-gap: 12px;
+  min-height: 56px;
+  padding: 10px 0;
+  cursor: pointer;
+  list-style: none;
+}
+
+.contact__summary::-webkit-details-marker {
+  display: none;
+}
+
+.contact__summary::after {
+  content: '';
+  grid-area: chevron;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(-2px, -2px);
+}
+
+.contact[open] > .contact__summary::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+
+.contact__kind {
+  grid-area: kind;
+  font-weight: 600;
+}
+
+.contact__value {
+  grid-area: value;
+  color: var(--kz-text);
+  overflow-wrap: anywhere;
+}
+
+.contact__value--empty {
+  color: var(--kz-muted);
+}
+
+.contact__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-bottom: 18px;
+}
+
+/*
+ * Plan imprimable : un document A4. À l'écran, une feuille de papier (encre sur blanc,
+ * quel que soit le thème) ; à l'impression, la feuille seule.
+ */
+
+.plan-print__tools {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.doc {
+  --doc-ink: #12302b;
+  --doc-muted: #47665d;
+  --doc-rule: #9db8af;
+  --doc-accent: #8a5300;
+  background: #fff;
+  color: var(--doc-ink);
+  border-radius: 12px;
+  padding: 28px 20px;
+  box-shadow:
+    0 1px 2px rgb(0 0 0 / 0.08),
+    0 12px 32px rgb(0 0 0 / 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.doc a {
+  color: var(--doc-accent);
+}
+
+.doc__head {
+  display: grid;
+  gap: 18px;
+  padding-bottom: 20px;
+  border-bottom: 3px solid var(--doc-ink);
+}
+
+.doc__identity {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.doc__brand {
+  font-family: var(--kz-font-display);
+  color: var(--doc-accent);
+  font-size: 1rem;
+}
+
+.doc__title {
+  font-family: var(--kz-font-display);
+  font-size: 1.75rem;
+  line-height: 1.15;
+  color: var(--doc-ink);
+}
+
+.doc__owner {
+  margin: 8px 0 0;
+  display: grid;
+  gap: 8px;
+}
+
+.doc__sos {
+  border: 2px solid var(--doc-accent);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-self: start;
+}
+
+.doc__sos-title {
+  font-weight: 700;
+}
+
+.doc__sos-number {
+  font-family: var(--kz-font-display);
+  font-size: 1.5rem;
+  line-height: 1.1;
+  margin-right: 6px;
+}
+
+.doc__section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.doc__section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--doc-ink);
+}
+
+.doc__section-title {
+  font-family: var(--kz-font-display);
+  font-size: 1.25rem;
+  color: var(--doc-ink);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.doc__section-number {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6em;
+  height: 1.6em;
+  border-radius: 50%;
+  border: 2px solid var(--doc-accent);
+  color: var(--doc-accent);
+  font-size: 0.8em;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.doc__fields {
   margin: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 10px 20px;
+}
+
+.doc__fields--inline {
+  grid-template-columns: repeat(2, minmax(0, 12rem));
+}
+
+.doc__field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.doc__field dt {
+  font-size: 0.8125rem;
+  color: var(--doc-muted);
+}
+
+.doc__field dd {
+  margin: 0;
+  font-weight: 600;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
 
-.sheet__blank {
+/* Une case vide : une ligne pour écrire à la main. */
+.doc__blank {
   display: block;
-  min-height: 1.4em;
-  border-bottom: 1px dotted var(--kz-muted);
+  height: 1.5em;
+  border-bottom: 1px solid var(--doc-rule);
 }
 
-.sheet-section {
+.doc__cards {
+  display: grid;
+  gap: 12px;
+}
+
+.doc__card {
+  border: 1px solid var(--doc-rule);
+  border-radius: 10px;
+  padding: 12px 14px;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.sheet-section__head {
+.doc__card-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+.doc__highlight {
+  border: 2px solid var(--doc-ink);
+  border-radius: 10px;
+  padding: 12px 14px;
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  flex-direction: column;
   gap: 10px;
 }
 
-.sheet-block h3 {
-  margin: 12px 0 4px;
-  font-size: 1.0625rem;
+.doc__highlight-title {
+  font-weight: 700;
 }
 
-@media (max-width: 30rem) {
-  .sheet__row {
-    grid-template-columns: 1fr;
-    gap: 2px;
+.doc__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.doc__table caption {
+  text-align: left;
+  font-weight: 700;
+  padding-bottom: 6px;
+}
+
+.doc__table th,
+.doc__table td {
+  text-align: left;
+  vertical-align: top;
+  padding: 7px 8px 7px 0;
+  border-bottom: 1px solid var(--doc-rule);
+  overflow-wrap: anywhere;
+}
+
+.doc__table thead th {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--doc-muted);
+  border-bottom: 1px solid var(--doc-ink);
+}
+
+.doc__table tbody th {
+  font-weight: 600;
+}
+
+.doc__table td .doc__blank {
+  border-bottom: 0;
+}
+
+.doc__foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--doc-rule);
+  color: var(--doc-muted);
+  font-size: 0.8125rem;
+}
+
+/* Écran étroit : chaque ligne de tableau devient un petit bloc, intitulés rappelés. */
+@media (max-width: 34rem) {
+  .doc__table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+
+  .doc__table,
+  .doc__table caption,
+  .doc__table tbody,
+  .doc__table tr,
+  .doc__table th,
+  .doc__table td {
+    display: block;
+  }
+
+  .doc__table tr {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--doc-rule);
+  }
+
+  .doc__table th,
+  .doc__table td {
+    border: 0;
+    padding: 2px 0;
+  }
+
+  .doc__table td {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+    gap: 8px;
+  }
+
+  .doc__table td::before {
+    content: attr(data-label);
+    font-size: 0.8125rem;
+    color: var(--doc-muted);
+  }
+
+  .doc__table td .doc__blank {
+    border-bottom: 1px solid var(--doc-rule);
   }
 }
 
-/* Gestes */
+@media (min-width: 34rem) {
+  .doc {
+    padding: 40px 44px;
+  }
 
-/* Impression : le plan seul, en noir sur blanc */
+  .doc__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
+
+  .doc__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .doc__field--wide {
+    grid-column: 1 / -1;
+  }
+
+  .doc__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Impression : la feuille seule, au format A4. */
 
 @media print {
   @page {
-    margin: 14mm;
+    size: A4;
+    margin: 12mm 14mm;
   }
 
   html,
@@ -1210,13 +1567,7 @@ main:focus {
   .app,
   .app__main {
     background: #fff !important;
-    color: #000 !important;
-    font-size: 11pt;
-  }
-
-  .plan-print * {
-    color: #000 !important;
-    background: transparent !important;
+    color: #12302b !important;
   }
 
   .header,
@@ -1227,36 +1578,93 @@ main:focus {
     display: none !important;
   }
 
-  .app__main {
+  .app__main,
+  .page {
     padding: 0 !important;
+    margin: 0 !important;
     max-width: none !important;
   }
 
-  .plan-print h1,
-  .plan-print h2,
-  .plan-print h3 {
-    color: #000;
+  .doc {
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    font-size: 9.5pt;
+    gap: 7mm;
+    print-color-adjust: exact;
   }
 
-  .sheet__row {
-    border-color: #999;
+  .doc__title {
+    font-size: 20pt;
+  }
+
+  .doc__head {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .doc__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .doc__field--wide {
+    grid-column: 1 / -1;
+  }
+
+  .doc__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .doc__card,
+  .doc__highlight,
+  .doc__sos,
+  .doc__table tr,
+  .doc__field {
     break-inside: avoid;
   }
 
-  .sheet__blank {
-    border-color: #555;
-  }
-
-  .sheet-section {
-    break-inside: auto;
-  }
-
-  .sheet-section__head {
+  .doc__section-head,
+  .doc__table caption {
     break-after: avoid;
   }
 
-  .plan-print a {
-    color: #000;
+  /* Le tableau garde sa forme sur papier, même si la fenêtre était étroite. */
+  .doc__table thead {
+    position: static;
+    width: auto;
+    height: auto;
+    clip-path: none;
+    display: table-header-group;
+  }
+
+  .doc__table {
+    display: table;
+  }
+
+  .doc__table caption {
+    display: table-caption;
+  }
+
+  .doc__table tbody {
+    display: table-row-group;
+  }
+
+  .doc__table tr {
+    display: table-row;
+  }
+
+  .doc__table th,
+  .doc__table td {
+    display: table-cell;
+    padding: 1.6mm 2mm 1.6mm 0;
+    border-bottom: 1px solid #9db8af;
+  }
+
+  .doc__table td::before {
+    content: none;
+  }
+
+  .doc__table td .doc__blank {
+    border-bottom: 0;
   }
 }
 
@@ -2646,4 +3054,33 @@ button.bottom-nav__link {
   margin-top: 24px;
   font-family: var(--kz-font-display);
   font-size: 1.125rem;
+}
+
+/*
+ * En-tête de page avec le hérisson : le texte à gauche, Kitzy à droite, posé sur la ligne
+ * du bas. Une seule règle pour toutes les pages de contenu (guide, plan). Les pages
+ * centrées (page introuvable, écran de secours) le centrent avec `.soon__hog`.
+ */
+.page-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 8px 16px;
+}
+
+.page-head__text {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.page-head__hog {
+  width: 88px;
+  height: auto;
+}
+
+@media (min-width: 40rem) {
+  .page-head__hog {
+    width: 140px;
+  }
 }
