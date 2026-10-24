@@ -118,9 +118,13 @@ export function GuideArticle() {
       <p className="breadcrumb">
         <Link to="/guide">{t('guide.back')}</Link>
       </p>
-      <h1 tabIndex={-1}>{page.title}</h1>
-      {page.pose && <img className="prose__hog" {...mascotImage(page.pose)} alt="" />}
-      <p className="lead">{page.summary}</p>
+      <header className="page-head">
+        <div className="page-head__text">
+          <h1 tabIndex={-1}>{page.title}</h1>
+          <p className="lead">{page.summary}</p>
+        </div>
+        {page.pose && <img className="page-head__hog" {...mascotImage(page.pose)} alt="" />}
+      </header>
       {sections(page.blocks).map((section, i) =>
         section[0]?.type === 'h2' ? (
           <section key={i} className="prose-section">
