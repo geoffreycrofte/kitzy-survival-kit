@@ -6,14 +6,51 @@ test.describe('Page de présentation (racine du site)', () => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Kitzy/);
     await expect(
-      page.getByRole('heading', { level: 1, name: 'Ta réserve d’urgence, prête et à jour.' }),
+      page.getByRole('heading', { level: 1, name: 'Trois jours d’avance sur l’imprévu.' }),
     ).toBeVisible();
-    for (const name of ['Ce que fait Kitzy', 'Tout reste chez toi', 'Installer Kitzy']) {
+    for (const name of [
+      'Calculé pour ta maisonnée',
+      'La maison, et les sacs à dos',
+      'Quoi acheter, à ton budget',
+      'Les dates, sans y penser',
+      'Se préparer, en s’amusant',
+      'Tout reste chez toi',
+      'Installer Kitzy',
+    ]) {
       await expect(page.getByRole('heading', { level: 2, name })).toBeVisible();
     }
+    // Pas de lucioles sur la page de présentation.
+    await expect(page.getByText(/luciole/i)).toHaveCount(0);
+    const footer = page.getByRole('contentinfo');
+    await expect(footer.getByRole('link', { name: 'Crofte Studio' })).toHaveAttribute(
+      'href',
+      'https://geoffreycrofte.com',
+    );
+    await expect(footer.getByRole('link', { name: 'CheckFox.eu' })).toHaveAttribute(
+      'href',
+      'https://checkfox.eu',
+    );
     await page.getByRole('link', { name: 'Ouvrir Kitzy', exact: true }).click();
     await expect(page).toHaveURL(/\/app\/$/);
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Prépare ton terrier.');
+  });
+
+  test('la maisonnée : les quantités suivent la composition du foyer', async ({ page }) => {
+    await page.goto('/');
+    const board = page.getByRole('group', { name: 'Chez moi, il y a' });
+    const water = page.locator('[data-result="water"]');
+    await expect(water).toHaveText('27,9');
+    await expect(page.locator('[data-result="bags"]')).toHaveText('3');
+    await board.getByRole('button', { name: /^Chiens\s: un de plus$/ }).click();
+    // Un chien boit environ 1 L par jour : 3 L de plus pour 72 h.
+    await expect(water).toHaveText('30,9');
+    await expect(page.locator('[data-result="pets"]')).toHaveText('12');
+    const lessAdults = board.getByRole('button', { name: /^Adultes\s: un de moins$/ });
+    await lessAdults.click();
+    await lessAdults.click();
+    await expect(lessAdults).toBeDisabled();
+    await expect(page.locator('[data-result="bags"]')).toHaveText('1');
+    await expect(page.locator('[data-result-label="bags"]')).toHaveText('sac à dos prêt à partir');
   });
 
   test('met en avant les étapes de l’appareil (Android ici)', async ({ page }) => {
@@ -41,7 +78,7 @@ test.describe('Page de présentation (racine du site)', () => {
     await page.getByLabel('Langue').selectOption('en');
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(
-      page.getByRole('heading', { level: 1, name: 'Your emergency supply, ready and up to date.' }),
+      page.getByRole('heading', { level: 1, name: 'Three days ahead of the unexpected.' }),
     ).toBeVisible();
     await page.goto('./reglages');
     await expect(page.getByRole('heading', { level: 1, name: 'Settings' })).toBeVisible();

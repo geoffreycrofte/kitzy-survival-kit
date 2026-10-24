@@ -2,6 +2,7 @@
  * Page de présentation de Kitzy (kitzy.lu). Statique et légère :
  * - textes dans la langue choisie, la même que dans l'app (clé `kitzy.locale`) ;
  * - thème et animations réglés comme dans l'app (clés `kitzy.theme`, `kitzy.motion`) ;
+ * - la maisonnée : les quantités se recalculent avec les mêmes règles que l'app ;
  * - installation : bouton quand le navigateur le propose, sinon les étapes de l'appareil.
  */
 import '@fontsource/young-serif/400.css';
@@ -9,7 +10,21 @@ import '@fontsource/figtree/400.css';
 import '@fontsource/figtree/600.css';
 import '@fontsource/figtree/700.css';
 import './landing.css';
-import { LANDING, isLocale, pickLocale, themeToCssVars, themes, type Locale } from '@kitzy/core';
+import {
+  LANDING,
+  computeTargets,
+  countMembers,
+  intlLocale,
+  isLocale,
+  pickLocale,
+  themeToCssVars,
+  themes,
+  type Household,
+  type LandingTexts,
+  type Locale,
+  type Member,
+  type Plural,
+} from '@kitzy/core';
 
 const root = document.documentElement;
 
@@ -39,6 +54,8 @@ function applyTheme(): void {
 
 /* ---------- Langue ---------- */
 
+let locale: Locale = 'fr';
+
 function currentLocale(): Locale {
   const pref = read('kitzy.locale');
   if (isLocale(pref)) return pref;
@@ -54,23 +71,27 @@ function lookup(texts: unknown, path: string): string | undefined {
   return typeof value === 'string' ? value : undefined;
 }
 
-function applyLocale(locale: Locale): void {
-  const texts = LANDING[locale];
+function texts(): LandingTexts {
+  return LANDING[locale];
+}
+
+function applyLocale(next: Locale): void {
+  locale = next;
   root.lang = locale;
   for (const el of document.querySelectorAll<HTMLElement>('[data-i18n]')) {
-    const text = lookup(texts, el.dataset.i18n ?? '');
+    const text = lookup(texts(), el.dataset.i18n ?? '');
     if (text !== undefined) el.textContent = text;
   }
   for (const el of document.querySelectorAll<HTMLElement>('[data-i18n-content]')) {
-    const text = lookup(texts, el.dataset.i18nContent ?? '');
+    const text = lookup(texts(), el.dataset.i18nContent ?? '');
     if (text !== undefined) el.setAttribute('content', text);
   }
   const select = document.querySelector<HTMLSelectElement>('#lang');
   if (select) select.value = locale;
+  renderHousehold(false);
 }
 
 function initLanguage(): void {
-  applyLocale(currentLocale());
   document.querySelector<HTMLSelectElement>('#lang')?.addEventListener('change', (event) => {
     const value = (event.target as HTMLSelectElement).value;
     if (!isLocale(value)) return;
@@ -82,6 +103,127 @@ function initLanguage(): void {
     }
     applyLocale(value);
   });
+  applyLocale(currentLocale());
+}
+
+/* ---------- La maisonnée ---------- */
+
+type MemberKey = 'adults' | 'children' | 'babies' | 'dogs' | 'cats';
+const MAX = 12;
+
+function counts(): Record<MemberKey, number> {
+  const out = { adults: 0, children: 0, babies: 0, dogs: 0, cats: 0 };
+  for (const el of document.querySelectorAll<HTMLElement>('.member')) {
+    out[el.dataset.member as MemberKey] = Number(el.dataset.value ?? 0);
+  }
+  return out;
+}
+
+function household(c: Record<MemberKey, number>): Household {
+  const members: Member[] = [];
+  const add = (n: number, member: Omit<Member, 'id'>) => {
+    for (let i = 0; i < n; i++) members.push({ id: `${member.type}-${members.length}`, ...member });
+  };
+  add(c.adults, { type: 'adult' });
+  add(c.children, { type: 'child' });
+  add(c.babies, { type: 'infant' });
+  add(c.dogs, { type: 'pet', petSpecies: 'dog' });
+  add(c.cats, { type: 'pet', petSpecies: 'cat' });
+  return { members, durationDays: 3 };
+}
+
+/** Mêmes règles que le catalogue : 3 repas par jour et par mangeur, 2 rations par animal et par jour. */
+function results(h: Household): Record<'water' | 'meals' | 'pets' | 'bags', number> {
+  const c = countMembers(h);
+  return {
+    water: computeTargets(h).waterLiters,
+    meals: 3 * c.eaters * c.days,
+    pets: 2 * c.pets * c.days,
+    // Un sac par personne qui peut le porter.
+    bags: c.eaters,
+  };
+}
+
+function plural(word: Plural, n: number): string {
+  return new Intl.PluralRules(intlLocale(locale)).select(n) === 'one' ? word.one : word.other;
+}
+
+/** Le chiffre défile jusqu'à sa nouvelle valeur (seulement si les animations sont permises). */
+function animateNumber(el: HTMLElement, to: number, format: Intl.NumberFormat): void {
+  const from = Number(el.dataset.n ?? to);
+  el.dataset.n = String(to);
+  if (root.dataset.motion !== 'full' || from === to) {
+    el.textContent = format.format(to);
+    return;
+  }
+  const start = performance.now();
+  const duration = 420;
+  const step = (now: number) => {
+    const t = Math.min(1, (now - start) / duration);
+    const eased = 1 - Math.pow(1 - t, 3);
+    el.textContent = format.format(Math.round((from + (to - from) * eased) * 10) / 10);
+    if (t < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+  el.classList.remove('result__n--bump');
+  void el.offsetWidth;
+  el.classList.add('result__n--bump');
+}
+
+function renderHousehold(animate: boolean): void {
+  const t = texts().household;
+  const c = counts();
+  const values = results(household(c));
+  const format = new Intl.NumberFormat(intlLocale(locale), { maximumFractionDigits: 1 });
+  for (const key of Object.keys(values) as Array<keyof typeof values>) {
+    const n = document.querySelector<HTMLElement>(`[data-result="${key}"]`);
+    const label = document.querySelector<HTMLElement>(`[data-result-label="${key}"]`);
+    if (n) {
+      if (animate) animateNumber(n, values[key], format);
+      else {
+        n.dataset.n = String(values[key]);
+        n.textContent = format.format(values[key]);
+      }
+    }
+    if (label) label.textContent = plural(t.results[key], values[key]);
+  }
+  const pets = document.querySelector<HTMLElement>('[data-result-row="pets"]');
+  if (pets) pets.hidden = values.pets === 0;
+
+  for (const el of document.querySelectorAll<HTMLElement>('.member')) {
+    const key = el.dataset.member as MemberKey;
+    const name = t.members[key];
+    const value = c[key];
+    const [less, more] = el.querySelectorAll<HTMLButtonElement>('.stepper__btn');
+    if (less) {
+      less.setAttribute('aria-label', t.less.replace('{{label}}', name));
+      less.disabled = value <= 0;
+    }
+    if (more) {
+      more.setAttribute('aria-label', t.more.replace('{{label}}', name));
+      more.disabled = value >= MAX;
+    }
+    const output = el.querySelector('output');
+    if (output) output.textContent = String(value);
+  }
+}
+
+function initHousehold(): void {
+  for (const el of document.querySelectorAll<HTMLElement>('.member')) {
+    el.addEventListener('click', (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>('.stepper__btn');
+      if (!button || button.disabled) return;
+      const value = Math.min(
+        MAX,
+        Math.max(0, Number(el.dataset.value ?? 0) + Number(button.dataset.step)),
+      );
+      el.dataset.value = String(value);
+      renderHousehold(true);
+      // Le bouton devenu inactif (0 ou maximum) rend le focus à son voisin.
+      if (button.disabled)
+        el.querySelector<HTMLButtonElement>('.stepper__btn:not(:disabled)')?.focus();
+    });
+  }
 }
 
 /* ---------- Installation ---------- */
@@ -124,7 +266,7 @@ function initInstall(): void {
   });
   window.addEventListener('appinstalled', () => {
     if (button) button.hidden = true;
-    if (state) state.textContent = LANDING[currentLocale()].install.installed;
+    if (state) state.textContent = texts().install.installed;
   });
   button?.addEventListener('click', async () => {
     if (!deferred) return;
@@ -136,6 +278,7 @@ function initInstall(): void {
 }
 
 applyTheme();
+initHousehold();
 initLanguage();
 initInstall();
 matchMedia('(prefers-color-scheme: light)').addEventListener('change', applyTheme);

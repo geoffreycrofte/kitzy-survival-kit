@@ -872,6 +872,7 @@ Règles :
 ### 11.3 Le hérisson
 
 - Descriptions des 12 poses à générer : [`docs/mascotte-poses.md`](docs/mascotte-poses.md).
+- **Poses intégrées** (`apps/web/public/mascot/`) : bonjour, endormi, lanterne, provisions, fête, lecture, **sac sur le dos** (page de présentation, partie maison et sacs) ; la lanterne ouvre la page de présentation, en entier et sans cadre, son halo part de la lanterne. **À générer** : 8. écoute la radio, 9. la bouteille d'eau, 10. le plan d'urgence, 11. curieux qui sort la tête (hors-ligne, erreur douce), 12. portrait pour l'icône de l'app (l'icône actuelle part de l'image de référence).
 - Mascotte **générée par IA** (modèle d'OpenAI), fournie par Geoffrey, **détourée** automatiquement (rembg, modèle isnet) : `assets/mascot/kitzy-hedgehog.{png,webp}` (fond transparent, 640 px de large).
 - Pour les autres poses (endormi, content, pensif, avec une lampe frontale, en boule), régénérer avec **le même modèle et la même description** (bandana rayé orange et blanc, pelage brun, ventre crème, style 3D doux), puis détourer de la même façon. Garder une feuille de référence pour la cohérence.
 - Formats : WebP transparent pour le web (≈ 100 Ko), PNG pour les stores et l'icône d'app ; versions 1x, 2x et 3x pour React Native.

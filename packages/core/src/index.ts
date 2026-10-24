@@ -34,4 +34,4 @@ export { PRODUCTS } from './data/products';
 export { RECIPES } from './data/recipes';
 export { QUIZ } from './data/quiz';
 export { fill } from './i18n/fill';
-export { LANDING, type LandingTexts } from './i18n/landing';
+export { LANDING, type LandingTexts, type Plural } from './i18n/landing';
