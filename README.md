@@ -4,7 +4,7 @@ Kitzy aide à constituer, suivre et faire tourner sa réserve d’urgence de 72 
 
 - Plan complet du projet : [`PLAN.md`](PLAN.md)
 - Poses de la mascotte : [`docs/mascotte-poses.md`](docs/mascotte-poses.md)
-- Référentiel d’accessibilité : RAWeb 1.1 niveau AA (skills dans [`.claude/skills/`](.claude/skills/))
+- Accessibilité : RAWeb 1.1 niveau AA, avec [CheckFox.eu](https://checkfox.eu) ; déclaration et signalement des problèmes dans [`ACCESSIBILITY.md`](ACCESSIBILITY.md) (skills dans [`.claude/skills/`](.claude/skills/))
 
 ## Structure
 

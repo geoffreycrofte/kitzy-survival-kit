@@ -814,6 +814,8 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 
 **Cible : RAWeb 1.1 niveau AA** (EN 301 549 / WCAG 2.1), avec le skill `raweb-code` pendant le développement et `raweb-audit` avant chaque release. Ensuite **RAAM 1.1** pour les versions natives.
 
+Déclaration publique (en anglais) : [`ACCESSIBILITY.md`](ACCESSIBILITY.md), mise en avant par GitHub sur la page du dépôt. Elle dit la cible, les vérifications (audits avec [CheckFox.eu](https://checkfox.eu), axe-core en CI, contrastes testés), les limites connues, et invite à ouvrir une issue pour tout problème.
+
 ### 10.1 Points d'attention spécifiques à cette app
 
 | Sujet | Exigence | Critères RAWeb concernés (à confirmer via `raweb-lookup.sh`) |
