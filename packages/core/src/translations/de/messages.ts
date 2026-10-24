@@ -17,6 +17,10 @@ export const messages: Messages = {
       'Kitzy kann deine Daten auf diesem Gerät nicht lesen. Sie sind nicht verloren: Lade die Seite neu oder schließe die anderen Kitzy-Tabs und -Fenster auf diesem Handy.',
     stuckReload: 'Kitzy neu laden',
     stuckDetail: 'Technisches Detail: {{error}}',
+    crashTitle: 'Kitzy kann diese Seite nicht anzeigen',
+    crashText:
+      'Deine Daten auf diesem Gerät scheinen beschädigt, zum Beispiel nach dem Wiederherstellen einer veränderten Datei. Lade eine Sicherung herunter, um sie zu behalten, und lösche dann alles, um neu anzufangen.',
+    crashReset: 'Alles löschen und neu anfangen',
   },
   nav: {
     home: 'Bau',
@@ -336,7 +340,7 @@ export const messages: Messages = {
     calendarDone: 'Kalenderdatei bereit.',
     data: 'Meine Daten',
     dataHelp:
-      'Alles bleibt auf diesem Gerät. Bewahre eine Sicherungskopie auf, zum Beispiel für einen Handywechsel.',
+      'Alles bleibt auf diesem Gerät. Bewahre eine Sicherungskopie auf, zum Beispiel für einen Handywechsel. Die Datei enthält deinen Notfallplan im Klartext (Gesundheit, Kontakte): Bewahre sie wie ein persönliches Dokument auf und stelle nur deine eigenen Sicherungen wieder her.',
     export: 'Sicherung herunterladen',
     exported: 'Sicherung bereit.',
     import: 'Sicherung wiederherstellen',

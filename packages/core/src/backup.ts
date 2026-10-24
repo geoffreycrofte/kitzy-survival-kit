@@ -13,12 +13,15 @@ import type { KitLevel } from './catalog';
 
 const isoDate = z.string().refine(isIsoDate, 'Date invalide');
 const unit = z.enum(['L', 'portion', 'piece', 'pack', 'set']);
+/** Identifiants générés par l'app (UUID, identifiants du catalogue) : jamais très longs. */
+const id = z.string().max(120);
+const stamp = z.string().max(40);
 
 const HouseholdSchema = z.object({
   members: z
     .array(
       z.object({
-        id: z.string(),
+        id,
         type: z.enum(['adult', 'child', 'infant', 'senior', 'pet']),
         petSpecies: z.enum(['dog', 'cat', 'other']).optional(),
       }),
@@ -28,13 +31,13 @@ const HouseholdSchema = z.object({
 });
 
 const KitSchema = z.object({
-  id: z.string(),
+  id,
   type: z.enum(['home', 'go-bag', 'car']),
   name: z.string().max(80),
 });
 
 const LotSchema = z.object({
-  id: z.string(),
+  id,
   quantity: z.number().nonnegative().max(100_000),
   expiry: isoDate.optional(),
   expiryType: z.enum(['dlc', 'ddm']).optional(),
@@ -42,24 +45,25 @@ const LotSchema = z.object({
 });
 
 const ItemSchema = z.object({
-  id: z.string(),
-  kitId: z.string(),
-  templateId: z.string().optional(),
+  id,
+  kitId: id,
+  templateId: id.optional(),
   customName: z.string().max(120).optional(),
   unit,
   lots: z.array(LotSchema).max(500),
   battery: z
-    .object({ lastChargedAt: isoDate, intervalDays: z.number().int().positive() })
+    // Borné : un intervalle démesuré ferait sortir les dates calculées du calendrier.
+    .object({ lastChargedAt: isoDate, intervalDays: z.number().int().positive().max(3650) })
     .optional(),
-  targetOverride: z.number().nonnegative().optional(),
+  targetOverride: z.number().nonnegative().max(100_000).optional(),
   notes: z.string().max(1000).optional(),
-  updatedAt: z.string(),
+  updatedAt: stamp,
 });
 
 const ExtraSchema = z.object({
-  id: z.string(),
+  id,
   label: z.string().max(120),
-  quantity: z.number().positive().optional(),
+  quantity: z.number().positive().max(100_000).optional(),
   unit: unit.optional(),
 });
 
@@ -73,12 +77,12 @@ const BarcodeSchema = z.object({
 const BackupSchema = z.object({
   app: z.literal('kitzy'),
   schemaVersion: z.union([z.literal(1), z.literal(2)]),
-  exportedAt: z.string(),
+  exportedAt: stamp,
   household: HouseholdSchema.nullable(),
   kits: z.array(KitSchema).max(50),
   items: z.array(ItemSchema).max(5000),
   extras: z.array(ExtraSchema).max(500),
-  bought: z.array(z.string()).max(5000),
+  bought: z.array(id).max(5000),
   level: z.enum(['essential', 'recommended', 'complete']),
   plan: PlanSchema.nullable().default(null),
   tasks: z.record(z.string().max(64), isoDate).default({}),
@@ -106,6 +110,9 @@ export type Backup = BackupData & { app: 'kitzy'; schemaVersion: 2; exportedAt: 
 export function createBackup(data: BackupData, now: Date = new Date()): Backup {
   return { app: 'kitzy', schemaVersion: 2, exportedAt: now.toISOString(), ...data };
 }
+
+/** Au-delà, ce n'est pas une sauvegarde Kitzy : on ne lit même pas le fichier. */
+export const MAX_BACKUP_BYTES = 5 * 1024 * 1024;
 
 export type ParseResult =
   { ok: true; data: BackupData } | { ok: false; code: 'unreadable' | 'notKitzy'; error: string };

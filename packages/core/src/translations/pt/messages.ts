@@ -17,6 +17,10 @@ export const messages: Messages = {
       'O Kitzy não consegue ler os teus dados neste aparelho. Não se perderam: recarrega a página ou fecha os outros separadores e janelas do Kitzy abertos neste telemóvel.',
     stuckReload: 'Recarregar o Kitzy',
     stuckDetail: 'Detalhe técnico: {{error}}',
+    crashTitle: 'O Kitzy não consegue mostrar esta página',
+    crashText:
+      'Os teus dados neste aparelho parecem danificados, por exemplo depois de restaurar um ficheiro alterado. Descarrega uma cópia de segurança para os guardar e depois apaga tudo para recomeçar.',
+    crashReset: 'Apagar tudo e recomeçar',
   },
   nav: {
     home: 'Toca',
@@ -335,7 +339,7 @@ export const messages: Messages = {
     calendarDone: 'Ficheiro de calendário pronto.',
     data: 'Os meus dados',
     dataHelp:
-      'Fica tudo neste aparelho. Guarda uma cópia de segurança, por exemplo para mudar de telemóvel.',
+      'Fica tudo neste aparelho. Guarda uma cópia de segurança, por exemplo para mudar de telemóvel. O ficheiro contém o teu plano de emergência em texto simples (saúde, contactos): guarda-o como um documento pessoal e restaura só as tuas próprias cópias.',
     export: 'Descarregar uma cópia de segurança',
     exported: 'Cópia de segurança pronta.',
     import: 'Restaurar uma cópia de segurança',

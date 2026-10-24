@@ -656,6 +656,19 @@ Settings { locale; theme; textScale; reminderOffsets; channels; quietHours }
 
 ---
 
+### 7.0 Données venues d'ailleurs (revue de sécurité, octobre 2026)
+
+Une sauvegarde importée ou un lien de partage peuvent venir de n'importe qui : on les traite comme hostiles.
+
+- **Sauvegarde (import)** : fichier refusé au-delà de 5 Mo avant lecture ; schéma Zod strict (clés inconnues retirées, pas de pollution de prototype) ; identifiants, textes et nombres bornés, dont l'intervalle de recharge (≤ 3650 jours), qu'un fichier piégé utilisait pour faire planter toutes les pages, Réglages compris.
+- **Filet de sécurité** : si des données abîmées font quand même planter l'affichage, un écran propose de télécharger une sauvegarde puis de tout effacer, au lieu d'une page blanche.
+- **Sauvegarde (export)** : le fichier contient le plan d'urgence en clair (santé, matricule, contacts) ; l'app le dit à côté du bouton. Un chiffrement par phrase de passe reste une option si on veut aller plus loin.
+- **Lien de partage** : fragment limité à 64 Ko et décompression arrêtée à 256 Ko ; un lien piégé de 680 Ko montait à 1 Go de mémoire, contre 11 Mo désormais.
+- **Agenda (.ics)** : tous les retours à la ligne des noms sont échappés.
+- **Rendu** : aucun HTML venu des données (React échappe tout ; le seul `innerHTML` est le QR code généré localement). Liens externes en `noopener noreferrer`, adresses issues du catalogue, jamais des données.
+- **Dépendances et CI** : `pnpm audit` propre (fflate 0.8.3) ; le workflow CI n'a plus qu'un jeton en lecture seule.
+- **À envisager** : une Content-Security-Policy en `<meta>` (GitHub Pages ne permet pas les en-têtes), et l'épinglage des actions GitHub par SHA.
+
 ### 7.1 Synchronisation entre appareils (à venir)
 
 Objectif : retrouver son kit sur le téléphone, la tablette et l'ordinateur, sans compte Kitzy et **sans serveur Kitzy**, en s'appuyant sur le cloud que la personne utilise déjà. Le cloud ne voit jamais les données en clair.

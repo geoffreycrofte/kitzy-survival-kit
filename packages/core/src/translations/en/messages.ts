@@ -17,6 +17,10 @@ export const messages: Messages = {
       'Kitzy can’t read your data on this device. It isn’t lost: reload the page, or close any other Kitzy tabs and windows open on this phone.',
     stuckReload: 'Reload Kitzy',
     stuckDetail: 'Technical detail: {{error}}',
+    crashTitle: 'Kitzy can’t display this page',
+    crashText:
+      'Your data on this device seems damaged, for example after restoring an edited file. Download a backup to keep it, then erase everything to start again.',
+    crashReset: 'Erase everything and start again',
   },
   nav: {
     home: 'Burrow',
@@ -334,7 +338,7 @@ export const messages: Messages = {
     calendarDone: 'Calendar file ready.',
     data: 'My data',
     dataHelp:
-      'Everything stays on this device. Keep a backup copy, for example when changing phones.',
+      'Everything stays on this device. Keep a backup copy, for example when changing phones. The file holds your emergency plan in plain text (health, contacts): keep it like a personal document, and only restore your own backups.',
     export: 'Download a backup',
     exported: 'Backup ready.',
     import: 'Restore a backup',

@@ -17,6 +17,10 @@ export const messages: Messages = {
       'Kitzy kann deng Donnéeën op dësem Apparat net liesen. Si sinn net verluer: lued d’Säit nei, oder maach déi aner Tabs a Fënstere vu Kitzy op dësem Telefon zou.',
     stuckReload: 'Kitzy nei lueden',
     stuckDetail: 'Technescht Detail: {{error}}',
+    crashTitle: 'Kitzy kann dës Säit net weisen',
+    crashText:
+      'Deng Donnéeën op dësem Apparat schéngen beschiedegt, zum Beispill nodeems eng geännert Datei restauréiert gouf. Lued e Backup erof fir se ze halen, an dann läsch alles fir nei unzefänken.',
+    crashReset: 'Alles läschen an nei ufänken',
   },
   nav: {
     home: 'Bau',
@@ -334,7 +338,7 @@ export const messages: Messages = {
     calendarDone: 'Kalennerfichier prett.',
     data: 'Meng Donnéeën',
     dataHelp:
-      'Alles bleift op dësem Apparat. Behal eng Backup-Kopie, zum Beispill fir den Telefon ze wiesselen.',
+      'Alles bleift op dësem Apparat. Behal eng Backup-Kopie, zum Beispill fir den Telefon ze wiesselen. D’Datei enthält däin Noutfallplang am Kloertext (Gesondheet, Kontakter): hal se wéi e perséinlecht Dokument, a restauréier nëmmen deng eege Backupen.',
     export: 'Backup eroflueden',
     exported: 'Backup prett.',
     import: 'Backup restauréieren',

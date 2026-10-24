@@ -20,6 +20,10 @@ export const fr = {
       'Kitzy n’arrive pas à lire tes données sur cet appareil. Elles ne sont pas perdues : recharge la page, ou ferme les autres onglets et fenêtres de Kitzy ouverts sur ce téléphone.',
     stuckReload: 'Recharger Kitzy',
     stuckDetail: 'Détail technique : {{error}}',
+    crashTitle: 'Kitzy n’arrive pas à afficher cette page',
+    crashText:
+      'Tes données sur cet appareil semblent abîmées, par exemple après la restauration d’un fichier modifié. Télécharge une sauvegarde pour les garder, puis efface tout pour repartir.',
+    crashReset: 'Tout effacer et repartir',
   },
   nav: {
     home: 'Terrier',
@@ -339,7 +343,7 @@ export const fr = {
     calendarDone: 'Fichier agenda prêt.',
     data: 'Mes données',
     dataHelp:
-      'Tout reste sur cet appareil. Garde une copie de sauvegarde, par exemple pour changer de téléphone.',
+      'Tout reste sur cet appareil. Garde une copie de sauvegarde, par exemple pour changer de téléphone. Le fichier contient ton plan d’urgence en clair (santé, contacts) : range-le comme un document personnel, et ne restaure que tes propres sauvegardes.',
     export: 'Télécharger une sauvegarde',
     exported: 'Sauvegarde prête.',
     import: 'Restaurer une sauvegarde',

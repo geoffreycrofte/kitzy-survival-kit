@@ -6,6 +6,7 @@ import {
   LOCALES,
   buildIcs,
   messagesFor,
+  MAX_BACKUP_BYTES,
   parseBackup,
   type KitLevel,
 } from '@kitzy/core';
@@ -57,6 +58,10 @@ export function Settings() {
     const file = event.target.files?.[0];
     event.target.value = '';
     if (!file) return;
+    if (file.size > MAX_BACKUP_BYTES) {
+      setImportError(t('system.errors.backup.unreadable'));
+      return;
+    }
     const result = parseBackup(await file.text());
     if (!result.ok) {
       setImportError(t(`system.errors.backup.${result.code}`));
