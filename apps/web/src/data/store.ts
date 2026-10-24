@@ -1,9 +1,19 @@
+import { useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import {
   CATALOG,
   consumeFifo,
   countMembers,
+  PlanSchema,
+  addPasskeyToLock,
   createBackup,
+  createPlanLock,
+  openJson,
+  planInfo,
+  removePasskeyFromLock,
+  sealJson,
+  unlockWithCode,
+  unlockWithPasskey,
   type ActivitiesDone,
   type ActivityId,
   mergePlanStep,
@@ -17,12 +27,16 @@ import {
   type InventoryItem,
   type KitLevel,
   type Lot,
+  type PlanLock,
+  type Sealed,
   type ShoppingExtra,
   type Unit,
 } from '@kitzy/core';
 import { db } from './db';
 import { reportDataError } from './health';
 import { getMeta, loadAll, setMeta, type AppData } from './load';
+import { getPlanKey, lockPlan, setPlanKey, usePlanKey } from '../lib/planKey';
+import { createPasskey, passkeySecret } from '../lib/passkey';
 
 export { emptyData, type AppData } from './load';
 
@@ -34,7 +48,7 @@ document.addEventListener('freeze', () => db.close({ disableAutoOpen: false }));
 
 /** Toutes les données de l'app, mises à jour en direct. `undefined` pendant le chargement. */
 export function useAppData(): AppData | undefined {
-  return useLiveQuery(
+  const raw = useLiveQuery(
     () =>
       loadAll().catch((error: unknown) => {
         // Une erreur de lecture ne doit pas tout casser : on la signale à l'écran.
@@ -44,6 +58,36 @@ export function useAppData(): AppData | undefined {
     [],
     undefined,
   );
+  const key = usePlanKey();
+  const sealed = raw?.planSealed ?? null;
+  // Le plan déchiffré, et la boîte dont il vient : on garde le précédent pendant qu'on
+  // déchiffre une nouvelle version, pour ne pas faire clignoter l'écran à chaque enregistrement.
+  const [opened, setOpened] = useState<{ key: Uint8Array; plan: EmergencyPlan | null } | null>(
+    null,
+  );
+  useEffect(() => {
+    if (!key || !sealed) return;
+    let alive = true;
+    void openPlan(key, sealed).then((plan) => {
+      if (alive) setOpened({ key, plan });
+    });
+    return () => {
+      alive = false;
+    };
+  }, [key, sealed]);
+
+  return useMemo(() => {
+    if (!raw || !raw.planLock) return raw;
+    if (!key) return raw;
+    if (!sealed) return { ...raw, planState: 'open' as const };
+    if (opened?.key !== key) return { ...raw, planState: 'opening' as const };
+    return { ...raw, plan: opened.plan, planState: 'open' as const };
+  }, [raw, key, sealed, opened]);
+}
+
+async function openPlan(key: Uint8Array, sealed: Sealed): Promise<EmergencyPlan | null> {
+  const parsed = PlanSchema.safeParse(await openJson(key, sealed));
+  return parsed.success ? parsed.data : null;
 }
 
 function uid(): string {
@@ -221,17 +265,119 @@ export async function removeExtra(id: string): Promise<void> {
  * Enregistre une étape du plan sur la dernière version stockée :
  * deux étapes ouvertes l'une après l'autre ne s'écrasent jamais.
  */
-export async function savePlanStep(step: PlanStep, edited: EmergencyPlan): Promise<void> {
+export function savePlanStep(step: PlanStep, edited: EmergencyPlan): Promise<void> {
+  // Plan verrouillé : le chiffrement se fait hors transaction, donc on enchaîne les
+  // enregistrements un par un pour qu'aucun n'écrase le précédent.
+  const run = saving.then(async () => {
+    if (await getMeta<unknown>('planLock', null)) return saveSealedStep(step, edited);
+    await db.transaction('rw', db.meta, async () => {
+      const stored = await getMeta<EmergencyPlan | null>('plan', null);
+      await setMeta('plan', stamp(stored ? mergePlanStep(stored, edited, step) : edited));
+    });
+  });
+  saving = run.catch(() => undefined);
+  return run;
+}
+
+let saving: Promise<unknown> = Promise.resolve();
+
+function stamp(plan: EmergencyPlan): EmergencyPlan {
+  const today = todayLocal();
+  return { ...plan, createdAt: plan.createdAt ?? today, updatedAt: today };
+}
+
+function requireKey(): Uint8Array {
+  const key = getPlanKey();
+  if (!key) throw new Error('Plan verrouillé');
+  return key;
+}
+
+async function saveSealedStep(step: PlanStep, edited: EmergencyPlan): Promise<void> {
+  const key = requireKey();
+  const sealed = await getMeta<Sealed | null>('planSealed', null);
+  const stored = sealed ? await openPlan(key, sealed) : null;
+  await writeSealedPlan(key, stamp(stored ? mergePlanStep(stored, edited, step) : edited));
+}
+
+async function writeSealedPlan(key: Uint8Array, plan: EmergencyPlan | null): Promise<void> {
+  const sealed = plan ? await sealJson(key, plan) : null;
   await db.transaction('rw', db.meta, async () => {
-    const stored = await getMeta<EmergencyPlan | null>('plan', null);
-    const merged = stored ? mergePlanStep(stored, edited, step) : edited;
-    const today = todayLocal();
-    await setMeta('plan', { ...merged, createdAt: merged.createdAt ?? today, updatedAt: today });
+    await db.meta.delete('plan');
+    if (sealed && plan) {
+      await setMeta('planSealed', sealed);
+      await setMeta('planInfo', planInfo(plan));
+    } else {
+      await db.meta.bulkDelete(['planSealed', 'planInfo']);
+    }
   });
 }
 
 export async function deletePlan(): Promise<void> {
-  await db.meta.delete('plan');
+  await db.meta.bulkDelete(['plan', 'planSealed', 'planInfo']);
+}
+
+/* ---------- Verrou du plan sur l'appareil ---------- */
+
+async function getLock(): Promise<PlanLock> {
+  const lock = await getMeta<PlanLock | null>('planLock', null);
+  if (!lock) throw new Error('Aucun verrou');
+  return lock;
+}
+
+/** Chiffre le plan avec un code Kitzy (toujours requis : c'est aussi le moyen de secours). */
+export async function enablePlanLock(code: string): Promise<void> {
+  const { lock, key } = await createPlanLock(code);
+  const plan = await getMeta<EmergencyPlan | null>('plan', null);
+  const sealed = plan ? await sealJson(key, plan) : null;
+  await db.transaction('rw', db.meta, async () => {
+    await setMeta('planLock', lock);
+    await db.meta.delete('plan');
+    if (sealed && plan) {
+      await setMeta('planSealed', sealed);
+      await setMeta('planInfo', planInfo(plan));
+    }
+  });
+  setPlanKey(key);
+}
+
+/** Remet le plan en clair et oublie le verrou (le plan doit être déverrouillé). */
+export async function disablePlanLock(): Promise<void> {
+  const key = requireKey();
+  const sealed = await getMeta<Sealed | null>('planSealed', null);
+  const plan = sealed ? await openPlan(key, sealed) : null;
+  await db.transaction('rw', db.meta, async () => {
+    if (plan) await setMeta('plan', plan);
+    await db.meta.bulkDelete(['planLock', 'planSealed', 'planInfo']);
+  });
+  lockPlan();
+}
+
+/** Ajoute l'empreinte, le visage ou le code de l'appareil. `false` si l'appareil ne sait pas. */
+export async function addPlanPasskey(name: string): Promise<boolean> {
+  const key = requireKey();
+  const passkey = await createPasskey(name);
+  if (!passkey) return false;
+  await setMeta('planLock', await addPasskeyToLock(await getLock(), key, passkey));
+  return true;
+}
+
+export async function removePlanPasskey(): Promise<void> {
+  await setMeta('planLock', removePasskeyFromLock(await getLock()));
+}
+
+export async function unlockPlanWithCode(code: string): Promise<boolean> {
+  const key = await unlockWithCode(await getLock(), code);
+  if (key) setPlanKey(key);
+  return Boolean(key);
+}
+
+export async function unlockPlanWithPasskey(): Promise<boolean> {
+  const lock = await getLock();
+  if (!lock.passkey) return false;
+  const secret = await passkeySecret(lock.passkey.credentialId, lock.passkey.prfSalt);
+  const key = secret ? await unlockWithPasskey(lock, secret) : null;
+  if (key) setPlanKey(key);
+  return Boolean(key);
 }
 
 export async function toggleTask(id: string): Promise<boolean> {
@@ -297,14 +443,19 @@ export async function recordAchievements(ids: readonly string[]): Promise<void> 
   });
 }
 
+/** La sauvegarde complète, plan compris : un plan verrouillé doit d'abord être ouvert. */
 export async function exportData(): Promise<string> {
   const data = await loadAll();
-  return JSON.stringify(createBackup(data), null, 2);
+  const plan = data.planSealed ? await openPlan(requireKey(), data.planSealed) : data.plan;
+  return JSON.stringify(createBackup({ ...data, plan }), null, 2);
 }
 
-async function clearData(): Promise<void> {
+async function clearData(keep: readonly string[] = []): Promise<void> {
   await Promise.all([
-    db.meta.where('key').noneOf(DEVICE_KEYS).delete(),
+    db.meta
+      .where('key')
+      .noneOf([...DEVICE_KEYS, ...keep])
+      .delete(),
     db.kits.clear(),
     db.items.clear(),
     db.extras.clear(),
@@ -312,13 +463,22 @@ async function clearData(): Promise<void> {
   ]);
 }
 
+/** Remplace tout. Si le plan est verrouillé sur cet appareil, le plan importé l'est aussi. */
 export async function importData(data: BackupData): Promise<void> {
+  const locked = Boolean(await getMeta<unknown>('planLock', null));
+  const key = locked ? requireKey() : null;
+  const sealed = key && data.plan ? await sealJson(key, data.plan) : null;
   await db.transaction('rw', DATA_TABLES(), async () => {
-    await clearData();
+    await clearData(locked ? ['planLock'] : []);
     await setMeta('household', data.household);
     await setMeta('bought', data.bought);
     await setMeta('level', data.level);
-    if (data.plan) await setMeta('plan', data.plan);
+    if (sealed && data.plan) {
+      await setMeta('planSealed', sealed);
+      await setMeta('planInfo', planInfo(data.plan));
+    } else if (data.plan) {
+      await setMeta('plan', data.plan);
+    }
     await setMeta('tasks', data.tasks);
     await setMeta('achievements', data.achievements);
     await setMeta('activities', data.activities);
@@ -333,4 +493,5 @@ export async function resetAll(): Promise<void> {
   await db.transaction('rw', DATA_TABLES(), async () => {
     await clearData();
   });
+  lockPlan();
 }

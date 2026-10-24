@@ -152,8 +152,10 @@ test.describe('Phase 2 : plan, gestes, scan, notifications', () => {
       .fill('Famille Muller');
     await page.waitForTimeout(800);
     await page.goto('./reglages');
+    await page.getByLabel('Protéger la sauvegarde par un code').uncheck();
+    await page.getByRole('button', { name: 'Préparer la sauvegarde' }).click();
     const download = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Télécharger une sauvegarde' }).click();
+    await page.getByRole('button', { name: 'Télécharger', exact: true }).click();
     const file = await download;
     const json = JSON.parse(
       await (await file.createReadStream()).toArray().then((c) => Buffer.concat(c).toString()),

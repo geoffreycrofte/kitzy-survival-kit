@@ -12,6 +12,8 @@ export * from './reminders';
 export * from './ics';
 export * from './share';
 export * from './backup';
+export * from './vault';
+export { fromBase64Url, toBase64Url } from './base64url';
 export * from './plan';
 export * from './tasks';
 export * from './progress';

@@ -14,6 +14,7 @@ import { useKitzy } from '../data/derived';
 import { formatDate } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
 import { Loading } from '../components/Loading';
+import { PlanGate } from '../components/PlanLock';
 
 /**
  * Version papier du plan, structurée comme le formulaire officiel.
@@ -22,6 +23,15 @@ import { Loading } from '../components/Loading';
 export function PlanPrint() {
   const { t } = useTranslation();
   usePageTitle(t('plan.printPage.title'));
+  return (
+    <PlanGate>
+      <PlanSheet />
+    </PlanGate>
+  );
+}
+
+function PlanSheet() {
+  const { t } = useTranslation();
   const data = useKitzy();
   if (!data) return <Loading />;
 

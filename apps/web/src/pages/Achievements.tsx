@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { ACHIEVEMENTS, PREP_TIERS, planProgress, prepTierFor, type Achievement } from '@kitzy/core';
+import { ACHIEVEMENTS, PREP_TIERS, prepTierFor, type Achievement } from '@kitzy/core';
 import { TrophyIcon } from '../components/Icons';
 import { Loading } from '../components/Loading';
 import { Meter } from '../components/Meter';
@@ -19,7 +19,7 @@ export function Achievements() {
   const progress = t('achievements.progress', { done, total: ACHIEVEMENTS.length });
   const tier = prepTierFor({
     essentials: data.essentials,
-    neighbourhood: planProgress(data.plan).quartier,
+    neighbourhood: data.planInfo.steps.quartier,
     tasks: data.tasks,
   });
   const tierIndex = PREP_TIERS.indexOf(tier);

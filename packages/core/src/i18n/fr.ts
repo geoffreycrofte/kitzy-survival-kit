@@ -343,11 +343,12 @@ export const fr = {
     calendarDone: 'Fichier agenda prêt.',
     data: 'Mes données',
     dataHelp:
-      'Tout reste sur cet appareil. Garde une copie de sauvegarde, par exemple pour changer de téléphone. Le fichier contient ton plan d’urgence en clair (santé, contacts) : range-le comme un document personnel, et ne restaure que tes propres sauvegardes.',
+      'Tout reste sur cet appareil. Garde une sauvegarde, par exemple pour changer de téléphone, et protège-la par un code : elle contient ton plan d’urgence.',
     export: 'Télécharger une sauvegarde',
     exported: 'Sauvegarde prête.',
     import: 'Restaurer une sauvegarde',
-    importHelp: 'Remplace toutes les données actuelles par celles du fichier.',
+    importHelp:
+      'Remplace toutes les données actuelles par celles du fichier. Le sélecteur permet aussi de choisir un fichier dans Google Drive, Dropbox ou iCloud Drive.',
     importConfirm: 'Remplacer toutes tes données Kitzy par celles de ce fichier ?',
     imported: 'Sauvegarde restaurée.',
     reset: 'Tout effacer',
@@ -1020,6 +1021,72 @@ export const fr = {
   },
   notFound: {
     body: 'Cette page n’existe pas, ou plus. Le terrier, lui, est toujours là.',
+  },
+  lock: {
+    title: 'Protéger mon plan',
+    intro:
+      'Ton plan contient des informations sensibles : santé, matricule, contacts. Chiffré sur cet appareil, il ne s’ouvre qu’avec ton code Kitzy, et si tu veux avec ton empreinte ou ton visage.',
+    offState: 'Ton plan n’est pas encore protégé sur cet appareil.',
+    onState: 'Ton plan est chiffré sur cet appareil.',
+    code: 'Code Kitzy',
+    codeHint:
+      'Au moins 6 caractères ; plus il est long, plus il est sûr. Note-le en lieu sûr : sans lui, et sans ton empreinte, le plan ne peut plus être ouvert.',
+    codeConfirm: 'Confirme le code',
+    codeTooShort: 'Le code doit faire au moins 6 caractères.',
+    codeMismatch: 'Les deux codes ne sont pas identiques.',
+    enable: 'Protéger mon plan',
+    enabled: 'Plan protégé.',
+    passkey: 'Ouvrir aussi avec l’empreinte ou le visage',
+    passkeyHint:
+      'Utilise le verrouillage de ton appareil : empreinte, visage ou code du téléphone. Ton code Kitzy reste le moyen de secours.',
+    passkeyName: 'Kitzy, plan d’urgence',
+    passkeyAdded: 'Empreinte ou visage ajouté.',
+    passkeyUnsupported:
+      'Cet appareil ou ce navigateur ne sait pas encore ouvrir le plan avec l’empreinte. Ton code Kitzy fonctionne.',
+    passkeyOn:
+      'Il s’ouvre avec ton empreinte, ton visage ou le code du téléphone, et avec ton code Kitzy.',
+    passkeyOff: 'Il s’ouvre avec ton code Kitzy.',
+    passkeyRemove: 'Ne plus ouvrir avec l’empreinte',
+    passkeyRemoved: 'L’empreinte n’ouvre plus le plan.',
+    lockNow: 'Verrouiller maintenant',
+    lockedNow: 'Plan verrouillé.',
+    disable: 'Retirer la protection',
+    disableConfirm: 'Remettre ton plan en clair sur cet appareil ?',
+    disabled: 'Protection retirée.',
+    lockedTitle: 'Ton plan est verrouillé',
+    lockedText:
+      'Ouvre-le pour le lire ou le modifier. Il se verrouille de nouveau quand tu fermes Kitzy, ou après 5 minutes en arrière-plan.',
+    unlockPasskey: 'Ouvrir avec l’empreinte ou le visage',
+    unlockCode: 'Ouvrir avec le code',
+    wrongCode: 'Ce code ne correspond pas.',
+    passkeyFailed: 'L’empreinte n’a pas pu ouvrir le plan. Essaie avec ton code Kitzy.',
+    unlocked: 'Plan ouvert.',
+  },
+  backup: {
+    protect: 'Protéger la sauvegarde par un code',
+    protectHelp:
+      'Conseillé : la sauvegarde contient ton plan d’urgence. Pour la restaurer, sur ce téléphone ou un autre, il faudra ce code, pas ton empreinte.',
+    plainHelp: 'Sans code, toute personne qui trouve le fichier peut lire ton plan d’urgence.',
+    code: 'Code de la sauvegarde',
+    codeHint: 'Au moins 6 caractères. Il peut être différent de ton code Kitzy.',
+    prepare: 'Préparer la sauvegarde',
+    ready: 'Sauvegarde prête.',
+    readyProtected: 'Elle est protégée par ton code.',
+    readyPlain: 'Elle n’est pas protégée par un code.',
+    saveTo: 'Enregistrer dans…',
+    saveToHint:
+      'Ouvre le partage du téléphone : Google Drive, Dropbox, iCloud Drive (app Fichiers), e-mail…',
+    download: 'Télécharger',
+    done: 'Terminé',
+    needsUnlock:
+      'Ton plan est verrouillé : ouvre-le dans « Protéger mon plan », juste au-dessus, pour l’inclure dans la sauvegarde.',
+    choose: 'Choisir un fichier',
+    importNeedsUnlock:
+      'Ouvre d’abord ton plan, juste au-dessus : la sauvegarde restaurée sera protégée de la même façon.',
+    importCode: 'Code de la sauvegarde à ouvrir',
+    protectedFile: 'Cette sauvegarde est protégée par un code.',
+    open: 'Ouvrir la sauvegarde',
+    wrongCode: 'Ce code n’ouvre pas cette sauvegarde.',
   },
   system: {
     notify: {

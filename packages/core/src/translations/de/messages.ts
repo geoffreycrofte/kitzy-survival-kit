@@ -340,11 +340,12 @@ export const messages: Messages = {
     calendarDone: 'Kalenderdatei bereit.',
     data: 'Meine Daten',
     dataHelp:
-      'Alles bleibt auf diesem Gerät. Bewahre eine Sicherungskopie auf, zum Beispiel für einen Handywechsel. Die Datei enthält deinen Notfallplan im Klartext (Gesundheit, Kontakte): Bewahre sie wie ein persönliches Dokument auf und stelle nur deine eigenen Sicherungen wieder her.',
+      'Alles bleibt auf diesem Gerät. Bewahre eine Sicherung auf, zum Beispiel für einen Handywechsel, und schütze sie mit einem Code: Sie enthält deinen Notfallplan.',
     export: 'Sicherung herunterladen',
     exported: 'Sicherung bereit.',
     import: 'Sicherung wiederherstellen',
-    importHelp: 'Ersetzt alle aktuellen Daten durch die aus der Datei.',
+    importHelp:
+      'Ersetzt alle aktuellen Daten durch die der Datei. Über die Auswahl kannst du auch eine Datei aus Google Drive, Dropbox oder iCloud Drive wählen.',
     importConfirm: 'Alle deine Kitzy-Daten durch die aus dieser Datei ersetzen?',
     imported: 'Sicherung wiederhergestellt.',
     reset: 'Alles löschen',
@@ -1028,6 +1029,73 @@ export const messages: Messages = {
   },
   notFound: {
     body: 'Diese Seite gibt es nicht oder nicht mehr. Der Bau ist aber immer noch da.',
+  },
+  lock: {
+    title: 'Meinen Plan schützen',
+    intro:
+      'Dein Plan enthält sensible Angaben: Gesundheit, Matrikelnummer, Kontakte. Verschlüsselt auf diesem Gerät öffnet er sich nur mit deinem Kitzy-Code und, wenn du willst, mit Fingerabdruck oder Gesicht.',
+    offState: 'Dein Plan ist auf diesem Gerät noch nicht geschützt.',
+    onState: 'Dein Plan ist auf diesem Gerät verschlüsselt.',
+    code: 'Kitzy-Code',
+    codeHint:
+      'Mindestens 6 Zeichen; je länger, desto sicherer. Notiere ihn an einem sicheren Ort: Ohne ihn und ohne deinen Fingerabdruck lässt sich der Plan nicht mehr öffnen.',
+    codeConfirm: 'Code bestätigen',
+    codeTooShort: 'Der Code muss mindestens 6 Zeichen lang sein.',
+    codeMismatch: 'Die beiden Codes stimmen nicht überein.',
+    enable: 'Meinen Plan schützen',
+    enabled: 'Plan geschützt.',
+    passkey: 'Auch mit Fingerabdruck oder Gesicht öffnen',
+    passkeyHint:
+      'Nutzt die Sperre deines Geräts: Fingerabdruck, Gesicht oder Handy-Code. Dein Kitzy-Code bleibt der Weg für den Notfall.',
+    passkeyName: 'Kitzy, Notfallplan',
+    passkeyAdded: 'Fingerabdruck oder Gesicht hinzugefügt.',
+    passkeyUnsupported:
+      'Dieses Gerät oder dieser Browser kann den Plan noch nicht mit dem Fingerabdruck öffnen. Dein Kitzy-Code funktioniert.',
+    passkeyOn:
+      'Er öffnet sich mit Fingerabdruck, Gesicht oder Handy-Code und mit deinem Kitzy-Code.',
+    passkeyOff: 'Er öffnet sich mit deinem Kitzy-Code.',
+    passkeyRemove: 'Nicht mehr mit Fingerabdruck öffnen',
+    passkeyRemoved: 'Der Fingerabdruck öffnet den Plan nicht mehr.',
+    lockNow: 'Jetzt sperren',
+    lockedNow: 'Plan gesperrt.',
+    disable: 'Schutz entfernen',
+    disableConfirm: 'Deinen Plan auf diesem Gerät wieder unverschlüsselt speichern?',
+    disabled: 'Schutz entfernt.',
+    lockedTitle: 'Dein Plan ist gesperrt',
+    lockedText:
+      'Öffne ihn, um ihn zu lesen oder zu ändern. Er sperrt sich wieder, wenn du Kitzy schließt oder nach 5 Minuten im Hintergrund.',
+    unlockPasskey: 'Mit Fingerabdruck oder Gesicht öffnen',
+    unlockCode: 'Mit dem Code öffnen',
+    wrongCode: 'Dieser Code passt nicht.',
+    passkeyFailed:
+      'Der Fingerabdruck konnte den Plan nicht öffnen. Versuche es mit deinem Kitzy-Code.',
+    unlocked: 'Plan geöffnet.',
+  },
+  backup: {
+    protect: 'Sicherung mit einem Code schützen',
+    protectHelp:
+      'Empfohlen: Die Sicherung enthält deinen Notfallplan. Zum Wiederherstellen, auf diesem oder einem anderen Handy, brauchst du diesen Code, nicht deinen Fingerabdruck.',
+    plainHelp: 'Ohne Code kann jede Person, die die Datei findet, deinen Notfallplan lesen.',
+    code: 'Code der Sicherung',
+    codeHint: 'Mindestens 6 Zeichen. Er darf sich von deinem Kitzy-Code unterscheiden.',
+    prepare: 'Sicherung vorbereiten',
+    ready: 'Sicherung bereit.',
+    readyProtected: 'Sie ist mit deinem Code geschützt.',
+    readyPlain: 'Sie ist nicht mit einem Code geschützt.',
+    saveTo: 'Speichern in…',
+    saveToHint:
+      'Öffnet das Teilen-Menü des Handys: Google Drive, Dropbox, iCloud Drive (App Dateien), E-Mail…',
+    download: 'Herunterladen',
+    done: 'Fertig',
+    needsUnlock:
+      'Dein Plan ist gesperrt: Öffne ihn oben unter „Meinen Plan schützen“, um ihn in die Sicherung aufzunehmen.',
+    choose: 'Datei auswählen',
+    importNeedsUnlock:
+      'Öffne zuerst oben deinen Plan: Die wiederhergestellte Sicherung wird genauso geschützt.',
+    importCode: 'Code der zu öffnenden Sicherung',
+    protectedFile: 'Diese Sicherung ist mit einem Code geschützt.',
+    open: 'Sicherung öffnen',
+    wrongCode: 'Dieser Code öffnet diese Sicherung nicht.',
   },
   system: {
     notify: {

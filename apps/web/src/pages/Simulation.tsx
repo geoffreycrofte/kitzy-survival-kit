@@ -23,7 +23,7 @@ export function Simulation() {
   const input: SimulationInput = {
     essentials: data.essentials,
     owned: data.owned,
-    plan: data.plan,
+    plan: data.plan ?? data.planInfo,
     tasks: data.tasks,
   };
   const finished = index !== null && index >= SIMULATION.length;
