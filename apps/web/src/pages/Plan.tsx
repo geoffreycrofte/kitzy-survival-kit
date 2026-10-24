@@ -10,7 +10,6 @@ import {
   emptyPet,
   emptyPlan,
   hasSensitiveData,
-  planProgress,
   prefillPlan,
   tasksProgress,
   withoutHealthData,
@@ -28,6 +27,7 @@ import { formatDate } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
 import { Loading } from '../components/Loading';
+import { PlanGate } from '../components/PlanLock';
 
 const uid = () => crypto.randomUUID();
 
@@ -43,7 +43,7 @@ export function PlanOverview() {
   const data = useKitzy();
   if (!data) return <Loading />;
 
-  const progress = planProgress(data.plan);
+  const progress = data.planInfo.steps;
   const started = PLAN_STEPS.some((s) => progress[s] !== 'empty');
   const firstOpen = PLAN_STEPS.find((s) => progress[s] !== 'done') ?? 'foyer';
   const gestures = tasksProgress(data.tasks);
@@ -82,8 +82,8 @@ export function PlanOverview() {
           </Link>
         )}
       </div>
-      {data.plan?.updatedAt && (
-        <p className="muted">{t('plan.updated', { date: formatDate(data.plan.updatedAt) })}</p>
+      {data.planInfo.updatedAt && (
+        <p className="muted">{t('plan.updated', { date: formatDate(data.planInfo.updatedAt) })}</p>
       )}
       <p className="note">{t('plan.paper')}</p>
 
@@ -97,7 +97,7 @@ export function PlanOverview() {
         </Link>
       </section>
 
-      {data.plan && (
+      {(data.plan || data.planSealed) && (
         <button
           type="button"
           className="button button--danger"
@@ -124,7 +124,11 @@ export function PlanStepPage() {
   if (!isStep(step)) return <NotFound />;
   if (!data) return <Loading />;
   const initial = data.plan ?? prefillPlan(emptyPlan(), data.household, uid);
-  return <PlanEditor key={step} step={step} initial={initial} />;
+  return (
+    <PlanGate>
+      <PlanEditor key={step} step={step} initial={initial} />
+    </PlanGate>
+  );
 }
 
 type Edit = (change: (draft: EmergencyPlan) => void) => void;

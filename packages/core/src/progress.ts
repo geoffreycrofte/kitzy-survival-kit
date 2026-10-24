@@ -7,7 +7,7 @@ import type { IsoDate } from './dates';
 import { ESSENTIALS, litCount, type EssentialsState } from './essentials';
 import type { Kit } from './inventory';
 import { kitRows, type Context } from './overview';
-import { PLAN_STEPS, planProgress, type EmergencyPlan } from './plan';
+import { PLAN_STEPS, planInfo, type EmergencyPlan, type PlanInfo } from './plan';
 import { tasksProgress, type TaskDone } from './tasks';
 
 export interface Progress {
@@ -32,7 +32,7 @@ const ratio = (part: number, total: number) => (total > 0 ? Math.min(1, part / t
 export function dashboard(
   kits: readonly Kit[],
   ctx: Context,
-  plan: EmergencyPlan | null,
+  plan: EmergencyPlan | PlanInfo | null,
   tasks: TaskDone,
 ): Dashboard {
   let rowsTotal = 0;
@@ -52,7 +52,7 @@ export function dashboard(
     }
   }
 
-  const steps = planProgress(plan);
+  const steps = planInfo(plan).steps;
   const planDone = PLAN_STEPS.filter((s) => steps[s] === 'done').length;
   const planStarted = PLAN_STEPS.filter((s) => steps[s] === 'started').length;
   const gestures = tasksProgress(tasks);

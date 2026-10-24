@@ -5,6 +5,8 @@ import {
   CATALOG,
   LU,
   buildReminders,
+  isPlanLock,
+  planInfo,
   planReviewDate,
   type AchievementsDone,
   type ActivitiesDone,
@@ -16,7 +18,10 @@ import {
   type Kit,
   type KitLevel,
   type Locale,
+  type PlanInfo,
+  type PlanLock,
   type Reminder,
+  type Sealed,
   type ShoppingExtra,
   type TaskDone,
 } from '@kitzy/core';
@@ -31,7 +36,15 @@ export interface AppData {
   extras: ShoppingExtra[];
   bought: string[];
   level: KitLevel;
+  /** Le plan en clair : `null` s'il n'existe pas, ou s'il est verrouillé et pas encore ouvert. */
   plan: EmergencyPlan | null;
+  /** Avancement et dates du plan, lisibles même verrouillé. */
+  planInfo: PlanInfo;
+  /** Verrou du plan sur cet appareil, et le plan chiffré qu'il protège. */
+  planLock: PlanLock | null;
+  planSealed: Sealed | null;
+  /** `locked` : verrouillé, à déverrouiller ; `opening` : en cours de déchiffrement. */
+  planState: 'open' | 'locked' | 'opening';
   tasks: TaskDone;
   barcodes: BarcodeLink[];
   achievements: AchievementsDone;
@@ -46,6 +59,10 @@ const EMPTY: AppData = {
   bought: [],
   level: 'essential',
   plan: null,
+  planInfo: planInfo(null),
+  planLock: null,
+  planSealed: null,
+  planState: 'open',
   tasks: {},
   barcodes: [],
   achievements: {},
@@ -74,6 +91,9 @@ export async function loadAll(): Promise<AppData> {
     barcodes,
     achievements,
     activities,
+    lock,
+    sealed,
+    info,
   ] = await Promise.all([
     getMeta<Household | null>('household', null),
     db.kits.toArray(),
@@ -86,7 +106,12 @@ export async function loadAll(): Promise<AppData> {
     db.barcodes.toArray(),
     getMeta<AchievementsDone>('achievements', {}),
     getMeta<ActivitiesDone>('activities', {}),
+    getMeta<unknown>('planLock', null),
+    getMeta<Sealed | null>('planSealed', null),
+    getMeta<PlanInfo | null>('planInfo', null),
   ]);
+  const planLock = isPlanLock(lock) ? lock : null;
+  const planSealed = planLock ? sealed : null;
   const order = (k: Kit) => (k.type === 'home' ? '0' : '1' + k.id);
   kits.sort((a, b) => order(a).localeCompare(order(b), 'fr', { numeric: true }));
   return {
@@ -96,7 +121,11 @@ export async function loadAll(): Promise<AppData> {
     extras,
     bought,
     level,
-    plan,
+    plan: planLock ? null : plan,
+    planInfo: planLock ? (info ?? planInfo(null)) : planInfo(plan),
+    planLock,
+    planSealed,
+    planState: planLock ? 'locked' : 'open',
     tasks,
     barcodes,
     achievements,
@@ -116,7 +145,7 @@ export function remindersFor(data: AppData, today: IsoDate, locale: Locale = 'fr
     items: data.items,
     country: COUNTRY,
     today,
-    planReview: planReviewDate(data.plan),
+    planReview: planReviewDate(data.planInfo),
     locale,
   });
 }

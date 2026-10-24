@@ -9,6 +9,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import { App } from './App';
+import { CrashBoundary } from './components/CrashBoundary';
 import { initI18n } from './lib/i18n';
 import { initInstall } from './lib/install';
 import { initLocale } from './lib/locale';
@@ -25,7 +26,9 @@ if (!root) throw new Error('Élément #root introuvable');
 createRoot(root).render(
   <StrictMode>
     <BrowserRouter basename={import.meta.env.BASE_URL}>
-      <App />
+      <CrashBoundary>
+        <App />
+      </CrashBoundary>
     </BrowserRouter>
   </StrictMode>,
 );

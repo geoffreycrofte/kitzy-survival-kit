@@ -1,19 +1,14 @@
-import { useRef, useState, type ChangeEvent, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
-import {
-  DONATION_LINKS,
-  LOCALES,
-  buildIcs,
-  messagesFor,
-  parseBackup,
-  type KitLevel,
-} from '@kitzy/core';
+import { DONATION_LINKS, LOCALES, buildIcs, messagesFor, type KitLevel } from '@kitzy/core';
 import { setLocalePref, useLocale, type LocalePref } from '../lib/locale';
+import { BackupCard } from '../components/BackupCard';
 import { InstallSettings } from '../components/InstallSettings';
+import { PlanProtection } from '../components/PlanLock';
 import { NotificationSettings } from '../components/NotificationSettings';
 import { COUNTRY, useKitzy } from '../data/derived';
-import { exportData, importData, resetAll, setLevel } from '../data/store';
+import { resetAll, setLevel } from '../data/store';
 import { announce } from '../lib/announce';
 import { downloadFile } from '../lib/download';
 import {
@@ -49,24 +44,7 @@ export function Settings() {
   const { themePref, motionPref } = usePreferences();
   const { pref: localePref, locale } = useLocale();
   const data = useKitzy();
-  const fileRef = useRef<HTMLInputElement>(null);
-  const [importError, setImportError] = useState('');
   usePageTitle(t('settings.title'));
-
-  const onImport = async (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    event.target.value = '';
-    if (!file) return;
-    const result = parseBackup(await file.text());
-    if (!result.ok) {
-      setImportError(t(`system.errors.backup.${result.code}`));
-      return;
-    }
-    setImportError('');
-    if (!window.confirm(t('settings.importConfirm'))) return;
-    await importData(result.data);
-    announce(t('settings.imported'));
-  };
 
   const groups = [
     { id: 'affichage', title: t('settings.groups.display') },
@@ -222,53 +200,9 @@ export function Settings() {
       <SettingsGroup id="appareil" title={groups[2]!.title}>
         <InstallSettings />
 
-        <section className="card" aria-labelledby="data-title">
-          <h3 id="data-title" className="choice__legend">
-            {t('settings.data')}
-          </h3>
-          <p className="choice__help">{t('settings.dataHelp')}</p>
-          <div className="button-row">
-            <button
-              type="button"
-              className="button"
-              onClick={async () => {
-                downloadFile(
-                  `kitzy-sauvegarde-${new Date().toISOString().slice(0, 10)}.json`,
-                  await exportData(),
-                  'application/json',
-                );
-                announce(t('settings.exported'));
-              }}
-            >
-              {t('settings.export')}
-            </button>
-            <button
-              type="button"
-              className="button button--ghost"
-              aria-describedby="import-help"
-              onClick={() => fileRef.current?.click()}
-            >
-              {t('settings.import')}
-            </button>
-          </div>
-          <p id="import-help" className="choice__help">
-            {t('settings.importHelp')}
-          </p>
-          <input
-            ref={fileRef}
-            type="file"
-            accept="application/json,.json"
-            className="visually-hidden"
-            tabIndex={-1}
-            aria-hidden="true"
-            onChange={(e) => void onImport(e)}
-          />
-          {importError && (
-            <p className="field__error" role="alert">
-              {importError}
-            </p>
-          )}
-        </section>
+        <PlanProtection />
+
+        <BackupCard />
 
         <section className="card card--danger" aria-labelledby="danger-title">
           <h3 id="danger-title" className="choice__legend">

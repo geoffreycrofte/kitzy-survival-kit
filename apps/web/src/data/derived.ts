@@ -86,7 +86,7 @@ export function useKitzy(): Kitzy | undefined {
       next: nextAction(progress),
       reminders: remindersFor(data, today, locale),
       today,
-      dashboard: dashboard(data.kits, ctx, data.plan, data.tasks),
+      dashboard: dashboard(data.kits, ctx, data.planInfo, data.tasks),
       owned,
       rotate: foodToRotate(rows, today),
     };

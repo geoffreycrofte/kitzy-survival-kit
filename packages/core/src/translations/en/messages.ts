@@ -17,6 +17,10 @@ export const messages: Messages = {
       'Kitzy can’t read your data on this device. It isn’t lost: reload the page, or close any other Kitzy tabs and windows open on this phone.',
     stuckReload: 'Reload Kitzy',
     stuckDetail: 'Technical detail: {{error}}',
+    crashTitle: 'Kitzy can’t display this page',
+    crashText:
+      'Your data on this device seems damaged, for example after restoring an edited file. Download a backup to keep it, then erase everything to start again.',
+    crashReset: 'Erase everything and start again',
   },
   nav: {
     home: 'Burrow',
@@ -334,11 +338,12 @@ export const messages: Messages = {
     calendarDone: 'Calendar file ready.',
     data: 'My data',
     dataHelp:
-      'Everything stays on this device. Keep a backup copy, for example when changing phones.',
+      'Everything stays on this device. Keep a backup, for example when changing phones, and protect it with a code: it holds your emergency plan.',
     export: 'Download a backup',
     exported: 'Backup ready.',
     import: 'Restore a backup',
-    importHelp: 'Replaces all current data with the data in the file.',
+    importHelp:
+      'Replaces all current data with the file’s. The picker also lets you choose a file from Google Drive, Dropbox or iCloud Drive.',
     importConfirm: 'Replace all your Kitzy data with the data in this file?',
     imported: 'Backup restored.',
     reset: 'Delete everything',
@@ -1003,6 +1008,71 @@ export const messages: Messages = {
   },
   notFound: {
     body: 'This page doesn’t exist, or no longer does. The burrow, though, is still here.',
+  },
+  lock: {
+    title: 'Protect my plan',
+    intro:
+      'Your plan holds sensitive details: health, national ID number, contacts. Encrypted on this device, it only opens with your Kitzy code and, if you like, your fingerprint or face.',
+    offState: 'Your plan isn’t protected on this device yet.',
+    onState: 'Your plan is encrypted on this device.',
+    code: 'Kitzy code',
+    codeHint:
+      'At least 8 characters; the longer, the safer. Write it down somewhere safe: without it, and without your fingerprint, the plan can no longer be opened.',
+    codeConfirm: 'Confirm the code',
+    codeTooShort: 'The code must be at least 8 characters long.',
+    codeMismatch: 'The two codes don’t match.',
+    enable: 'Protect my plan',
+    enabled: 'Plan protected.',
+    passkey: 'Also open with fingerprint or face',
+    passkeyHint:
+      'Uses your device’s lock: fingerprint, face or phone passcode. Your Kitzy code stays as the backup way in.',
+    passkeyName: 'Kitzy, emergency plan',
+    passkeyAdded: 'Fingerprint or face added.',
+    passkeyUnsupported:
+      'This device or browser can’t open the plan with a fingerprint yet. Your Kitzy code works.',
+    passkeyOn: 'It opens with your fingerprint, face or phone passcode, and with your Kitzy code.',
+    passkeyOff: 'It opens with your Kitzy code.',
+    passkeyRemove: 'Stop opening with fingerprint',
+    passkeyRemoved: 'Your fingerprint no longer opens the plan.',
+    lockNow: 'Lock now',
+    lockedNow: 'Plan locked.',
+    disable: 'Remove protection',
+    disableConfirm: 'Store your plan unencrypted on this device again?',
+    disabled: 'Protection removed.',
+    lockedTitle: 'Your plan is locked',
+    lockedText:
+      'Open it to read or edit it. It locks again when you close Kitzy, or after 5 minutes in the background.',
+    unlockPasskey: 'Open with fingerprint or face',
+    unlockCode: 'Open with the code',
+    wrongCode: 'That code doesn’t match.',
+    passkeyFailed: 'Your fingerprint couldn’t open the plan. Try your Kitzy code.',
+    unlocked: 'Plan opened.',
+  },
+  backup: {
+    protect: 'Protect the backup with a code',
+    protectHelp:
+      'Recommended: the backup holds your emergency plan. To restore it, on this phone or another, you’ll need this code, not your fingerprint.',
+    plainHelp: 'Without a code, anyone who finds the file can read your emergency plan.',
+    code: 'Backup code',
+    codeHint: 'At least 8 characters. It can differ from your Kitzy code.',
+    prepare: 'Prepare the backup',
+    ready: 'Backup ready.',
+    readyProtected: 'It’s protected by your code.',
+    readyPlain: 'It isn’t protected by a code.',
+    saveTo: 'Save to…',
+    saveToHint:
+      'Opens your phone’s share sheet: Google Drive, Dropbox, iCloud Drive (Files app), email…',
+    download: 'Download',
+    done: 'Done',
+    needsUnlock:
+      'Your plan is locked: open it under “Protect my plan”, just above, to include it in the backup.',
+    choose: 'Choose a file',
+    importNeedsUnlock:
+      'Open your plan first, just above: the restored backup will be protected the same way.',
+    importCode: 'Code of the backup to open',
+    protectedFile: 'This backup is protected by a code.',
+    open: 'Open the backup',
+    wrongCode: 'That code doesn’t open this backup.',
   },
   system: {
     notify: {

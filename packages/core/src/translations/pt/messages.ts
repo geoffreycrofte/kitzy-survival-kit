@@ -17,6 +17,10 @@ export const messages: Messages = {
       'O Kitzy não consegue ler os teus dados neste aparelho. Não se perderam: recarrega a página ou fecha os outros separadores e janelas do Kitzy abertos neste telemóvel.',
     stuckReload: 'Recarregar o Kitzy',
     stuckDetail: 'Detalhe técnico: {{error}}',
+    crashTitle: 'O Kitzy não consegue mostrar esta página',
+    crashText:
+      'Os teus dados neste aparelho parecem danificados, por exemplo depois de restaurar um ficheiro alterado. Descarrega uma cópia de segurança para os guardar e depois apaga tudo para recomeçar.',
+    crashReset: 'Apagar tudo e recomeçar',
   },
   nav: {
     home: 'Toca',
@@ -335,11 +339,12 @@ export const messages: Messages = {
     calendarDone: 'Ficheiro de calendário pronto.',
     data: 'Os meus dados',
     dataHelp:
-      'Fica tudo neste aparelho. Guarda uma cópia de segurança, por exemplo para mudar de telemóvel.',
+      'Fica tudo neste aparelho. Guarda uma cópia de segurança, por exemplo para mudar de telemóvel, e protege-a com um código: contém o teu plano de emergência.',
     export: 'Descarregar uma cópia de segurança',
     exported: 'Cópia de segurança pronta.',
     import: 'Restaurar uma cópia de segurança',
-    importHelp: 'Substitui todos os dados atuais pelos do ficheiro.',
+    importHelp:
+      'Substitui todos os dados atuais pelos do ficheiro. O seletor também permite escolher um ficheiro do Google Drive, Dropbox ou iCloud Drive.',
     importConfirm: 'Substituir todos os teus dados do Kitzy pelos deste ficheiro?',
     imported: 'Cópia de segurança restaurada.',
     reset: 'Apagar tudo',
@@ -1013,6 +1018,73 @@ export const messages: Messages = {
   },
   notFound: {
     body: 'Esta página não existe, ou já não existe. A toca, essa, continua cá.',
+  },
+  lock: {
+    title: 'Proteger o meu plano',
+    intro:
+      'O teu plano tem informações sensíveis: saúde, número de identificação, contactos. Encriptado neste aparelho, só abre com o teu código Kitzy e, se quiseres, com a impressão digital ou o rosto.',
+    offState: 'O teu plano ainda não está protegido neste aparelho.',
+    onState: 'O teu plano está encriptado neste aparelho.',
+    code: 'Código Kitzy',
+    codeHint:
+      'Pelo menos 8 caracteres; quanto mais longo, mais seguro. Anota-o num sítio seguro: sem ele, e sem a tua impressão digital, o plano deixa de poder ser aberto.',
+    codeConfirm: 'Confirma o código',
+    codeTooShort: 'O código tem de ter pelo menos 8 caracteres.',
+    codeMismatch: 'Os dois códigos não são iguais.',
+    enable: 'Proteger o meu plano',
+    enabled: 'Plano protegido.',
+    passkey: 'Abrir também com impressão digital ou rosto',
+    passkeyHint:
+      'Usa o bloqueio do teu aparelho: impressão digital, rosto ou código do telemóvel. O teu código Kitzy continua a ser a alternativa de recurso.',
+    passkeyName: 'Kitzy, plano de emergência',
+    passkeyAdded: 'Impressão digital ou rosto adicionado.',
+    passkeyUnsupported:
+      'Este aparelho ou navegador ainda não consegue abrir o plano com a impressão digital. O teu código Kitzy funciona.',
+    passkeyOn:
+      'Abre com a impressão digital, o rosto ou o código do telemóvel, e com o teu código Kitzy.',
+    passkeyOff: 'Abre com o teu código Kitzy.',
+    passkeyRemove: 'Deixar de abrir com a impressão digital',
+    passkeyRemoved: 'A impressão digital já não abre o plano.',
+    lockNow: 'Bloquear agora',
+    lockedNow: 'Plano bloqueado.',
+    disable: 'Retirar a proteção',
+    disableConfirm: 'Voltar a guardar o teu plano sem encriptação neste aparelho?',
+    disabled: 'Proteção retirada.',
+    lockedTitle: 'O teu plano está bloqueado',
+    lockedText:
+      'Abre-o para o ler ou alterar. Volta a bloquear quando fechas o Kitzy, ou após 5 minutos em segundo plano.',
+    unlockPasskey: 'Abrir com impressão digital ou rosto',
+    unlockCode: 'Abrir com o código',
+    wrongCode: 'Este código não corresponde.',
+    passkeyFailed: 'A impressão digital não conseguiu abrir o plano. Tenta com o teu código Kitzy.',
+    unlocked: 'Plano aberto.',
+  },
+  backup: {
+    protect: 'Proteger a cópia de segurança com um código',
+    protectHelp:
+      'Recomendado: a cópia contém o teu plano de emergência. Para a restaurar, neste telemóvel ou noutro, vais precisar deste código, não da tua impressão digital.',
+    plainHelp:
+      'Sem código, qualquer pessoa que encontre o ficheiro pode ler o teu plano de emergência.',
+    code: 'Código da cópia',
+    codeHint: 'Pelo menos 8 caracteres. Pode ser diferente do teu código Kitzy.',
+    prepare: 'Preparar a cópia de segurança',
+    ready: 'Cópia pronta.',
+    readyProtected: 'Está protegida pelo teu código.',
+    readyPlain: 'Não está protegida por um código.',
+    saveTo: 'Guardar em…',
+    saveToHint:
+      'Abre a partilha do telemóvel: Google Drive, Dropbox, iCloud Drive (app Ficheiros), e-mail…',
+    download: 'Descarregar',
+    done: 'Concluído',
+    needsUnlock:
+      'O teu plano está bloqueado: abre-o em «Proteger o meu plano», logo acima, para o incluir na cópia.',
+    choose: 'Escolher um ficheiro',
+    importNeedsUnlock:
+      'Abre primeiro o teu plano, logo acima: a cópia restaurada ficará protegida da mesma forma.',
+    importCode: 'Código da cópia a abrir',
+    protectedFile: 'Esta cópia de segurança está protegida por um código.',
+    open: 'Abrir a cópia',
+    wrongCode: 'Este código não abre esta cópia.',
   },
   system: {
     notify: {

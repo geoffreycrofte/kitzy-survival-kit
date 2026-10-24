@@ -656,6 +656,31 @@ Settings { locale; theme; textScale; reminderOffsets; channels; quietHours }
 
 ---
 
+### 7.0 Données venues d'ailleurs (revue de sécurité, octobre 2026)
+
+Une sauvegarde importée ou un lien de partage peuvent venir de n'importe qui : on les traite comme hostiles.
+
+- **Sauvegarde (import)** : fichier refusé au-delà de 5 Mo avant lecture ; schéma Zod strict (clés inconnues retirées, pas de pollution de prototype) ; identifiants, textes et nombres bornés, dont l'intervalle de recharge (≤ 3650 jours), qu'un fichier piégé utilisait pour faire planter toutes les pages, Réglages compris.
+- **Filet de sécurité** : si des données abîmées font quand même planter l'affichage, un écran propose de télécharger une sauvegarde puis de tout effacer, au lieu d'une page blanche.
+- **Sauvegarde (export)** : le fichier contient le plan d'urgence (santé, matricule, contacts) ; il est désormais protégé par un code par défaut (voir § 7.0.1).
+- **Lien de partage** : fragment limité à 64 Ko et décompression arrêtée à 256 Ko ; un lien piégé de 680 Ko montait à 1 Go de mémoire, contre 11 Mo désormais.
+- **Agenda (.ics)** : tous les retours à la ligne des noms sont échappés.
+- **Rendu** : aucun HTML venu des données (React échappe tout ; le seul `innerHTML` est le QR code généré localement). Liens externes en `noopener noreferrer`, adresses issues du catalogue, jamais des données.
+- **Dépendances et CI** : `pnpm audit` propre (fflate 0.8.3) ; le workflow CI n'a plus qu'un jeton en lecture seule.
+- **À envisager** : une Content-Security-Policy en `<meta>` (GitHub Pages ne permet pas les en-têtes), et l'épinglage des actions GitHub par SHA.
+
+#### 7.0.1 Plan chiffré sur l'appareil, sauvegardes protégées par un code
+
+- **Ce qui est chiffré** : le plan d'urgence seulement (choix validé). Le stock et les dates restent lisibles : l'app s'ouvre sans déverrouillage, et les rappels en arrière-plan continuent de fonctionner. Un résumé sans donnée personnelle (`planInfo` : avancement des étapes, point de rendez-vous noté ou non, dates) reste en clair pour l'accueil, les succès et la revue annuelle.
+- **Clés** : une clé de données aléatoire (AES-GCM 256) chiffre le plan. Elle est elle-même chiffrée une fois par moyen d'ouverture :
+  - le **code Kitzy**, obligatoire (8 caractères minimum, PBKDF2-SHA-256, 600 000 itérations), qui sert aussi de secours ;
+  - en option, la **clé d'accès de l'appareil** (WebAuthn, extension PRF) : empreinte, visage ou code du téléphone. Aucun serveur : l'authentificateur ne livre son secret qu'après vérification de la personne, et ce secret (HKDF-SHA-256) ouvre la clé de données.
+- **Session** : la clé ouverte reste en mémoire seulement ; elle disparaît à la fermeture de l'app et après 5 minutes en arrière-plan, ou avec « Verrouiller maintenant ». Les pages du plan (étapes, impression) demandent l'ouverture ; l'aperçu du plan reste visible.
+- **Support PRF** : Chrome et Edge (Android, ordinateurs avec clés d'accès), Safari 18 et plus (iOS, macOS, trousseau iCloud). Ailleurs, seul le code Kitzy est proposé.
+- **Sauvegarde** : protégée par un code par défaut (PBKDF2 puis AES-GCM, fichier `kitzy-sauvegarde-AAAA-MM-JJ-protegee.json`). Le code de sauvegarde est indépendant de l'empreinte : n'importe qui ayant le fichier **et** le code peut la restaurer sur un autre appareil. À l'import, un fichier protégé demande son code ; un fichier qui exige un travail démesuré (itérations hors bornes) est refusé. Un plan verrouillé doit être ouvert pour être exporté, et une sauvegarde restaurée sur un appareil verrouillé y est chiffrée à son tour.
+- **Cloud** (choix validé : pas de synchronisation automatique) : « Enregistrer dans… » ouvre la feuille de partage du téléphone (Google Drive, Dropbox, iCloud Drive via l'app Fichiers, e-mail…). La sauvegarde est préparée d'abord, car le partage exige un geste récent et le chiffrement prend un instant. Pour restaurer, le sélecteur de fichiers donne accès aux mêmes services. Une vraie synchronisation Drive / Dropbox demanderait des applications OAuth chez chaque fournisseur ; iCloud n'est pas accessible depuis une app web.
+- **Limite connue** : un code court reste devinable hors ligne par quelqu'un qui a le fichier ou l'appareil ; l'app conseille un code long.
+
 ### 7.1 Synchronisation entre appareils (à venir)
 
 Objectif : retrouver son kit sur le téléphone, la tablette et l'ordinateur, sans compte Kitzy et **sans serveur Kitzy**, en s'appuyant sur le cloud que la personne utilise déjà. Le cloud ne voit jamais les données en clair.

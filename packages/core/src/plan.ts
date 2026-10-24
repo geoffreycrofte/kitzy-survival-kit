@@ -348,8 +348,29 @@ export function planProgress(plan: EmergencyPlan | null): Record<PlanStep, StepS
   >;
 }
 
+/**
+ * Ce qu'on sait du plan sans l'ouvrir : l'avancement et les dates, rien de personnel.
+ * Gardé en clair quand le plan est verrouillé, pour l'accueil, les succès et les rappels.
+ */
+export interface PlanInfo {
+  steps: Record<PlanStep, StepState>;
+  meetingPoint: boolean;
+  createdAt?: IsoDate;
+  updatedAt?: IsoDate;
+}
+
+export function planInfo(plan: EmergencyPlan | PlanInfo | null): PlanInfo {
+  if (plan && 'steps' in plan) return plan;
+  return {
+    steps: planProgress(plan),
+    meetingPoint: filled(plan?.emergency.meeting1),
+    ...(plan?.createdAt ? { createdAt: plan.createdAt } : {}),
+    ...(plan?.updatedAt ? { updatedAt: plan.updatedAt } : {}),
+  };
+}
+
 /** Revue annuelle du plan, un an après la dernière mise à jour. */
-export function planReviewDate(plan: EmergencyPlan | null): IsoDate | null {
+export function planReviewDate(plan: { updatedAt?: IsoDate } | null): IsoDate | null {
   if (!plan?.updatedAt) return null;
   return addDays(plan.updatedAt, 365);
 }

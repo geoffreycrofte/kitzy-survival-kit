@@ -17,6 +17,10 @@ export const messages: Messages = {
       'Kitzy kann deng Donnéeën op dësem Apparat net liesen. Si sinn net verluer: lued d’Säit nei, oder maach déi aner Tabs a Fënstere vu Kitzy op dësem Telefon zou.',
     stuckReload: 'Kitzy nei lueden',
     stuckDetail: 'Technescht Detail: {{error}}',
+    crashTitle: 'Kitzy kann dës Säit net weisen',
+    crashText:
+      'Deng Donnéeën op dësem Apparat schéngen beschiedegt, zum Beispill nodeems eng geännert Datei restauréiert gouf. Lued e Backup erof fir se ze halen, an dann läsch alles fir nei unzefänken.',
+    crashReset: 'Alles läschen an nei ufänken',
   },
   nav: {
     home: 'Bau',
@@ -334,11 +338,12 @@ export const messages: Messages = {
     calendarDone: 'Kalennerfichier prett.',
     data: 'Meng Donnéeën',
     dataHelp:
-      'Alles bleift op dësem Apparat. Behal eng Backup-Kopie, zum Beispill fir den Telefon ze wiesselen.',
+      'Alles bleift op dësem Apparat. Behal e Backup, zum Beispill fir den Telefon ze wiesselen, a schütz e mat engem Code: en enthält däi Noutfallplang.',
     export: 'Backup eroflueden',
     exported: 'Backup prett.',
     import: 'Backup restauréieren',
-    importHelp: 'Ersetzt all aktuell Donnéeë mat deenen aus dem Fichier.',
+    importHelp:
+      'Ersetzt all aktuell Donnéeë mat deene vum Fichier. Mat der Auswiel kanns de och e Fichier aus Google Drive, Dropbox oder iCloud Drive huelen.',
     importConfirm: 'All deng Kitzy-Donnéeë mat deenen aus dësem Fichier ersetzen?',
     imported: 'Backup restauréiert.',
     reset: 'Alles läschen',
@@ -1020,6 +1025,72 @@ export const messages: Messages = {
   },
   notFound: {
     body: 'Dës Säit gëtt et net, oder net méi. De Bau ass awer nach ëmmer do.',
+  },
+  lock: {
+    title: 'Mäi Plang schützen',
+    intro:
+      'Däi Plang enthält sensibel Informatiounen: Gesondheet, Matricule, Kontakter. Verschlësselt op dësem Apparat geet en nëmme mat dengem Kitzy-Code op, a wann s de wëlls mat dengem Fangerofdrock oder dengem Gesiicht.',
+    offState: 'Däi Plang ass op dësem Apparat nach net geschützt.',
+    onState: 'Däi Plang ass op dësem Apparat verschlësselt.',
+    code: 'Kitzy-Code',
+    codeHint:
+      'Mindestens 8 Zeechen; wat e méi laang ass, wat e méi sécher ass. Schreif en op eng sécher Plaz: ouni hien an ouni däi Fangerofdrock kann de Plang net méi opgemaach ginn.',
+    codeConfirm: 'Code confirméieren',
+    codeTooShort: 'De Code muss mindestens 8 Zeechen hunn.',
+    codeMismatch: 'Déi zwee Coden sinn net déiselwecht.',
+    enable: 'Mäi Plang schützen',
+    enabled: 'Plang geschützt.',
+    passkey: 'Och mam Fangerofdrock oder mam Gesiicht opmaachen',
+    passkeyHint:
+      'Benotzt d’Spär vun dengem Apparat: Fangerofdrock, Gesiicht oder Code vum Telefon. Däi Kitzy-Code bleift de Wee fir den Noutfall.',
+    passkeyName: 'Kitzy, Noutfallplang',
+    passkeyAdded: 'Fangerofdrock oder Gesiicht derbäigesat.',
+    passkeyUnsupported:
+      'Dësen Apparat oder dëse Browser kann de Plang nach net mam Fangerofdrock opmaachen. Däi Kitzy-Code funktionéiert.',
+    passkeyOn:
+      'En geet mam Fangerofdrock, mam Gesiicht oder mam Code vum Telefon op, a mat dengem Kitzy-Code.',
+    passkeyOff: 'En geet mat dengem Kitzy-Code op.',
+    passkeyRemove: 'Net méi mam Fangerofdrock opmaachen',
+    passkeyRemoved: 'De Fangerofdrock mécht de Plang net méi op.',
+    lockNow: 'Elo spären',
+    lockedNow: 'Plang gespaart.',
+    disable: 'Schutz ewechhuelen',
+    disableConfirm: 'Däi Plang op dësem Apparat nees onverschlësselt späicheren?',
+    disabled: 'Schutz ewechgeholl.',
+    lockedTitle: 'Däi Plang ass gespaart',
+    lockedText:
+      'Maach en op fir en ze liesen oder ze änneren. En spär sech nees, wann s de Kitzy zoumaachs, oder no 5 Minutten am Hannergrond.',
+    unlockPasskey: 'Mam Fangerofdrock oder mam Gesiicht opmaachen',
+    unlockCode: 'Mam Code opmaachen',
+    wrongCode: 'Dëse Code passt net.',
+    passkeyFailed: 'De Fangerofdrock konnt de Plang net opmaachen. Probéier mat dengem Kitzy-Code.',
+    unlocked: 'Plang opgemaach.',
+  },
+  backup: {
+    protect: 'De Backup mat engem Code schützen',
+    protectHelp:
+      'Recommandéiert: de Backup enthält däi Noutfallplang. Fir en ze restauréieren, op dësem oder engem aneren Telefon, brauchs de dëse Code, net däi Fangerofdrock.',
+    plainHelp: 'Ouni Code kann all Persoun, déi de Fichier fënnt, däi Noutfallplang liesen.',
+    code: 'Code vum Backup',
+    codeHint: 'Mindestens 8 Zeechen. En däerf anescht si wéi däi Kitzy-Code.',
+    prepare: 'De Backup preparéieren',
+    ready: 'Backup prett.',
+    readyProtected: 'En ass mat dengem Code geschützt.',
+    readyPlain: 'En ass net mat engem Code geschützt.',
+    saveTo: 'Späicheren an…',
+    saveToHint:
+      'Mécht d’Deele vum Telefon op: Google Drive, Dropbox, iCloud Drive (App Fichieren), E-Mail…',
+    download: 'Eroflueden',
+    done: 'Fäerdeg',
+    needsUnlock:
+      'Däi Plang ass gespaart: maach en uewen ënner „Mäi Plang schützen“ op, fir en an de Backup ze huelen.',
+    choose: 'E Fichier auswielen',
+    importNeedsUnlock:
+      'Maach fir d’éischt uewen däi Plang op: de restauréierte Backup gëtt op déiselwecht Manéier geschützt.',
+    importCode: 'Code vum Backup fir opzemaachen',
+    protectedFile: 'Dëse Backup ass mat engem Code geschützt.',
+    open: 'De Backup opmaachen',
+    wrongCode: 'Dëse Code mécht dëse Backup net op.',
   },
   system: {
     notify: {

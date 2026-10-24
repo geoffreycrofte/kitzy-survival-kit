@@ -3,14 +3,15 @@
  * À chaque étape, un choix (avec son explication) et ce que ton foyer a déjà pour y faire face.
  */
 import type { Essential, EssentialsState } from './essentials';
-import { planProgress, type EmergencyPlan } from './plan';
+import { planInfo, type EmergencyPlan, type PlanInfo } from './plan';
 import type { TaskDone } from './tasks';
 
 export interface SimulationInput {
   essentials: EssentialsState;
   /** Modèles du catalogue présents en quantité dans au moins un kit. */
   owned: ReadonlySet<string>;
-  plan: EmergencyPlan | null;
+  /** Le plan, ou seulement ce qu'on en sait quand il est verrouillé. */
+  plan: EmergencyPlan | PlanInfo | null;
   tasks: TaskDone;
 }
 
@@ -37,8 +38,6 @@ export interface SimulationStep {
   choice: SimulationChoice;
   checks: SimulationCheck[];
 }
-
-const filled = (value: string | undefined) => Boolean(value?.trim());
 
 const essential = (id: Essential, label: string, route: string): SimulationCheck => ({
   id: `essential-${id}`,
@@ -136,13 +135,13 @@ export const SIMULATION: readonly SimulationStep[] = [
       {
         id: 'plan-meeting',
         label: 'Un point de rendez-vous noté dans ton plan',
-        ok: (i) => filled(i.plan?.emergency.meeting1),
+        ok: (i) => planInfo(i.plan).meetingPoint,
         route: '/plan/urgence',
       },
       {
         id: 'plan-urgence',
         label: 'L’étape « En cas d’urgence » du plan terminée',
-        ok: (i) => planProgress(i.plan).urgence === 'done',
+        ok: (i) => planInfo(i.plan).steps.urgence === 'done',
         route: '/plan/urgence',
       },
     ],
@@ -270,7 +269,7 @@ export const SIMULATION: readonly SimulationStep[] = [
       {
         id: 'plan-quartier',
         label: 'Les personnes à aider notées dans ton plan',
-        ok: (i) => planProgress(i.plan).quartier === 'done',
+        ok: (i) => planInfo(i.plan).steps.quartier === 'done',
         route: '/plan/quartier',
       },
     ],
