@@ -215,7 +215,7 @@ export const guide: ContentTranslation['guide'] = [
     title: 'LU-Alert, déi offiziell Warnung',
     summary: 'Wéi d’Autoritéiten dech warnen a wat d’Vigilanzniveaue bedeiten.',
     chapter: 'alerte',
-    pose: 'bonjour',
+    pose: 'radio',
     blocks: [
       {
         type: 'p',
@@ -347,7 +347,7 @@ export const guide: ContentTranslation['guide'] = [
     title: 'Sech richteg informéieren',
     summary: 'Déi richteg Quelle fannen a vermeiden, falsch Informatiounen ze deelen.',
     chapter: 'alerte',
-    pose: 'lecture',
+    pose: 'radio',
     blocks: [
       {
         type: 'p',
@@ -464,7 +464,7 @@ export const guide: ContentTranslation['guide'] = [
     summary:
       'Dech an dräi Schrëtt virbereeden: de Kit, den Noutfallplang a mat anere Leit driwwer schwätzen.',
     chapter: 'preparer',
-    pose: 'provisions',
+    pose: 'plan',
     blocks: [
       {
         type: 'p',

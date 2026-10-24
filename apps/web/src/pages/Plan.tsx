@@ -24,6 +24,7 @@ import { useKitzy } from '../data/derived';
 import { deletePlan, savePlanStep } from '../data/store';
 import { announce } from '../lib/announce';
 import { formatDate } from '../lib/format';
+import { mascotImage } from '../lib/assets';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
 import { Loading } from '../components/Loading';
@@ -51,6 +52,7 @@ export function PlanOverview() {
   return (
     <div className="page">
       <h1 tabIndex={-1}>{t('plan.title')}</h1>
+      <img className="page__hog" {...mascotImage('plan')} alt="" />
       <p className="lead">{t('plan.intro')}</p>
 
       <ol className="plan-steps">

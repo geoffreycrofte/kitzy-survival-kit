@@ -219,7 +219,7 @@ export const guide: ContentTranslation['guide'] = [
     title: 'LU-Alert, die offizielle Warnung',
     summary: 'Wie die Behörden dich warnen und was die Warnstufen bedeuten.',
     chapter: 'alerte',
-    pose: 'bonjour',
+    pose: 'radio',
     blocks: [
       {
         type: 'p',
@@ -351,7 +351,7 @@ export const guide: ContentTranslation['guide'] = [
     title: 'Sich richtig informieren',
     summary: 'Die richtigen Quellen finden und keine Falschinformationen teilen.',
     chapter: 'alerte',
-    pose: 'lecture',
+    pose: 'radio',
     blocks: [
       {
         type: 'p',
@@ -465,7 +465,7 @@ export const guide: ContentTranslation['guide'] = [
     summary:
       'Vorbereitung in drei Schritten: das Kit, der Notfallplan und mit anderen darüber reden.',
     chapter: 'preparer',
-    pose: 'provisions',
+    pose: 'plan',
     blocks: [
       {
         type: 'p',

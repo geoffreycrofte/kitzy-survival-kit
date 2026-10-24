@@ -2,7 +2,7 @@ import { Link, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { GuideBlock, GuidePage } from '@kitzy/core';
 import { useContent } from '../lib/content';
-import { mascot } from '../lib/assets';
+import { mascotImage } from '../lib/assets';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
 
@@ -119,9 +119,7 @@ export function GuideArticle() {
         <Link to="/guide">{t('guide.back')}</Link>
       </p>
       <h1 tabIndex={-1}>{page.title}</h1>
-      {page.pose && (
-        <img className="prose__hog" src={mascot(page.pose)} alt="" width={640} height={1000} />
-      )}
+      {page.pose && <img className="prose__hog" {...mascotImage(page.pose)} alt="" />}
       <p className="lead">{page.summary}</p>
       {sections(page.blocks).map((section, i) =>
         section[0]?.type === 'h2' ? (

@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { mascotImage } from '../lib/assets';
 import { usePageTitle } from '../lib/usePageTitle';
 
 export function NotFound() {
@@ -9,6 +10,7 @@ export function NotFound() {
   return (
     <div className="page soon">
       <h1 tabIndex={-1}>{t('pages.notFound')}</h1>
+      <img className="soon__hog" {...mascotImage('curieux')} alt="" />
       <p>{t('notFound.body')}</p>
       <Link to="/" className="button button--ghost">
         {t('soon.back')}

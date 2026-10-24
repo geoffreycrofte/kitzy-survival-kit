@@ -2647,3 +2647,12 @@ button.bottom-nav__link {
   font-family: var(--kz-font-display);
   font-size: 1.125rem;
 }
+
+/* Le hérisson d'une page (plan, page introuvable, écran de secours) : décoratif, discret. */
+.page__hog {
+  display: block;
+  width: 140px;
+  height: auto;
+  align-self: center;
+  margin-inline: auto;
+}

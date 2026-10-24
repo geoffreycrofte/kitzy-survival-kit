@@ -1,6 +1,7 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { exportData, resetAll } from '../data/store';
+import { mascotImage } from '../lib/assets';
 import { downloadFile } from '../lib/download';
 
 /**
@@ -28,6 +29,7 @@ function CrashScreen() {
   return (
     <main id="main" className="app__main page">
       <div className="card" role="alert">
+        <img className="page__hog" {...mascotImage('curieux')} alt="" />
         <h1>{t('app.crashTitle')}</h1>
         <p>{t('app.crashText')}</p>
         <div className="button-row">
