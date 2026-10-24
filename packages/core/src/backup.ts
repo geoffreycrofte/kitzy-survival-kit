@@ -65,6 +65,9 @@ const ExtraSchema = z.object({
   label: z.string().max(120),
   quantity: z.number().positive().max(100_000).optional(),
   unit: unit.optional(),
+  pantryId: id.optional(),
+  recipeIds: z.array(id).max(50).optional(),
+  stored: z.object({ itemId: id, lotId: id }).optional(),
 });
 
 const BarcodeSchema = z.object({

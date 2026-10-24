@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { productsFor } from '@kitzy/core';
 import { useContent } from '../lib/content';
 import { AFFILIATE } from '../lib/affiliate';
+import { useLocale } from '../lib/locale';
 import { useOnline } from '../lib/useOnline';
 
 const MARKER = { 1: '€', 2: '€€', 3: '€€€' } as const;
@@ -15,7 +16,8 @@ export function BuyingAdvice({ templateId }: { templateId: string }) {
   const { t } = useTranslation();
   const online = useOnline();
   const { products } = useContent();
-  const groups = productsFor(templateId, products, AFFILIATE);
+  const { locale } = useLocale();
+  const groups = productsFor(templateId, products, AFFILIATE, undefined, locale);
   if (groups.length === 0) return null;
 
   const offers = groups.flatMap((g) => g.products.flatMap((p) => p.offers));

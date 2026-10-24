@@ -158,4 +158,158 @@ export const products: ContentTranslation['products'] = {
     name: 'Wasserdichte Packsäcke in verschiedenen Größen',
     why: 'Schützen Dokumente, Kleidung und Elektronik vor Regen.',
   },
+  // ── Wasser (Behälter) ──
+  'bucket-lid': {
+    name: 'Lebensmittelechter Eimer, 10 L, mit Deckel',
+    why: 'Um Wasser zum Waschen und für die Toilettenspülung staubfrei aufzubewahren.',
+  },
+  // ── Kochen (Utensilien) ──
+  'camping-cookset': {
+    name: 'Camping-Kochgeschirr mit Topf, Pfanne und Becher',
+    why: 'Alles passt ineinander: ein Topf für den Kocher, ohne die Küchentöpfe zu ruinieren.',
+  },
+  'freezer-bags-foil': {
+    name: 'Gefrierbeutel mit Zipper und Alufolie',
+    why: 'Um Reste trocken aufzubewahren und Dokumente zu schützen.',
+  },
+  'reusable-tableware': {
+    name: 'Wiederverwendbare Teller, Schüsseln und Becher',
+    why: 'Leicht und unzerbrechlich, mit sehr wenig Wasser abzuwaschen.',
+  },
+  // ── Licht und Feuer ──
+  'candles-long': {
+    name: 'Teelichter mit langer Brenndauer und Streichhölzer',
+    why: 'Licht für den Notfall: auf eine stabile Fläche stellen, weit weg von allem, was brennen kann.',
+  },
+  'storm-matches-box': {
+    name: 'Sturmstreichhölzer in wasserdichter Dose',
+    why: 'Sie zünden auch bei Wind und sogar, wenn sie feucht sind.',
+  },
+  'lighters-pack': {
+    name: 'Ersatzfeuerzeuge im Mehrfachpack',
+    why: 'Eins im Vorrat, eins in jedem Rucksack.',
+  },
+  'glow-sticks': {
+    name: 'Knicklichter mit 12 Stunden Leuchtdauer',
+    why: 'Licht ohne Flamme und ohne Batterien, beruhigend für Kinder in der Nacht.',
+  },
+  'charging-cables': {
+    name: 'Multi-Ladekabel (USB-C, Lightning, Micro-USB)',
+    why: 'Ein einziges Kabel für alle Handys im Haushalt.',
+  },
+  // ── Wärme ──
+  'rain-poncho': {
+    name: 'Wiederverwendbarer Regenponcho',
+    why: 'Bedeckt auch den Rucksack und passt zusammengelegt in eine Tasche.',
+  },
+  'hand-warmers': {
+    name: 'Handwärmer',
+    why: 'Ein paar Stunden Wärme ohne Strom, in der Hosentasche oder im Handschuh.',
+  },
+  'fleece-hat-gloves': {
+    name: 'Fleecemütze und Fleecehandschuhe',
+    why: 'Hände, Füße und Ohren kühlen als Erstes aus, wenn die Heizung ausfällt.',
+  },
+  // ── Gesundheit ──
+  'bandages-set': {
+    name: 'Elastische Binden und eine Rolle Heftpflaster',
+    why: 'Um einen Verband zu fixieren oder einen Knöchel zu stützen.',
+  },
+  'tick-remover': {
+    name: 'Zeckenzange und Pinzette',
+    why: 'Mit der Zeckenzange entfernst du die Zecke, ohne sie zu zerquetschen.',
+  },
+  'digital-thermometer': {
+    name: 'Digitales Fieberthermometer mit Ersatzbatterien',
+    why: 'Schnell und einfach, ohne Quecksilber.',
+  },
+  'nitrile-gloves': {
+    name: 'Einweghandschuhe aus Nitril, Box',
+    why: 'Um eine Wunde gefahrlos zu versorgen, auch bei Latexallergie.',
+  },
+  'sunscreen-repellent': {
+    name: 'Sonnencreme und Mückenschutz',
+    why: 'Nützlich, sobald du mehrere Stunden draußen bist.',
+  },
+  // ── Hygiene ──
+  'wet-wipes': {
+    name: 'Feuchttücher, Großpackung',
+    why: 'Für eine Katzenwäsche, wenn das Wasser knapp ist.',
+  },
+  'hand-sanitizer': {
+    name: 'Händedesinfektionsgel in der Flasche',
+    why: 'Hände ohne Wasser reinigen, vor dem Essen oder bevor du jemanden versorgst.',
+  },
+  'travel-toiletries': {
+    name: 'Reise-Kulturbeutel',
+    why: 'Zahnbürste, Zahnpasta und Seife im Kleinformat für den Rucksack.',
+  },
+  'emergency-toilet-bags': {
+    name: 'Toilettenbeutel mit Geliermittel',
+    why: 'Wenn die Toilette nicht mehr funktioniert: hygienisch und geruchlos.',
+  },
+  'microfiber-towel': {
+    name: 'Mikrofaserhandtuch',
+    why: 'Trocknet schnell und braucht wenig Platz im Rucksack.',
+  },
+  // ── Dokumente ──
+  'document-pouch': {
+    name: 'Wasserdichte Dokumententasche für A4',
+    why: 'Hält die Kopien deiner Papiere trocken, im Vorrat oder im Rucksack.',
+  },
+  'encrypted-usb': {
+    name: 'Verschlüsselter USB-Stick mit PIN-Code',
+    why: 'Die Scans deiner Papiere bleiben geschützt, falls er verloren geht.',
+  },
+  // ── Werkzeug ──
+  'waterproof-notebook': {
+    name: 'Wasserfestes Notizbuch und Bleistift',
+    why: 'Um Nachrichten oder Telefonnummern zu notieren, auch im Regen.',
+  },
+  'zip-ties': {
+    name: 'Kabelbinder in verschiedenen Größen',
+    why: 'Zum Reparieren, um eine Plane zu befestigen oder einen Beutel zu verschließen.',
+  },
+  'work-gloves': {
+    name: 'Schnittfeste Arbeitshandschuhe',
+    why: 'Um Schutt wegzuräumen oder Glas anzufassen, ohne dich zu verletzen.',
+  },
+  tarp: {
+    name: 'Verstärkte Abdeckplane mit Ösen',
+    why: 'Um ein kaputtes Fenster oder ein beschädigtes Dach abzudecken.',
+  },
+  'heavy-trash-bags': {
+    name: 'Extra starke Müllsäcke',
+    why: 'Für Abfall, die Nottoilette oder um Sachen trocken zu halten.',
+  },
+  'utility-key': {
+    name: 'Mehrzweckschlüssel für Absperrventile und Zähler',
+    why: 'Um Gas oder Wasser abzudrehen, wenn die Einsatzkräfte dich darum bitten.',
+  },
+  compass: {
+    name: 'Wanderkompass',
+    why: 'Orientierung ohne Handy, mit einer Papierkarte der Region.',
+  },
+  'braided-rope': {
+    name: 'Geflochtenes Seil, 10 mm, 15 m',
+    why: 'Dicker als Paracord: zum Ziehen, Hochziehen oder Festhalten.',
+  },
+  carabiners: {
+    name: 'Schraubkarabiner im Mehrfachpack',
+    why: 'Um Ausrüstung am Rucksack festzumachen.',
+  },
+  'sewing-kit': {
+    name: 'Kleines Nähset',
+    why: 'Einen Knopf oder einen Gurt wieder annähen, ganz ohne Maschine.',
+  },
+  // ── Moral und Familie ──
+  'card-games': {
+    name: 'Kartenspiele und kleine Gesellschaftsspiele',
+    why: 'Abende ohne Bildschirm verbringen, mit der ganzen Familie.',
+  },
+  // ── Vorrat ──
+  'storage-box': {
+    name: 'Aufbewahrungsbox mit Deckel, 50 bis 60 L',
+    why: 'Der ganze Vorrat an einem Ort, leicht zu überprüfen.',
+  },
 };

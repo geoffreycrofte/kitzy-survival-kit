@@ -111,6 +111,33 @@ export function resolveOffer(offer: Offer, config: AffiliateConfig): ResolvedOff
   return { merchant, url, affiliate: true };
 }
 
+/**
+ * Un seul Amazon à la fois : Amazon.fr quand l'app est en français, Amazon.de sinon
+ * (les deux livrent au Luxembourg). L'autre ne sert que si le premier manque.
+ * Les autres marchands restent.
+ */
+export function preferredOffers(offers: readonly Offer[], locale: string): Offer[] {
+  const wanted: MerchantId = locale === 'fr' ? 'amazon-fr' : 'amazon-de';
+  const hasWanted = offers.some((o) => o.merchant === wanted);
+  return offers.filter((o) => {
+    if (!o.merchant.startsWith('amazon-')) return true;
+    return o.merchant === wanted || !hasWanted;
+  });
+}
+
+/** Les offres à montrer, avec l'identifiant d'affiliation : visibles, puis le bon Amazon. */
+export function resolveOffers(
+  offers: readonly Offer[],
+  config: AffiliateConfig,
+  locale: string,
+  status: LinkStatusMap = LINK_STATUS,
+): ResolvedOffer[] {
+  return preferredOffers(
+    offers.filter((o) => isOfferVisible(o, status)),
+    locale,
+  ).map((o) => resolveOffer(o, config));
+}
+
 /** Une offre est montrée tant qu'elle n'a pas été déclarée cassée ou indisponible. */
 export function isOfferVisible(offer: Offer, status: LinkStatusMap = LINK_STATUS): boolean {
   const state = status[offerBaseUrl(offer)]?.status;
@@ -128,6 +155,7 @@ export function productsFor(
   products: readonly Product[],
   config: AffiliateConfig,
   status: LinkStatusMap = LINK_STATUS,
+  locale = 'de',
 ): TierGroup[] {
   return TIERS.map((tier) => ({
     tier,
@@ -135,9 +163,7 @@ export function productsFor(
       .filter((p) => p.tier === tier && p.templateIds.includes(templateId))
       .map((product) => ({
         product,
-        offers: product.offers
-          .filter((o) => isOfferVisible(o, status))
-          .map((o) => resolveOffer(o, config)),
+        offers: resolveOffers(product.offers, config, locale, status),
       })),
   })).filter((group) => group.products.length > 0);
 }

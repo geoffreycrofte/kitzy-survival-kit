@@ -157,4 +157,158 @@ export const products: ContentTranslation['products'] = {
     name: 'Sacos estanques de vários tamanhos',
     why: 'Protegem documentos, roupa e aparelhos eletrónicos da chuva.',
   },
+  // Água (recipientes)
+  'bucket-lid': {
+    name: 'Balde alimentar de 10 L com tampa',
+    why: 'Para guardar água para a higiene e para o autoclismo, sem pó.',
+  },
+  // Cozinhar (utensílios)
+  'camping-cookset': {
+    name: 'Conjunto de cozinha de campismo com tacho, frigideira e copo',
+    why: 'Encaixa tudo: um tacho para o fogareiro, sem estragar os da cozinha.',
+  },
+  'freezer-bags-foil': {
+    name: 'Sacos de congelação com fecho zip e papel de alumínio',
+    why: 'Para guardar as sobras ao abrigo da humidade e proteger os documentos.',
+  },
+  'reusable-tableware': {
+    name: 'Pratos, taças e copos reutilizáveis',
+    why: 'Leves e inquebráveis, lavam-se com muito pouca água.',
+  },
+  // Luz e fogo
+  'candles-long': {
+    name: 'Velas de chá de longa duração e fósforos',
+    why: 'Luz de recurso: pousa-as numa superfície estável, longe de tudo o que possa arder.',
+  },
+  'storm-matches-box': {
+    name: 'Fósforos à prova de vento em caixa estanque',
+    why: 'Acendem-se com vento e mesmo húmidos.',
+  },
+  'lighters-pack': {
+    name: 'Isqueiros de reserva, pack de vários',
+    why: 'Um na reserva, um em cada mochila.',
+  },
+  'glow-sticks': {
+    name: 'Bastões luminosos de 12 horas',
+    why: 'Uma luz sem chama nem pilhas, tranquilizadora para as crianças à noite.',
+  },
+  'charging-cables': {
+    name: 'Cabo de carregamento múltiplo (USB-C, Lightning, micro-USB)',
+    why: 'Um só cabo para todos os telemóveis da casa.',
+  },
+  // Calor
+  'rain-poncho': {
+    name: 'Poncho de chuva reutilizável',
+    why: 'Cobre também a mochila e arruma-se num bolso.',
+  },
+  'hand-warmers': {
+    name: 'Aquecedores de mãos',
+    why: 'Algumas horas de calor sem eletricidade, nos bolsos ou nas luvas.',
+  },
+  'fleece-hat-gloves': {
+    name: 'Gorro e luvas polares',
+    why: 'As mãos, os pés e as orelhas são os primeiros a arrefecer quando o aquecimento para.',
+  },
+  // Cuidados
+  'bandages-set': {
+    name: 'Ligaduras elásticas e rolo de adesivo',
+    why: 'Para segurar um penso ou apoiar um tornozelo.',
+  },
+  'tick-remover': {
+    name: 'Tira-carraças e pinça',
+    why: 'O tira-carraças retira a carraça sem a esmagar.',
+  },
+  'digital-thermometer': {
+    name: 'Termómetro digital com pilhas de reserva',
+    why: 'Rápido e simples, sem mercúrio.',
+  },
+  'nitrile-gloves': {
+    name: 'Luvas descartáveis de nitrilo, caixa',
+    why: 'Para tratar uma ferida sem riscos, mesmo em caso de alergia ao látex.',
+  },
+  'sunscreen-repellent': {
+    name: 'Protetor solar e repelente de mosquitos',
+    why: 'Úteis assim que passas várias horas ao ar livre.',
+  },
+  // Higiene
+  'wet-wipes': {
+    name: 'Toalhitas húmidas, embalagem grande',
+    why: 'Para te lavares um pouco quando falta a água.',
+  },
+  'hand-sanitizer': {
+    name: 'Gel desinfetante para as mãos, frasco',
+    why: 'Limpar as mãos sem água, antes de comer ou de tratar alguém.',
+  },
+  'travel-toiletries': {
+    name: 'Estojo de higiene de viagem',
+    why: 'Escova de dentes, pasta de dentes e sabonete em tamanho pequeno para a mochila.',
+  },
+  'emergency-toilet-bags': {
+    name: 'Sacos de sanita com pó gelificante',
+    why: 'Quando as sanitas deixam de funcionar: higiénico e sem cheiro.',
+  },
+  'microfiber-towel': {
+    name: 'Toalha de microfibra',
+    why: 'Seca depressa e ocupa pouco espaço na mochila.',
+  },
+  // Documentos
+  'document-pouch': {
+    name: 'Bolsa estanque para documentos A4',
+    why: 'Mantém as cópias dos documentos secas, na reserva ou na mochila.',
+  },
+  'encrypted-usb': {
+    name: 'Pen USB encriptada com código',
+    why: 'As digitalizações dos documentos ficam protegidas se a perderes.',
+  },
+  // Ferramentas
+  'waterproof-notebook': {
+    name: 'Caderno impermeável e lápis',
+    why: 'Para anotar mensagens ou números, mesmo à chuva.',
+  },
+  'zip-ties': {
+    name: 'Abraçadeiras de vários tamanhos',
+    why: 'Para reparar, prender uma lona ou fechar um saco.',
+  },
+  'work-gloves': {
+    name: 'Luvas de trabalho resistentes a cortes',
+    why: 'Para remover entulho ou mexer em vidro sem te magoares.',
+  },
+  tarp: {
+    name: 'Lona reforçada com ilhós',
+    why: 'Para tapar uma janela partida ou um telhado danificado.',
+  },
+  'heavy-trash-bags': {
+    name: 'Sacos do lixo muito resistentes',
+    why: 'Para o lixo, a sanita de emergência ou para manter as coisas secas.',
+  },
+  'utility-key': {
+    name: 'Chave multifunções para válvulas e contadores',
+    why: 'Para cortar o gás ou a água quando os serviços de emergência o pedirem.',
+  },
+  compass: {
+    name: 'Bússola de caminhada',
+    why: 'Para te orientares sem telemóvel, com um mapa em papel da região.',
+  },
+  'braided-rope': {
+    name: 'Corda entrançada de 10 mm, 15 m',
+    why: 'Mais grossa do que o paracord: para puxar, içar ou te segurares.',
+  },
+  carabiners: {
+    name: 'Mosquetões de rosca, pack de vários',
+    why: 'Para prender o material à mochila.',
+  },
+  'sewing-kit': {
+    name: 'Pequeno kit de costura',
+    why: 'Coser um botão ou uma alça, sem máquina.',
+  },
+  // Moral e família
+  'card-games': {
+    name: 'Baralhos de cartas e pequenos jogos de tabuleiro',
+    why: 'Passar os serões sem ecrãs, em família.',
+  },
+  // Reserva
+  'storage-box': {
+    name: 'Caixa de arrumação com tampa, 50 a 60 L',
+    why: 'Toda a reserva no mesmo sítio, fácil de verificar.',
+  },
 };

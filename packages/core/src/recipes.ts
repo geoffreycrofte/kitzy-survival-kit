@@ -9,6 +9,10 @@ export interface RecipeIngredient {
   text: string;
   /** Article du catalogue concerné, pour relier la recette à la réserve. */
   templateId?: string;
+  /** Produit du garde-manger à acheter (absent : sel, épices… qu'on a déjà). */
+  pantryId?: string;
+  /** Part du paquet utilisée par la recette (1 par défaut : la boîte entière). */
+  use?: number;
 }
 
 export interface Recipe {

@@ -165,4 +165,168 @@ export const products: ContentTranslation['products'] = {
     name: 'Waasserdicht Säck a verschiddene Gréissten',
     why: 'Schütze Pabeieren, Kleeder an Elektronik virum Reen.',
   },
+
+  // ── Waasser (Behälter) ──
+  'bucket-lid': {
+    name: 'Liewensmëttel-Eemer vun 10 L mat Deckel',
+    why: 'Fir Waasser ze halen, fir sech ze wäschen an d’Toilett ze spullen, ouni Stëbs.',
+  },
+
+  // ── Kachen (Ustensilen) ──
+  'camping-cookset': {
+    name: 'Camping-Kachgeschir mat Kasseroll, Pan a Becher',
+    why: 'Alles passt anenee: eng Kasseroll fir de Kacher, ouni déi aus der Kiche kaputt ze maachen.',
+  },
+  'freezer-bags-foil': {
+    name: 'Gefréierbeidele mat Zip an Alufolie',
+    why: 'Fir Reschter dréchen ze halen an d’Pabeieren ze schützen.',
+  },
+  'reusable-tableware': {
+    name: 'Wiederverwendbar Telleren, Schësselen a Bechere',
+    why: 'Liicht an onzerbriechlech, a si loosse sech mat ganz wéineg Waasser spullen.',
+  },
+
+  // ── Liicht a Feier ──
+  'candles-long': {
+    name: 'Teeliichter mat laanger Brenndauer a Fixfeieren',
+    why: 'Liicht fir den Noutfall: op eng stabil Fläch stellen, wäit ewech vun allem, wat brenne kann.',
+  },
+  'storm-matches-box': {
+    name: 'Stuermfixfeieren an enger waasserdichter Dous',
+    why: 'Si gi bei Wand un, och wa se fiicht sinn.',
+  },
+  'lighters-pack': {
+    name: 'Ersatzfeierzeien am Pak',
+    why: 'Eent an der Reserve, eent an all Sak.',
+  },
+  'glow-sticks': {
+    name: 'Liichtstäb fir 12 Stonnen',
+    why: 'Liicht ouni Flam an ouni Batterie, beruegend fir d’Kanner an der Nuecht.',
+  },
+  'charging-cables': {
+    name: 'Multi-Luedkabel (USB-C, Lightning, Micro-USB)',
+    why: 'Ee Kabel fir all d’Handyen am Haus.',
+  },
+
+  // ── Wäermt ──
+  'rain-poncho': {
+    name: 'Wiederverwendbare Reeponcho',
+    why: 'Deckt och de Rucksak of a passt an eng Täsch.',
+  },
+  'hand-warmers': {
+    name: 'Handwiermer',
+    why: 'E puer Stonne Wäermt ouni Stroum, an der Täsch oder an den Händschen.',
+  },
+  'fleece-hat-gloves': {
+    name: 'Fleecemutz a Fleecehändschen',
+    why: 'Hänn, Féiss an Oueren gi fir d’éischt kal, wann d’Heizung ausfält.',
+  },
+
+  // ── Fleeg ──
+  'bandages-set': {
+    name: 'Elastesch Binden an eng Roll Heftplooschter',
+    why: 'Fir e Verband ze halen oder e Knéchel ze stäipen.',
+  },
+  'tick-remover': {
+    name: 'Zeckenzaang a Pinzett',
+    why: 'Mat der Zeckenzaang kriss de d’Zeck eraus, ouni se ze zerdrécken.',
+  },
+  'digital-thermometer': {
+    name: 'Digitalen Thermometer mat Ersatzbatterien',
+    why: 'Séier an einfach, ouni Quecksëlwer.',
+  },
+  'nitrile-gloves': {
+    name: 'Eng Këscht Wegwerfhändschen aus Nitril',
+    why: 'Fir eng Wonn ouni Risiko ze versuergen, och bei enger Latexallergie.',
+  },
+  'sunscreen-repellent': {
+    name: 'Sonnecrème a Méckespray',
+    why: 'Nëtzlech, soubal s de e puer Stonnen dobausse bass.',
+  },
+
+  // ── Hygiène ──
+  'wet-wipes': {
+    name: 'Fiicht Dicher, grousse Pak',
+    why: 'Fir sech e bëssen ze wäschen, wann d’Waasser knapp gëtt.',
+  },
+  'hand-sanitizer': {
+    name: 'Fläsch Desinfektiounsgel fir d’Hänn',
+    why: 'D’Hänn ouni Waasser propper maachen, virum Iessen oder ier s de een versuergs.',
+  },
+  'travel-toiletries': {
+    name: 'Rees-Toilettentäsch',
+    why: 'Zännbiischt, Zännpasta a Seef a klengem Format fir de Sak.',
+  },
+  'emergency-toilet-bags': {
+    name: 'Toilettesäck mat Gelpolver',
+    why: 'Wann d’Toilette net méi funktionéieren: hygienesch an ouni Geroch.',
+  },
+  'microfiber-towel': {
+    name: 'Mikrofaserhanddoch',
+    why: 'Dréchent séier a brauch wéineg Plaz am Sak.',
+  },
+
+  // ── Dokumenter ──
+  'document-pouch': {
+    name: 'Waasserdicht Dokumententäsch fir A4',
+    why: 'Hält d’Kopië vun denge Pabeieren dréchen, an der Reserve oder am Sak.',
+  },
+  'encrypted-usb': {
+    name: 'Verschlësselten USB-Stick mat Code',
+    why: 'D’Scans vun denge Pabeiere bleiwe geschützt, wann e verluer geet.',
+  },
+
+  // ── Geschir ──
+  'waterproof-notebook': {
+    name: 'Waasserfest Notizbuch a Bläistëft',
+    why: 'Fir Messagen oder Telefonsnummeren opzeschreiwen, och am Reen.',
+  },
+  'zip-ties': {
+    name: 'Kabelbinder a verschiddene Gréissten',
+    why: 'Fir ze reparéieren, eng Bâche festzemaachen oder e Sak zouzemaachen.',
+  },
+  'work-gloves': {
+    name: 'Schnëttfest Aarbechtshändschen',
+    why: 'Fir Schutt ewechzeraumen oder Glas unzepaken, ouni dech ze blesséieren.',
+  },
+  tarp: {
+    name: 'Verstäerkt Bâche mat Ösen',
+    why: 'Fir eng futtis Fënster oder e beschiedegten Daach ofzedecken.',
+  },
+  'heavy-trash-bags': {
+    name: 'Extra robust Poubellessäck',
+    why: 'Fir den Offall, d’Nouttoilett oder fir Saachen dréchen ze halen.',
+  },
+  'utility-key': {
+    name: 'Multifunktiounsschlëssel fir Vanne a Compteuren',
+    why: 'Fir de Gas oder d’Waasser ofzestellen, wann d’Rettungskräften dech drëm froen.',
+  },
+  compass: {
+    name: 'Kompass fir ze wanderen',
+    why: 'Sech ouni Handy orientéieren, mat enger Pabeierkaart vun der Regioun.',
+  },
+  'braided-rope': {
+    name: 'Geflochtent Seel vun 10 mm, 15 m',
+    why: 'Méi déck wéi Paracord: fir ze zéien, eppes eropzezéien oder sech festzehalen.',
+  },
+  carabiners: {
+    name: 'Schraufkarabiner am Pak',
+    why: 'Fir den Equipement um Sak festzemaachen.',
+  },
+  'sewing-kit': {
+    name: 'Klengt Néizeech',
+    why: 'E Knäppchen oder e Rimm erëm unnéien, ouni Maschinn.',
+  },
+
+  // ── Moral a Famill ──
+  'card-games': {
+    name: 'Kaartespiller a kleng Gesellschaftsspiller',
+    why: 'D’Owender ouni Bildschierm verbréngen, mat der Famill.',
+  },
+
+  // ── Reserve ──
+  'storage-box': {
+    name: 'Rangementskëscht mat Deckel, 50 bis 60 L',
+    why: 'Déi ganz Reserve op enger Plaz, einfach ze kontrolléieren.',
+  },
 };

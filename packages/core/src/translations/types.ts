@@ -40,6 +40,8 @@ export interface ContentTranslation {
   };
   /** Par identifiant de conseil d'achat. */
   products: Record<string, { name: string; why: string }>;
+  /** Par identifiant de produit du garde-manger (la contenance reste celle de l'emballage). */
+  pantry: Record<string, { name: string }>;
 }
 
 export interface Translation {

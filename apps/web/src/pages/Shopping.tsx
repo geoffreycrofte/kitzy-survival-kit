@@ -12,6 +12,8 @@ import {
 import { useKitzy } from '../data/derived';
 import { BagIcon, BurrowIcon } from '../components/Icons';
 import { addExtras, clearBought, removeExtra, toggleBought } from '../data/store';
+import { usePantryAmount } from '../components/Pantry';
+import { useContent } from '../lib/content';
 import { announce } from '../lib/announce';
 import { formatQuantity } from '../lib/format';
 import { usePageTitle } from '../lib/usePageTitle';
@@ -95,6 +97,17 @@ function ShoppingRow({ entry, bought: stored }: { entry: ShoppingEntry; bought: 
   // État local immédiat : la case change au clic, la base suit (la clé du composant resynchronise).
   const [bought, setBought] = useState(stored);
   const id = `buy-${entry.key}`;
+  const { pantry, recipes } = useContent();
+  const amount = usePantryAmount();
+  // Produit du garde-manger : son nom dans la langue de l'app, et pour quelles recettes.
+  const item = entry.extra?.pantryId
+    ? pantry.find((p) => p.id === entry.extra?.pantryId)
+    : undefined;
+  const label = item ? `${item.name} (${item.pack})` : entry.label;
+  const forRecipes = (entry.extra?.recipeIds ?? [])
+    .map((rid) => recipes.find((r) => r.id === rid)?.title)
+    .filter(Boolean)
+    .join(', ');
   const quantity = formatQuantity(entry.quantity, entry.unit);
 
   return (
@@ -106,27 +119,42 @@ function ShoppingRow({ entry, bought: stored }: { entry: ShoppingEntry; bought: 
           className="checkbox"
           checked={bought}
           // Nom et quantité en deux blocs visuels : on donne la phrase complète aux lecteurs d'écran.
-          aria-label={t('shopping.item', { label: entry.label, quantity })}
+          aria-label={t('shopping.item', { label, quantity })}
           onChange={() => {
             setBought(!bought);
             void toggleBought(entry.key);
           }}
         />
         <label htmlFor={id} className="shop-card__label">
-          <span className="shop-card__name">{entry.label}</span>
+          <span className="shop-card__name">{label}</span>
           <span className="shop-card__qty">{quantity}</span>
         </label>
         {entry.category === 'extra' && (
           <button
             type="button"
             className="button button--small button--ghost"
-            aria-label={t('shopping.removeExtra', { label: entry.label })}
+            aria-label={t('shopping.removeExtra', { label })}
             onClick={() => void removeExtra(entry.key.replace(/^extra-/, ''))}
           >
             {t('shopping.remove')}
           </button>
         )}
       </div>
+
+      {forRecipes && (
+        <p className="shop-card__note">{t('pantry.forRecipes', { recipes: forRecipes })}</p>
+      )}
+      {item && (
+        <p className="shop-card__note">
+          {bought
+            ? t('pantry.stored', {
+                amount: amount(item.fills.templateId, item.fills.amount * entry.quantity),
+              })
+            : t('pantry.willStore', {
+                amount: amount(item.fills.templateId, item.fills.amount * entry.quantity),
+              })}
+        </p>
+      )}
 
       {entry.replaces > 0 && (
         <p className="shop-card__note">
