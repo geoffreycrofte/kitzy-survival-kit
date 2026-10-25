@@ -158,4 +158,158 @@ export const products: ContentTranslation['products'] = {
     name: 'Dry bags in several sizes',
     why: 'Protect documents, clothes and electronics from the rain.',
   },
+  // Water (containers)
+  'bucket-lid': {
+    name: '10 L food-grade bucket with lid',
+    why: 'Keeps water for washing and flushing the toilet, free of dust.',
+  },
+  // Cooking (utensils)
+  'camping-cookset': {
+    name: 'Camping cook set with saucepan, frying pan and mug',
+    why: 'It all nests together: a saucepan for the stove, without ruining your kitchen ones.',
+  },
+  'freezer-bags-foil': {
+    name: 'Zip-lock freezer bags and aluminium foil',
+    why: 'For keeping leftovers dry and protecting your papers.',
+  },
+  'reusable-tableware': {
+    name: 'Reusable plates, bowls and cups',
+    why: 'Light and unbreakable, they wash up with very little water.',
+  },
+  // Light and fire
+  'candles-long': {
+    name: 'Long-burning tealights and matches',
+    why: 'Back-up light: stand them on a stable surface, away from anything that can burn.',
+  },
+  'storm-matches-box': {
+    name: 'Storm matches in a waterproof box',
+    why: 'They light in the wind, even when damp.',
+  },
+  'lighters-pack': {
+    name: 'Spare lighters, multipack',
+    why: 'One in your supplies, one in each bag.',
+  },
+  'glow-sticks': {
+    name: '12-hour glow sticks',
+    why: 'Light with no flame and no batteries, reassuring for children at night.',
+  },
+  'charging-cables': {
+    name: 'Multi-tip charging cable (USB-C, Lightning, micro-USB)',
+    why: 'One cable for every phone in the household.',
+  },
+  // Warmth
+  'rain-poncho': {
+    name: 'Reusable rain poncho',
+    why: 'Covers your rucksack too, and folds away into a pocket.',
+  },
+  'hand-warmers': {
+    name: 'Hand warmers',
+    why: 'A few hours of warmth without electricity, in your pockets or gloves.',
+  },
+  'fleece-hat-gloves': {
+    name: 'Fleece hat and gloves',
+    why: 'Hands, feet and ears are the first to get cold when the heating stops.',
+  },
+  // Care
+  'bandages-set': {
+    name: 'Elastic bandages and a roll of surgical tape',
+    why: 'To hold a dressing in place or support an ankle.',
+  },
+  'tick-remover': {
+    name: 'Tick remover and tweezers',
+    why: 'A tick remover takes the tick out without squashing it.',
+  },
+  'digital-thermometer': {
+    name: 'Digital thermometer with spare batteries',
+    why: 'Quick and simple, mercury-free.',
+  },
+  'nitrile-gloves': {
+    name: 'Box of disposable nitrile gloves',
+    why: 'For treating a wound safely, even if someone is allergic to latex.',
+  },
+  'sunscreen-repellent': {
+    name: 'Sun cream and mosquito repellent',
+    why: 'Useful as soon as you spend several hours outdoors.',
+  },
+  // Hygiene
+  'wet-wipes': {
+    name: 'Wet wipes, large pack',
+    why: 'For a quick wash when water is short.',
+  },
+  'hand-sanitizer': {
+    name: 'Bottle of hand sanitiser gel',
+    why: 'Clean your hands without water, before eating or giving first aid.',
+  },
+  'travel-toiletries': {
+    name: 'Travel toiletry kit',
+    why: 'Toothbrush, toothpaste and soap in small sizes for your bag.',
+  },
+  'emergency-toilet-bags': {
+    name: 'Toilet bags with gelling powder',
+    why: 'For when the toilets stop working: hygienic and odour-free.',
+  },
+  'microfiber-towel': {
+    name: 'Microfibre towel',
+    why: 'Dries quickly and takes up little room in your bag.',
+  },
+  // Documents
+  'document-pouch': {
+    name: 'Waterproof A4 document pouch',
+    why: 'Keeps copies of your papers dry, in your supplies or your bag.',
+  },
+  'encrypted-usb': {
+    name: 'PIN-protected encrypted USB stick',
+    why: 'Your scanned papers stay protected if you lose it.',
+  },
+  // Tools
+  'waterproof-notebook': {
+    name: 'Waterproof notebook and pencil',
+    why: 'For writing down messages or numbers, even in the rain.',
+  },
+  'zip-ties': {
+    name: 'Cable ties in several sizes',
+    why: 'For repairs, fixing a tarpaulin or closing a bag.',
+  },
+  'work-gloves': {
+    name: 'Cut-resistant work gloves',
+    why: 'For clearing debris or handling glass without hurting yourself.',
+  },
+  tarp: {
+    name: 'Reinforced tarpaulin with eyelets',
+    why: 'To cover a broken window or a damaged roof.',
+  },
+  'heavy-trash-bags': {
+    name: 'Extra-strong bin bags',
+    why: 'For rubbish, the emergency toilet or keeping things dry.',
+  },
+  'utility-key': {
+    name: 'Multi-purpose key for valves and meters',
+    why: 'To turn off the gas or water when the emergency services ask you to.',
+  },
+  compass: {
+    name: 'Hiking compass',
+    why: 'Find your way without a phone, with a paper map of the area.',
+  },
+  'braided-rope': {
+    name: 'Braided rope, 10 mm, 15 m',
+    why: 'Thicker than paracord: for pulling, hoisting or holding on to.',
+  },
+  carabiners: {
+    name: 'Screw-gate carabiners, multipack',
+    why: 'For clipping gear onto your bag.',
+  },
+  'sewing-kit': {
+    name: 'Small sewing kit',
+    why: 'Sew a button or a strap back on, no machine needed.',
+  },
+  // Morale and family
+  'card-games': {
+    name: 'Playing cards and small board games',
+    why: 'Screen-free evenings together as a family.',
+  },
+  // Storage
+  'storage-box': {
+    name: 'Storage box with lid, 50 to 60 L',
+    why: 'All your supplies in one place, easy to check.',
+  },
 };

@@ -14,11 +14,19 @@ export const RECIPES: readonly Recipe[] = [
     serves: 2,
     water: 0,
     ingredients: [
-      { text: '1 boîte de haricots rouges, égouttés', templateId: 'canned-meals' },
-      { text: '1 boîte de tomates concassées', templateId: 'canned-meals' },
-      { text: '1 petite boîte de maïs', templateId: 'canned-meals' },
+      {
+        text: '1 boîte de haricots rouges, égouttés',
+        templateId: 'canned-meals',
+        pantryId: 'red-beans',
+      },
+      {
+        text: '1 boîte de tomates concassées',
+        templateId: 'canned-meals',
+        pantryId: 'crushed-tomatoes',
+      },
+      { text: '1 petite boîte de maïs', templateId: 'canned-meals', pantryId: 'sweetcorn' },
       { text: '1 pincée de sel, de cumin ou de paprika', templateId: 'comfort-pantry' },
-      { text: 'Du riz, si tu en as', templateId: 'pasta-rice' },
+      { text: 'Du riz, si tu en as', templateId: 'pasta-rice', pantryId: 'rice', use: 0.15 },
     ],
     steps: [
       'Verse les tomates dans la casserole et fais-les chauffer 5 minutes.',
@@ -37,9 +45,13 @@ export const RECIPES: readonly Recipe[] = [
     serves: 2,
     water: 1,
     ingredients: [
-      { text: '200 g de pâtes courtes', templateId: 'pasta-rice' },
-      { text: '1 boîte de sardines à l’huile', templateId: 'canned-meals' },
-      { text: '1 boîte de tomates concassées', templateId: 'canned-meals' },
+      { text: '200 g de pâtes courtes', templateId: 'pasta-rice', pantryId: 'pasta', use: 0.4 },
+      { text: '1 boîte de sardines à l’huile', templateId: 'canned-meals', pantryId: 'sardines' },
+      {
+        text: '1 boîte de tomates concassées',
+        templateId: 'canned-meals',
+        pantryId: 'crushed-tomatoes',
+      },
       { text: 'Sel, poivre', templateId: 'comfort-pantry' },
     ],
     steps: [
@@ -58,9 +70,17 @@ export const RECIPES: readonly Recipe[] = [
     serves: 2,
     water: 0,
     ingredients: [
-      { text: '1 boîte de lentilles cuites, égouttées', templateId: 'canned-meals' },
-      { text: '1 boîte de thon ou de maquereau', templateId: 'canned-meals' },
-      { text: '1 petite boîte de maïs ou de petits pois', templateId: 'canned-meals' },
+      {
+        text: '1 boîte de lentilles cuites, égouttées',
+        templateId: 'canned-meals',
+        pantryId: 'lentils',
+      },
+      { text: '1 boîte de thon ou de maquereau', templateId: 'canned-meals', pantryId: 'tuna' },
+      {
+        text: '1 petite boîte de maïs ou de petits pois',
+        templateId: 'canned-meals',
+        pantryId: 'sweetcorn',
+      },
       { text: 'Un filet d’huile et de vinaigre, sel', templateId: 'comfort-pantry' },
     ],
     steps: [
@@ -79,12 +99,19 @@ export const RECIPES: readonly Recipe[] = [
     serves: 2,
     water: 0,
     ingredients: [
-      { text: '80 g de flocons d’avoine', templateId: 'pasta-rice' },
+      { text: '80 g de flocons d’avoine', templateId: 'pasta-rice', pantryId: 'oats', use: 0.16 },
       {
         text: '40 cl de lait UHT, ou de lait en poudre mélangé à de l’eau',
         templateId: 'long-life-milk',
+        pantryId: 'uht-milk',
+        use: 0.4,
       },
-      { text: '2 compotes en gourde', templateId: 'fruit-pouches' },
+      {
+        text: '2 compotes en gourde',
+        templateId: 'fruit-pouches',
+        pantryId: 'fruit-pouches',
+        use: 0.5,
+      },
       { text: '1 cuillère de sucre ou quelques fruits secs', templateId: 'snacks-energy-bars' },
     ],
     steps: [
@@ -102,10 +129,19 @@ export const RECIPES: readonly Recipe[] = [
     serves: 2,
     water: 0.5,
     ingredients: [
-      { text: '1 boîte de pois chiches', templateId: 'canned-meals' },
-      { text: '1 boîte de tomates concassées', templateId: 'canned-meals' },
+      { text: '1 boîte de pois chiches', templateId: 'canned-meals', pantryId: 'chickpeas' },
+      {
+        text: '1 boîte de tomates concassées',
+        templateId: 'canned-meals',
+        pantryId: 'crushed-tomatoes',
+      },
       { text: '1 cube de bouillon et 50 cl d’eau', templateId: 'comfort-pantry' },
-      { text: 'Une poignée de petites pâtes, si tu veux', templateId: 'pasta-rice' },
+      {
+        text: 'Une poignée de petites pâtes, si tu veux',
+        templateId: 'pasta-rice',
+        pantryId: 'pasta',
+        use: 0.1,
+      },
     ],
     steps: [
       'Porte l’eau à ébullition avec le cube de bouillon.',
@@ -122,13 +158,23 @@ export const RECIPES: readonly Recipe[] = [
     serves: 2,
     water: 0,
     ingredients: [
-      { text: 'Des crackers ou des biscottes', templateId: 'non-perishable-food' },
-      { text: '1 boîte de thon ou de sardines', templateId: 'canned-meals' },
+      {
+        text: 'Des crackers ou des biscottes',
+        templateId: 'non-perishable-food',
+        pantryId: 'crackers',
+        use: 0.5,
+      },
+      { text: '1 boîte de thon ou de sardines', templateId: 'canned-meals', pantryId: 'tuna' },
       {
         text: '1 cuillère de moutarde ou de mayonnaise en tube',
         templateId: 'non-perishable-food',
       },
-      { text: 'Des fruits secs pour le dessert', templateId: 'snacks-energy-bars' },
+      {
+        text: 'Des fruits secs pour le dessert',
+        templateId: 'snacks-energy-bars',
+        pantryId: 'dried-fruit',
+        use: 0.25,
+      },
     ],
     steps: [
       'Écrase le poisson à la fourchette avec la moutarde.',
@@ -145,8 +191,8 @@ export const RECIPES: readonly Recipe[] = [
     serves: 2,
     water: 0,
     ingredients: [
-      { text: '60 g de riz rond', templateId: 'pasta-rice' },
-      { text: '50 cl de lait UHT', templateId: 'long-life-milk' },
+      { text: '60 g de riz rond', templateId: 'pasta-rice', pantryId: 'rice', use: 0.06 },
+      { text: '50 cl de lait UHT', templateId: 'long-life-milk', pantryId: 'uht-milk', use: 0.5 },
       { text: '2 cuillères de sucre, un carré de chocolat', templateId: 'comfort-pantry' },
     ],
     steps: [
@@ -165,12 +211,13 @@ export const RECIPES: readonly Recipe[] = [
     serves: 2,
     water: 0.3,
     ingredients: [
-      { text: '150 g de semoule', templateId: 'pasta-rice' },
+      { text: '150 g de semoule', templateId: 'pasta-rice', pantryId: 'semolina', use: 0.3 },
       {
         text: '1 boîte de légumes (ratatouille, petits pois-carottes)',
         templateId: 'canned-meals',
+        pantryId: 'canned-vegetables',
       },
-      { text: '1 boîte de pois chiches', templateId: 'canned-meals' },
+      { text: '1 boîte de pois chiches', templateId: 'canned-meals', pantryId: 'chickpeas' },
       { text: 'Sel, un filet d’huile', templateId: 'comfort-pantry' },
     ],
     steps: [

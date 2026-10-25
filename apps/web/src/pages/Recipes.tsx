@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { recipesFor, tx, type Recipe } from '@kitzy/core';
 import { useContent } from '../lib/content';
 import { Loading } from '../components/Loading';
+import { RecipeReserve } from '../components/Pantry';
 import { useKitzy } from '../data/derived';
 import { recordActivity } from '../data/store';
 import { announce } from '../lib/announce';
@@ -207,6 +208,8 @@ export function RecipePage() {
           {t('recipes.cooked')}
         </button>
       )}
+
+      <RecipeReserve recipe={recipe} />
     </div>
   );
 }

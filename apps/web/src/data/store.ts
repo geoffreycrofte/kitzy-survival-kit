@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLiveQuery } from 'dexie-react-hooks';
 import {
   CATALOG,
+  PANTRY,
   consumeFifo,
   countMembers,
   PlanSchema,
@@ -150,9 +151,10 @@ export async function addLotToTemplate(
   templateId: string,
   unit: Unit,
   lot: NewLot,
+  lotId: string = uid(),
 ): Promise<string> {
   const today = todayLocal();
-  const newLot: Lot = { id: uid(), addedAt: today, ...lot };
+  const newLot: Lot = { id: lotId, addedAt: today, ...lot };
   const existing = await findItem(kitId, templateId);
   if (existing) {
     await db.items.update(existing.id, { lots: [...existing.lots, newLot], updatedAt: now() });
@@ -206,6 +208,21 @@ export async function consume(itemId: string, quantity: number): Promise<void> {
   await db.items.update(itemId, { lots: consumeFifo(item.lots, quantity), updatedAt: now() });
 }
 
+/** Ajoute la date imprimée à un lot rangé sans date (achat coché dans la liste de courses). */
+export async function setLotExpiry(
+  itemId: string,
+  lotId: string,
+  expiry: string,
+  expiryType: 'dlc' | 'ddm',
+): Promise<void> {
+  const item = await db.items.get(itemId);
+  if (!item) return;
+  await db.items.update(itemId, {
+    lots: item.lots.map((l) => (l.id === lotId ? { ...l, expiry, expiryType } : l)),
+    updatedAt: now(),
+  });
+}
+
 export async function removeLot(itemId: string, lotId: string): Promise<void> {
   const item = await db.items.get(itemId);
   if (!item) return;
@@ -235,15 +252,83 @@ export async function deleteItem(itemId: string): Promise<void> {
 /* ---------- Courses ---------- */
 
 export async function toggleBought(key: string): Promise<void> {
-  const bought = await getMeta<string[]>('bought', []);
-  await setMeta(
-    'bought',
-    bought.includes(key) ? bought.filter((k) => k !== key) : [...bought, key],
-  );
+  await db.transaction('rw', [db.meta, db.extras, db.items, db.kits], async () => {
+    const bought = await getMeta<string[]>('bought', []);
+    const nowBought = !bought.includes(key);
+    await setMeta('bought', nowBought ? [...bought, key] : bought.filter((k) => k !== key));
+    const extra = key.startsWith('extra-') ? await db.extras.get(key.slice(6)) : undefined;
+    if (extra?.pantryId) await storePantryPurchase(extra, nowBought);
+  });
 }
 
+/**
+ * Un produit du garde-manger coché « acheté » entre directement dans la réserve de la maison
+ * (sans date : l'article invite à l'ajouter). Décoché, il en ressort.
+ */
+async function storePantryPurchase(extra: ShoppingExtra, bought: boolean): Promise<void> {
+  if (!bought) {
+    if (extra.stored) await removeLot(extra.stored.itemId, extra.stored.lotId);
+    await db.extras.update(extra.id, { stored: undefined });
+    return;
+  }
+  const item = PANTRY.find((p) => p.id === extra.pantryId);
+  const template = item && CATALOG.find((t) => t.id === item.fills.templateId);
+  const unit = template?.home?.unit;
+  if (!item || !unit || !(await db.kits.get(HOME_KIT_ID))) return;
+  const lotId = uid();
+  const itemId = await addLotToTemplate(
+    HOME_KIT_ID,
+    item.fills.templateId,
+    unit,
+    { quantity: item.fills.amount * (extra.quantity ?? 1) },
+    lotId,
+  );
+  await db.extras.update(extra.id, { stored: { itemId, lotId } });
+}
+
+/** Vide les achats faits : les ajouts déjà achetés quittent la liste. */
 export async function clearBought(): Promise<void> {
-  await setMeta('bought', []);
+  await db.transaction('rw', db.meta, db.extras, async () => {
+    const bought = await getMeta<string[]>('bought', []);
+    const ids = bought.filter((k) => k.startsWith('extra-')).map((k) => k.slice(6));
+    await db.extras.bulkDelete(ids);
+    await setMeta('bought', []);
+  });
+}
+
+/**
+ * Met des produits du garde-manger sur la liste (depuis une recette ou un article).
+ * Un produit déjà sur la liste, pas encore acheté, voit simplement sa quantité augmenter.
+ */
+export async function addPantryToList(
+  needs: ReadonlyArray<{ pantryId: string; packs: number; recipeIds?: string[] }>,
+): Promise<void> {
+  await db.transaction('rw', db.meta, db.extras, async () => {
+    const bought = await getMeta<string[]>('bought', []);
+    const extras = await db.extras.toArray();
+    for (const need of needs) {
+      const item = PANTRY.find((p) => p.id === need.pantryId);
+      if (!item) continue;
+      const open = extras.find(
+        (e) => e.pantryId === need.pantryId && !bought.includes(`extra-${e.id}`),
+      );
+      if (open) {
+        await db.extras.update(open.id, {
+          quantity: (open.quantity ?? 1) + need.packs,
+          recipeIds: [...new Set([...(open.recipeIds ?? []), ...(need.recipeIds ?? [])])],
+        });
+        continue;
+      }
+      await db.extras.add({
+        id: uid(),
+        label: `${item.name} (${item.pack})`,
+        quantity: need.packs,
+        unit: 'pack',
+        pantryId: item.id,
+        ...(need.recipeIds?.length ? { recipeIds: need.recipeIds } : {}),
+      });
+    }
+  });
 }
 
 export async function addExtras(extras: Omit<ShoppingExtra, 'id'>[]): Promise<void> {
@@ -251,6 +336,9 @@ export async function addExtras(extras: Omit<ShoppingExtra, 'id'>[]): Promise<vo
 }
 
 export async function removeExtra(id: string): Promise<void> {
+  const extra = await db.extras.get(id);
+  // Retirer de la liste un produit déjà rangé ne le retire pas de la réserve.
+  if (extra?.stored) await db.extras.update(id, { stored: undefined });
   await db.extras.delete(id);
   const bought = await getMeta<string[]>('bought', []);
   await setMeta(

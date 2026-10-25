@@ -162,6 +162,8 @@ export interface ShoppingEntry {
   destinations: ShoppingDestination[];
   /** Dont quantité périmée à remplacer */
   replaces: number;
+  /** L'ajout manuel ou tiré des recettes, pour une ligne `extra`. */
+  extra?: ShoppingExtra;
 }
 
 /** Ce qu'il manque dans tous les kits, regroupé par modèle, plus les ajouts manuels. */
@@ -213,6 +215,7 @@ export function shoppingList(
       category: 'extra',
       destinations: [],
       replaces: 0,
+      extra,
     });
   }
   return entries;

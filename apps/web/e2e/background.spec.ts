@@ -85,9 +85,12 @@ test('la vérification en arrière-plan envoie une seule notification regroupée
     });
 
   await fire();
+  // Une seule notification, qui regroupe tout. D'autres rappels peuvent tomber le même jour
+  // (test des sirènes le premier lundi, check-up au changement d'heure) : le titre compte alors
+  // les rappels (« Kitzy : 2 rappels… »), mais l'eau y figure toujours.
   await expect.poll(notifications).toEqual([
     {
-      title: 'Kitzy',
+      title: expect.stringMatching(/^Kitzy/),
       body: expect.stringMatching(/Eau potable en bouteille.*date limite aujourd’hui/),
     },
   ]);

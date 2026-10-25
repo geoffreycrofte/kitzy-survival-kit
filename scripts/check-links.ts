@@ -16,6 +16,7 @@ import {
   GUIDE,
   LINK_CHECK_AGENT,
   MERCHANTS,
+  PANTRY,
   PRODUCTS,
   PROJECT_ISSUES_URL,
   ROBOTS_DETAIL,
@@ -53,6 +54,15 @@ function targets(): Target[] {
       list.push({
         url: offerBaseUrl(offer),
         label: `${product.name} (${MERCHANTS[offer.merchant].name})`,
+        productPage: Boolean(offer.url),
+      });
+    }
+  }
+  for (const item of PANTRY) {
+    for (const offer of item.offers) {
+      list.push({
+        url: offerBaseUrl(offer),
+        label: `Garde-manger : ${item.name} (${MERCHANTS[offer.merchant].name})`,
         productPage: Boolean(offer.url),
       });
     }

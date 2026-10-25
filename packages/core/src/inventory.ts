@@ -40,6 +40,12 @@ export interface ShoppingExtra {
   label: string;
   quantity?: number;
   unit?: Unit;
+  /** Produit du garde-manger : à l'achat, il remplit la réserve tout seul. */
+  pantryId?: string;
+  /** Recettes pour lesquelles on l'achète. */
+  recipeIds?: string[];
+  /** Le lot ajouté à la réserve quand il a été coché, pour l'enlever si on décoche. */
+  stored?: { itemId: string; lotId: string };
 }
 
 /** Code-barres scanné une fois, puis reconnu : il mène directement à l'article. */

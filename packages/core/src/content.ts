@@ -5,6 +5,7 @@
 import { CATEGORIES, type CategoryId, type ItemTemplate } from './catalog';
 import { CATALOG as CATALOG_FR } from './data/catalog';
 import { GUIDE as GUIDE_FR } from './data/guide';
+import { PANTRY as PANTRY_FR } from './data/pantry';
 import { PRODUCTS as PRODUCTS_FR } from './data/products';
 import { QUIZ as QUIZ_FR } from './data/quiz';
 import { RECIPES as RECIPES_FR } from './data/recipes';
@@ -12,6 +13,7 @@ import type { GuidePage } from './guide';
 import { fr } from './i18n/fr';
 import type { Messages } from './i18n/fr';
 import type { Locale } from './i18n/locales';
+import type { PantryItem } from './pantry';
 import type { Product } from './products';
 import type { QuizQuestion } from './quiz';
 import type { Recipe } from './recipes';
@@ -69,6 +71,7 @@ export interface Content {
   quiz: readonly QuizQuestion[];
   simulation: readonly SimulationStep[];
   products: readonly Product[];
+  pantry: readonly PantryItem[];
 }
 
 function sameLength<T>(a: readonly T[] | undefined, b: readonly unknown[]): a is T[] {
@@ -84,6 +87,7 @@ function build(t: ContentTranslation | undefined): Content {
       quiz: QUIZ_FR,
       simulation: SIMULATION_FR,
       products: PRODUCTS_FR,
+      pantry: PANTRY_FR,
     };
   }
   return {
@@ -135,6 +139,7 @@ function build(t: ContentTranslation | undefined): Content {
       };
     }),
     products: PRODUCTS_FR.map((p) => ({ ...p, ...t.products[p.id] })),
+    pantry: PANTRY_FR.map((p) => ({ ...p, ...t.pantry[p.id] })),
   };
 }
 

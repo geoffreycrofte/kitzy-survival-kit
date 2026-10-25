@@ -764,6 +764,14 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 
 **Critères de sélection d'une offre** (documentés dans le JSON) : marchand réputé, livraison au Luxembourg, conformité CE ou norme pertinente, bons avis, retour possible, disponibilité stable.
 
+### 8.3 bis Garde-manger et recettes
+
+- **Conseils d'achat** sur presque tout le catalogue (73 produits) : contenants, ustensiles, lumière et feu, chaleur, soins, hygiène, documents, outils, moral, rangement. Restent sans lien, volontairement : médicaments et comprimés d'iode (pharmacie), argent, papiers, nourriture pour bébé et animaux (la marque habituelle compte).
+- **Garde-manger** (`packages/core/src/data/pantry.ts`) : 19 produits courants sans marque (légumineuses, poisson, légumes en boîte, pâtes, riz, semoule, flocons, crackers, lait UHT, compotes, fruits secs, barres). Chacun dit ce qu'un paquet apporte à la réserve : **en repas** pour « Nourriture non périssable » (une boîte de légumineuses = 1 repas, de tomates = ½, 500 g de pâtes = 5), en litres ou en portions pour le lait, les compotes et les en-cas. Repères, à affiner.
+- **Recettes** : chaque ingrédient pointe vers son produit et la part du paquet utilisée. En bas de la recette, « Pour ta réserve » : combien de fois on veut pouvoir la faire, les paquets à acheter (arrondis une fois tout additionné), ce que ces achats ajoutent en repas, les liens d'achat, et « Ajouter à ma liste de courses ».
+- **Courses → réserve** : un produit du garde-manger coché « acheté » entre tout seul dans la réserve de la maison, sans date ; l'article propose « Ajouter la date ». Décoché, il en ressort. Un même produit demandé par plusieurs recettes reste une seule ligne (« Pour : Chili, Couscous »).
+- Les adresses du garde-manger sont surveillées chaque semaine avec les autres (§ 9).
+
 ### 8.4 Édition du catalogue
 
 - Phase 1 : édition directe des JSON dans le dépôt (PR → CI valide le schéma via JSON Schema → déploiement).
@@ -805,6 +813,8 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 ## 10. Accessibilité
 
 **Cible : RAWeb 1.1 niveau AA** (EN 301 549 / WCAG 2.1), avec le skill `raweb-code` pendant le développement et `raweb-audit` avant chaque release. Ensuite **RAAM 1.1** pour les versions natives.
+
+Déclaration publique (en anglais) : [`ACCESSIBILITY.md`](ACCESSIBILITY.md), mise en avant par GitHub sur la page du dépôt. Elle dit la cible, les vérifications (audits avec [CheckFox.eu](https://checkfox.eu), axe-core en CI, contrastes testés), les limites connues, et invite à ouvrir une issue pour tout problème.
 
 ### 10.1 Points d'attention spécifiques à cette app
 
@@ -930,7 +940,7 @@ Règles :
 - Les contenus longs (guide, recettes) sont en Markdown par langue ; l'UI passe par les messages i18next de `core`.
 - **Ordre de production** : FR complet, puis EN et DE, puis PT et LB. Une langue n'est publiée qu'**entièrement traduite et relue** : pas de mélange de langues dans l'interface (RAWeb 8.7).
 - Récupérer les versions officielles du guide dans ces langues pour reprendre la terminologie (LU-Alert, niveaux de vigilance, noms des signaux de sirène).
-- Les liens affiliés peuvent varier selon la langue (Amazon.de pour DE et LB, Amazon.fr pour FR) : OneLink ou choix du marchand dans les réglages.
+- Les liens affiliés suivent la langue de l'app : **Amazon.fr quand l'app est en français, Amazon.de sinon** (EN, DE, LB, PT) ; un seul Amazon est affiché à la fois, l'autre ne sert que si le premier manque ou est signalé cassé. Decathlon reste affiché à côté.
 
 ### 12.2 Contenu du guide
 

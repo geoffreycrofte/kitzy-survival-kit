@@ -6,6 +6,7 @@ import { isIsoDate, kitRows, lotState, sortLotsFifo, tx, type KitRow, type Lot }
 import { useLocale } from '../lib/locale';
 import { Meter } from '../components/Meter';
 import { BuyingAdvice } from '../components/BuyingAdvice';
+import { PantryShelf } from '../components/Pantry';
 import { StatusChips } from '../components/StatusChips';
 import { useKitzy } from '../data/derived';
 import {
@@ -15,6 +16,7 @@ import {
   deleteItem,
   markCharged,
   removeLot,
+  setLotExpiry,
   setTarget,
 } from '../data/store';
 import { announce } from '../lib/announce';
@@ -129,6 +131,8 @@ export function Item() {
         </section>
       )}
 
+      {template && <PantryShelf templateId={template.id} />}
+
       {template && <BuyingAdvice templateId={template.id} />}
 
       {!template && item && <CustomItemSettings itemId={item.id} row={row} kitId={kit.id} />}
@@ -167,11 +171,14 @@ function LotRow({
         : state === 'past-best-before'
           ? t('item.lotPast')
           : '';
+  const tracking = row.template?.tracking.expiry ?? 'none';
+  const needsDate = !lot.expiry && tracking !== 'none';
   return (
     <li className={`lot lot--${state}`}>
-      <span>
+      <span className="lot__text">
         {label}
         {stateText && <strong className="lot__state">, {stateText}</strong>}
+        {needsDate && <LotDate itemId={itemId} lot={lot} tracking={tracking} />}
       </span>
       <button
         type="button"
@@ -193,6 +200,54 @@ function LotRow({
         </svg>
       </button>
     </li>
+  );
+}
+
+/** Un lot rangé sans date (achat coché dans la liste) : on invite à ajouter celle de l'emballage. */
+function LotDate({ itemId, lot, tracking }: { itemId: string; lot: Lot; tracking: 'dlc' | 'ddm' }) {
+  const { t } = useTranslation();
+  const [open, setOpen] = useState(false);
+  const [date, setDate] = useState('');
+  const id = `lot-date-${lot.id}`;
+  if (!open) {
+    return (
+      <span className="lot__date">
+        {t('item.addDateHint')}{' '}
+        <button
+          type="button"
+          className="button button--small button--ghost"
+          onClick={() => setOpen(true)}
+        >
+          {t('item.addDate')}
+        </button>
+      </span>
+    );
+  }
+  return (
+    <form
+      className="lot__date-form"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        if (!date) return;
+        await setLotExpiry(itemId, lot.id, date, tracking);
+        announce(t('item.dateAdded'));
+      }}
+    >
+      <label htmlFor={id} className="field__label">
+        {t('item.expiry')}
+      </label>
+      <input
+        id={id}
+        type="date"
+        className="input input--short"
+        value={date}
+        onChange={(e) => setDate(e.target.value)}
+        required
+      />
+      <button type="submit" className="button button--small">
+        {t('item.saveDate')}
+      </button>
+    </form>
   );
 }
 

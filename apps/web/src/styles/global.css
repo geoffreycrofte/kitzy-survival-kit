@@ -3084,3 +3084,103 @@ button.bottom-nav__link {
     width: 140px;
   }
 }
+
+/* Lot rangé sans date : l'invitation à ajouter celle de l'emballage. */
+.lot__text {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lot__date {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+  color: var(--kz-muted);
+  font-size: 0.9375rem;
+}
+
+.lot__date-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.lot__date-form .field__label {
+  flex-basis: 100%;
+}
+
+/* Garde-manger : produits courants, ce qu'ils apportent, où les acheter. */
+.pantry__list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+}
+
+.pantry__item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 0;
+  border-top: 1px solid var(--kz-line);
+}
+
+.pantry__head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
+.pantry__name {
+  font-weight: 600;
+}
+
+.pantry__packs {
+  display: inline-block;
+  margin-right: 6px;
+  color: var(--kz-heading);
+}
+
+.pantry__pack,
+.pantry__meta {
+  color: var(--kz-muted);
+  font-weight: 400;
+}
+
+.pantry__meta {
+  font-size: 0.9375rem;
+}
+
+.pantry__value {
+  font-weight: 700;
+  color: var(--kz-heading);
+}
+
+.pantry__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 16px;
+}
+
+.pantry__gain {
+  font-family: var(--kz-font-display);
+  font-size: 1.25rem;
+  color: var(--kz-heading);
+}
+
+.pantry__done {
+  font-weight: 600;
+}
+
+.stepper__output {
+  display: inline-grid;
+  place-items: center;
+  width: auto;
+  min-width: 4.5rem;
+  padding-inline: 12px;
+}

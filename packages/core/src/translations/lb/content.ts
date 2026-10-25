@@ -2,6 +2,7 @@
 import type { ContentTranslation } from '../types';
 import { catalog } from './content/catalog';
 import { guide } from './content/guide';
+import { pantry } from './content/pantry';
 import { products } from './content/products';
 import { quiz } from './content/quiz';
 import { recipes } from './content/recipes';
@@ -16,4 +17,5 @@ export const content: ContentTranslation = {
   quiz,
   simulation,
   products,
+  pantry,
 };
