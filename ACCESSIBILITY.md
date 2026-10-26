@@ -13,6 +13,7 @@ Kitzy's accessibility work is carried out with **[CheckFox.eu](https://checkfox.
 ## How we check
 
 - **Audits with [CheckFox.eu](https://checkfox.eu)** against RAWeb 1.1, before releases.
+- **Accessible code from the start**: the code is written and reviewed with the `raweb-code` and `raweb-audit` skills from the [Luxembourg Accessibility Skillset](https://github.com/geoffreycrofte/luxembourg-accessibility-skillset), which turn the RAWeb 1.1 criteria into coding guidance and audit procedures.
 - **Automated checks on every pull request**: the end-to-end test suite runs [axe-core](https://github.com/dequelabs/axe-core) on the app's screens and the home page, in both the light and the dark theme, on mobile and desktop layouts. A pull request that introduces a violation fails.
 - **Linting**: [eslint-plugin-jsx-a11y](https://github.com/jsx-eslint/eslint-plugin-jsx-a11y) catches common mistakes while writing code.
 - **Colour contrast is tested in code**: every text and background pair of both themes must reach at least 4.5:1, or the unit tests fail.

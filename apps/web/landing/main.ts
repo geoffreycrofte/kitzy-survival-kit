@@ -12,6 +12,7 @@ import '@fontsource/figtree/700.css';
 import './landing.css';
 import {
   LANDING,
+  SITE_URL,
   computeTargets,
   countMembers,
   intlLocale,
@@ -81,6 +82,10 @@ function applyLocale(next: Locale): void {
   for (const el of document.querySelectorAll<HTMLElement>('[data-i18n]')) {
     const text = lookup(texts(), el.dataset.i18n ?? '');
     if (text !== undefined) el.textContent = text;
+  }
+  for (const el of document.querySelectorAll<HTMLElement>('[data-i18n-label]')) {
+    const text = lookup(texts(), el.dataset.i18nLabel ?? '');
+    if (text !== undefined) el.setAttribute('aria-label', text);
   }
   for (const el of document.querySelectorAll<HTMLElement>('[data-i18n-content]')) {
     const text = lookup(texts(), el.dataset.i18nContent ?? '');
@@ -277,8 +282,34 @@ function initInstall(): void {
   });
 }
 
+/* ---------- Partager Kitzy ---------- */
+
+function initShare(): void {
+  const button = document.querySelector<HTMLButtonElement>('#share-app');
+  const state = document.querySelector<HTMLElement>('#share-state');
+  button?.addEventListener('click', async () => {
+    const t = texts().together;
+    if (typeof navigator.share === 'function') {
+      try {
+        await navigator.share({ title: t.shareTitle, text: t.message, url: SITE_URL });
+        return;
+      } catch (error) {
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+        // Partage refusé : on copie le lien à la place.
+      }
+    }
+    try {
+      await navigator.clipboard.writeText(`${t.message} ${SITE_URL}`);
+      if (state) state.textContent = t.copied;
+    } catch {
+      // Pas de presse-papiers : le QR code et l'adresse restent visibles.
+    }
+  });
+}
+
 applyTheme();
 initHousehold();
 initLanguage();
 initInstall();
+initShare();
 matchMedia('(prefers-color-scheme: light)').addEventListener('change', applyTheme);

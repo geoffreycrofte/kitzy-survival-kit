@@ -5,6 +5,7 @@ import { AchievementWatcher } from './components/Achievements';
 import { Announcer } from './components/Announcer';
 import { BottomNav } from './components/BottomNav';
 import { Header } from './components/Header';
+import { ItemDrawerProvider } from './components/ItemDrawer';
 import { UpdateBanner } from './components/UpdateBanner';
 import { useKitzy } from './data/derived';
 import { syncPush, webPushConfigured } from './lib/webpush';
@@ -73,49 +74,51 @@ export function App() {
   useFocusOnNavigation();
 
   return (
-    <div className="app">
-      <a className="skip-link" href="#main">
-        {t('app.skipLink')}
-      </a>
-      <Header />
-      {/* Avant le contenu dans le code : barre du bas sur mobile, colonne latérale sur bureau. */}
-      <BottomNav />
-      <main id="main" className="app__main" tabIndex={-1}>
-        <AchievementWatcher />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/foyer" element={<Household />} />
-          <Route path="/kits" element={<Kits />} />
-          <Route path="/kits/:kitId" element={<KitDetail />} />
-          <Route path="/kits/:kitId/nouveau" element={<NewItem />} />
-          <Route path="/kits/:kitId/scan/:code" element={<ScanChoose />} />
-          <Route path="/kits/:kitId/:key" element={<Item />} />
-          <Route path="/courses" element={<Shopping />} />
-          <Route path="/partage" element={<SharedList />} />
-          <Route path="/plan" element={<PlanOverview />} />
-          <Route path="/plan/imprimer" element={<PlanPrint />} />
-          <Route path="/plan/:step" element={<PlanStepPage />} />
-          <Route path="/gestes" element={<Tasks />} />
-          <Route path="/guide" element={<GuideIndex />} />
-          <Route path="/guide/:slug" element={<GuideArticle />} />
-          <Route path="/succes" element={<Achievements />} />
-          <Route path="/activites" element={<Activities />} />
-          <Route path="/mini-check" element={<MiniCheck />} />
-          <Route path="/check-up" element={<CheckUp />} />
-          <Route path="/recettes" element={<RecipeIndex />} />
-          <Route path="/recettes/:id" element={<RecipePage />} />
-          <Route path="/defi" element={<Challenge />} />
-          <Route path="/simulation" element={<Simulation />} />
-          <Route path="/quiz" element={<Quiz />} />
-          <Route path="/reglages" element={<Settings />} />
-          <Route path="/transparence" element={<Transparency />} />
-          <Route path="/confidentialite" element={<Privacy />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </main>
-      <UpdateBanner />
-      <Announcer />
-      {webPushConfigured && <PushSync />}
-    </div>
+    <ItemDrawerProvider>
+      <div className="app">
+        <a className="skip-link" href="#main">
+          {t('app.skipLink')}
+        </a>
+        <Header />
+        {/* Avant le contenu dans le code : barre du bas sur mobile, colonne latérale sur bureau. */}
+        <BottomNav />
+        <main id="main" className="app__main" tabIndex={-1}>
+          <AchievementWatcher />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/foyer" element={<Household />} />
+            <Route path="/kits" element={<Kits />} />
+            <Route path="/kits/:kitId" element={<KitDetail />} />
+            <Route path="/kits/:kitId/nouveau" element={<NewItem />} />
+            <Route path="/kits/:kitId/scan/:code" element={<ScanChoose />} />
+            <Route path="/kits/:kitId/:key" element={<Item />} />
+            <Route path="/courses" element={<Shopping />} />
+            <Route path="/partage" element={<SharedList />} />
+            <Route path="/plan" element={<PlanOverview />} />
+            <Route path="/plan/imprimer" element={<PlanPrint />} />
+            <Route path="/plan/:step" element={<PlanStepPage />} />
+            <Route path="/gestes" element={<Tasks />} />
+            <Route path="/guide" element={<GuideIndex />} />
+            <Route path="/guide/:slug" element={<GuideArticle />} />
+            <Route path="/succes" element={<Achievements />} />
+            <Route path="/activites" element={<Activities />} />
+            <Route path="/mini-check" element={<MiniCheck />} />
+            <Route path="/check-up" element={<CheckUp />} />
+            <Route path="/recettes" element={<RecipeIndex />} />
+            <Route path="/recettes/:id" element={<RecipePage />} />
+            <Route path="/defi" element={<Challenge />} />
+            <Route path="/simulation" element={<Simulation />} />
+            <Route path="/quiz" element={<Quiz />} />
+            <Route path="/reglages" element={<Settings />} />
+            <Route path="/transparence" element={<Transparency />} />
+            <Route path="/confidentialite" element={<Privacy />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </main>
+        <UpdateBanner />
+        <Announcer />
+        {webPushConfigured && <PushSync />}
+      </div>
+    </ItemDrawerProvider>
   );
 }

@@ -113,6 +113,17 @@ export const de: LandingTexts = {
     title: 'Alles bleibt bei dir',
     text: 'Kein Konto, keine Werbung, kein Tracking. Deine Daten bleiben auf deinem Gerät, und Kitzy funktioniert sogar ohne Internet.',
   },
+  together: {
+    title: 'Wenn Familie und Nachbarschaft vorbereitet sind, hilft man sich leichter.',
+    text: 'Erzähl deinen Liebsten und Nachbarn von Kitzy: Jeder bereitet sein Kit vor, und ihr könnt aufeinander zählen.',
+    button: 'Kitzy teilen',
+    qrLabel: 'QR-Code zu kitzy.lu, mit der Handykamera scannen',
+    qrHelp: 'Zeig ihn Nachbarn oder Angehörigen: Sie scannen ihn mit der Kamera ihres Handys.',
+    copied: 'Link kopiert: Füge ihn in eine Nachricht ein.',
+    message:
+      'Ich bereite mit Kitzy unser Kit für 72 Stunden vor. Es ist kostenlos, und alles bleibt auf dem Handy. Wenn Familie und Nachbarschaft vorbereitet sind, hilft man sich leichter.',
+    shareTitle: 'Kitzy, das 72-Stunden-Kit',
+  },
   install: {
     title: 'Kitzy installieren',
     intro:
@@ -275,6 +286,18 @@ export const lb: LandingTexts = {
     title: 'Alles bleift bei dir',
     text: 'Kee Kont, keng Reklamm, keen Tracking. Deng Donnéeë bleiwen op dengem Apparat, a Kitzy funktionéiert souguer ouni Verbindung.',
   },
+  together: {
+    title: 'Wann d’Famill an d’Noperschaft virbereet sinn, hëlleft ee sech méi einfach.',
+    text: 'Schwätz mat denge Léifsten an denge Noperen iwwer Kitzy: jiddereen preparéiert säi Kit, an dir kënnt op een aneren zielen.',
+    button: 'Kitzy deelen',
+    qrLabel: 'QR-Code op kitzy.lu, mat der Kamera vum Handy ze scannen',
+    qrHelp:
+      'Weis en engem Noper oder engem Familljemember: si scannen en mat der Kamera vun hirem Handy.',
+    copied: 'Link kopéiert: setz en an e Message.',
+    message:
+      'Ech preparéieren mat Kitzy eise Kit fir 72 Stonnen. Et ass gratis, an alles bleift um Handy. Wann d’Famill an d’Noperschaft virbereet sinn, hëlleft ee sech méi einfach.',
+    shareTitle: 'Kitzy, de Kit fir 72 Stonnen',
+  },
   install: {
     title: 'Kitzy installéieren',
     intro:
@@ -436,6 +459,18 @@ export const pt: LandingTexts = {
   privacy: {
     title: 'Tudo fica contigo',
     text: 'Sem conta, sem publicidade, sem rastreamento. Os teus dados ficam no teu dispositivo, e o Kitzy funciona mesmo sem ligação.',
+  },
+  together: {
+    title:
+      'Quando a família e o bairro estão preparados, é mais fácil ajudarmo-nos uns aos outros.',
+    text: 'Fala do Kitzy aos teus próximos e vizinhos: cada um prepara o seu kit, e podem contar uns com os outros.',
+    button: 'Partilhar o Kitzy',
+    qrLabel: 'Código QR para kitzy.lu, para ler com a câmara do telemóvel',
+    qrHelp: 'Mostra-o a um vizinho ou a um familiar: basta lê-lo com a câmara do telemóvel.',
+    copied: 'Ligação copiada: cola-a numa mensagem.',
+    message:
+      'Estou a preparar o nosso kit para 72 horas com o Kitzy. É gratuito, e fica tudo no telemóvel. Quando a família e o bairro estão preparados, é mais fácil ajudarmo-nos uns aos outros.',
+    shareTitle: 'Kitzy, o kit de 72 horas',
   },
   install: {
     title: 'Instalar o Kitzy',

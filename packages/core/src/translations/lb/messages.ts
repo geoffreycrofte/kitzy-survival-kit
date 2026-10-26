@@ -34,6 +34,10 @@ export const messages: Messages = {
     tasks: 'Meng Handgrëffer',
     activities: 'Aktivitéiten',
   },
+  drawer: {
+    close: 'Zoumaachen',
+    more: 'Alles iwwer dësen Artikel',
+  },
   menu: {
     title: 'Menü',
     close: 'Menü zoumaachen',
@@ -798,6 +802,27 @@ export const messages: Messages = {
     willStore: 'Kaf bréngt et dengem Virrot {{amount}}.',
     stored: 'An dengem Virrot: {{amount}}. Dréi den Datum beim Artikel an, wann s de Zäit hues.',
   },
+  share: {
+    title: 'Zesumme virbereet',
+    lead: 'Wann d’Famill an d’Noperschaft virbereet sinn, hëlleft ee sech méi einfach.',
+    homeIntro:
+      'Schwätz mat denge Léifsten an denge Noperen iwwer Kitzy: jiddereen preparéiert säi Kit, an dir kënnt op een aneren zielen.',
+    planIntro:
+      'Dat ass den offizielle Schrëtt 3: schwätz ronderëm dech driwwer a biet deng Hëllef un. Schéck Kitzy un d’Leit, déi s de grad notéiert hues.',
+    tierIntro:
+      'Däi Stot ass prett. An deng Léifsten? Schéck hinne Kitzy, fir datt si och hire Kit preparéieren.',
+    button: 'Kitzy deelen',
+    qrShow: 'QR-Code weisen',
+    qrHide: 'QR-Code verstoppen',
+    qrLabel: 'QR-Code op kitzy.lu, mat der Kamera vum Handy ze scannen',
+    qrHelp:
+      'Weis en engem Noper oder engem Familljemember: si scannen en mat der Kamera vun hirem Handy.',
+    copied: 'Link kopéiert: setz en an e Message.',
+    message:
+      'Ech preparéieren mat Kitzy eise Kit fir 72 Stonnen. Et ass gratis, an alles bleift um Handy. Wann d’Famill an d’Noperschaft virbereet sinn, hëlleft ee sech méi einfach.',
+    shareTitle: 'Kitzy, de Kit fir 72 Stonnen',
+    menuHint: 'Schéck d’App un deng Léifsten an deng Noperen',
+  },
   recipes: {
     title: 'Konserven-Owend',
     intro:
@@ -929,6 +954,8 @@ export const messages: Messages = {
       '2': 'Ausgeglachene Budget',
       '3': 'Nohaltege Budget',
     },
+    more_one: '{{count}} weidere Virschlag kucken',
+    more_other: '{{count}} weider Virschléi kucken',
     search: 'Op {{merchant}} sichen',
     searchLabel: '„{{name}}“ op {{merchant}} sichen',
     affiliate:

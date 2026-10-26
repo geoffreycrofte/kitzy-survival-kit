@@ -73,8 +73,14 @@ test.describe('Phase 3 : conseils d’achat, transparence, hiérarchie', () => {
     await water.getByRole('checkbox').check();
     const storeNow = water.getByRole('list', { name: /Acheté\s! Range-le pour suivre ses dates/ });
     await expect(storeNow).toBeVisible();
+    // Un clic ouvre le tiroir d'ajout du sac, sans quitter les courses.
     await storeNow.getByRole('link').nth(1).click();
-    await expect(page).toHaveURL(/\/kits\/bag-1\/drinking-water$/);
+    await expect(page.getByRole('dialog', { name: 'Eau potable en bouteille' })).toBeVisible();
+    await expect(page).toHaveURL(/\/courses$/);
+    await expect(storeNow.getByRole('link').nth(1)).toHaveAttribute(
+      'href',
+      /\/kits\/bag-1\/drinking-water$/,
+    );
   });
 
   test('les gestes sont regroupés par thème', async ({ page }) => {

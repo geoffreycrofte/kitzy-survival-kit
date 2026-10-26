@@ -55,6 +55,17 @@ export interface LandingTexts {
     after: string;
   };
   privacy: { title: string; text: string };
+  /** Partager Kitzy : pourquoi, le bouton, le QR code. */
+  together: {
+    title: string;
+    text: string;
+    button: string;
+    qrLabel: string;
+    qrHelp: string;
+    copied: string;
+    message: string;
+    shareTitle: string;
+  };
   install: {
     title: string;
     intro: string;
@@ -190,6 +201,18 @@ const fr: LandingTexts = {
   privacy: {
     title: 'Tout reste chez toi',
     text: 'Pas de compte, pas de publicité, pas de suivi. Tes données restent sur ton appareil, et Kitzy fonctionne même sans connexion.',
+  },
+  together: {
+    title: 'Quand la famille et le quartier sont prêts, on s’entraide plus facilement.',
+    text: 'Parle de Kitzy à tes proches et à tes voisins : chacun prépare son kit, et vous pourrez compter les uns sur les autres.',
+    button: 'Partager Kitzy',
+    qrLabel: 'QR code vers kitzy.lu, à scanner avec l’appareil photo',
+    qrHelp:
+      'À montrer à un voisin ou à un proche : il le scanne avec l’appareil photo de son téléphone.',
+    copied: 'Lien copié : colle-le dans un message.',
+    message:
+      'Je prépare notre kit pour tenir 72 heures avec Kitzy. C’est gratuit, et tout reste sur le téléphone. Quand la famille et le quartier sont prêts, on s’entraide plus facilement.',
+    shareTitle: 'Kitzy, le kit 72 h',
   },
   install: {
     title: 'Installer Kitzy',
@@ -349,6 +372,17 @@ const en: LandingTexts = {
   privacy: {
     title: 'Everything stays with you',
     text: 'No account, no ads, no tracking. Your data stays on your device, and Kitzy even works offline.',
+  },
+  together: {
+    title: 'When family and neighbours are ready, it’s easier to help each other.',
+    text: 'Tell your loved ones and neighbours about Kitzy: everyone prepares their own kit, and you can count on each other.',
+    button: 'Share Kitzy',
+    qrLabel: 'QR code to kitzy.lu, to scan with a phone camera',
+    qrHelp: 'Show it to a neighbour or a relative: they scan it with their phone’s camera.',
+    copied: 'Link copied: paste it into a message.',
+    message:
+      'I’m preparing our kit to last 72 hours with Kitzy. It’s free, and everything stays on the phone. When family and neighbours are ready, it’s easier to help each other.',
+    shareTitle: 'Kitzy, the 72-hour kit',
   },
   install: {
     title: 'Install Kitzy',

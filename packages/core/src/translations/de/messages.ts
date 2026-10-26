@@ -34,6 +34,10 @@ export const messages: Messages = {
     tasks: 'Meine Handgriffe',
     activities: 'Aktivitäten',
   },
+  drawer: {
+    close: 'Schließen',
+    more: 'Alles zu diesem Artikel',
+  },
   menu: {
     title: 'Menü',
     close: 'Menü schließen',
@@ -802,6 +806,26 @@ export const messages: Messages = {
     willStore: 'Gekauft bringt es deinem Vorrat {{amount}}.',
     stored: 'In deinem Vorrat: {{amount}}. Trag das Datum beim Artikel ein, wenn du Zeit hast.',
   },
+  share: {
+    title: 'Gemeinsam vorbereitet',
+    lead: 'Wenn Familie und Nachbarschaft vorbereitet sind, hilft man sich leichter.',
+    homeIntro:
+      'Erzähl deinen Liebsten und Nachbarn von Kitzy: Jeder bereitet sein Kit vor, und ihr könnt aufeinander zählen.',
+    planIntro:
+      'Das ist der offizielle Schritt 3: Sprich in deinem Umfeld darüber und biete deine Hilfe an. Schick Kitzy an die Menschen, die du gerade notiert hast.',
+    tierIntro:
+      'Dein Haushalt ist bereit. Und deine Liebsten? Schick ihnen Kitzy, damit sie auch ihr Kit vorbereiten.',
+    button: 'Kitzy teilen',
+    qrShow: 'QR-Code zeigen',
+    qrHide: 'QR-Code ausblenden',
+    qrLabel: 'QR-Code zu kitzy.lu, mit der Handykamera scannen',
+    qrHelp: 'Zeig ihn Nachbarn oder Angehörigen: Sie scannen ihn mit der Kamera ihres Handys.',
+    copied: 'Link kopiert: Füge ihn in eine Nachricht ein.',
+    message:
+      'Ich bereite mit Kitzy unser Kit für 72 Stunden vor. Es ist kostenlos, und alles bleibt auf dem Handy. Wenn Familie und Nachbarschaft vorbereitet sind, hilft man sich leichter.',
+    shareTitle: 'Kitzy, das 72-Stunden-Kit',
+    menuHint: 'Schick die App an deine Liebsten und Nachbarn',
+  },
   recipes: {
     title: 'Konservenabend',
     intro:
@@ -933,6 +957,8 @@ export const messages: Messages = {
       '2': 'Ausgewogenes Budget',
       '3': 'Langlebiges Budget',
     },
+    more_one: '{{count}} weiteren Vorschlag ansehen',
+    more_other: '{{count}} weitere Vorschläge ansehen',
     search: 'Auf {{merchant}} suchen',
     searchLabel: '„{{name}}“ auf {{merchant}} suchen',
     affiliate:

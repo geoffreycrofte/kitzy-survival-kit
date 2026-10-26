@@ -37,6 +37,10 @@ export const fr = {
     tasks: 'Mes gestes',
     activities: 'Activités',
   },
+  drawer: {
+    close: 'Fermer',
+    more: 'Tout voir sur cet article',
+  },
   menu: {
     title: 'Menu',
     close: 'Fermer le menu',
@@ -791,6 +795,27 @@ export const fr = {
     willStore: 'Une fois acheté, il ajoute {{amount}} à ta réserve.',
     stored: 'Rangé dans ta réserve : {{amount}}. Ajoute la date sur l’article quand tu peux.',
   },
+  share: {
+    title: 'Préparés ensemble',
+    lead: 'Quand la famille et le quartier sont prêts, on s’entraide plus facilement.',
+    homeIntro:
+      'Parle de Kitzy à tes proches et à tes voisins : chacun prépare son kit, et vous pourrez compter les uns sur les autres.',
+    planIntro:
+      'C’est l’étape 3 officielle : parles-en autour de toi et propose ton aide. Envoie Kitzy aux personnes que tu viens de noter.',
+    tierIntro:
+      'Ton foyer est prêt. Et tes proches ? Envoie-leur Kitzy pour qu’ils préparent aussi leur kit.',
+    button: 'Partager Kitzy',
+    qrShow: 'Afficher le QR code',
+    qrHide: 'Masquer le QR code',
+    qrLabel: 'QR code vers kitzy.lu, à scanner avec l’appareil photo',
+    qrHelp:
+      'À montrer à un voisin ou à un proche : il le scanne avec l’appareil photo de son téléphone.',
+    copied: 'Lien copié : colle-le dans un message.',
+    message:
+      'Je prépare notre kit pour tenir 72 heures avec Kitzy. C’est gratuit, et tout reste sur le téléphone. Quand la famille et le quartier sont prêts, on s’entraide plus facilement.',
+    shareTitle: 'Kitzy, le kit 72 h',
+    menuHint: 'Envoie l’app à tes proches et à tes voisins',
+  },
   recipes: {
     title: 'Soirée conserves',
     intro:
@@ -923,6 +948,8 @@ export const fr = {
       '2': 'Budget équilibré',
       '3': 'Budget durable',
     },
+    more_one: 'Voir {{count}} autre suggestion',
+    more_other: 'Voir les {{count}} autres suggestions',
     search: 'Chercher sur {{merchant}}',
     searchLabel: 'Chercher « {{name}} » sur {{merchant}}',
     affiliate:

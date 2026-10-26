@@ -50,7 +50,7 @@ test.describe('Parcours principal', () => {
     const quantity = page.getByLabel(/Quantité/).first();
     await expect(quantity).toBeFocused();
     await expect(quantity).toHaveAttribute('aria-invalid', 'true');
-    await expect(quantity).toHaveAccessibleDescription('Indique une quantité supérieure à 0.');
+    await expect(quantity).toHaveAccessibleDescription(/Indique une quantité supérieure à 0\.$/);
   });
 
   test('liste de courses, partage par lien et import', async ({ page, context }) => {

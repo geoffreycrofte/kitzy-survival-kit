@@ -2336,6 +2336,131 @@ button.bottom-nav__link {
   font-weight: 700;
 }
 
+/* Tiroir d'ajout : feuille qui monte du bas sur mobile, panneau à droite sur bureau. */
+
+.drawer {
+  position: fixed;
+  inset: auto 0 0;
+  width: 100%;
+  max-width: none;
+  max-height: min(88dvh, 720px);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--kz-radius-card) var(--kz-radius-card) 0 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--kz-bg);
+  color: var(--kz-text);
+  box-shadow: 0 -12px 40px rgb(0 0 0 / 0.25);
+}
+
+.drawer::backdrop {
+  background: rgb(8 20 18 / 0.55);
+}
+
+.drawer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 12px 20px calc(24px + env(safe-area-inset-bottom));
+}
+
+/* La poignée dit « ça glisse du bas », sans être un contrôle. */
+.drawer__inner::before {
+  content: '';
+  align-self: center;
+  width: 44px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--kz-line);
+}
+
+.drawer__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.drawer__kit {
+  margin: 0 0 4px;
+  color: var(--kz-muted);
+  font-size: 0.9375rem;
+}
+
+.drawer__title {
+  margin: 0;
+  font-size: 1.75rem;
+}
+
+.drawer__more {
+  align-self: flex-start;
+}
+
+.drawer .buy > .section-title {
+  margin: 0;
+}
+
+.add-lot__need {
+  font-weight: 600;
+  color: var(--kz-text);
+}
+
+@media (min-width: 960px) {
+  .drawer {
+    inset: 0 0 0 auto;
+    width: min(440px, 100%);
+    height: 100%;
+    max-height: none;
+    border-radius: var(--kz-radius-card) 0 0 var(--kz-radius-card);
+    box-shadow: -12px 0 40px rgb(0 0 0 / 0.25);
+  }
+
+  /* Avec des suggestions d'achat, le panneau prend plus de place. */
+  .drawer--shop {
+    width: min(560px, 100%);
+  }
+
+  .drawer--full {
+    inset: 0;
+    width: 100%;
+    border-radius: 0;
+  }
+
+  .drawer__inner {
+    padding: 28px;
+  }
+
+  .drawer__inner::before {
+    display: none;
+  }
+}
+
+.drawer--full {
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-height: none;
+  border-radius: 0;
+}
+
+.drawer--full .drawer__inner {
+  max-width: 720px;
+}
+
+.drawer--full .drawer__inner::before {
+  display: none;
+}
+
+@media (forced-colors: active) {
+  .drawer {
+    border: 2px solid CanvasText;
+  }
+}
+
 /* Menu plein écran */
 
 .menu {
@@ -3183,4 +3308,41 @@ button.bottom-nav__link {
   width: auto;
   min-width: 4.5rem;
   padding-inline: 12px;
+}
+
+/* Le partage du menu est un bouton : il prend l'allure des autres entrées. */
+button.menu__link {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Partager Kitzy */
+.share-app__lead {
+  font-family: var(--kz-font-display);
+  font-size: 1.25rem;
+  line-height: 1.35;
+  color: var(--kz-heading);
+}
+
+.share-app__qr-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.share-app__qr {
+  width: min(220px, 70vw);
+  padding: 8px;
+  background: #fff;
+  border-radius: 12px;
+}
+
+.share-app__qr svg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
