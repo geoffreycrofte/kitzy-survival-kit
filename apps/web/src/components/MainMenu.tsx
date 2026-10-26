@@ -81,16 +81,21 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
     if (document.documentElement.dataset.motion !== 'full') return dialog.close();
     closing.current = true;
     const at = `at ${dialog.style.getPropertyValue('--menu-x') || '50%'} ${dialog.style.getPropertyValue('--menu-y') || '100%'}`;
-    dialog
-      .animate([{ clipPath: `circle(150vmax ${at})` }, { clipPath: `circle(0 ${at})` }], {
-        duration: 320,
-        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
-      })
-      .finished.catch(() => undefined)
-      .finally(() => {
-        closing.current = false;
-        dialog.close();
-      });
+    const shrink = dialog.animate(
+      [{ clipPath: `circle(150vmax ${at})` }, { clipPath: `circle(0 ${at})` }],
+      // `forwards` : le cercle reste fermé jusqu'à la fermeture, sinon l'animation d'ouverture
+      // reprendrait la main une image et le menu réapparaîtrait en entier (clignement).
+      { duration: 320, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' },
+    );
+    const done = () => {
+      closing.current = false;
+      dialog.close();
+      shrink.cancel();
+    };
+    shrink.onfinish = done;
+    shrink.oncancel = () => {
+      if (closing.current) done();
+    };
   };
 
   // Échap passe par la même fermeture animée.
