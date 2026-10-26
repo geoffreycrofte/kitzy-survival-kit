@@ -49,6 +49,12 @@ h1 {
   font-size: 1.875rem;
 }
 
+/* Texte sélectionné : la lanterne (jaune) sous l'encre du terrier (vert sombre), dans les deux thèmes. */
+::selection {
+  background: var(--kz-btn, #f4b860);
+  color: var(--kz-btn-text, #12302b);
+}
+
 p {
   margin: 0;
 }
@@ -384,7 +390,9 @@ main:focus {
   z-index: 4;
   position: sticky;
   bottom: 0;
-  background: var(--kz-nav);
+  /* Le bas de la barre rejoint le fond de la page : sur Android, la bande sous la barre
+     (navigation du système) a la couleur du fond, sans démarcation. */
+  background: linear-gradient(var(--kz-nav) 40%, var(--kz-bg));
   border-top: 1px solid var(--kz-line);
   padding: 6px 10px calc(10px + env(safe-area-inset-bottom));
 }
@@ -480,6 +488,26 @@ main:focus {
 .section-title {
   font-size: 1.25rem;
   color: var(--kz-heading);
+}
+
+/* Ces titres sont des h3 dans le tiroir (sous le nom de l'article) : mêmes marges et même
+   police que les h2 de la page, pas celles du navigateur. */
+.section-title,
+.card__label {
+  margin: 0;
+}
+
+h3.section-title {
+  font-family: var(--kz-font-display);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+/* Ce que tu as : l'état (complet, en partie…) puis les lots, sans qu'ils se touchent. */
+.lots {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .breadcrumb {

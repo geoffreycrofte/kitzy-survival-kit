@@ -230,6 +230,12 @@ section:focus {
   font-weight: 600;
 }
 
+/* Texte sélectionné : la lanterne (jaune) sous l'encre du terrier (vert sombre), comme dans l'app. */
+::selection {
+  background: var(--kz-btn, #f4b860);
+  color: var(--kz-btn-text, #12302b);
+}
+
 /* ---------- Contenu commun ---------- */
 
 main {
