@@ -2,16 +2,14 @@ import { useRef, useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
-import { isIsoDate, kitRows, lotState, sortLotsFifo, tx, type KitRow, type Lot } from '@kitzy/core';
+import { lotState, sortLotsFifo, tx, type KitRow, type Lot } from '@kitzy/core';
 import { useLocale } from '../lib/locale';
-import { Meter } from '../components/Meter';
+import { AddLotForm, parseQuantity } from '../components/AddLotForm';
 import { BuyingAdvice } from '../components/BuyingAdvice';
 import { PantryShelf } from '../components/Pantry';
 import { StatusChips } from '../components/StatusChips';
-import { useKitzy } from '../data/derived';
+import { useKitRow } from '../data/kitRow';
 import {
-  addLotToItem,
-  addLotToTemplate,
   consume,
   deleteItem,
   markCharged,
@@ -25,38 +23,20 @@ import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
 import { Loading } from '../components/Loading';
 
-/** Lit « 4,5 » comme « 4.5 ». */
-function parseQuantity(value: string): number {
-  return Number.parseFloat(value.replace(',', '.').replace(/\s/g, ''));
-}
-
 export function Item() {
   const { t } = useTranslation();
   const { locale } = useLocale();
   const { kitId, key } = useParams();
   const scanned = (useLocation().state as { scanned?: string } | null)?.scanned;
-  const data = useKitzy();
-  const kit = data?.kits.find((k) => k.id === kitId);
-
-  let row: KitRow | undefined;
-  if (data && kit && key) {
-    const rows = kitRows(kit, data.ctx, 'complete');
-    row = rows.find((r) => r.key === key);
-    if (!row && key.startsWith('article-')) {
-      const itemId = key.slice('article-'.length);
-      row = rows.find((r) => r.item?.id === itemId);
-    }
-  }
+  const { data, kit, row } = useKitRow(kitId, key);
   usePageTitle(row?.name ?? t('kits.title'));
 
   if (!data) return <Loading />;
   if (!kit || !row) return <NotFound />;
 
-  const { template, item, status, unit } = row;
+  const { template, item, status } = row;
   const sourceLabel = template ? t(`item.${template.source}`) : t('item.custom');
-  const targetText = t(kit.type === 'home' ? 'item.target' : 'item.targetBag', {
-    quantity: formatQuantity(status.target, unit),
-  });
+  const lots = item ? sortLotsFifo(item.lots) : [];
 
   return (
     <div className="page item-page">
@@ -73,39 +53,22 @@ export function Item() {
         </p>
       )}
 
-      <section className="card" aria-labelledby="item-status">
-        <h2 id="item-status" className="card__label">
-          {targetText}
-        </h2>
-        <Meter
-          value={status.coverage}
-          label={t('item.coverage')}
-          valueText={t('item.have', { quantity: formatQuantity(status.usable, unit) })}
-        />
-        <StatusChips status={status} unit={unit} />
-        {template?.guide && (
-          <Link to={`/guide/${template.guide}`} className="text-link">
-            {t('item.guideLink')}
-          </Link>
-        )}
-      </section>
+      <AddLotForm row={row} kitId={kit.id} bag={kit.type !== 'home'} />
 
-      <AddLotForm row={row} kitId={kit.id} />
-
-      <section aria-labelledby="item-lots" className="lots">
-        <h2 id="item-lots" className="section-title">
-          {t('item.lots')}
-        </h2>
-        {item && item.lots.length > 0 ? (
+      {/* Rien de rangé : pas de section vide. */}
+      {item && lots.length > 0 && (
+        <section aria-labelledby="item-lots" className="lots">
+          <h2 id="item-lots" className="section-title">
+            {t('item.lots')}
+          </h2>
+          <StatusChips status={status} unit={row.unit} />
           <ul className="lot-list">
-            {sortLotsFifo(item.lots).map((lot) => (
+            {lots.map((lot) => (
               <LotRow key={lot.id} lot={lot} itemId={item.id} row={row} today={data.today} />
             ))}
           </ul>
-        ) : (
-          <p className="muted">{t('item.noLots')}</p>
-        )}
-      </section>
+        </section>
+      )}
 
       {item && status.usable > 0 && <UseForm itemId={item.id} row={row} />}
 
@@ -129,6 +92,14 @@ export function Item() {
             {t('item.charged')}
           </button>
         </section>
+      )}
+
+      {template?.guide && (
+        <p>
+          <Link to={`/guide/${template.guide}`} className="text-link">
+            {t('item.guideLink')}
+          </Link>
+        </p>
       )}
 
       {template && <PantryShelf templateId={template.id} />}
@@ -248,119 +219,6 @@ function LotDate({ itemId, lot, tracking }: { itemId: string; lot: Lot; tracking
         {t('item.saveDate')}
       </button>
     </form>
-  );
-}
-
-function AddLotForm({ row, kitId }: { row: KitRow; kitId: string }) {
-  const { t } = useTranslation();
-  const tracking = row.template?.tracking.expiry ?? 'ddm';
-  const [quantity, setQuantity] = useState('');
-  const [expiry, setExpiry] = useState('');
-  const [expiryType, setExpiryType] = useState<'dlc' | 'ddm'>(tracking === 'dlc' ? 'dlc' : 'ddm');
-  const [errors, setErrors] = useState<{ quantity?: string; expiry?: string }>({});
-  const quantityRef = useRef<HTMLInputElement>(null);
-  const expiryRef = useRef<HTMLInputElement>(null);
-  const showDate = tracking !== 'none';
-
-  const submit = async (e: FormEvent) => {
-    e.preventDefault();
-    const q = parseQuantity(quantity);
-    const next: typeof errors = {};
-    if (!(q > 0)) next.quantity = t('item.errorQuantity');
-    if (expiry && !isIsoDate(expiry)) next.expiry = t('item.errorDate');
-    setErrors(next);
-    if (next.quantity) return quantityRef.current?.focus();
-    if (next.expiry) return expiryRef.current?.focus();
-
-    const lot = {
-      quantity: q,
-      ...(showDate && expiry ? { expiry, expiryType } : {}),
-    };
-    if (row.template) await addLotToTemplate(kitId, row.template.id, row.unit, lot);
-    else if (row.item) await addLotToItem(row.item.id, lot);
-    announce(t('item.added', { quantity: formatQuantity(q, row.unit) }));
-    setQuantity('');
-    setExpiry('');
-  };
-
-  return (
-    <section className="card" aria-labelledby="add-lot">
-      <h2 id="add-lot" className="card__label">
-        {t('item.add')}
-      </h2>
-      <form className="form" onSubmit={submit} noValidate>
-        <div className="field">
-          <label htmlFor="lot-quantity" className="field__label">
-            {t('item.quantity', { unit: t(`units.${row.unit}`, { count: 2 }) })}
-          </label>
-          {errors.quantity && (
-            <p id="lot-quantity-error" className="field__error">
-              {errors.quantity}
-            </p>
-          )}
-          <input
-            ref={quantityRef}
-            id="lot-quantity"
-            className="input input--short"
-            inputMode="decimal"
-            autoComplete="off"
-            value={quantity}
-            aria-invalid={errors.quantity ? true : undefined}
-            aria-describedby={errors.quantity ? 'lot-quantity-error' : undefined}
-            onChange={(e) => setQuantity(e.target.value)}
-          />
-        </div>
-        {showDate && (
-          <>
-            <div className="field">
-              <label htmlFor="lot-expiry" className="field__label">
-                {t('item.expiry')}
-              </label>
-              <p id="lot-expiry-hint" className="field__hint">
-                {t('item.expiryHint')}
-              </p>
-              {errors.expiry && (
-                <p id="lot-expiry-error" className="field__error">
-                  {errors.expiry}
-                </p>
-              )}
-              <input
-                ref={expiryRef}
-                id="lot-expiry"
-                className="input input--short"
-                type="date"
-                value={expiry}
-                aria-invalid={errors.expiry ? true : undefined}
-                aria-describedby={
-                  errors.expiry ? 'lot-expiry-hint lot-expiry-error' : 'lot-expiry-hint'
-                }
-                onChange={(e) => setExpiry(e.target.value)}
-              />
-            </div>
-            {expiry && (
-              <fieldset className="choice">
-                <legend className="field__label">{t('item.expiryType')}</legend>
-                {(['ddm', 'dlc'] as const).map((type) => (
-                  <label key={type} className="choice__option">
-                    <input
-                      type="radio"
-                      name="expiry-type"
-                      value={type}
-                      checked={expiryType === type}
-                      onChange={() => setExpiryType(type)}
-                    />
-                    {t(`item.${type}`)}
-                  </label>
-                ))}
-              </fieldset>
-            )}
-          </>
-        )}
-        <button type="submit" className="button">
-          {t('item.addSubmit')}
-        </button>
-      </form>
-    </section>
   );
 }
 

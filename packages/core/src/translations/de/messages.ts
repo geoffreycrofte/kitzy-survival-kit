@@ -34,6 +34,10 @@ export const messages: Messages = {
     tasks: 'Meine Handgriffe',
     activities: 'Aktivitäten',
   },
+  drawer: {
+    close: 'Schließen',
+    more: 'Alles zu diesem Artikel',
+  },
   menu: {
     title: 'Menü',
     close: 'Menü schließen',
@@ -953,6 +957,8 @@ export const messages: Messages = {
       '2': 'Ausgewogenes Budget',
       '3': 'Langlebiges Budget',
     },
+    more_one: '{{count}} weiteren Vorschlag ansehen',
+    more_other: '{{count}} weitere Vorschläge ansehen',
     search: 'Auf {{merchant}} suchen',
     searchLabel: '„{{name}}“ auf {{merchant}} suchen',
     affiliate:

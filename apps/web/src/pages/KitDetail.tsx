@@ -2,6 +2,7 @@ import { useCallback, useState, type FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { categoryName, kitRows, type CategoryId, type KitRow } from '@kitzy/core';
+import { ItemLink } from '../components/ItemDrawer';
 import { StatusChips } from '../components/StatusChips';
 import { useKitzy } from '../data/derived';
 import { BarcodeScanner } from '../components/BarcodeScanner';
@@ -26,7 +27,7 @@ export function KitDetail() {
       setScanning(false);
       if (!kitId) return;
       const link = await findBarcode(code);
-      const state = { focus: '#lot-quantity', scanned: code };
+      const state = { focus: 'main .add-lot__quantity', scanned: code };
       if (!link) navigate(`/kits/${kitId}/scan/${code}`);
       // Un modèle du catalogue existe dans tous les kits ; un objet personnel, seulement dans le sien.
       else if (link.key.startsWith('perso-'))
@@ -73,9 +74,9 @@ export function KitDetail() {
           <ul className="row-list">
             {items.map((row) => (
               <li key={row.key} className="row">
-                <Link to={`/kits/${kit.id}/${row.key}`} className="row__name">
+                <ItemLink kitId={kit.id} itemKey={row.key} className="row__name">
                   {row.name}
-                </Link>
+                </ItemLink>
                 <span className="row__quantity">
                   {formatProgress(row.status.usable, row.status.target, row.unit)}
                 </span>

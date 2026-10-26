@@ -784,6 +784,16 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 
 Le bouton ouvre la feuille de partage du téléphone (texte + lien) ; sans elle, le message et le lien sont copiés, et c'est annoncé. Aucun suivi des partages.
 
+### 8.3 quater Tiroir d'ajout
+
+Après un test utilisateur, ranger un article ne fait plus quitter la liste. Depuis la liste d'un kit ou les destinations des courses, un clic ouvre un **tiroir** (`<dialog>` modal : feuille qui monte du bas sur mobile, panneau à droite sur bureau) ; Ctrl/Cmd-clic ou « nouvel onglet » mènent toujours à la page de l'article.
+
+- **Formulaire allégé**, partagé avec la page : la quantité attendue (« Il en faut 3 pièces pour ton foyer. Tu as 2 pièces. ») est dite dans le bloc quantité et reliée au champ. Depuis les courses, la quantité achetée est déjà saisie.
+- Après l'ajout, le tiroir se ferme, l'ajout est annoncé et le focus revient sur le lien de la liste.
+- **Suggestions d'achat** : le tiroir (plus large sur bureau quand il y en a) montre la première suggestion et les mentions d'affiliation ; « Voir les N autres suggestions » passe le tiroir en plein écran, la croix le ferme. Le focus va sur le palier qui vient d'apparaître.
+- Lien « Tout voir sur cet article » vers la page complète.
+- **Page de l'article** allégée : plus de carte de statut ; « Ce que tu as » n'apparaît que s'il y a quelque chose ; « Pourquoi c'est utile » passe après les actions.
+
 ### 8.4 Édition du catalogue
 
 - Phase 1 : édition directe des JSON dans le dépôt (PR → CI valide le schéma via JSON Schema → déploiement).

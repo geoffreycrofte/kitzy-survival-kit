@@ -30,7 +30,9 @@ export function ScanChoose() {
   const choose = async (key: string, name: string) => {
     await linkBarcode({ code, kitId: kit.id, key });
     announce(t('scan.linked', { name }));
-    navigate(`/kits/${kit.id}/${key}`, { state: { focus: '#lot-quantity', scanned: code } });
+    navigate(`/kits/${kit.id}/${key}`, {
+      state: { focus: 'main .add-lot__quantity', scanned: code },
+    });
   };
 
   return (

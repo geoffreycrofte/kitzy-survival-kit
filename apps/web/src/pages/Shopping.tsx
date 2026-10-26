@@ -11,6 +11,7 @@ import {
 } from '@kitzy/core';
 import { useKitzy } from '../data/derived';
 import { BagIcon, BurrowIcon } from '../components/Icons';
+import { ItemLink } from '../components/ItemDrawer';
 import { addExtras, clearBought, removeExtra, toggleBought } from '../data/store';
 import { usePantryAmount } from '../components/Pantry';
 import { useContent } from '../lib/content';
@@ -174,8 +175,10 @@ function ShoppingRow({ entry, bought: stored }: { entry: ShoppingEntry; bought: 
               const part = formatQuantity(d.quantity, entry.unit);
               return (
                 <li key={d.kitId}>
-                  <Link
-                    to={`/kits/${d.kitId}/${d.key}`}
+                  <ItemLink
+                    kitId={d.kitId}
+                    itemKey={d.key}
+                    quantity={d.quantity}
                     className="dest"
                     aria-label={t('shopping.storeLabel', {
                       quantity: part,
@@ -187,7 +190,7 @@ function ShoppingRow({ entry, bought: stored }: { entry: ShoppingEntry; bought: 
                     <span className="dest__place">{place}</span>
                     {/* Une seule destination : la quantité est déjà dite en haut de la carte. */}
                     {entry.destinations.length > 1 && <span className="dest__qty">{part}</span>}
-                  </Link>
+                  </ItemLink>
                 </li>
               );
             })}

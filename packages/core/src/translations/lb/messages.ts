@@ -34,6 +34,10 @@ export const messages: Messages = {
     tasks: 'Meng Handgrëffer',
     activities: 'Aktivitéiten',
   },
+  drawer: {
+    close: 'Zoumaachen',
+    more: 'Alles iwwer dësen Artikel',
+  },
   menu: {
     title: 'Menü',
     close: 'Menü zoumaachen',
@@ -950,6 +954,8 @@ export const messages: Messages = {
       '2': 'Ausgeglachene Budget',
       '3': 'Nohaltege Budget',
     },
+    more_one: '{{count}} weidere Virschlag kucken',
+    more_other: '{{count}} weider Virschléi kucken',
     search: 'Op {{merchant}} sichen',
     searchLabel: '„{{name}}“ op {{merchant}} sichen',
     affiliate:

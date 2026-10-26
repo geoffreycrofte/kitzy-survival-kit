@@ -37,6 +37,10 @@ export const fr = {
     tasks: 'Mes gestes',
     activities: 'Activités',
   },
+  drawer: {
+    close: 'Fermer',
+    more: 'Tout voir sur cet article',
+  },
   menu: {
     title: 'Menu',
     close: 'Fermer le menu',
@@ -944,6 +948,8 @@ export const fr = {
       '2': 'Budget équilibré',
       '3': 'Budget durable',
     },
+    more_one: 'Voir {{count}} autre suggestion',
+    more_other: 'Voir les {{count}} autres suggestions',
     search: 'Chercher sur {{merchant}}',
     searchLabel: 'Chercher « {{name}} » sur {{merchant}}',
     affiliate:
