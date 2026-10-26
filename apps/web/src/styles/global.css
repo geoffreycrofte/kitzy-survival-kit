@@ -2355,6 +2355,12 @@ button.bottom-nav__link {
   box-shadow: 0 -12px 40px rgb(0 0 0 / 0.25);
 }
 
+/* Le tiroir reçoit le focus à l'ouverture (hors de l'ordre de tabulation) : pas de contour
+   autour de tout le panneau, les éléments à l'intérieur gardent le leur. */
+.drawer:focus {
+  outline: none;
+}
+
 .drawer::backdrop {
   background: rgb(8 20 18 / 0.55);
 }
