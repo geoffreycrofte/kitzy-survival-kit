@@ -1,3 +1,5 @@
+![Kitzy · Three days ahead of the unexpected, your 72-hour emergency supply, sized for your household. Free, no accounts, works offline](https://github.com/geoffreycrofte/kitzy-survival-kit/blob/main/apps/web/landing/public/og/kitzy-og-en.png?raw=true)
+
 # Kitzy
 
 Kitzy helps households build, track and rotate a 72-hour emergency supply, based on Luxembourg's national resilience strategy “Lëtz prepare!”. It is a progressive web app (PWA) that works fully offline, with iOS and Android apps to follow.
