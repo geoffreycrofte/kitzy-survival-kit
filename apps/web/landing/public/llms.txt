@@ -16,7 +16,8 @@ Key facts:
 
 ## Main pages
 
-- [Kitzy home page](https://kitzy.lu/): what Kitzy does, household calculator, install instructions
+- [Kitzy home page](https://kitzy.lu/): what Kitzy does, household calculator, install instructions (French)
+- Translations of the home page: [English](https://kitzy.lu/en/), [German](https://kitzy.lu/de/), [Luxembourgish](https://kitzy.lu/lb/), [Portuguese](https://kitzy.lu/pt/)
 - [Open the app](https://kitzy.lu/app/): the web app itself (requires JavaScript)
 
 ## Policies

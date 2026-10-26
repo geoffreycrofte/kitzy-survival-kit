@@ -15,6 +15,10 @@ export interface LandingTexts {
   description: string;
   skip: string;
   language: string;
+  /** Lien proposé quand l'appareil parle une autre langue que la page. */
+  langHint: string;
+  /** Texte alternatif de l'image de partage (en français sur l'image). */
+  ogImageAlt: string;
   openApp: string;
   hero: { title: string; lead: string; open: string; install: string };
   household: {
@@ -96,6 +100,9 @@ const fr: LandingTexts = {
     'Kitzy t’aide à préparer, suivre et faire tourner ta réserve d’urgence de 72 heures, d’après le guide officiel Lëtz prepare!. Gratuit, sans compte, hors ligne.',
   skip: 'Aller au contenu',
   language: 'Langue',
+  langHint: 'Lire cette page en français',
+  ogImageAlt:
+    'Kitzy le hérisson tient une lanterne allumée, à côté du titre « Trois jours d’avance sur l’imprévu. »',
   openApp: 'Ouvrir l’app',
   hero: {
     title: 'Trois jours d’avance sur l’imprévu.',
@@ -267,6 +274,9 @@ const en: LandingTexts = {
     'Kitzy helps you build, track and rotate your 72-hour emergency supply, based on the official Lëtz prepare! guide. Free, no account, works offline.',
   skip: 'Skip to content',
   language: 'Language',
+  langHint: 'Read this page in English',
+  ogImageAlt:
+    'Kitzy the hedgehog holds a lit lantern, next to the French title “Trois jours d’avance sur l’imprévu.” (Three days ahead of the unexpected.)',
   openApp: 'Open the app',
   hero: {
     title: 'Three days ahead of the unexpected.',

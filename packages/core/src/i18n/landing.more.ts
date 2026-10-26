@@ -7,6 +7,9 @@ export const de: LandingTexts = {
     'Kitzy hilft dir, deinen Notvorrat für 72 Stunden anzulegen, im Blick zu behalten und regelmäßig zu erneuern, nach dem offiziellen Leitfaden Lëtz prepare!. Kostenlos, ohne Konto, offline.',
   skip: 'Zum Inhalt springen',
   language: 'Sprache',
+  langHint: 'Diese Seite auf Deutsch lesen',
+  ogImageAlt:
+    'Kitzy der Igel hält eine brennende Laterne, neben dem französischen Titel „Trois jours d’avance sur l’imprévu.“ (Dem Unerwarteten drei Tage voraus.)',
   openApp: 'App öffnen',
   hero: {
     title: 'Dem Unerwarteten drei Tage voraus.',
@@ -177,6 +180,9 @@ export const lb: LandingTexts = {
     'Kitzy hëlleft dir, däin Noutvirrot fir 72 Stonnen opzebauen, am A ze behalen a regelméisseg z’erneieren, nom offizielle Guide Lëtz prepare!. Gratis, ouni Kont, offline.',
   skip: 'Op den Inhalt sprangen',
   language: 'Sprooch',
+  langHint: 'Dës Säit op Lëtzebuergesch liesen',
+  ogImageAlt:
+    'De Kitzy, den Igel, hält eng brennend Lanter, nieft dem franséischen Titel „Trois jours d’avance sur l’imprévu.“ (Dem Onerwaarten dräi Deeg viraus.)',
   openApp: 'D’App opmaachen',
   hero: {
     title: 'Dem Onerwaarten dräi Deeg viraus.',
@@ -351,6 +357,9 @@ export const pt: LandingTexts = {
     'O Kitzy ajuda-te a preparar, acompanhar e renovar a tua reserva de emergência para 72 horas, com base no guia oficial Lëtz prepare!. Gratuito, sem conta, funciona offline.',
   skip: 'Ir para o conteúdo',
   language: 'Idioma',
+  langHint: 'Ler esta página em português',
+  ogImageAlt:
+    'O ouriço Kitzy segura uma lanterna acesa, ao lado do título em francês «Trois jours d’avance sur l’imprévu.» (Três dias à frente do imprevisto.)',
   openApp: 'Abrir a app',
   hero: {
     title: 'Três dias à frente do imprevisto.',

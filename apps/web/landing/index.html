@@ -16,6 +16,16 @@
       if (matchMedia('(display-mode: standalone)').matches || navigator.standalone === true) {
         location.replace('app/');
       }
+      // Langue déjà choisie (ici ou dans l'app) : la page française à la racine mène à sa traduction.
+      // Seul un choix enregistré redirige, jamais la langue de l'appareil (moteurs de recherche).
+      else if (document.documentElement.lang === 'fr') {
+        try {
+          var chosen = localStorage.getItem('kitzy.locale');
+          if (['en', 'de', 'lb', 'pt'].indexOf(chosen) >= 0) {
+            location.replace(chosen + '/' + location.hash);
+          }
+        } catch (e) {}
+      }
     </script>
   </head>
   <body>
@@ -23,18 +33,25 @@
 
     <header class="top">
       <a class="brand" href="./">Kitzy</a>
-      <label class="lang">
-        <span class="visually-hidden" data-i18n="language"></span>
-        <select id="lang" class="lang__select">
-          <option value="fr" lang="fr">Français</option>
-          <option value="en" lang="en">English</option>
-          <option value="lb" lang="lb">Lëtzebuergesch</option>
-          <option value="de" lang="de">Deutsch</option>
-          <option value="pt" lang="pt">Português</option>
-        </select>
-      </label>
+      <!-- Une adresse par langue : chaque lien mène à la page traduite (hreflang). -->
+      <details class="lang">
+        <summary class="lang__current">
+          <span class="visually-hidden" data-i18n="language"></span>
+          <span data-lang-current>Français</span>
+        </summary>
+        <ul class="lang__list">
+          <li><a href="./" hreflang="fr" lang="fr" data-locale="fr">Français</a></li>
+          <li><a href="en/" hreflang="en" lang="en" data-locale="en">English</a></li>
+          <li><a href="lb/" hreflang="lb" lang="lb" data-locale="lb">Lëtzebuergesch</a></li>
+          <li><a href="de/" hreflang="de" lang="de" data-locale="de">Deutsch</a></li>
+          <li><a href="pt/" hreflang="pt" lang="pt" data-locale="pt">Português</a></li>
+        </ul>
+      </details>
       <a class="button button--small top__open" href="app/" data-i18n="openApp"></a>
     </header>
+
+    <!-- Rempli par main.ts si l'appareil parle une autre langue que la page. -->
+    <p class="lang-hint" id="lang-hint" hidden></p>
 
     <main id="contenu" tabindex="-1">
       <!-- Le soir tombe : la fenêtre du terrier s'allume, une seule fois au chargement. -->

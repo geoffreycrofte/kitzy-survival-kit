@@ -1134,7 +1134,8 @@ Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fi
 - [x] **Référencement** : adresse canonique, Open Graph et carte Twitter/X (adresses absolues vers kitzy.lu), données structurées schema.org (`WebSite`, `WebApplication` gratuite pour le Luxembourg, éditeur Crofte Studio), écrites au build depuis les textes français (`vite.landing.config.ts`). L'app (`/app/`) a les mêmes aperçus de partage
 - [x] **Image de partage** 1200 × 630 (`landing/public/og/kitzy-og.png`) : titre, promesse, mascotte à la lanterne, couleurs du thème sombre. Regénérée par `node apps/web/scripts/og-image.mjs`
 - [x] `robots.txt`, `sitemap.xml` et **`llms.txt`** (description de Kitzy pour les assistants IA : ce que fait l'app, confidentialité, gratuité et liens affiliés, sources officielles, pages utiles)
-- [ ] Une adresse par langue (`/en/`, `/de/`…) avec `hreflang` : aujourd'hui la langue change sur la même adresse, les moteurs ne voient que le français
+- [x] **Une adresse par langue** : `/` (français, langue source et `x-default`), `/en/`, `/de/`, `/lb/`, `/pt/`. Chaque page est écrite au build depuis le même gabarit, avec sa langue (`lang`), ses textes, son adresse canonique, ses balises `hreflang` vers toutes les autres et son `og:locale`. Le sitemap liste les cinq pages avec leurs versions
+- [x] Le choix de la langue est un menu de liens (plus de liste déroulante qui change la page sur place) ; Échap ou un clic à côté le referment. Le choix est mémorisé (même clé que l'app) : la racine mène ensuite à la page choisie. La langue de l'appareil ne redirige jamais (les moteurs de recherche doivent voir chaque page) : elle fait seulement apparaître un lien « Diese Seite auf Deutsch lesen » en haut de la page
 
 ### Phase 5 : International et stores
 
