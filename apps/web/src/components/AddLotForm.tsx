@@ -1,6 +1,7 @@
 import { useId, useRef, useState, type FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 import { isIsoDate, type KitRow } from '@kitzy/core';
+import { DateInput } from './DateInput';
 import { addLotToItem, addLotToTemplate } from '../data/store';
 import { announce } from '../lib/announce';
 import { formatQuantity } from '../lib/format';
@@ -109,11 +110,9 @@ export function AddLotForm({ row, kitId, bag, initialQuantity, bare, onAdded }: 
                 {errors.expiry}
               </p>
             )}
-            <input
+            <DateInput
               ref={expiryRef}
               id={`${id}-expiry`}
-              className="input input--short"
-              type="date"
               value={expiry}
               aria-invalid={errors.expiry ? true : undefined}
               aria-describedby={

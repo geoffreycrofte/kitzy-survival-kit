@@ -151,14 +151,83 @@ section:focus {
   text-decoration: none;
 }
 
-.lang__select {
+/* Menu des langues : un lien par langue (une adresse chacune). */
+.lang {
+  position: relative;
+}
+
+.lang__current {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   min-height: 44px;
-  padding: 0 12px;
+  padding: 0 16px;
   border-radius: 999px;
   border: 2px solid var(--kz-line);
   background: var(--kz-surface);
   color: var(--kz-text);
   font: 600 0.9375rem / 1 var(--kz-font-body);
+  cursor: pointer;
+  list-style: none;
+}
+
+.lang__current::-webkit-details-marker {
+  display: none;
+}
+
+/* Le chevron dit que le menu s'ouvre ; il se retourne une fois ouvert. */
+.lang__current::after {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+}
+
+.lang[open] .lang__current::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.lang__list {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 13rem;
+  margin: 0;
+  padding: 8px;
+  list-style: none;
+  border-radius: 18px;
+  border: 2px solid var(--kz-line);
+  background: var(--kz-surface);
+  box-shadow: 0 12px 32px rgb(0 0 0 / 0.25);
+}
+
+.lang__list a {
+  display: block;
+  padding: 12px 14px;
+  border-radius: 12px;
+  color: var(--kz-text);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.lang__list a:hover {
+  background: var(--kz-bg);
+}
+
+.lang__list a[aria-current='page'] {
+  color: var(--kz-heading);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+/* L'appareil parle une autre langue que la page : un lien vers la traduction. */
+.lang-hint {
+  width: var(--page);
+  margin: 0 auto 8px;
+  font-weight: 600;
 }
 
 /* ---------- Contenu commun ---------- */

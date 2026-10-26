@@ -35,6 +35,53 @@ test.describe('Page de présentation (racine du site)', () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Prépare ton terrier.');
   });
 
+  test('référencement : aperçus de partage, données structurées, robots et llms.txt', async ({
+    page,
+    request,
+  }) => {
+    await page.goto('/');
+    const head = page.locator('head');
+    await expect(head.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      'https://kitzy.lu/',
+    );
+    await expect(head.locator('meta[property="og:image"]')).toHaveAttribute(
+      'content',
+      'https://kitzy.lu/og/kitzy-og.png',
+    );
+    await expect(head.locator('meta[property="og:title"]')).toHaveAttribute(
+      'content',
+      'Kitzy, ta réserve d’urgence de 72 heures',
+    );
+    await expect(head.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      'content',
+      'summary_large_image',
+    );
+    const jsonLd = await head.locator('script[type="application/ld+json"]').textContent();
+    const graph = (JSON.parse(jsonLd!) as { '@graph': Array<{ '@type': string }> })['@graph'];
+    expect(graph.map((node) => node['@type'])).toEqual([
+      'WebSite',
+      'WebPage',
+      'WebApplication',
+      'Organization',
+    ]);
+
+    // L'image servie est bien un PNG de 1200 × 630.
+    const image = await request.get('/og/kitzy-og.png');
+    expect(image.headers()['content-type']).toContain('image/png');
+    const png = await image.body();
+    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
+
+    expect(await (await request.get('/robots.txt')).text()).toContain(
+      'Sitemap: https://kitzy.lu/sitemap.xml',
+    );
+    expect(await (await request.get('/sitemap.xml')).text()).toContain(
+      '<loc>https://kitzy.lu/</loc>',
+    );
+    const llms = await (await request.get('/llms.txt')).text();
+    expect(llms.startsWith('# Kitzy\n\n> ')).toBe(true);
+  });
+
   test('la maisonnée : les quantités suivent la composition du foyer', async ({ page }) => {
     await page.goto('/');
     const board = page.getByRole('group', { name: 'Chez moi, il y a' });
@@ -73,15 +120,82 @@ test.describe('Page de présentation (racine du site)', () => {
     await expect(button).toBeVisible();
   });
 
-  test('la langue choisie ici suit dans l’app', async ({ page }) => {
+  test('une adresse par langue : le choix suit dans l’app, et la racine s’en souvient', async ({
+    page,
+  }) => {
     await page.goto('/');
-    await page.getByLabel('Langue').selectOption('en');
+    const menu = page.locator('summary', { hasText: 'Français' });
+    // Échap referme le menu et rend le focus.
+    await menu.click();
+    await page.keyboard.press('Escape');
+    await expect(page.getByRole('link', { name: 'English' })).toBeHidden();
+    await expect(menu).toBeFocused();
+    await menu.click();
+    const english = page.getByRole('link', { name: 'English' });
+    await expect(english).toHaveAttribute('hreflang', 'en');
+    await expect(page.getByRole('link', { name: 'Français' })).toHaveAttribute(
+      'aria-current',
+      'page',
+    );
+    await english.click();
+    await expect(page).toHaveURL(/\/en\/$/);
     await expect(page.locator('html')).toHaveAttribute('lang', 'en');
     await expect(
       page.getByRole('heading', { level: 1, name: 'Three days ahead of the unexpected.' }),
     ).toBeVisible();
-    await page.goto('./reglages');
-    await expect(page.getByRole('heading', { level: 1, name: 'Settings' })).toBeVisible();
+    // Les liens de la page traduite mènent toujours à l'app et aux images.
+    await expect(page.getByRole('img').first()).toBeVisible();
+    await page.getByRole('link', { name: 'Open Kitzy', exact: true }).click();
+    await expect(page).toHaveURL(/\/app\/$/);
+    await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+
+    // Revenir à la racine : la page anglaise, choisie, s'ouvre.
+    await page.goto('/');
+    await expect(page).toHaveURL(/\/en\/$/);
+  });
+
+  test.describe('appareil en allemand', () => {
+    test.use({ locale: 'de-LU' });
+
+    test('la racine reste en français et propose la page allemande', async ({ page }) => {
+      await page.goto('/');
+      await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+      const hint = page.getByRole('link', { name: 'Diese Seite auf Deutsch lesen' });
+      await expect(hint).toHaveAttribute('lang', 'de');
+      await hint.click();
+      await expect(page).toHaveURL(/\/de\/$/);
+      // Sur la page allemande, plus de suggestion.
+      await expect(page.locator('#lang-hint')).toBeHidden();
+    });
+  });
+
+  test('chaque langue a sa page, ses balises hreflang et aucune erreur axe', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    for (const [path, lang, title] of [
+      ['/de/', 'de', 'Dem Unerwarteten drei Tage voraus.'],
+      ['/lb/', 'lb', null],
+      ['/pt/', 'pt', null],
+    ] as const) {
+      await page.goto(path);
+      await expect(page.locator('html')).toHaveAttribute('lang', lang);
+      if (title) await expect(page.getByRole('heading', { level: 1 })).toContainText(title);
+      const head = page.locator('head');
+      await expect(head.locator('link[rel="canonical"]')).toHaveAttribute(
+        'href',
+        `https://kitzy.lu${path}`,
+      );
+      await expect(head.locator('link[rel="alternate"][hreflang]')).toHaveCount(6);
+      // L'image de partage est celle de la langue, et elle existe.
+      const image = `https://kitzy.lu/og/kitzy-og-${lang}.png`;
+      await expect(head.locator('meta[property="og:image"]')).toHaveAttribute('content', image);
+      const served = await page.request.get(`/og/kitzy-og-${lang}.png`);
+      expect(served.headers()['content-type']).toContain('image/png');
+      await expect(head.locator('link[hreflang="x-default"]')).toHaveAttribute(
+        'href',
+        'https://kitzy.lu/',
+      );
+      await expectNoAxeViolations(page);
+    }
   });
 
   test('l’app installée s’ouvre directement dans app/', async ({ page }) => {

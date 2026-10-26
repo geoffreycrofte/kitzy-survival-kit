@@ -17,7 +17,6 @@ import {
   countMembers,
   intlLocale,
   isLocale,
-  pickLocale,
   themeToCssVars,
   themes,
   type Household,
@@ -55,60 +54,69 @@ function applyTheme(): void {
 
 /* ---------- Langue ---------- */
 
-let locale: Locale = 'fr';
-
-function currentLocale(): Locale {
-  const pref = read('kitzy.locale');
-  if (isLocale(pref)) return pref;
-  return pickLocale(navigator.languages?.length ? navigator.languages : [navigator.language]);
-}
-
-function lookup(texts: unknown, path: string): string | undefined {
-  let value: unknown = texts;
-  for (const part of path.split('.')) {
-    if (value === null || typeof value !== 'object') return undefined;
-    value = (value as Record<string, unknown>)[part];
-  }
-  return typeof value === 'string' ? value : undefined;
-}
+/** La langue de la page vient de son adresse (`/`, `/en/`…) : le texte est déjà écrit au build. */
+const locale: Locale = isLocale(root.lang) ? root.lang : 'fr';
 
 function texts(): LandingTexts {
   return LANDING[locale];
 }
 
-function applyLocale(next: Locale): void {
-  locale = next;
-  root.lang = locale;
-  for (const el of document.querySelectorAll<HTMLElement>('[data-i18n]')) {
-    const text = lookup(texts(), el.dataset.i18n ?? '');
-    if (text !== undefined) el.textContent = text;
+/** Adresse de la page dans une autre langue, depuis la page en cours. */
+function hrefFor(target: Locale): string {
+  const up = locale === 'fr' ? '' : '../';
+  return target === 'fr' ? up || './' : `${up}${target}/`;
+}
+
+/** La langue de l'appareil, si Kitzy la parle (sinon rien : pas de suggestion au hasard). */
+function deviceLocale(): Locale | null {
+  const tags = navigator.languages?.length ? navigator.languages : [navigator.language];
+  for (const tag of tags) {
+    const code = tag.toLowerCase().split('-')[0];
+    if (isLocale(code)) return code;
   }
-  for (const el of document.querySelectorAll<HTMLElement>('[data-i18n-label]')) {
-    const text = lookup(texts(), el.dataset.i18nLabel ?? '');
-    if (text !== undefined) el.setAttribute('aria-label', text);
+  return null;
+}
+
+function remember(value: Locale): void {
+  try {
+    // Même clé que l'app : la langue choisie ici suit dans Kitzy.
+    localStorage.setItem('kitzy.locale', value);
+  } catch {
+    // Stockage indisponible : la langue vaut pour cette visite.
   }
-  for (const el of document.querySelectorAll<HTMLElement>('[data-i18n-content]')) {
-    const text = lookup(texts(), el.dataset.i18nContent ?? '');
-    if (text !== undefined) el.setAttribute('content', text);
-  }
-  const select = document.querySelector<HTMLSelectElement>('#lang');
-  if (select) select.value = locale;
-  renderHousehold(false);
 }
 
 function initLanguage(): void {
-  document.querySelector<HTMLSelectElement>('#lang')?.addEventListener('change', (event) => {
-    const value = (event.target as HTMLSelectElement).value;
-    if (!isLocale(value)) return;
-    try {
-      // Même clé que l'app : la langue choisie ici suit dans Kitzy.
-      localStorage.setItem('kitzy.locale', value);
-    } catch {
-      // Stockage indisponible : la langue vaut pour cette page.
-    }
-    applyLocale(value);
-  });
-  applyLocale(currentLocale());
+  for (const link of document.querySelectorAll<HTMLAnchorElement>('[data-locale]')) {
+    link.addEventListener('click', () => {
+      const value = link.dataset.locale;
+      if (isLocale(value)) remember(value);
+    });
+  }
+  // Menu des langues : Échap le referme (le focus revient sur le bouton), un clic à côté aussi.
+  const menu = document.querySelector<HTMLDetailsElement>('details.lang');
+  if (menu) {
+    menu.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !menu.open) return;
+      menu.open = false;
+      menu.querySelector('summary')?.focus();
+    });
+    document.addEventListener('click', (event) => {
+      if (menu.open && !menu.contains(event.target as Node)) menu.open = false;
+    });
+  }
+  // L'appareil parle une autre langue, et rien n'a encore été choisi : on propose la traduction.
+  const device = deviceLocale();
+  const hint = document.querySelector<HTMLElement>('#lang-hint');
+  if (!hint || !device || device === locale || isLocale(read('kitzy.locale'))) return;
+  const link = document.createElement('a');
+  link.href = hrefFor(device);
+  link.hreflang = device;
+  link.lang = device;
+  link.textContent = LANDING[device].langHint;
+  link.addEventListener('click', () => remember(device));
+  hint.append(link);
+  hint.hidden = false;
 }
 
 /* ---------- La maisonnée ---------- */
@@ -309,6 +317,7 @@ function initShare(): void {
 
 applyTheme();
 initHousehold();
+renderHousehold(false);
 initLanguage();
 initInstall();
 initShare();

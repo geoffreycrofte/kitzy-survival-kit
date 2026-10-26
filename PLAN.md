@@ -414,7 +414,7 @@ Sans serveur, sans compte : **les données voyagent dans le lien lui-même**.
 
 ### 3.10 Version bureau (ordinateur portable, grand écran)
 
-> Note sur l'installation : tant que Kitzy est servie depuis `geoffreycrofte.github.io/survival-kit/`, une autre app web installée depuis `geoffreycrofte.github.io` dont la portée (`scope`) couvre tout le site peut faire croire à Chrome que Kitzy est « déjà installée ». Le domaine propre (kitzy.lu) supprime ce conflit : c'est une raison de plus de basculer avant le lancement.
+> Note sur l'installation : tant que Kitzy est servie depuis `geoffreycrofte.github.io/kitzy-survival-kit/`, une autre app web installée depuis `geoffreycrofte.github.io` dont la portée (`scope`) couvre tout le site peut faire croire à Chrome que Kitzy est « déjà installée ». Le domaine propre (kitzy.lu) supprime ce conflit : c'est une raison de plus de basculer avant le lancement.
 
 La même PWA, installable depuis Chrome ou Edge sur Windows, macOS et Linux (fenêtre dédiée, icône dans le dock ou le menu Démarrer). Le stockage local (IndexedDB) et les notifications fonctionnent comme sur mobile ; la vérification quotidienne en arrière-plan (Periodic Background Sync) marche sur Chrome et Edge une fois l'app installée. Safari et Firefox : rappels à l'ouverture et export agenda `.ics`.
 
@@ -488,7 +488,7 @@ Ordre de travail : **la PWA d'abord** (GitHub Pages, phases 0 à 4), l'app Expo 
 
 **Spécificités GitHub Pages** :
 
-- `base` Vite configuré sur `/survival-kit/` (ou `/` avec un domaine personnalisé) ; scope et `start_url` du manifest alignés.
+- `base` Vite configuré sur `/kitzy-survival-kit/` (ou `/` avec un domaine personnalisé) ; scope et `start_url` du manifest alignés.
 - Routes pré-générées ou repli `404.html` qui recharge l'app (pas de réécriture serveur).
 - Fichier `.nojekyll` ; déploiement par l'action officielle `actions/deploy-pages`.
 - Pas d'en-têtes HTTP personnalisés : la CSP passe par une balise `<meta http-equiv>`.
@@ -794,6 +794,9 @@ Après un test utilisateur, ranger un article ne fait plus quitter la liste. Dep
 - **Suggestions d'achat** : le tiroir (plus large sur bureau quand il y en a) montre la première suggestion et les mentions d'affiliation ; « Voir les N autres suggestions » passe le tiroir en plein écran, la croix le ferme. Le focus va sur le palier qui vient d'apparaître.
 - Lien « Tout voir sur cet article » vers la page complète.
 - **Page de l'article** allégée : plus de carte de statut ; « Ce que tu as » n'apparaît que s'il y a quelque chose ; « Pourquoi c'est utile » passe après les actions.
+- **Déplier** : « Tout voir sur cet article » (bouton) ou la poignée tirée vers le haut font monter le tiroir presque en plein écran (la liste reste visible en haut ; panneau élargi sur bureau). Le reste de la vue de l'article (ce que tu as, retirer, recharge, pourquoi c'est utile, garde-manger, où l'acheter) arrive par en bas, partagé avec la page (`ItemDetails`). Le focus va sur le premier titre apparu.
+- **Poignée** (mobile) : le haut du tiroir (poignée, nom, croix) reste en place au défilement. Tiré vers le bas, il suit le doigt et se ferme passé 30 % de sa hauteur ou sur un geste rapide ; tiré vers le haut, il résiste comme un élastique et se déplie passé 60 px. Un petit geste le fait revenir en place. Chaque geste a son équivalent sans glisser (croix, Échap, « Tout voir »), conformément au critère sur les gestes de pointeur.
+- **Dates** : tous les champs date utilisent l'icône calendrier de Kitzy (`DateInput`) ; un appui n'importe où sur le champ ouvre le sélecteur (Firefox garde son icône native).
 
 ### 8.4 Édition du catalogue
 
@@ -1039,7 +1042,7 @@ Préparé dès le départ :
 - [x] Polices auto-hébergées (Young Serif, Figtree) et 6 poses du hérisson mises en cache pour le hors-ligne
 - [x] Manifest PWA, icônes (dont maskable), service worker avec precache ; `404.html` pour les routes sur GitHub Pages
 - [x] Tests de bout en bout : parcours, axe-core dans les deux thèmes, focus, lien d'évitement, mouvement réduit, **hors-ligne**
-- [x] CI GitHub Actions (format, lint, types, tests, e2e) et déploiement GitHub Pages (`/survival-kit/`, ou `kitzy.lu` via variables de dépôt)
+- [x] CI GitHub Actions (format, lint, types, tests, e2e) et déploiement GitHub Pages (`/kitzy-survival-kit/`, ou `kitzy.lu` via variables de dépôt)
 - [x] Skills d'accessibilité installés dans `.claude/skills/` (raweb-code, raweb-audit, raam-code, raam-audit)
 - [ ] Activer GitHub Pages dans les réglages du dépôt (Source : GitHub Actions)
 - [ ] Profil pays `lu.json` et schéma des profils (reporté en phase 1, avec le catalogue)
@@ -1128,6 +1131,11 @@ Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fi
 - [x] L'app déménage dans **`/app/`** : `start_url` et `scope` y pointent, l'identité de l'app installée (`id: /`) ne change pas. Une app installée ouverte à la racine, ou une ancienne adresse (lien de partage…), mène à la même page dans `/app/`
 - [x] L'ancien service worker de la racine est remplacé par un `sw.js` qui efface ses caches, se désinscrit et recharge la page ; les données (même site) ne bougent pas
 - [x] Tests sur un serveur qui imite GitHub Pages (`scripts/serve-dist.mjs` : 404.html, statut 404)
+- [x] **Référencement** : adresse canonique, Open Graph et carte Twitter/X (adresses absolues vers kitzy.lu), données structurées schema.org (`WebSite`, `WebApplication` gratuite pour le Luxembourg, éditeur Crofte Studio), écrites au build depuis les textes français (`vite.landing.config.ts`). L'app (`/app/`) a les mêmes aperçus de partage
+- [x] **Images de partage** 1200 × 630, une par langue (`landing/public/og/kitzy-og.png`, `kitzy-og-en.png`…) : titre et accroche de la langue (textes de core), mascotte à la lanterne, couleurs du thème sombre. Regénérées par `pnpm og-image`
+- [x] `robots.txt`, `sitemap.xml` et **`llms.txt`** (description de Kitzy pour les assistants IA : ce que fait l'app, confidentialité, gratuité et liens affiliés, sources officielles, pages utiles)
+- [x] **Une adresse par langue** : `/` (français, langue source et `x-default`), `/en/`, `/de/`, `/lb/`, `/pt/`. Chaque page est écrite au build depuis le même gabarit, avec sa langue (`lang`), ses textes, son adresse canonique, ses balises `hreflang` vers toutes les autres et son `og:locale`. Le sitemap liste les cinq pages avec leurs versions
+- [x] Le choix de la langue est un menu de liens (plus de liste déroulante qui change la page sur place) ; Échap ou un clic à côté le referment. Le choix est mémorisé (même clé que l'app) : la racine mène ensuite à la page choisie. La langue de l'appareil ne redirige jamais (les moteurs de recherche doivent voir chaque page) : elle fait seulement apparaître un lien « Diese Seite auf Deutsch lesen » en haut de la page
 
 ### Phase 5 : International et stores
 

@@ -17,7 +17,8 @@
     "typecheck": "pnpm -r typecheck && tsc -p scripts/tsconfig.json",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check-links": "tsx scripts/check-links.ts"
+    "check-links": "tsx scripts/check-links.ts",
+    "og-image": "tsx apps/web/scripts/og-image.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

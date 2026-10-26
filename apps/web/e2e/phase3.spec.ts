@@ -39,7 +39,7 @@ test.describe('Phase 3 : conseils d’achat, transparence, hiérarchie', () => {
     );
     await expect(
       page.getByRole('link', { name: /Écris-nous sur la page du projet sur GitHub/ }),
-    ).toHaveAttribute('href', 'https://github.com/geoffreycrofte/survival-kit/issues');
+    ).toHaveAttribute('href', 'https://github.com/geoffreycrofte/kitzy-survival-kit/issues');
   });
 
   test('pas de bloc d’achat pour ce qui ne s’achète pas', async ({ page }) => {

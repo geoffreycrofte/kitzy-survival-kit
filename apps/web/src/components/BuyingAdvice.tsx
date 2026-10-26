@@ -16,6 +16,8 @@ interface BuyingAdviceProps {
   /** Aperçu : la première suggestion seulement, et un bouton pour voir le reste. */
   preview?: boolean;
   onMore?: () => void;
+  /** En quittant l'aperçu, le focus va sur ce qui vient d'apparaître (par défaut). */
+  focusReveal?: boolean;
 }
 
 /**
@@ -27,6 +29,7 @@ export function BuyingAdvice({
   level = 2,
   preview = false,
   onMore,
+  focusReveal = true,
 }: BuyingAdviceProps) {
   const { t } = useTranslation();
   const online = useOnline();
@@ -39,9 +42,9 @@ export function BuyingAdvice({
 
   // En passant de l'aperçu à la liste complète, le focus va sur ce qui vient d'apparaître.
   useEffect(() => {
-    if (wasPreview.current && !preview) revealed.current?.focus();
+    if (wasPreview.current && !preview && focusReveal) revealed.current?.focus();
     wasPreview.current = preview;
-  }, [preview]);
+  }, [preview, focusReveal]);
 
   if (all.length === 0) return null;
   const groups = preview
