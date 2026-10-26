@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ACHIEVEMENTS } from '@kitzy/core';
 import { useKitzy } from '../data/derived';
+import { useShareApp } from './ShareKitzy';
 import { setThemePref, usePreferences, type ThemePref } from '../lib/preferences';
 import {
   AutoThemeIcon,
@@ -11,6 +12,7 @@ import {
   CloseIcon,
   MoonIcon,
   SettingsIcon,
+  ShareIcon,
   SparkIcon,
   SunIcon,
   TrophyIcon,
@@ -63,6 +65,7 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
   }, [open]);
 
   const close = () => ref.current?.close();
+  const share = useShareApp();
 
   const links = [
     {
@@ -133,10 +136,21 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
                 </NavLink>
               </li>
             ))}
+            <li className="menu__item" style={{ '--i': links.length + 1 } as CSSProperties}>
+              <button type="button" className="menu__link" onClick={() => void share()}>
+                <span className="menu__icon">
+                  <ShareIcon />
+                </span>
+                <span className="menu__text">
+                  <span className="menu__name">{t('share.button')}</span>
+                  <span className="menu__hint">{t('share.menuHint')}</span>
+                </span>
+              </button>
+            </li>
           </ul>
         </nav>
 
-        <p className="menu__item menu__foot" style={{ '--i': links.length + 1 } as CSSProperties}>
+        <p className="menu__item menu__foot" style={{ '--i': links.length + 2 } as CSSProperties}>
           <Link to="/transparence" className="text-link" onClick={close}>
             {t('settings.transparency')}
           </Link>

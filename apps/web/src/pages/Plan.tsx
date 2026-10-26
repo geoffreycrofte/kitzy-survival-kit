@@ -29,6 +29,7 @@ import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
 import { Loading } from '../components/Loading';
 import { PlanGate } from '../components/PlanLock';
+import { ShareKitzy } from '../components/ShareKitzy';
 
 const uid = () => crypto.randomUUID();
 
@@ -588,6 +589,7 @@ function StepNeighborhood({ plan, edit }: StepProps) {
     <>
       <NeighborList kind="helpers" list={plan.helpers} edit={edit} />
       <NeighborList kind="toHelp" list={plan.toHelp} edit={edit} />
+      <ShareKitzy context="plan" />
     </>
   );
 }

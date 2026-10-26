@@ -783,6 +783,26 @@ export const messages: Messages = {
     willStore: 'Once bought, it adds {{amount}} to your reserve.',
     stored: 'Stored in your reserve: {{amount}}. Add the date on the item when you can.',
   },
+  share: {
+    title: 'Prepared together',
+    lead: 'When family and neighbours are ready, it’s easier to help each other.',
+    homeIntro:
+      'Tell your loved ones and neighbours about Kitzy: everyone prepares their own kit, and you can count on each other.',
+    planIntro:
+      'This is official step 3: talk about it around you and offer your help. Send Kitzy to the people you’ve just listed.',
+    tierIntro:
+      'Your household is ready. What about your loved ones? Send them Kitzy so they can prepare their kit too.',
+    button: 'Share Kitzy',
+    qrShow: 'Show the QR code',
+    qrHide: 'Hide the QR code',
+    qrLabel: 'QR code to kitzy.lu, to scan with a phone camera',
+    qrHelp: 'Show it to a neighbour or a relative: they scan it with their phone’s camera.',
+    copied: 'Link copied: paste it into a message.',
+    message:
+      'I’m preparing our kit to last 72 hours with Kitzy. It’s free, and everything stays on the phone. When family and neighbours are ready, it’s easier to help each other.',
+    shareTitle: 'Kitzy, the 72-hour kit',
+    menuHint: 'Send the app to your loved ones and neighbours',
+  },
   recipes: {
     title: 'Tinned-food night',
     intro:

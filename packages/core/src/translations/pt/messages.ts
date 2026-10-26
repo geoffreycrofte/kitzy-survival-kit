@@ -791,6 +791,26 @@ export const messages: Messages = {
     willStore: 'Depois de comprado, acrescenta {{amount}} à tua reserva.',
     stored: 'Guardado na tua reserva: {{amount}}. Indica a data no artigo quando puderes.',
   },
+  share: {
+    title: 'Preparados juntos',
+    lead: 'Quando a família e o bairro estão preparados, é mais fácil ajudarmo-nos uns aos outros.',
+    homeIntro:
+      'Fala do Kitzy aos teus próximos e vizinhos: cada um prepara o seu kit, e podem contar uns com os outros.',
+    planIntro:
+      'É o passo 3 oficial: fala disto à tua volta e oferece a tua ajuda. Envia o Kitzy às pessoas que acabaste de anotar.',
+    tierIntro:
+      'O teu agregado está preparado. E os teus próximos? Envia-lhes o Kitzy para que também preparem o seu kit.',
+    button: 'Partilhar o Kitzy',
+    qrShow: 'Mostrar o código QR',
+    qrHide: 'Esconder o código QR',
+    qrLabel: 'Código QR para kitzy.lu, para ler com a câmara do telemóvel',
+    qrHelp: 'Mostra-o a um vizinho ou a um familiar: basta lê-lo com a câmara do telemóvel.',
+    copied: 'Ligação copiada: cola-a numa mensagem.',
+    message:
+      'Estou a preparar o nosso kit para 72 horas com o Kitzy. É gratuito, e fica tudo no telemóvel. Quando a família e o bairro estão preparados, é mais fácil ajudarmo-nos uns aos outros.',
+    shareTitle: 'Kitzy, o kit de 72 horas',
+    menuHint: 'Envia a app aos teus próximos e vizinhos',
+  },
   recipes: {
     title: 'Noite das conservas',
     intro:

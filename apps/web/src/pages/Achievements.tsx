@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { ACHIEVEMENTS, PREP_TIERS, prepTierFor, type Achievement } from '@kitzy/core';
+import { ShareKitzy } from '../components/ShareKitzy';
 import { TrophyIcon } from '../components/Icons';
 import { Loading } from '../components/Loading';
 import { Meter } from '../components/Meter';
@@ -73,6 +74,9 @@ export function Achievements() {
           })}
         </ol>
       </section>
+
+      {/* Le foyer est prêt : le bon moment pour inviter les proches. */}
+      {(tier === 'pret' || tier === 'voisin') && <ShareKitzy context="tier" />}
 
       {GROUPS.map((group) => (
         <section key={group} className="kit-group" aria-labelledby={`badges-${group}`}>

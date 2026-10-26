@@ -772,6 +772,18 @@ Le **Luxembourg n'a pratiquement pas de programmes d'affiliation locaux** : les 
 - **Courses → réserve** : un produit du garde-manger coché « acheté » entre tout seul dans la réserve de la maison, sans date ; l'article propose « Ajouter la date ». Décoché, il en ressort. Un même produit demandé par plusieurs recettes reste une seule ligne (« Pour : Chili, Couscous »).
 - Les adresses du garde-manger sont surveillées chaque semaine avec les autres (§ 9).
 
+### 8.3 ter Partager Kitzy
+
+« Quand la famille et le quartier sont prêts, on s'entraide plus facilement. » Un même bloc « Préparés ensemble » (bouton « Partager Kitzy » et QR code vers kitzy.lu à montrer) apparaît là où l'envie de partager vient naturellement :
+
+- **Accueil de l'app**, une fois le foyer présenté ;
+- **Étape « Le quartier » du plan** (étape 3 officielle : « parlez-en autour de vous et proposez votre aide ») ;
+- **Page des succès**, quand le foyer atteint le palier « Prêt pour 72 h » ou « Voisin ressource » ;
+- **Menu plein écran** : entrée « Partager Kitzy » ;
+- **Page d'accueil du site**, juste avant « Installer Kitzy » (QR code dessiné au build, lisible sans JavaScript).
+
+Le bouton ouvre la feuille de partage du téléphone (texte + lien) ; sans elle, le message et le lien sont copiés, et c'est annoncé. Aucun suivi des partages.
+
 ### 8.4 Édition du catalogue
 
 - Phase 1 : édition directe des JSON dans le dépôt (PR → CI valide le schéma via JSON Schema → déploiement).

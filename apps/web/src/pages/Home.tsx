@@ -15,6 +15,7 @@ import {
   type Reminder,
 } from '@kitzy/core';
 import { CheckListIcon, PlanIcon, TagIcon, TrophyIcon } from '../components/Icons';
+import { ShareKitzy } from '../components/ShareKitzy';
 import { Lantern } from '../components/Lantern';
 import { Meter } from '../components/Meter';
 import { Loading } from '../components/Loading';
@@ -145,6 +146,8 @@ export function Home() {
           />
         </section>
       )}
+
+      {data?.household && <ShareKitzy context="home" />}
 
       {data?.household && (
         <Link to="/foyer" className="text-link">

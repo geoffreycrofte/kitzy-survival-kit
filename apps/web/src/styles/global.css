@@ -3184,3 +3184,40 @@ button.bottom-nav__link {
   min-width: 4.5rem;
   padding-inline: 12px;
 }
+
+/* Le partage du menu est un bouton : il prend l'allure des autres entrées. */
+button.menu__link {
+  width: 100%;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Partager Kitzy */
+.share-app__lead {
+  font-family: var(--kz-font-display);
+  font-size: 1.25rem;
+  line-height: 1.35;
+  color: var(--kz-heading);
+}
+
+.share-app__qr-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.share-app__qr {
+  width: min(220px, 70vw);
+  padding: 8px;
+  background: #fff;
+  border-radius: 12px;
+}
+
+.share-app__qr svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}

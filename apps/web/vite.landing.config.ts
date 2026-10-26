@@ -1,6 +1,8 @@
 import { resolve } from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
+import { renderSVG } from 'uqr';
 import { LANDING } from '../../packages/core/src/i18n/landing';
+import { SITE_URL } from '../../packages/core/src/links';
 
 /**
  * Page de présentation (kitzy.lu) : construite à la racine du site, à côté de l'app (`app/`).
@@ -29,25 +31,42 @@ function frenchText(): Plugin {
   return {
     name: 'kitzy-landing-text',
     transformIndexHtml(html) {
-      return html
-        .replace(
-          /(<(\w+)\b[^>]*\bdata-i18n="([^"]+)"[^>]*>)(<\/\2>)/g,
-          (match, open: string, _tag: string, path: string, close: string) => {
+      return (
+        html
+          .replace(
+            /(<(\w+)\b[^>]*\bdata-i18n="([^"]+)"[^>]*>)(<\/\2>)/g,
+            (match, open: string, _tag: string, path: string, close: string) => {
+              const text = lookup(path);
+              if (text === undefined) throw new Error(`Texte introuvable : ${path}`);
+              return `${open}${escape(text)}${close}`;
+            },
+          )
+          .replace(/data-i18n-label="([^"]+)" aria-label=""/g, (match, path: string) => {
             const text = lookup(path);
             if (text === undefined) throw new Error(`Texte introuvable : ${path}`);
-            return `${open}${escape(text)}${close}`;
-          },
-        )
-        .replace(/data-i18n-content="([^"]+)" content=""/g, (match, path: string) => {
-          const text = lookup(path);
-          if (text === undefined) throw new Error(`Texte introuvable : ${path}`);
-          return `data-i18n-content="${path}" content="${escape(text)}"`;
-        })
-        .replace(
-          /(<span class="result__label" data-result-label="(\w+)">)(<\/span>)/g,
-          (match, open: string, key: 'water' | 'meals' | 'pets' | 'bags', close: string) =>
-            `${open}${escape(LANDING.fr.household.results[key].other)}${close}`,
-        );
+            return `data-i18n-label="${path}" aria-label="${escape(text)}"`;
+          })
+          // Le QR code vers le site, dessiné une fois pour toutes : il s'affiche sans JavaScript.
+          .replace(
+            '<!-- kitzy:qr -->',
+            renderSVG(SITE_URL, {
+              ecc: 'M',
+              border: 2,
+              whiteColor: '#FFFFFF',
+              blackColor: '#12302B',
+            }),
+          )
+          .replace(/data-i18n-content="([^"]+)" content=""/g, (match, path: string) => {
+            const text = lookup(path);
+            if (text === undefined) throw new Error(`Texte introuvable : ${path}`);
+            return `data-i18n-content="${path}" content="${escape(text)}"`;
+          })
+          .replace(
+            /(<span class="result__label" data-result-label="(\w+)">)(<\/span>)/g,
+            (match, open: string, key: 'water' | 'meals' | 'pets' | 'bags', close: string) =>
+              `${open}${escape(LANDING.fr.household.results[key].other)}${close}`,
+          )
+      );
     },
   };
 }
