@@ -84,8 +84,9 @@ function ItemDrawer({ target, onClose }: { target: Target | null; onClose: () =>
     if (!dialog) return;
     if (shown && !dialog.open) {
       dialog.showModal();
-      // On arrive sur la quantité : c'est la seule chose à faire ici.
-      dialog.querySelector<HTMLInputElement>('input')?.focus();
+      // Le focus va sur la fenêtre elle-même : le lecteur d'écran annonce « dialogue » et son nom
+      // (l'article), puis Tab mène à la croix et au formulaire. showModal() l'aurait mis sur la croix.
+      dialog.focus();
     }
     if (!shown && dialog.open) dialog.close();
   }, [shown]);
@@ -112,6 +113,7 @@ function ItemDrawer({ target, onClose }: { target: Target | null; onClose: () =>
       ref={ref}
       className={`drawer${row?.template ? ' drawer--shop' : ''}${full ? ' drawer--full' : ''}`}
       aria-labelledby="drawer-title"
+      tabIndex={-1}
       onClose={() => {
         setFull(false);
         onClose();

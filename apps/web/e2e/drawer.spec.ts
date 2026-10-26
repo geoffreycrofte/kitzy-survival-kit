@@ -14,11 +14,14 @@ test.describe('Tiroir d’ajout : ranger sans quitter la liste', () => {
     const drawer = page.getByRole('dialog', { name: 'Sac de couchage ou couverture' });
     await expect(drawer).toBeVisible();
     await expect(page).toHaveURL(/\/kits\/home$/);
-    // Ce qu'il en faut est dit dans le bloc quantité, et le champ a le focus.
+    // Le focus est sur le tiroir lui-même ; ce qu'il en faut est dit dans le bloc quantité.
     const quantity = drawer.getByLabel(/Quantité/);
-    await expect(quantity).toBeFocused();
+    await expect(drawer).toBeFocused();
     await expect(quantity).toHaveAccessibleDescription(/Il en faut 3\spièces pour ton foyer\./);
     await expectNoAxeViolations(page);
+    // Tab entre dans le tiroir : la croix d'abord, puis le formulaire.
+    await page.keyboard.press('Tab');
+    await expect(drawer.getByRole('button', { name: 'Fermer' })).toBeFocused();
 
     await quantity.fill('2');
     await drawer.getByRole('button', { name: 'Ajouter à ma réserve' }).click();

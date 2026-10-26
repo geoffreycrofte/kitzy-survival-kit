@@ -789,6 +789,7 @@ Le bouton ouvre la feuille de partage du téléphone (texte + lien) ; sans elle,
 Après un test utilisateur, ranger un article ne fait plus quitter la liste. Depuis la liste d'un kit ou les destinations des courses, un clic ouvre un **tiroir** (`<dialog>` modal : feuille qui monte du bas sur mobile, panneau à droite sur bureau) ; Ctrl/Cmd-clic ou « nouvel onglet » mènent toujours à la page de l'article.
 
 - **Formulaire allégé**, partagé avec la page : la quantité attendue (« Il en faut 3 pièces pour ton foyer. Tu as 2 pièces. ») est dite dans le bloc quantité et reliée au champ. Depuis les courses, la quantité achetée est déjà saisie.
+- Accessibilité : fenêtre modale native (`<dialog>` + `showModal()`, rôle dialog, reste de la page inerte), nommée par le nom de l'article ; à l'ouverture le focus va sur le tiroir lui-même, Tab mène ensuite à la croix puis au formulaire ; Échap ferme.
 - Après l'ajout, le tiroir se ferme, l'ajout est annoncé et le focus revient sur le lien de la liste.
 - **Suggestions d'achat** : le tiroir (plus large sur bureau quand il y en a) montre la première suggestion et les mentions d'affiliation ; « Voir les N autres suggestions » passe le tiroir en plein écran, la croix le ferme. Le focus va sur le palier qui vient d'apparaître.
 - Lien « Tout voir sur cet article » vers la page complète.
