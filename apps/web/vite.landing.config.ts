@@ -23,6 +23,78 @@ function lookup(path: string): string | undefined {
   return typeof value === 'string' ? value : undefined;
 }
 
+const LANGUAGES = ['fr', 'en', 'de', 'lb', 'pt'];
+
+/**
+ * Référencement et aperçus de partage : adresse canonique, Open Graph, carte Twitter/X et
+ * données structurées (schema.org). Les adresses sont absolues (kitzy.lu), comme l'exigent
+ * les réseaux sociaux ; l'image est générée par scripts/og-image.mjs.
+ */
+function seoTags(): string {
+  const { title, description } = LANDING.fr;
+  const image = `${SITE_URL}og/kitzy-og.png`;
+  const imageAlt =
+    'Kitzy le hérisson tient une lanterne allumée, à côté du titre « Trois jours d’avance sur l’imprévu. »';
+  const data = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      {
+        '@type': 'WebSite',
+        '@id': `${SITE_URL}#site`,
+        name: 'Kitzy',
+        url: SITE_URL,
+        inLanguage: LANGUAGES,
+        description,
+        publisher: { '@id': `${SITE_URL}#studio` },
+      },
+      {
+        '@type': 'WebApplication',
+        name: 'Kitzy',
+        url: `${SITE_URL}app/`,
+        description,
+        image,
+        applicationCategory: 'LifestyleApplication',
+        operatingSystem: 'Android, iOS, Windows, macOS, Linux',
+        browserRequirements: 'Navigateur récent avec JavaScript',
+        inLanguage: LANGUAGES,
+        isAccessibleForFree: true,
+        offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+        areaServed: { '@type': 'Country', name: 'Luxembourg' },
+        publisher: { '@id': `${SITE_URL}#studio` },
+      },
+      {
+        '@type': 'Organization',
+        '@id': `${SITE_URL}#studio`,
+        name: 'Crofte Studio',
+        url: 'https://geoffreycrofte.com',
+      },
+    ],
+  };
+  const meta = (attr: string, key: string, value: string) =>
+    `<meta ${attr}="${key}" content="${escape(value)}" />`;
+  return [
+    `<link rel="canonical" href="${SITE_URL}" />`,
+    meta('name', 'robots', 'index, follow, max-image-preview:large'),
+    meta('property', 'og:type', 'website'),
+    meta('property', 'og:site_name', 'Kitzy'),
+    meta('property', 'og:locale', 'fr_FR'),
+    meta('property', 'og:url', SITE_URL),
+    meta('property', 'og:title', title),
+    meta('property', 'og:description', description),
+    meta('property', 'og:image', image),
+    meta('property', 'og:image:type', 'image/png'),
+    meta('property', 'og:image:width', '1200'),
+    meta('property', 'og:image:height', '630'),
+    meta('property', 'og:image:alt', imageAlt),
+    meta('name', 'twitter:card', 'summary_large_image'),
+    meta('name', 'twitter:title', title),
+    meta('name', 'twitter:description', description),
+    meta('name', 'twitter:image', image),
+    meta('name', 'twitter:image:alt', imageAlt),
+    `<script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>`,
+  ].join('\n    ');
+}
+
 /**
  * Les textes français sont écrits dans le HTML au moment de la construction :
  * la page se lit sans JavaScript, et le texte n'existe qu'à un seul endroit (core).
@@ -46,6 +118,7 @@ function frenchText(): Plugin {
             if (text === undefined) throw new Error(`Texte introuvable : ${path}`);
             return `data-i18n-label="${path}" aria-label="${escape(text)}"`;
           })
+          .replace('<!-- kitzy:seo -->', seoTags())
           // Le QR code vers le site, dessiné une fois pour toutes : il s'affiche sans JavaScript.
           .replace(
             '<!-- kitzy:qr -->',

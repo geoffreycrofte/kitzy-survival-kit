@@ -35,6 +35,52 @@ test.describe('Page de présentation (racine du site)', () => {
     await expect(page.getByRole('heading', { level: 1 })).toContainText('Prépare ton terrier.');
   });
 
+  test('référencement : aperçus de partage, données structurées, robots et llms.txt', async ({
+    page,
+    request,
+  }) => {
+    await page.goto('/');
+    const head = page.locator('head');
+    await expect(head.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href',
+      'https://kitzy.lu/',
+    );
+    await expect(head.locator('meta[property="og:image"]')).toHaveAttribute(
+      'content',
+      'https://kitzy.lu/og/kitzy-og.png',
+    );
+    await expect(head.locator('meta[property="og:title"]')).toHaveAttribute(
+      'content',
+      'Kitzy, ta réserve d’urgence de 72 heures',
+    );
+    await expect(head.locator('meta[name="twitter:card"]')).toHaveAttribute(
+      'content',
+      'summary_large_image',
+    );
+    const jsonLd = await head.locator('script[type="application/ld+json"]').textContent();
+    const graph = (JSON.parse(jsonLd!) as { '@graph': Array<{ '@type': string }> })['@graph'];
+    expect(graph.map((node) => node['@type'])).toEqual([
+      'WebSite',
+      'WebApplication',
+      'Organization',
+    ]);
+
+    // L'image servie est bien un PNG de 1200 × 630.
+    const image = await request.get('/og/kitzy-og.png');
+    expect(image.headers()['content-type']).toContain('image/png');
+    const png = await image.body();
+    expect([png.readUInt32BE(16), png.readUInt32BE(20)]).toEqual([1200, 630]);
+
+    expect(await (await request.get('/robots.txt')).text()).toContain(
+      'Sitemap: https://kitzy.lu/sitemap.xml',
+    );
+    expect(await (await request.get('/sitemap.xml')).text()).toContain(
+      '<loc>https://kitzy.lu/</loc>',
+    );
+    const llms = await (await request.get('/llms.txt')).text();
+    expect(llms.startsWith('# Kitzy\n\n> ')).toBe(true);
+  });
+
   test('la maisonnée : les quantités suivent la composition du foyer', async ({ page }) => {
     await page.goto('/');
     const board = page.getByRole('group', { name: 'Chez moi, il y a' });

@@ -1,0 +1,36 @@
+# Kitzy
+
+> Kitzy is a free web app (installable PWA) that helps households in Luxembourg prepare, track and rotate a 72-hour emergency supply at home, plus a ready-to-go backpack per person. It follows the official Luxembourg guide Lëtz prepare!. No account, no ads, works offline, and all data stays on the user's device.
+
+Kitzy is an independent project, not affiliated with the Government of Luxembourg. It is distributed for free by Crofte Studio. The interface is available in French (source language), English, German, Luxembourgish and Portuguese. It targets RAWeb 1.1 level AA (the Luxembourg web accessibility framework, based on WCAG 2.1 AA).
+
+Key facts:
+
+- **What it does**: computes the quantities a household needs for 72 hours (water: 3 litres per person per day, meals, pet food, one go-bag per person), splits items between the home reserve and the backpacks, tracks expiry dates and battery charges, and sends reminders.
+- **Lists**: the official Luxembourg list by default; an expert-recommended list and a complete "comfort" list can be switched on.
+- **Personal emergency plan**: the official Luxembourg plan made simpler, in 5 steps (the people at home, the house, the neighbourhood, what to do in an emergency, important numbers), printable. The plan can be encrypted on the device (passkey or code).
+- **Shopping**: a shopping list built from what is missing, shareable by link; recipes from the pantry fill the list, and ticking a purchase stores it in the reserve.
+- **Privacy**: no account and no server-side storage of personal data. Backups are files the user exports, optionally protected by a code.
+- **Money**: free. Some shopping links are affiliate links (Amazon), always disclosed; prices are never shown.
+- **Platforms**: any recent browser; installable on Android, iOS, Windows, macOS and Linux from the browser.
+
+## Main pages
+
+- [Kitzy home page](https://kitzy.lu/): what Kitzy does, household calculator, install instructions
+- [Open the app](https://kitzy.lu/app/): the web app itself (requires JavaScript)
+
+## Policies
+
+- [Privacy](https://kitzy.lu/app/confidentialite): what is stored, where, and for how long (everything stays on the device)
+- [Shopping links and transparency](https://kitzy.lu/app/transparence): how product suggestions are chosen and how affiliate links work
+- [Accessibility statement](https://github.com/geoffreycrofte/survival-kit/blob/main/ACCESSIBILITY.md): target, how it is checked, known limitations, how to report a problem
+
+## Sources
+
+- [Lëtz prepare! guide](https://letzprepare.public.lu/fr/guide.html): the official Luxembourg preparedness guide Kitzy's advice is based on
+- [infocrise.lu](https://infocrise.lu): official information during a crisis in Luxembourg
+
+## Optional
+
+- [Source code on GitHub](https://github.com/geoffreycrofte/survival-kit): open repository, issues and feedback
+- [Crofte Studio](https://geoffreycrofte.com): the studio that distributes Kitzy

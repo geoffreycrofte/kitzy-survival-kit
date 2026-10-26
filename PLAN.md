@@ -1131,6 +1131,10 @@ Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fi
 - [x] L'app déménage dans **`/app/`** : `start_url` et `scope` y pointent, l'identité de l'app installée (`id: /`) ne change pas. Une app installée ouverte à la racine, ou une ancienne adresse (lien de partage…), mène à la même page dans `/app/`
 - [x] L'ancien service worker de la racine est remplacé par un `sw.js` qui efface ses caches, se désinscrit et recharge la page ; les données (même site) ne bougent pas
 - [x] Tests sur un serveur qui imite GitHub Pages (`scripts/serve-dist.mjs` : 404.html, statut 404)
+- [x] **Référencement** : adresse canonique, Open Graph et carte Twitter/X (adresses absolues vers kitzy.lu), données structurées schema.org (`WebSite`, `WebApplication` gratuite pour le Luxembourg, éditeur Crofte Studio), écrites au build depuis les textes français (`vite.landing.config.ts`). L'app (`/app/`) a les mêmes aperçus de partage
+- [x] **Image de partage** 1200 × 630 (`landing/public/og/kitzy-og.png`) : titre, promesse, mascotte à la lanterne, couleurs du thème sombre. Regénérée par `node apps/web/scripts/og-image.mjs`
+- [x] `robots.txt`, `sitemap.xml` et **`llms.txt`** (description de Kitzy pour les assistants IA : ce que fait l'app, confidentialité, gratuité et liens affiliés, sources officielles, pages utiles)
+- [ ] Une adresse par langue (`/en/`, `/de/`…) avec `hreflang` : aujourd'hui la langue change sur la même adresse, les moteurs ne voient que le français
 
 ### Phase 5 : International et stores
 

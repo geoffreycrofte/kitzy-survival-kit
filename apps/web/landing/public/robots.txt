@@ -1,0 +1,5 @@
+# Kitzy : tout est public, rien à cacher aux moteurs ni aux assistants.
+User-agent: *
+Allow: /
+
+Sitemap: https://kitzy.lu/sitemap.xml
