@@ -8,4 +8,4 @@ export const DONATION_LINKS = {
 export const SITE_URL = 'https://kitzy.lu/';
 
 /** Questions et remarques : les discussions du dépôt public. */
-export const PROJECT_ISSUES_URL = 'https://github.com/geoffreycrofte/survival-kit/issues';
+export const PROJECT_ISSUES_URL = 'https://github.com/geoffreycrofte/kitzy-survival-kit/issues';

@@ -23,7 +23,7 @@ Key facts:
 
 - [Privacy](https://kitzy.lu/app/confidentialite): what is stored, where, and for how long (everything stays on the device)
 - [Shopping links and transparency](https://kitzy.lu/app/transparence): how product suggestions are chosen and how affiliate links work
-- [Accessibility statement](https://github.com/geoffreycrofte/survival-kit/blob/main/ACCESSIBILITY.md): target, how it is checked, known limitations, how to report a problem
+- [Accessibility statement](https://github.com/geoffreycrofte/kitzy-survival-kit/blob/main/ACCESSIBILITY.md): target, how it is checked, known limitations, how to report a problem
 
 ## Sources
 
@@ -32,5 +32,5 @@ Key facts:
 
 ## Optional
 
-- [Source code on GitHub](https://github.com/geoffreycrofte/survival-kit): open repository, issues and feedback
+- [Source code on GitHub](https://github.com/geoffreycrofte/kitzy-survival-kit): open repository, issues and feedback
 - [Crofte Studio](https://geoffreycrofte.com): the studio that distributes Kitzy

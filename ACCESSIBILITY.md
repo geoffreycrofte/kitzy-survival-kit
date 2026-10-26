@@ -43,7 +43,7 @@ Automated tools find only part of the problems, and no audit replaces the people
 
 ## Report a problem
 
-If any part of Kitzy is hard or impossible to use for you, please **[open an issue on this repository](https://github.com/geoffreycrofte/survival-kit/issues/new)**. You don't need to know anything about code: describe the problem in your own words, in English or French.
+If any part of Kitzy is hard or impossible to use for you, please **[open an issue on this repository](https://github.com/geoffreycrofte/kitzy-survival-kit/issues/new)**. You don't need to know anything about code: describe the problem in your own words, in English or French.
 
 It helps us a lot if you can include:
 

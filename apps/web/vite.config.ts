@@ -5,7 +5,7 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 /**
- * Racine du site (`KITZY_BASE`) : `/` avec kitzy.lu, `/survival-kit/` sur GitHub Pages sans domaine.
+ * Racine du site (`KITZY_BASE`) : `/` avec kitzy.lu, `/kitzy-survival-kit/` sur GitHub Pages sans domaine.
  * La page de présentation est à la racine ; l'app vit dans `app/` juste en dessous.
  */
 const siteBase = process.env.KITZY_BASE ?? '/';

@@ -5,7 +5,7 @@
 import type { LinkState, LinkStatus, LinkStatusMap } from './products';
 
 export const LINK_CHECK_AGENT =
-  'KitzyLinkCheck/1.0 (+https://github.com/geoffreycrofte/survival-kit)';
+  'KitzyLinkCheck/1.0 (+https://github.com/geoffreycrofte/kitzy-survival-kit)';
 
 /* ---------- robots.txt ---------- */
 

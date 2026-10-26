@@ -414,7 +414,7 @@ Sans serveur, sans compte : **les données voyagent dans le lien lui-même**.
 
 ### 3.10 Version bureau (ordinateur portable, grand écran)
 
-> Note sur l'installation : tant que Kitzy est servie depuis `geoffreycrofte.github.io/survival-kit/`, une autre app web installée depuis `geoffreycrofte.github.io` dont la portée (`scope`) couvre tout le site peut faire croire à Chrome que Kitzy est « déjà installée ». Le domaine propre (kitzy.lu) supprime ce conflit : c'est une raison de plus de basculer avant le lancement.
+> Note sur l'installation : tant que Kitzy est servie depuis `geoffreycrofte.github.io/kitzy-survival-kit/`, une autre app web installée depuis `geoffreycrofte.github.io` dont la portée (`scope`) couvre tout le site peut faire croire à Chrome que Kitzy est « déjà installée ». Le domaine propre (kitzy.lu) supprime ce conflit : c'est une raison de plus de basculer avant le lancement.
 
 La même PWA, installable depuis Chrome ou Edge sur Windows, macOS et Linux (fenêtre dédiée, icône dans le dock ou le menu Démarrer). Le stockage local (IndexedDB) et les notifications fonctionnent comme sur mobile ; la vérification quotidienne en arrière-plan (Periodic Background Sync) marche sur Chrome et Edge une fois l'app installée. Safari et Firefox : rappels à l'ouverture et export agenda `.ics`.
 
@@ -488,7 +488,7 @@ Ordre de travail : **la PWA d'abord** (GitHub Pages, phases 0 à 4), l'app Expo 
 
 **Spécificités GitHub Pages** :
 
-- `base` Vite configuré sur `/survival-kit/` (ou `/` avec un domaine personnalisé) ; scope et `start_url` du manifest alignés.
+- `base` Vite configuré sur `/kitzy-survival-kit/` (ou `/` avec un domaine personnalisé) ; scope et `start_url` du manifest alignés.
 - Routes pré-générées ou repli `404.html` qui recharge l'app (pas de réécriture serveur).
 - Fichier `.nojekyll` ; déploiement par l'action officielle `actions/deploy-pages`.
 - Pas d'en-têtes HTTP personnalisés : la CSP passe par une balise `<meta http-equiv>`.
@@ -1042,7 +1042,7 @@ Préparé dès le départ :
 - [x] Polices auto-hébergées (Young Serif, Figtree) et 6 poses du hérisson mises en cache pour le hors-ligne
 - [x] Manifest PWA, icônes (dont maskable), service worker avec precache ; `404.html` pour les routes sur GitHub Pages
 - [x] Tests de bout en bout : parcours, axe-core dans les deux thèmes, focus, lien d'évitement, mouvement réduit, **hors-ligne**
-- [x] CI GitHub Actions (format, lint, types, tests, e2e) et déploiement GitHub Pages (`/survival-kit/`, ou `kitzy.lu` via variables de dépôt)
+- [x] CI GitHub Actions (format, lint, types, tests, e2e) et déploiement GitHub Pages (`/kitzy-survival-kit/`, ou `kitzy.lu` via variables de dépôt)
 - [x] Skills d'accessibilité installés dans `.claude/skills/` (raweb-code, raweb-audit, raam-code, raam-audit)
 - [ ] Activer GitHub Pages dans les réglages du dépôt (Source : GitHub Actions)
 - [ ] Profil pays `lu.json` et schéma des profils (reporté en phase 1, avec le catalogue)

@@ -18,9 +18,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # Racine du site. Sans domaine personnalisé : /survival-kit/. Avec kitzy.lu : variable de dépôt KITZY_BASE à « / ».
+      # Racine du site. Sans domaine personnalisé : /kitzy-survival-kit/. Avec kitzy.lu : variable de dépôt KITZY_BASE à « / ».
       # La page de présentation est à cette racine, l'app juste en dessous, dans app/.
-      KITZY_BASE: ${{ vars.KITZY_BASE || '/survival-kit/' }}
+      KITZY_BASE: ${{ vars.KITZY_BASE || '/kitzy-survival-kit/' }}
       # Domaine définitif (kitzy.lu) : sert aussi à l'identité de l'app installée.
       KITZY_DOMAIN: ${{ vars.KITZY_DOMAIN }}
       # Web Push (service du VPS) : désactivé tant que ces variables de dépôt sont vides.
