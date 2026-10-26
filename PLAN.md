@@ -1137,6 +1137,14 @@ Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fi
 - [x] **Une adresse par langue** : `/` (français, langue source et `x-default`), `/en/`, `/de/`, `/lb/`, `/pt/`. Chaque page est écrite au build depuis le même gabarit, avec sa langue (`lang`), ses textes, son adresse canonique, ses balises `hreflang` vers toutes les autres et son `og:locale`. Le sitemap liste les cinq pages avec leurs versions
 - [x] Le choix de la langue est un menu de liens (plus de liste déroulante qui change la page sur place) ; Échap ou un clic à côté le referment. Le choix est mémorisé (même clé que l'app) : la racine mène ensuite à la page choisie. La langue de l'appareil ne redirige jamais (les moteurs de recherche doivent voir chaque page) : elle fait seulement apparaître un lien « Diese Seite auf Deutsch lesen » en haut de la page
 
+### Retouches : finitions et mouvement ✅
+
+- [x] **Tiroir** : les titres h3 n'ont plus les marges du navigateur (trop d'espace autour de « J'en ai utilisé », « Au garde-manger ») ; l'état (« Complet ») ne touche plus la liste des lots
+- [x] **Texte sélectionné** : fond jaune lanterne, texte vert sombre, dans les deux thèmes (app et page d'accueil)
+- [x] **Menu** : il s'ouvre en cercle depuis le bouton Menu, comme la lumière d'une lanterne, et se referme en cercle vers lui (Échap compris)
+- [x] **Changement de page** : l'ancienne page s'efface, la nouvelle arrive en montant un peu (API View Transitions, `TransitionRouter`) ; l'en-tête et la barre de navigation ne bougent pas. Rien quand les animations sont coupées ou qu'une fenêtre est ouverte
+- [x] **Barre du bas** : dégradé vers la couleur du fond, pour rejoindre sans démarcation la bande de navigation d'Android
+
 ### Phase 5 : International et stores
 
 - [x] **Traductions EN, LB, DE, PT** de toute l'app : interface, catalogue, guide, gestes, recettes, quiz, simulation, conseils d'achat, notifications, fichier agenda. Le français reste la source ; un texte manquant retombe sur le français, et un test vérifie pour chaque langue que toutes les clés, tous les `{{…}}` et tous les contenus sont là

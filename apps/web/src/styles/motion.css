@@ -174,9 +174,10 @@ html[data-motion='full'] .home--intro-play .reveal:focus-within {
   }
 }
 
-/* Menu plein écran : le panneau monte, puis les entrées arrivent l'une après l'autre. */
+/* Menu plein écran : comme la lumière d'une lanterne, il s'ouvre en cercle depuis le bouton Menu,
+   puis les entrées arrivent l'une après l'autre. Il se referme en cercle vers le bouton. */
 html[data-motion='full'] .menu[open] {
-  animation: kz-menu-in 0.35s var(--kz-ease) both;
+  animation: kz-menu-reveal 0.55s var(--kz-ease) both;
 }
 
 html[data-motion='full'] .menu[open] .menu__item {
@@ -233,14 +234,49 @@ html[data-motion='full'] .drawer__details {
   }
 }
 
-@keyframes kz-menu-in {
+@keyframes kz-menu-reveal {
   from {
-    opacity: 0;
-    transform: translateY(24px);
+    clip-path: circle(0 at var(--menu-x, 50%) var(--menu-y, 100%));
+  }
+  to {
+    clip-path: circle(150vmax at var(--menu-x, 50%) var(--menu-y, 100%));
   }
 }
 
 @keyframes kz-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+/* Changement de page (View Transitions, voir TransitionRouter) : l'ancienne page s'efface,
+   la nouvelle arrive en montant un peu. L'en-tête et la barre de navigation ne bougent pas. */
+.header {
+  view-transition-name: kz-header;
+}
+
+.bottom-nav {
+  view-transition-name: kz-nav;
+}
+
+::view-transition-old(root) {
+  animation: kz-page-out 0.14s ease-in both;
+}
+
+::view-transition-new(root) {
+  /* Elle attend que l'ancienne soit presque effacée : pas de textes superposés. */
+  animation: kz-page-in 0.3s var(--kz-ease) 0.12s both;
+}
+
+@keyframes kz-page-out {
+  to {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes kz-page-in {
   from {
     opacity: 0;
     transform: translateY(12px);

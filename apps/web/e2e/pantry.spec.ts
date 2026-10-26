@@ -40,6 +40,8 @@ test.describe('Garde-manger : des recettes aux courses, des courses à la réser
     // Décocher l'achat le retire de la réserve.
     await page.goto('./courses');
     await page.getByRole('checkbox', { name: /Haricots rouges en boîte/ }).uncheck();
+    // L'écriture est terminée quand la mention « Rangé dans ta réserve » disparaît.
+    await expect(page.getByText(/Rangé dans ta réserve/)).toHaveCount(0);
     await page.goto('./kits/home/non-perishable-food');
     await expect(page.locator('.lot')).toHaveCount(0);
   });
@@ -52,6 +54,10 @@ test.describe('Garde-manger : des recettes aux courses, des courses à la réser
     await shelf
       .getByRole('button', { name: 'Ajouter Lentilles cuites en boîte à ma liste de courses' })
       .click();
+    // Attendre la fin de l'écriture avant de changer de page.
+    await expect(
+      page.getByRole('status').filter({ hasText: 'Ajouté à ta liste de courses.' }),
+    ).toBeVisible();
     await page.goto('./courses');
     await expect(page.getByRole('checkbox', { name: /Lentilles cuites en boîte/ })).toBeVisible();
   });

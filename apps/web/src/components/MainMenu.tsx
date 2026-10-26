@@ -60,11 +60,51 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      // La lumière part du bouton Menu (celui qui a le focus au moment du clic).
+      const from = document.activeElement?.getBoundingClientRect();
+      const x = from ? from.left + from.width / 2 : window.innerWidth / 2;
+      const y = from ? from.top + from.height / 2 : window.innerHeight;
+      dialog.style.setProperty('--menu-x', `${x}px`);
+      dialog.style.setProperty('--menu-y', `${y}px`);
+      dialog.showModal();
+    }
     if (!open && dialog.open) dialog.close();
   }, [open]);
 
-  const close = () => ref.current?.close();
+  /* Fermer : la lumière se resserre vers le bouton Menu, puis la fenêtre se ferme.
+     Sans animations, elle se ferme tout de suite. */
+  const closing = useRef(false);
+  const close = () => {
+    const dialog = ref.current;
+    if (!dialog?.open || closing.current) return;
+    if (document.documentElement.dataset.motion !== 'full') return dialog.close();
+    closing.current = true;
+    const at = `at ${dialog.style.getPropertyValue('--menu-x') || '50%'} ${dialog.style.getPropertyValue('--menu-y') || '100%'}`;
+    dialog
+      .animate([{ clipPath: `circle(150vmax ${at})` }, { clipPath: `circle(0 ${at})` }], {
+        duration: 320,
+        easing: 'cubic-bezier(0.4, 0, 0.2, 1)',
+      })
+      .finished.catch(() => undefined)
+      .finally(() => {
+        closing.current = false;
+        dialog.close();
+      });
+  };
+
+  // Échap passe par la même fermeture animée.
+  useEffect(() => {
+    const dialog = ref.current;
+    if (!dialog) return;
+    const onCancel = (event: Event) => {
+      if (document.documentElement.dataset.motion !== 'full') return;
+      event.preventDefault();
+      close();
+    };
+    dialog.addEventListener('cancel', onCancel);
+    return () => dialog.removeEventListener('cancel', onCancel);
+  });
   const share = useShareApp();
 
   const links = [
