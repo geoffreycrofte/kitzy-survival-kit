@@ -1,48 +1,47 @@
 # Kitzy
 
-Kitzy aide à constituer, suivre et faire tourner sa réserve d’urgence de 72 heures, sur la base de la stratégie nationale de résilience luxembourgeoise « Lëtz prepare! ». Application web progressive (PWA) qui fonctionne entièrement hors-ligne, puis app iOS et Android.
+Kitzy helps households build, track and rotate a 72-hour emergency supply, based on Luxembourg's national resilience strategy “Lëtz prepare!”. It is a progressive web app (PWA) that works fully offline, with iOS and Android apps to follow.
 
-- Plan complet du projet : [`PLAN.md`](PLAN.md)
-- Poses de la mascotte : [`docs/mascotte-poses.md`](docs/mascotte-poses.md)
-- Accessibilité : RAWeb 1.1 niveau AA, avec [CheckFox.eu](https://checkfox.eu) ; déclaration et signalement des problèmes dans [`ACCESSIBILITY.md`](ACCESSIBILITY.md) (skills dans [`.claude/skills/`](.claude/skills/))
+- Full project plan: [`PLAN.md`](PLAN.md)
+- Accessibility: RAWeb 1.1 level AA, with [CheckFox.eu](https://checkfox.eu); statement and problem reporting in [`ACCESSIBILITY.md`](ACCESSIBILITY.md) (skills in [`.claude/skills/`](.claude/skills/))
 
 ## Structure
 
 ```
-packages/core   Logique partagée (jetons de couleur, calculs du foyer, lucioles, textes)
-apps/web        PWA React + Vite, publiée sur GitHub Pages
-assets/mascot   Le hérisson Kitzy, détouré (PNG et WebP)
+packages/core   Shared logic (colour tokens, household calculations, fireflies, texts)
+apps/web        React + Vite PWA, published on GitHub Pages
+assets/mascot   Kitzy the hedgehog, cut out (PNG and WebP)
 ```
 
-L’app Expo (iOS et Android) viendra dans `apps/mobile` et réutilisera `packages/core`.
+The Expo app (iOS and Android) will live in `apps/mobile` and reuse `packages/core`.
 
-## Démarrer
+## Getting started
 
-Prérequis : Node 22 et pnpm 10 (`corepack enable`).
+Requirements: Node 22 and pnpm 10 (`corepack enable`).
 
 ```bash
 pnpm install
 pnpm dev          # http://localhost:5173
 ```
 
-## Vérifier
+## Checks
 
 ```bash
-pnpm lint         # ESLint, avec les règles d’accessibilité jsx-a11y
+pnpm lint         # ESLint, with the jsx-a11y accessibility rules
 pnpm typecheck
-pnpm test         # tests unitaires du cœur (dont les contrastes des deux thèmes)
-pnpm e2e          # Playwright : parcours, axe-core, mouvement réduit, hors-ligne
+pnpm test         # core unit tests (including contrast checks for both themes)
+pnpm e2e          # Playwright: user journeys, axe-core, reduced motion, offline
 ```
 
-Pour les tests de bout en bout avec un Chromium déjà installé : `PLAYWRIGHT_CHROMIUM_PATH=/chemin/vers/chrome pnpm e2e`.
+To run the end-to-end tests with an already installed Chromium: `PLAYWRIGHT_CHROMIUM_PATH=/path/to/chrome pnpm e2e`.
 
-## Publier
+## Publishing
 
-Chaque push sur `main` déploie sur GitHub Pages (workflow `deploy.yml`). À faire une fois dans les réglages du dépôt :
+Every push to `main` deploys to GitHub Pages (`deploy.yml` workflow). One-time setup in the repository settings:
 
-1. **Settings › Pages › Source : GitHub Actions**.
-2. Pour le domaine `kitzy.lu` : variables de dépôt `KITZY_DOMAIN=kitzy.lu` et `KITZY_BASE=/`, puis configurer le DNS. À faire **avant** le lancement public : les données des utilisateurs sont liées à l’adresse du site.
-   Le site publié contient la page de présentation à la racine (`apps/web/landing`) et l’app dans `app/`. L’app installée démarre directement dans `app/`.
-3. Affiliation Amazon : variables `KITZY_AMAZON_TAG_FR` et `KITZY_AMAZON_TAG_DE` (identifiants Partenaires, par exemple `kitzy-21`). Sans elles, les liens d’achat sont directs et ne rapportent rien.
-4. Surveillance des liens (`link-check.yml`, chaque lundi) : cocher **Settings › Actions › General › Allow GitHub Actions to create and approve pull requests** pour que le bot puisse proposer la mise à jour des statuts.
-5. Plus tard, pour les notifications Web Push via le VPS : variables `KITZY_PUSH_URL` (URL du service) et `KITZY_VAPID_KEY` (clé publique VAPID). Sans elles, Kitzy n’envoie rien à aucun serveur.
+1. **Settings › Pages › Source: GitHub Actions**.
+2. For the `kitzy.lu` domain: repository variables `KITZY_DOMAIN=kitzy.lu` and `KITZY_BASE=/`, then configure DNS. Do this **before** the public launch: user data is tied to the site's address.
+   The published site holds the landing page at the root (`apps/web/landing`) and the app in `app/`. The installed app starts directly in `app/`.
+3. Amazon affiliation: variables `KITZY_AMAZON_TAG_FR` and `KITZY_AMAZON_TAG_DE` (Associates IDs, for example `kitzy-21`). Without them, shopping links are direct and earn nothing.
+4. Link monitoring (`link-check.yml`, every Monday): tick **Settings › Actions › General › Allow GitHub Actions to create and approve pull requests** so the bot can propose status updates.
+5. Later, for Web Push notifications through the VPS: variables `KITZY_PUSH_URL` (service URL) and `KITZY_VAPID_KEY` (public VAPID key). Without them, Kitzy sends nothing to any server.
