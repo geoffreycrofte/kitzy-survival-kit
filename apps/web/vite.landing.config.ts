@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 import { renderSVG } from 'uqr';
 import { LANDING } from '../../packages/core/src/i18n/landing';
-import { SITE_URL } from '../../packages/core/src/links';
+import { SITE_URL, ogImageName } from '../../packages/core/src/links';
 
 /**
  * Page de présentation (kitzy.lu) : construite à la racine du site, à côté de l'app (`app/`).
@@ -54,7 +54,7 @@ function lookup(locale: Locale, path: string): string {
 function seoTags(locale: Locale): string {
   const { title, description, ogImageAlt } = LANDING[locale];
   const url = `${SITE_URL}${pathOf(locale)}`;
-  const image = `${SITE_URL}og/kitzy-og.png`;
+  const image = `${SITE_URL}og/${ogImageName(locale)}`;
   const data = {
     '@context': 'https://schema.org',
     '@graph': [

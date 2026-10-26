@@ -185,6 +185,11 @@ test.describe('Page de présentation (racine du site)', () => {
         `https://kitzy.lu${path}`,
       );
       await expect(head.locator('link[rel="alternate"][hreflang]')).toHaveCount(6);
+      // L'image de partage est celle de la langue, et elle existe.
+      const image = `https://kitzy.lu/og/kitzy-og-${lang}.png`;
+      await expect(head.locator('meta[property="og:image"]')).toHaveAttribute('content', image);
+      const served = await page.request.get(`/og/kitzy-og-${lang}.png`);
+      expect(served.headers()['content-type']).toContain('image/png');
       await expect(head.locator('link[hreflang="x-default"]')).toHaveAttribute(
         'href',
         'https://kitzy.lu/',

@@ -1,22 +1,27 @@
 /**
- * Image de partage (Open Graph, 1200 × 630) de kitzy.lu.
- * Dessinée en HTML avec les polices, les couleurs du thème sombre et la mascotte de Kitzy,
- * puis photographiée par Chromium. À relancer si le titre ou la mascotte changent :
- *   node apps/web/scripts/og-image.mjs  (PLAYWRIGHT_CHROMIUM_PATH pour un Chromium déjà installé)
+ * Images de partage (Open Graph, 1200 × 630) de kitzy.lu, une par langue.
+ * Dessinées en HTML avec les polices, les couleurs du thème sombre et la mascotte de Kitzy,
+ * puis photographiées par Chromium. Les textes viennent de core (titre et accroche de chaque
+ * langue). À relancer si un texte ou la mascotte changent :
+ *   pnpm og-image  (PLAYWRIGHT_CHROMIUM_PATH pour un Chromium déjà installé)
  */
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { chromium } from '@playwright/test';
+import { LANDING } from '../../../packages/core/src/i18n/landing';
+import { ogImageName } from '../../../packages/core/src/links';
 
 const web = resolve(import.meta.dirname, '..');
-const file = (path) => pathToFileURL(resolve(web, path)).href;
-const font = (name) => file(`node_modules/@fontsource/${name}`);
-const out = resolve(web, 'landing/public/og/kitzy-og.png');
+const file = (path: string) => pathToFileURL(resolve(web, path)).href;
+const font = (name: string) => file(`node_modules/@fontsource/${name}`);
 
-const html = `<!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><style>
+const escape = (text: string) =>
+  text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+const html = (locale: keyof typeof LANDING) => `<!doctype html>
+<html lang="${locale}"><head><meta charset="utf-8"><style>
 @font-face { font-family: 'Young Serif'; src: url(${font('young-serif/files/young-serif-latin-400-normal.woff2')}); }
 @font-face { font-family: 'Figtree'; font-weight: 600; src: url(${font('figtree/files/figtree-latin-600-normal.woff2')}); }
 @font-face { font-family: 'Figtree'; font-weight: 700; src: url(${font('figtree/files/figtree-latin-700-normal.woff2')}); }
@@ -41,8 +46,8 @@ p { font-size: 26px; line-height: 1.4; color: #B9CBC2; margin-top: 24px; font-we
 <img class="hog" src="${file('public/mascot/kitzy-lanterne.webp')}" alt="">
 <div class="text">
   <div class="brand">Kitzy</div>
-  <h1>Trois jours d’avance sur l’imprévu.</h1>
-  <p>Ta réserve d’urgence de 72&nbsp;heures, calculée pour ton foyer. Gratuit, sans compte, hors ligne.</p>
+  <h1>${escape(LANDING[locale].hero.title)}</h1>
+  <p>${escape(LANDING[locale].ogTagline)}</p>
 </div>
 <div class="url">kitzy.lu</div>
 </body></html>`;
@@ -53,12 +58,15 @@ const browser = await chromium.launch({
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
 // Une vraie page file:// : elle a le droit de charger les polices et l'image locales.
 const dir = mkdtempSync(join(tmpdir(), 'kitzy-og-'));
-const htmlFile = join(dir, 'og.html');
-writeFileSync(htmlFile, html);
-await page.goto(pathToFileURL(htmlFile).href, { waitUntil: 'load' });
-// Les polices doivent être prêtes avant la capture.
-await page.evaluate(() => globalThis.document.fonts.ready);
-await page.screenshot({ path: out, type: 'png' });
+for (const locale of Object.keys(LANDING) as Array<keyof typeof LANDING>) {
+  const htmlFile = join(dir, `${locale}.html`);
+  writeFileSync(htmlFile, html(locale));
+  await page.goto(pathToFileURL(htmlFile).href, { waitUntil: 'load' });
+  // Les polices doivent être prêtes avant la capture.
+  await page.evaluate(() => globalThis.document.fonts.ready);
+  const out = resolve(web, 'landing/public/og', ogImageName(locale));
+  await page.screenshot({ path: out, type: 'png' });
+  console.log(`Image écrite : ${out}`);
+}
 await browser.close();
 rmSync(dir, { recursive: true, force: true });
-console.log(`Image écrite : ${out}`);
