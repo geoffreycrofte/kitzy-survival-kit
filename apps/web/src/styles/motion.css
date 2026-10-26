@@ -203,6 +203,16 @@ html[data-motion='full'] .drawer[open]::backdrop {
   html[data-motion='full'] .drawer[open] {
     animation-name: kz-panel-in;
   }
+
+  /* Déplié sur bureau : le panneau s'élargit. */
+  html[data-motion='full'] .drawer {
+    transition: width 0.32s var(--kz-ease);
+  }
+}
+
+/* Déplié : le reste de la vue de l'article arrive par en bas. */
+html[data-motion='full'] .drawer__details {
+  animation: kz-rise 0.4s var(--kz-ease) 0.08s both;
 }
 
 @keyframes kz-sheet-in {

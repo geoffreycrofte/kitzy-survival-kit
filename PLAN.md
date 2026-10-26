@@ -794,6 +794,9 @@ Après un test utilisateur, ranger un article ne fait plus quitter la liste. Dep
 - **Suggestions d'achat** : le tiroir (plus large sur bureau quand il y en a) montre la première suggestion et les mentions d'affiliation ; « Voir les N autres suggestions » passe le tiroir en plein écran, la croix le ferme. Le focus va sur le palier qui vient d'apparaître.
 - Lien « Tout voir sur cet article » vers la page complète.
 - **Page de l'article** allégée : plus de carte de statut ; « Ce que tu as » n'apparaît que s'il y a quelque chose ; « Pourquoi c'est utile » passe après les actions.
+- **Déplier** : « Tout voir sur cet article » (bouton) ou la poignée tirée vers le haut font monter le tiroir presque en plein écran (la liste reste visible en haut ; panneau élargi sur bureau). Le reste de la vue de l'article (ce que tu as, retirer, recharge, pourquoi c'est utile, garde-manger, où l'acheter) arrive par en bas, partagé avec la page (`ItemDetails`). Le focus va sur le premier titre apparu.
+- **Poignée** (mobile) : le haut du tiroir (poignée, nom, croix) reste en place au défilement. Tiré vers le bas, il suit le doigt et se ferme passé 30 % de sa hauteur ou sur un geste rapide ; tiré vers le haut, il résiste comme un élastique et se déplie passé 60 px. Un petit geste le fait revenir en place. Chaque geste a son équivalent sans glisser (croix, Échap, « Tout voir »), conformément au critère sur les gestes de pointeur.
+- **Dates** : tous les champs date utilisent l'icône calendrier de Kitzy (`DateInput`) ; un appui n'importe où sur le champ ouvre le sélecteur (Firefox garde son icône native).
 
 ### 8.4 Édition du catalogue
 

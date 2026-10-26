@@ -37,13 +37,15 @@ test.describe('Tiroir d’ajout : ranger sans quitter la liste', () => {
     await page.keyboard.press('Escape');
     await expect(drawer).toBeHidden();
 
-    // La page complète reste à un lien.
+    // « Tout voir » déplie le tiroir sur place : le reste de la vue de l'article arrive en dessous.
     await page.getByRole('link', { name: 'Sac de couchage ou couverture' }).click();
-    await drawer.getByRole('link', { name: 'Tout voir sur cet article' }).click();
-    await expect(page).toHaveURL(/\/kits\/home\/sleeping-bags-blankets$/);
-    await expect(
-      page.getByRole('heading', { level: 1, name: 'Sac de couchage ou couverture' }),
-    ).toBeFocused();
+    await drawer.getByRole('button', { name: 'Tout voir sur cet article' }).click();
+    await expect(drawer).toHaveClass(/drawer--full/);
+    await expect(page).toHaveURL(/\/kits\/home$/);
+    await expect(drawer.getByRole('heading', { level: 3, name: 'Ce que tu as' })).toBeFocused();
+    await expect(drawer.getByText(/2\spièces, sans date/)).toBeVisible();
+    await expect(drawer.getByRole('button', { name: 'Tout voir sur cet article' })).toHaveCount(0);
+    await expectNoAxeViolations(page);
   });
 
   test('depuis les courses, la quantité achetée est déjà saisie', async ({ page }) => {
@@ -80,6 +82,8 @@ test.describe('Tiroir d’ajout : ranger sans quitter la liste', () => {
 
     await buy.getByRole('button', { name: /^Voir (les )?\d+ autres? suggestions?$/ }).click();
     await expect(drawer).toHaveClass(/drawer--full/);
+    // Le reste de la vue de l'article est là aussi, et les dates ont l'icône calendrier.
+    await expect(drawer.getByRole('button', { name: 'Tout voir sur cet article' })).toHaveCount(0);
     const balanced = buy.getByRole('heading', { level: 4, name: 'Budget équilibré' });
     await expect(balanced).toBeFocused();
     await expectNoAxeViolations(page);
@@ -89,6 +93,36 @@ test.describe('Tiroir d’ajout : ranger sans quitter la liste', () => {
     // À la réouverture, on repart de l'aperçu.
     await page.getByRole('link', { name: 'Lampe frontale' }).click();
     await expect(drawer).not.toHaveClass(/drawer--full/);
+  });
+
+  test('la poignée se tire : vers le haut elle déplie, vers le bas elle ferme', async ({
+    page,
+  }) => {
+    await setUpHousehold(page);
+    await page.goto('./kits/home');
+    const link = page.getByRole('link', { name: 'Lampe frontale' });
+    const drawer = page.getByRole('dialog', { name: 'Lampe frontale' });
+    const handle = drawer.locator('.drawer__handle');
+
+    const pull = async (dy: number) => {
+      const box = (await handle.boundingBox())!;
+      const x = box.x + box.width / 2;
+      const y = box.y + box.height / 2;
+      await page.mouse.move(x, y);
+      await page.mouse.down();
+      for (let i = 1; i <= 10; i++) await page.mouse.move(x, y + (dy * i) / 10);
+      await page.mouse.up();
+    };
+
+    await link.click();
+    // Un petit geste ne fait rien : le tiroir revient en place.
+    await pull(-20);
+    await expect(drawer).not.toHaveClass(/drawer--full/);
+    await pull(-160);
+    await expect(drawer).toHaveClass(/drawer--full/);
+    await pull(500);
+    await expect(drawer).toBeHidden();
+    await expect(link).toBeFocused();
   });
 
   test('la page de l’article est allégée : rien de vide, le guide plus bas', async ({ page }) => {

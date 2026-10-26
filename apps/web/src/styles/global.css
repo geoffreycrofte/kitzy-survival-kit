@@ -128,6 +128,8 @@ main:focus {
 }
 
 .icon-button {
+  /* Jamais écrasé par un titre long à côté : reste rond. */
+  flex: none;
   width: 46px;
   height: 46px;
   display: inline-flex;
@@ -2336,7 +2338,48 @@ button.bottom-nav__link {
   font-weight: 700;
 }
 
-/* Tiroir d'ajout : feuille qui monte du bas sur mobile, panneau à droite sur bureau. */
+/* Champ date : l'icône calendrier de Kitzy. L'icône native, transparente, couvre le champ
+   pour qu'un appui n'importe où ouvre le sélecteur. Firefox garde la sienne. */
+
+.date-input {
+  position: relative;
+  display: block;
+  max-width: 12rem;
+}
+
+.date-input__icon {
+  display: none;
+}
+
+@supports selector(::-webkit-calendar-picker-indicator) {
+  .date-input .input {
+    padding-right: 52px;
+  }
+
+  .date-input .input::-webkit-calendar-picker-indicator {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .date-input__icon {
+    display: block;
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    width: 22px;
+    height: 22px;
+    transform: translateY(-50%);
+    color: var(--kz-text);
+    pointer-events: none;
+  }
+}
+
+/* Tiroir d'ajout : feuille qui monte du bas sur mobile, panneau à droite sur bureau.
+   Déplié, il monte presque en plein écran (la liste reste visible en haut). */
 
 .drawer {
   position: fixed;
@@ -2365,18 +2408,47 @@ button.bottom-nav__link {
   background: rgb(8 20 18 / 0.55);
 }
 
+.drawer--full {
+  height: calc(100dvh - 24px);
+  max-height: none;
+}
+
 .drawer__inner {
   display: flex;
   flex-direction: column;
   gap: 20px;
   max-width: 560px;
   margin: 0 auto;
-  padding: 12px 20px calc(24px + env(safe-area-inset-bottom));
+  padding: 0 20px calc(24px + env(safe-area-inset-bottom));
 }
 
-/* La poignée dit « ça glisse du bas », sans être un contrôle. */
-.drawer__inner::before {
-  content: '';
+.drawer--full .drawer__inner {
+  max-width: 720px;
+}
+
+/* Le haut du tiroir (poignée, nom, croix) reste en place quand on fait défiler,
+   et c'est lui qu'on attrape pour déplier ou fermer. */
+.drawer__grab {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0 -20px;
+  padding: 10px 20px 12px;
+  background: var(--kz-bg);
+  touch-action: none;
+  cursor: grab;
+  user-select: none;
+}
+
+.drawer__grab:active {
+  cursor: grabbing;
+}
+
+/* La poignée dit « ça glisse », sans être un contrôle : la croix et « Tout voir » font la même chose. */
+.drawer__handle {
   align-self: center;
   width: 44px;
   height: 5px;
@@ -2402,6 +2474,12 @@ button.bottom-nav__link {
   font-size: 1.75rem;
 }
 
+.drawer__details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .drawer__more {
   align-self: flex-start;
 }
@@ -2425,40 +2503,28 @@ button.bottom-nav__link {
     box-shadow: -12px 0 40px rgb(0 0 0 / 0.25);
   }
 
-  /* Avec des suggestions d'achat, le panneau prend plus de place. */
+  /* Avec des suggestions d'achat, le panneau prend plus de place ; déplié, plus encore. */
   .drawer--shop {
     width: min(560px, 100%);
   }
 
   .drawer--full {
-    inset: 0;
-    width: 100%;
-    border-radius: 0;
+    width: min(760px, 100%);
   }
 
   .drawer__inner {
-    padding: 28px;
+    padding: 0 28px 28px;
   }
 
-  .drawer__inner::before {
+  .drawer__grab {
+    margin: 0 -28px;
+    padding: 28px 28px 12px;
+    cursor: auto;
+  }
+
+  .drawer__handle {
     display: none;
   }
-}
-
-.drawer--full {
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  max-height: none;
-  border-radius: 0;
-}
-
-.drawer--full .drawer__inner {
-  max-width: 720px;
-}
-
-.drawer--full .drawer__inner::before {
-  display: none;
 }
 
 @media (forced-colors: active) {

@@ -116,17 +116,18 @@ function Disclosure({ items }: { items: readonly PantryItem[] }) {
  * Sur la page d'un article (« Nourriture non périssable », lait, compotes…) :
  * les produits courants qui le remplissent, à mettre sur la liste un par un.
  */
-export function PantryShelf({ templateId }: { templateId: string }) {
+export function PantryShelf({ templateId, level = 2 }: { templateId: string; level?: 2 | 3 }) {
   const { t } = useTranslation();
   const { pantry } = useContent();
   const items = pantryFor(templateId, pantry);
   if (items.length === 0) return null;
+  const H = level === 2 ? 'h2' : 'h3';
 
   return (
     <section className="card pantry" aria-labelledby="pantry-title">
-      <h2 id="pantry-title" className="section-title">
+      <H id="pantry-title" className="section-title">
         {t('pantry.title')}
-      </h2>
+      </H>
       <p className="muted">{t('pantry.intro')}</p>
       <ul className="pantry__list">
         {items.map((item) => (
