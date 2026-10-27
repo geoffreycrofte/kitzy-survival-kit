@@ -398,11 +398,46 @@ main:focus {
 }
 
 .bottom-nav ul {
+  position: relative;
   margin: 0;
   padding: 0;
   list-style: none;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+/* La lueur de l'onglet en cours : une colonne (1/5 de la barre) qui glisse jusqu'à l'onglet,
+   et dedans une pastille de lumière derrière l'icône. */
+.bottom-nav__glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 100%;
+  transform: translateX(calc(var(--nav-i, 0) * 100%));
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+.bottom-nav__glow--off {
+  opacity: 0;
+}
+
+.bottom-nav__pill {
+  position: absolute;
+  top: 1px;
+  left: 50%;
+  width: 60px;
+  height: 30px;
+  border-radius: 999px;
+  transform: translateX(-50%);
+  background: color-mix(in srgb, var(--kz-nav-active) 20%, transparent);
+  box-shadow: 0 0 18px 2px var(--kz-halo);
+}
+
+/* Les onglets passent devant la lueur. */
+.bottom-nav__link {
+  position: relative;
 }
 
 .bottom-nav__link {
@@ -1948,6 +1983,12 @@ fieldset.card > legend + * {
     gap: 4px;
   }
 
+  /* Colonne latérale : l'onglet en cours garde son fond, sans lueur qui glisse ni luciole. */
+  .bottom-nav__glow,
+  .bottom-nav__link::after {
+    display: none;
+  }
+
   .bottom-nav__link {
     flex-direction: row;
     justify-content: flex-start;
@@ -2588,7 +2629,12 @@ html[data-motion='full'] .menu::backdrop {
   background: transparent;
 }
 
+.menu__light {
+  display: none;
+}
+
 .menu__inner {
+  position: relative;
   max-width: 560px;
   min-height: 100%;
   margin: 0 auto;

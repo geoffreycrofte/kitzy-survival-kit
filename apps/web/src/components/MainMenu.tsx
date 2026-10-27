@@ -61,35 +61,50 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
     const dialog = ref.current;
     if (!dialog) return;
     if (open && !dialog.open) {
-      // La lumière part du bouton Menu (celui qui a le focus au moment du clic).
+      // La lumière part du bouton Menu (celui qui a le focus au moment du clic). Son rayon est
+      // juste ce qu'il faut pour couvrir l'écran : toute l'animation se voit, rien ne se perd hors champ.
       const from = document.activeElement?.getBoundingClientRect();
       const x = from ? from.left + from.width / 2 : window.innerWidth / 2;
       const y = from ? from.top + from.height / 2 : window.innerHeight;
+      const r = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
       dialog.style.setProperty('--menu-x', `${x}px`);
       dialog.style.setProperty('--menu-y', `${y}px`);
+      dialog.style.setProperty('--menu-r', `${Math.ceil(r)}px`);
       dialog.showModal();
     }
     if (!open && dialog.open) dialog.close();
   }, [open]);
 
-  /* Fermer : la lumière se resserre vers le bouton Menu, puis la fenêtre se ferme.
+  /* Fermer : les entrées s'effacent, puis la lumière se resserre vers le bouton Menu et la fenêtre
+     se ferme. Tout passe par `transform` et `opacity`, animés par la carte graphique : fluide.
      Sans animations, elle se ferme tout de suite. */
   const closing = useRef(false);
   const close = () => {
     const dialog = ref.current;
+    const light = dialog?.querySelector<HTMLElement>('.menu__light');
+    const inner = dialog?.querySelector<HTMLElement>('.menu__inner');
     if (!dialog?.open || closing.current) return;
-    if (document.documentElement.dataset.motion !== 'full') return dialog.close();
+    if (document.documentElement.dataset.motion !== 'full' || !light || !inner) {
+      return dialog.close();
+    }
     closing.current = true;
-    const at = `at ${dialog.style.getPropertyValue('--menu-x') || '50%'} ${dialog.style.getPropertyValue('--menu-y') || '100%'}`;
-    const shrink = dialog.animate(
-      [{ clipPath: `circle(150vmax ${at})` }, { clipPath: `circle(0 ${at})` }],
-      // `forwards` : le cercle reste fermé jusqu'à la fermeture, sinon l'animation d'ouverture
-      // reprendrait la main une image et le menu réapparaîtrait en entier (clignement).
-      { duration: 320, easing: 'cubic-bezier(0.4, 0, 0.2, 1)', fill: 'forwards' },
-    );
+    // `forwards` : tout reste éteint jusqu'à la fermeture, sinon l'animation d'ouverture
+    // reprendrait la main une image (clignement).
+    const fade = inner.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: 160,
+      easing: 'ease-out',
+      fill: 'forwards',
+    });
+    const shrink = light.animate([{ transform: 'scale(1)' }, { transform: 'scale(0)' }], {
+      duration: 400,
+      delay: 60,
+      easing: 'cubic-bezier(0.45, 0, 0.7, 0.3)',
+      fill: 'forwards',
+    });
     const done = () => {
       closing.current = false;
       dialog.close();
+      fade.cancel();
       shrink.cancel();
     };
     shrink.onfinish = done;
@@ -132,6 +147,8 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
 
   return (
     <dialog ref={ref} className="menu" aria-labelledby="menu-title" onClose={onClose}>
+      {/* Le disque de lumière qui grandit depuis le bouton Menu (décor, animé seulement). */}
+      <span className="menu__light" aria-hidden="true" />
       <div className="menu__inner">
         <div className="menu__head">
           <h2 id="menu-title" className="menu__title">

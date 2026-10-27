@@ -1152,6 +1152,11 @@ Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fi
 - [x] **Écran de démarrage** de l'app installée : Kitzy et sa lanterne, dont la lumière respire, sur le même fond que l'écran du système ; il s'efface quand l'app est prête (au moins 0,9 s). Seulement au lancement de l'app installée, pas dans un onglet ni à chaque rechargement ; sans animation si elle est coupée
 - [x] **iPhone et iPad** : écrans de démarrage (`apple-touch-startup-image`) pour 8 tailles d'écran, au même dessin, régénérés par `pnpm splash-images`
 
+### Retouches : menu plus fluide, barre du bas animée ✅
+
+- [x] **Menu** : le cercle (`clip-path`) devenait un disque de lumière mis à l'échelle (`transform`), animé par la carte graphique ; son rayon est calculé pour couvrir juste l'écran (avant : `150vmax`, un tiers de l'animation hors champ, d'où l'effet trop rapide). Le bord du disque luit ; titre et entrées arrivent une fois la lumière passée ; à la fermeture, les entrées s'effacent puis le disque se resserre vers le bouton
+- [x] **Barre du bas** : une lueur glisse jusqu'à l'onglet en cours avec un petit rebond et s'étire en route ; l'icône fait un saut, une luciole s'envole et s'éteint. Sur bureau, la colonne latérale garde son fond ; rien ne bouge sans animations
+
 ### Phase 5 : International et stores
 
 - [x] **Traductions EN, LB, DE, PT** de toute l'app : interface, catalogue, guide, gestes, recettes, quiz, simulation, conseils d'achat, notifications, fichier agenda. Le français reste la source ; un texte manquant retombe sur le français, et un test vérifie pour chaque langue que toutes les clés, tous les `{{…}}` et tous les contenus sont là
