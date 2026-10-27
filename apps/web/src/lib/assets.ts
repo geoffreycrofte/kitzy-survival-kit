@@ -21,7 +21,7 @@ const SIZES: Record<MascotPose, [number, number]> = {
   lecture: [622, 1290],
   sac: [640, 1139],
   radio: [640, 852],
-  eau: [640, 891],
+  eau: [640, 1067],
   plan: [640, 1133],
   curieux: [640, 848],
 };

@@ -23,6 +23,21 @@ initInstall();
 const root = document.getElementById('root');
 if (!root) throw new Error('Élément #root introuvable');
 
+/**
+ * L'écran de démarrage (index.html) s'efface une fois l'app affichée, après un court instant
+ * pour qu'il ne fasse pas qu'un éclair. Sans animations, il disparaît tout de suite.
+ */
+function hideSplash() {
+  const splash = document.getElementById('splash');
+  if (!splash || splash.hidden) return;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const wait = reduced ? 0 : Math.max(0, 900 - performance.now());
+  window.setTimeout(() => {
+    splash.classList.add('splash--out');
+    window.setTimeout(() => splash.remove(), reduced ? 0 : 500);
+  }, wait);
+}
+
 createRoot(root).render(
   <StrictMode>
     <TransitionRouter basename={import.meta.env.BASE_URL}>
@@ -32,3 +47,5 @@ createRoot(root).render(
     </TransitionRouter>
   </StrictMode>,
 );
+
+requestAnimationFrame(hideSplash);
