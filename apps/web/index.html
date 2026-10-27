@@ -24,8 +24,133 @@
     <meta name="color-scheme" content="dark light" />
     <link rel="icon" type="image/png" href="/icons/favicon-64.png" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <!-- iPhone et iPad : écran de démarrage de l'app installée (scripts/splash-images.ts). -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+      href="/splash/splash-1290x2796.jpg"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 393px) and (device-height: 852px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+      href="/splash/splash-1179x2556.jpg"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+      href="/splash/splash-1170x2532.jpg"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)"
+      href="/splash/splash-1125x2436.jpg"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+      href="/splash/splash-828x1792.jpg"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+      href="/splash/splash-750x1334.jpg"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 820px) and (device-height: 1180px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+      href="/splash/splash-1640x2360.jpg"
+    />
+    <link
+      rel="apple-touch-startup-image"
+      media="screen and (device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)"
+      href="/splash/splash-2048x2732.jpg"
+    />
+    <style>
+      /* Écran de démarrage de l'app installée : il prend le relais de l'écran du système (même fond),
+         le temps que l'app se charge. Kitzy tient sa lanterne, dont la lumière respire doucement. */
+      .splash {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        background: #12302b;
+        transition:
+          opacity 0.45s ease,
+          visibility 0.45s;
+      }
+      .splash[hidden] {
+        display: none;
+      }
+      .splash--out {
+        opacity: 0;
+        visibility: hidden;
+      }
+      .splash__glow {
+        position: absolute;
+        width: min(110vw, 620px);
+        aspect-ratio: 1;
+        top: 50%;
+        left: 50%;
+        translate: -50% -58%;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle,
+          rgb(255 226 168 / 0.42) 0%,
+          rgb(244 184 96 / 0.2) 30%,
+          rgb(217 119 63 / 0.06) 52%,
+          transparent 70%
+        );
+        animation: splash-breathe 2.4s ease-in-out infinite;
+      }
+      .splash__hog {
+        position: relative;
+        height: min(46vh, 360px);
+        width: auto;
+      }
+      .splash__name {
+        position: relative;
+        margin: 0;
+        color: #f4b860;
+        font:
+          400 2.25rem/1 'Young Serif',
+          Georgia,
+          serif;
+      }
+      @keyframes splash-breathe {
+        50% {
+          opacity: 0.6;
+          scale: 0.94;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .splash__glow {
+          animation: none;
+        }
+      }
+    </style>
   </head>
   <body>
+    <div class="splash" id="splash" aria-hidden="true" hidden>
+      <div class="splash__glow"></div>
+      <img class="splash__hog" src="/mascot/kitzy-lanterne.webp" alt="" width="640" height="1004" />
+      <p class="splash__name">Kitzy</p>
+    </div>
+    <script>
+      // Seulement au lancement de l'app installée (pas dans un onglet, pas à chaque rechargement).
+      try {
+        var standalone =
+          matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+        if (standalone && !sessionStorage.getItem('kitzy.splash')) {
+          sessionStorage.setItem('kitzy.splash', '1');
+          document.getElementById('splash').hidden = false;
+        }
+      } catch (e) {}
+    </script>
     <div id="root"></div>
     <noscript>Kitzy a besoin de JavaScript pour fonctionner.</noscript>
     <script type="module" src="/src/main.tsx"></script>
