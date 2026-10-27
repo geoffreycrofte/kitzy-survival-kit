@@ -64,6 +64,39 @@ a {
   text-underline-offset: 3px;
 }
 
+/* Toucher : plus de rectangle bleu translucide de Chrome. À la place, une lueur de lanterne autour
+   de ce qu'on touche (et un léger enfoncement, voir motion.css). Le contour du focus clavier,
+   lui, ne change pas. */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(
+  button,
+  summary,
+  [role='button'],
+  .button,
+  .icon-button,
+  .menu__link,
+  .dest,
+  .segmented__option,
+  .choice__option
+):active {
+  box-shadow: 0 0 0 4px var(--kz-halo);
+}
+
+/* Liens dans le texte : un surlignage doux, aux coins arrondis. */
+:where(a):not(.button, .icon-button, .menu__link, .dest, .bottom-nav__link):active {
+  border-radius: 4px;
+  background: var(--kz-halo);
+  box-shadow: 0 0 0 3px var(--kz-halo);
+}
+
+/* La barre du bas a déjà sa lueur d'onglet : seulement l'enfoncement. */
+.bottom-nav__link:active {
+  box-shadow: none;
+}
+
 img {
   max-width: 100%;
   height: auto;
@@ -2709,6 +2742,29 @@ html[data-motion='full'] .menu::backdrop {
   color: var(--kz-btn-text);
 }
 
+/* L'option choisie est marquée par une pastille jaune qui glisse d'une option à l'autre
+   (animée dans MainMenu). Trois options, 4 px entre elles, 5 px de marge. */
+.segmented {
+  position: relative;
+  isolation: isolate;
+}
+
+.segmented__thumb {
+  position: absolute;
+  z-index: -1;
+  top: 5px;
+  bottom: 5px;
+  left: 5px;
+  width: calc((100% - 18px) / 3);
+  border-radius: 999px;
+  background: var(--kz-btn);
+  transform: translateX(calc(var(--seg-i, 0) * (100% + 4px)));
+  pointer-events: none;
+}
+
+.segmented__option:has(input:checked) {
+  background: transparent;
+}
 .segmented__option:has(input:focus-visible) {
   outline: 3px solid var(--kz-btn);
   outline-offset: 3px;

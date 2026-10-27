@@ -1157,6 +1157,11 @@ Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fi
 - [x] **Menu** : le cercle (`clip-path`) devenait un disque de lumière mis à l'échelle (`transform`), animé par la carte graphique ; son rayon est calculé pour couvrir juste l'écran (avant : `150vmax`, un tiers de l'animation hors champ, d'où l'effet trop rapide). Le bord du disque luit ; titre et entrées arrivent une fois la lumière passée ; à la fermeture, les entrées s'effacent puis le disque se resserre vers le bouton
 - [x] **Barre du bas** : une lueur glisse jusqu'à l'onglet en cours avec un petit rebond et s'étire en route ; l'icône fait un saut, une luciole s'envole et s'éteint. Sur bureau, la colonne latérale garde son fond ; rien ne bouge sans animations
 
+### Retouches : toucher et ambiance ✅
+
+- [x] **Toucher** : plus de rectangle bleu translucide de Chrome (`-webkit-tap-highlight-color`). À la place, une lueur de lanterne autour de ce qu'on touche (boutons, cartes, onglets, options) et un léger enfoncement ; un surlignage doux pour les liens dans le texte. App et page d'accueil. Le contour du focus clavier ne change pas
+- [x] **Ambiance (Auto, Veillée, Jour)** : la pastille jaune glisse vers l'option choisie, s'étire en route et rebondit de 4 px en arrivant, toujours dans le cadre ; sans animations, elle se place directement
+
 ### Phase 5 : International et stores
 
 - [x] **Traductions EN, LB, DE, PT** de toute l'app : interface, catalogue, guide, gestes, recettes, quiz, simulation, conseils d'achat, notifications, fichier agenda. Le français reste la source ; un texte manquant retombe sur le français, et un test vérifie pour chaque langue que toutes les clés, tous les `{{…}}` et tous les contenus sont là
