@@ -2582,6 +2582,12 @@ button.bottom-nav__link {
   background: var(--kz-bg);
 }
 
+/* Avec les animations, le menu (plein écran, déjà opaque) s'ouvre et se referme en cercle :
+   le voile doit laisser voir la page autour du cercle, sinon elle réapparaît d'un coup à la fin. */
+html[data-motion='full'] .menu::backdrop {
+  background: transparent;
+}
+
 .menu__inner {
   max-width: 560px;
   min-height: 100%;
