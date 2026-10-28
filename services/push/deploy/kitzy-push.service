@@ -1,0 +1,43 @@
+# /etc/systemd/system/kitzy-push.service
+# Le service Web Push de Kitzy : utilisateur dédié, sans droits, code en lecture seule.
+[Unit]
+Description=Kitzy, service Web Push
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=kitzy
+Group=kitzy
+WorkingDirectory=/opt/kitzy-push/services/push
+EnvironmentFile=/etc/kitzy-push.env
+# La base vit dans /var/lib/kitzy-push, créé par systemd pour l'utilisateur kitzy.
+StateDirectory=kitzy-push
+Environment=DB_PATH=/var/lib/kitzy-push/push.sqlite
+ExecStart=/usr/bin/node --disable-warning=ExperimentalWarning src/server.ts
+Restart=on-failure
+RestartSec=5
+UMask=0077
+
+# Durcissement : le service ne voit que ce dont il a besoin.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectKernelLogs=yes
+ProtectControlGroups=yes
+ProtectClock=yes
+ProtectHostname=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+SystemCallArchitectures=native
+CapabilityBoundingSet=
+
+[Install]
+WantedBy=multi-user.target

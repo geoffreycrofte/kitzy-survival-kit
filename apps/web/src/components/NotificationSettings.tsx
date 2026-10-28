@@ -10,9 +10,11 @@ import {
   sendTestNotification,
   type EnableResult,
 } from '../lib/notifications';
+import { getNotifySettings } from '../data/load';
 import { subscribePush, unsubscribePush, webPushConfigured } from '../lib/webpush';
 
-type State = EnableResult | 'off' | 'loading';
+/** `push` : abonné au service de rappel, prévenu même app fermée (iPhone compris). */
+type State = EnableResult | 'push' | 'off' | 'loading';
 
 /** Réglage « Me prévenir sur cet appareil », avec une explication honnête de ce qui marchera. */
 export function NotificationSettings({ reminders }: { reminders: Reminder[] }) {
@@ -23,13 +25,20 @@ export function NotificationSettings({ reminders }: { reminders: Reminder[] }) {
 
   useEffect(() => {
     let alive = true;
-    void currentNotifyState().then((s) => alive && setState(s));
+    void (async () => {
+      const s = await currentNotifyState();
+      const push =
+        webPushConfigured &&
+        (s === 'background' || s === 'open-only') &&
+        (await getNotifySettings()).push;
+      if (alive) setState(push ? 'push' : s);
+    })();
     return () => {
       alive = false;
     };
   }, []);
 
-  const enabled = state === 'background' || state === 'open-only';
+  const enabled = state === 'background' || state === 'open-only' || state === 'push';
 
   const toggle = async () => {
     // Pas de `disabled` pendant l'opération : le focus clavier resterait perdu.
@@ -45,11 +54,13 @@ export function NotificationSettings({ reminders }: { reminders: Reminder[] }) {
       } else {
         setState('open-only');
         const result = await enableNotifications();
-        if (webPushConfigured && (result === 'background' || result === 'open-only')) {
-          await subscribePush(reminders).catch(() => false);
-        }
-        setState(result);
-        announce(t(`notify.state.${result}`));
+        const pushed =
+          webPushConfigured &&
+          (result === 'background' || result === 'open-only') &&
+          (await subscribePush(reminders).catch(() => false));
+        const next = pushed ? 'push' : result;
+        setState(next);
+        announce(t(`notify.state.${next}`));
       }
     } finally {
       setBusy(false);
@@ -62,10 +73,18 @@ export function NotificationSettings({ reminders }: { reminders: Reminder[] }) {
         {t('notify.title')}
       </h3>
       {state === 'unsupported' || (support.ios && !support.installed) ? (
-        <p className="choice__help">{t(support.ios ? 'notify.ios' : 'notify.unsupported')}</p>
+        <p className="choice__help">
+          {t(
+            support.ios
+              ? webPushConfigured
+                ? 'notify.iosPush'
+                : 'notify.ios'
+              : 'notify.unsupported',
+          )}
+        </p>
       ) : (
         <>
-          <p className="choice__help">{t('notify.help')}</p>
+          <p className="choice__help">{t(webPushConfigured ? 'notify.helpPush' : 'notify.help')}</p>
           <div className="switch-row">
             <input
               id="notify-toggle"

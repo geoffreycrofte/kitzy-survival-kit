@@ -1014,6 +1014,7 @@ export const messages: Messages = {
         text: 'When you follow a shopping link, you leave Kitzy. Kitzy passes nothing on to the retailer: not your kit, not your household. The retailer may set its own cookies on its website, in particular to attribute a commission. Kitzy receives no information about you or your purchases.',
       },
       {
+        id: 'notify',
         title: 'Notifications',
         where: 'Only on your device',
         text: 'Reminders are calculated and shown by your device. If a notification service is ever added, it will only receive dates and anonymous identifiers, never the contents of your kit. This page will be updated beforehand.',
@@ -1024,6 +1025,11 @@ export const messages: Messages = {
         text: 'Since everything is on your device, that’s where you delete it: in the settings, “Delete everything” removes all Kitzy data. Uninstalling the app or clearing the site’s data does the same.',
       },
     ],
+    pushSection: {
+      title: 'Notifications',
+      where: 'On your device, and only dates on the reminder service',
+      text: 'Reminders are worked out and shown by your device. If you turn notifications on, Kitzy gives its reminder service (an OVH server located in Gravelines, France) only the subscription address provided by your browser, the alert dates and your time zone: never an item name or what is in your kit. On those days, the service sends an empty message through your browser’s notification service (Google, Apple, Mozilla or Microsoft), and your device writes the reminder. This data is used for nothing else, with your consent: turning notifications off deletes it at once, and it is erased after six months without news from your device. No IP address is kept.',
+    },
     contact: 'A question or a comment?',
     contactLink: 'Write to us on the project’s GitHub page',
     updated: 'Last updated: October 2026.',
@@ -1072,7 +1078,12 @@ export const messages: Messages = {
     title: 'Notifications',
     help: 'Kitzy lets you know when a date is coming up or a device needs recharging. Just one notification a day, never at night. Nothing leaves your device.',
     toggle: 'Notify me on this device',
+    helpPush:
+      'Kitzy lets you know when a date is coming up or a device needs recharging. One notification a day at most, around 9 am, never at night. To reach you when the app is closed, Kitzy gives the reminder service dates only, never what is in your kit.',
+    iosPush:
+      'On iPhone and iPad, Kitzy can notify you when the app is closed once it is on your home screen: tap Share, then “Add to Home Screen”, and open Kitzy from its icon. Meanwhile, add your reminders to your calendar, just below.',
     state: {
+      push: 'It’s on. Kitzy notifies you around 9 am on days when a date is coming up, even when the app is closed.',
       background: 'It’s on. Kitzy checks your dates about once a day, even when the app is closed.',
       'open-only':
         'It’s on, but your browser doesn’t let Kitzy check in the background. Reminders show up when you open the app. To get notified while the app is closed, install Kitzy from Chrome or Edge, or add the reminders to your calendar.',
@@ -1179,6 +1190,7 @@ export const messages: Messages = {
   },
   system: {
     notify: {
+      pushFallback: 'You have reminders for your kit.',
       overdue: 'overdue',
       today: 'today',
       tomorrow: 'tomorrow',

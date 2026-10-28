@@ -1031,6 +1031,7 @@ export const messages: Messages = {
         text: 'Wann s de en Akafslink follegs, verléiss du Kitzy. Kitzy gëtt dem Händler näischt weider, weder däi Kit nach däin Haushalt. Den Händler ka seng eege Cookien op sengem Site setzen, besonnesch fir eng Kommissioun zouzeuerdnen. Kitzy kritt keng Informatioun iwwer dech oder deng Akeef.',
       },
       {
+        id: 'notify',
         title: 'Notifikatiounen',
         where: 'Just op dengem Apparat',
         text: 'D’Erënnerunge gi vun dengem Apparat berechent a gewisen. Wann iergendwann en Notifikatiounsservice derbäikënnt, kritt dee just Datumer an anonym Identifikateren, ni den Inhalt vun dengem Kit. Dës Säit gëtt virdrun aktualiséiert.',
@@ -1041,6 +1042,11 @@ export const messages: Messages = {
         text: 'Well alles op dengem Apparat ass, gëtt och do geläscht: an den Astellunge läscht „Alles läschen“ all d’Donnéeë vu Kitzy. D’App deinstalléieren oder d’Donnéeë vum Site läschen huet deeselwechten Effekt.',
       },
     ],
+    pushSection: {
+      title: 'Notifikatiounen',
+      where: 'Op dengem Apparat, an nëmmen Datumer um Erënnerungsservice',
+      text: 'D’Erënnerunge ginn op dengem Apparat berechent an ugewisen. Wann s de d’Notifikatiounen aktivéiers, gëtt Kitzy sengem Erënnerungsservice (en OVH-Server zu Gravelines a Frankräich) nëmmen d’Abonnementsadress vun dengem Browser, d’Erënnerungsdatumer an deng Zäitzon: ni den Numm vun engem Artikel oder den Inhalt vun dengem Stock. Op deenen Deeg schéckt de Service e leere Message iwwer de Notifikatiounsservice vun dengem Browser (Google, Apple, Mozilla oder Microsoft), an dään Apparat schreift d’Erënnerung. Dës Donnéeë déngen nëmmen dozou, mat dengem Accord: d’Notifikatiounen ausschalten läscht se direkt, a no sechs Méint ouni Noriicht vun dengem Apparat gi se geläscht. Et gëtt keng IP-Adress gespäichert.',
+    },
     contact: 'Eng Fro oder eng Remarque?',
     contactLink: 'Schreif eis op der Projetssäit op GitHub',
     updated: 'Lescht Aktualiséierung: Oktober 2026.',
@@ -1090,7 +1096,12 @@ export const messages: Messages = {
     title: 'Notifikatiounen',
     help: 'Kitzy seet der Bescheed, wann en Datum méi no kënnt oder wann en Apparat muss opgeluede ginn. Just eng Notifikatioun pro Dag, ni an der Nuecht. Näischt verléisst däin Apparat.',
     toggle: 'Mir op dësem Apparat Bescheed soen',
+    helpPush:
+      'Kitzy mellt sech, wann en Datum méi no kënnt oder en Apparat muss gelueden ginn. Héchstens eng Notifikatioun den Dag, géint 9 Auer, ni an der Nuecht. Fir dech och mat zouener App ze erreechen, gëtt Kitzy dem Erënnerungsservice nëmmen Datumer, ni den Inhalt vun dengem Stock.',
+    iosPush:
+      'Op iPhone an iPad kann Kitzy dech mat zouener App erreechen, soubal en um Home-Ecran ass: tipp op Deelen, dann op „Op den Home-Ecran“, a maach Kitzy iwwer säin Ikon op. Bis dohin dréi deng Erënnerungen ënnendrënner an den Agenda an.',
     state: {
+      push: 'Et ass aktivéiert. Kitzy mellt sech géint 9 Auer op Deeg, wou en Datum méi no kënnt, och wann d’App zou ass.',
       background:
         'Et ass aktivéiert. Kitzy kontrolléiert deng Datumer ongeféier eemol am Dag, och wann d’App zou ass.',
       'open-only':
@@ -1199,6 +1210,7 @@ export const messages: Messages = {
   },
   system: {
     notify: {
+      pushFallback: 'Du hues Erënnerunge fir däi Stock.',
       overdue: 'iwwerfälleg',
       today: 'haut',
       tomorrow: 'muer',

@@ -1034,6 +1034,7 @@ export const messages: Messages = {
         text: 'Wenn du einem Kauflink folgst, verlässt du Kitzy. Kitzy übermittelt dem Händler nichts, weder deinen Vorrat noch deinen Haushalt. Der Händler kann auf seiner Website eigene Cookies setzen, etwa um eine Provision zuzuordnen. Kitzy erhält keine Informationen über dich oder deine Einkäufe.',
       },
       {
+        id: 'notify',
         title: 'Benachrichtigungen',
         where: 'Nur auf deinem Gerät',
         text: 'Erinnerungen werden von deinem Gerät berechnet und angezeigt. Sollte eines Tages ein Benachrichtigungsdienst hinzukommen, erhält er nur Daten und anonyme Kennungen, nie den Inhalt deines Vorrats. Diese Seite wird vorher aktualisiert.',
@@ -1044,6 +1045,11 @@ export const messages: Messages = {
         text: 'Da alles auf deinem Gerät ist, wird auch dort gelöscht: In den Einstellungen entfernt „Alles löschen“ alle Daten von Kitzy. Die App zu deinstallieren oder die Websitedaten zu löschen, bewirkt dasselbe.',
       },
     ],
+    pushSection: {
+      title: 'Benachrichtigungen',
+      where: 'Auf deinem Gerät, und nur Daten beim Erinnerungsdienst',
+      text: 'Erinnerungen werden von deinem Gerät berechnet und angezeigt. Wenn du Benachrichtigungen aktivierst, gibt Kitzy seinem Erinnerungsdienst (ein OVH-Server in Gravelines, Frankreich) nur die Abonnement-Adresse deines Browsers, die Erinnerungsdaten und deine Zeitzone weiter: nie den Namen eines Artikels oder den Inhalt deines Vorrats. An diesen Tagen sendet der Dienst eine leere Nachricht über den Benachrichtigungsdienst deines Browsers (Google, Apple, Mozilla oder Microsoft), und dein Gerät schreibt die Erinnerung. Diese Daten dienen nur dazu, mit deiner Einwilligung: Benachrichtigungen ausschalten löscht sie sofort, und nach sechs Monaten ohne Lebenszeichen deines Geräts werden sie gelöscht. Es wird keine IP-Adresse gespeichert.',
+    },
     contact: 'Eine Frage oder Anmerkung?',
     contactLink: 'Schreib uns auf der Projektseite auf GitHub',
     updated: 'Zuletzt aktualisiert: Oktober 2026.',
@@ -1093,7 +1099,12 @@ export const messages: Messages = {
     title: 'Benachrichtigungen',
     help: 'Kitzy sagt dir Bescheid, wenn ein Datum näher rückt oder ein Gerät aufgeladen werden muss. Nur eine Benachrichtigung pro Tag, nie nachts. Nichts verlässt dein Gerät.',
     toggle: 'Auf diesem Gerät benachrichtigen',
+    helpPush:
+      'Kitzy erinnert dich, wenn ein Datum näher rückt oder ein Gerät aufgeladen werden muss. Höchstens eine Benachrichtigung pro Tag, gegen 9 Uhr, nie nachts. Damit du auch bei geschlossener App erinnert wirst, gibt Kitzy dem Erinnerungsdienst nur Daten weiter, nie den Inhalt deines Vorrats.',
+    iosPush:
+      'Auf iPhone und iPad kann Kitzy dich bei geschlossener App erinnern, sobald es auf dem Home-Bildschirm liegt: Tippe auf Teilen, dann auf „Zum Home-Bildschirm“, und öffne Kitzy über sein Symbol. Bis dahin trag deine Erinnerungen weiter unten in den Kalender ein.',
     state: {
+      push: 'Ist aktiviert. Kitzy erinnert dich gegen 9 Uhr an Tagen, an denen ein Datum näher rückt, auch wenn die App geschlossen ist.',
       background:
         'Aktiviert. Kitzy prüft deine Daten etwa einmal am Tag, auch wenn die App geschlossen ist.',
       'open-only':
@@ -1203,6 +1214,7 @@ export const messages: Messages = {
   },
   system: {
     notify: {
+      pushFallback: 'Du hast Erinnerungen für deinen Vorrat.',
       overdue: 'überfällig',
       today: 'heute',
       tomorrow: 'morgen',

@@ -1,0 +1,21 @@
+{
+  "name": "@kitzy/push",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Service Web Push de Kitzy : réveille l'app aux dates d'alerte, sans rien savoir du kit.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "start": "node --disable-warning=ExperimentalWarning src/server.ts",
+    "keys": "node scripts/generate-keys.ts",
+    "send-test": "node --disable-warning=ExperimentalWarning scripts/send-test.ts",
+    "test": "node --disable-warning=ExperimentalWarning --test test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "6.0.3"
+  }
+}

@@ -1023,6 +1023,7 @@ export const messages: Messages = {
         text: 'Quando segues uma ligação de compra, sais do Kitzy. O Kitzy não transmite nada ao comerciante, nem o teu kit, nem a tua casa. O comerciante pode colocar os seus próprios cookies no seu site, nomeadamente para atribuir uma comissão. O Kitzy não recebe nenhuma informação sobre ti nem sobre as tuas compras.',
       },
       {
+        id: 'notify',
         title: 'Notificações',
         where: 'Apenas no teu aparelho',
         text: 'Os lembretes são calculados e mostrados pelo teu aparelho. Se um dia for adicionado um serviço de notificações, só receberá datas e identificadores anónimos, nunca o conteúdo do teu kit. Esta página será atualizada antes.',
@@ -1033,6 +1034,11 @@ export const messages: Messages = {
         text: 'Como está tudo no teu aparelho, é aí que se apaga: nas definições, «Apagar tudo» elimina todos os dados do Kitzy. Desinstalar a app ou limpar os dados do site tem o mesmo efeito.',
       },
     ],
+    pushSection: {
+      title: 'Notificações',
+      where: 'No teu dispositivo, e apenas datas no serviço de lembretes',
+      text: 'Os lembretes são calculados e mostrados pelo teu dispositivo. Se ativares as notificações, o Kitzy dá ao seu serviço de lembretes (um servidor da OVH em Gravelines, França) apenas o endereço de subscrição fornecido pelo teu navegador, as datas de alerta e o teu fuso horário: nunca o nome de um artigo nem o conteúdo da tua reserva. Nesses dias, o serviço envia uma mensagem vazia através do serviço de notificações do teu navegador (Google, Apple, Mozilla ou Microsoft), e é o teu dispositivo que escreve o lembrete. Estes dados só servem para isso, com o teu consentimento: desativar as notificações apaga-os de imediato, e são apagados após seis meses sem notícias do teu dispositivo. Nenhum endereço IP é guardado.',
+    },
     contact: 'Uma pergunta ou um comentário?',
     contactLink: 'Escreve-nos na página do projeto no GitHub',
     updated: 'Última atualização: outubro de 2026.',
@@ -1081,7 +1087,12 @@ export const messages: Messages = {
     title: 'Notificações',
     help: 'O Kitzy avisa-te quando uma data se aproxima ou quando um aparelho precisa de ser recarregado. Uma só notificação por dia, nunca à noite. Nada sai do teu aparelho.',
     toggle: 'Avisar-me neste aparelho',
+    helpPush:
+      'O Kitzy avisa-te quando uma data se aproxima ou um aparelho precisa de ser carregado. No máximo uma notificação por dia, por volta das 9 h, nunca à noite. Para te avisar com a app fechada, o Kitzy dá ao serviço de lembretes apenas datas, nunca o conteúdo da tua reserva.',
+    iosPush:
+      'No iPhone e no iPad, o Kitzy pode avisar-te com a app fechada depois de ser adicionado ao ecrã principal: toca em Partilhar, depois em «Adicionar ao ecrã principal», e abre o Kitzy pelo ícone. Entretanto, adiciona os teus lembretes ao calendário, logo abaixo.',
     state: {
+      push: 'Está ativado. O Kitzy avisa-te por volta das 9 h nos dias em que uma data se aproxima, mesmo com a app fechada.',
       background:
         'Está ativado. O Kitzy verifica as tuas datas cerca de uma vez por dia, mesmo com a app fechada.',
       'open-only':
@@ -1190,6 +1201,7 @@ export const messages: Messages = {
   },
   system: {
     notify: {
+      pushFallback: 'Tens lembretes para a tua reserva.',
       overdue: 'em atraso',
       today: 'hoje',
       tomorrow: 'amanhã',

@@ -2,7 +2,22 @@
 
 # Kitzy
 
-Kitzy helps households build, track and rotate a 72-hour emergency supply, based on Luxembourg's national resilience strategy “Lëtz prepare!”. It is a progressive web app (PWA) that works fully offline, with iOS and Android apps to follow.
+Kitzy helps households build, track and rotate a 72-hour emergency supply, based on Luxembourg's national resilience strategy “Lëtz prepare!”. If the power, water or network goes down, or you have to leave home in a hurry, Kitzy makes sure you already have what you need. It is a progressive web app (PWA) that works fully offline, with iOS and Android apps to follow.
+
+Free, no account, no ads, no tracking: everything stays on your device.
+
+## What it does
+
+- **Sized for your household**: water, food, medicine and gear calculated for the adults, children, infants, dogs and cats you live with.
+- **Home supply and grab bags**: one checklist per kit, with what to buy, what you already have and what is missing.
+- **Expiry dates and reminders**: Kitzy tracks use-by dates and battery recharges, and reminds you through notifications or your calendar (.ics).
+- **Shopping list**: built from what is missing, shareable by link, with transparent buying advice.
+- **Pantry and recipes**: turn your supplies into meals and use them before they expire.
+- **Personal emergency plan**: contacts, meeting points, health information, printable; encrypted on the device and opened with a code, fingerprint or face.
+- **Essential actions and guides**: the steps to take before and during a crisis (LU-Alert, sirens, power cuts…), in plain language.
+- **Activities**: monthly mini-check, yearly check-up, quiz and a 72-hour simulation to keep the kit alive.
+- **Protected backups**: one tap to make a backup protected by a code, then send it or download it.
+- **Five languages**: French, English, German, Luxembourgish and Portuguese.
 
 - Full project plan: [`PLAN.md`](PLAN.md)
 - Accessibility: RAWeb 1.1 level AA, with [CheckFox.eu](https://checkfox.eu); statement and problem reporting in [`ACCESSIBILITY.md`](ACCESSIBILITY.md) (skills in [`.claude/skills/`](.claude/skills/))
@@ -39,11 +54,4 @@ To run the end-to-end tests with an already installed Chromium: `PLAYWRIGHT_CHRO
 
 ## Publishing
 
-Every push to `main` deploys to GitHub Pages (`deploy.yml` workflow). One-time setup in the repository settings:
-
-1. **Settings › Pages › Source: GitHub Actions**.
-2. For the `kitzy.lu` domain: repository variables `KITZY_DOMAIN=kitzy.lu` and `KITZY_BASE=/`, then configure DNS. Do this **before** the public launch: user data is tied to the site's address.
-   The published site holds the landing page at the root (`apps/web/landing`) and the app in `app/`. The installed app starts directly in `app/`.
-3. Amazon affiliation: variables `KITZY_AMAZON_TAG_FR` and `KITZY_AMAZON_TAG_DE` (Associates IDs, for example `kitzy-21`). Without them, shopping links are direct and earn nothing.
-4. Link monitoring (`link-check.yml`, every Monday): tick **Settings › Actions › General › Allow GitHub Actions to create and approve pull requests** so the bot can propose status updates.
-5. Later, for Web Push notifications through the VPS: variables `KITZY_PUSH_URL` (service URL) and `KITZY_VAPID_KEY` (public VAPID key). Without them, Kitzy sends nothing to any server.
+Every push to `main` builds the site and deploys it to GitHub Pages. The one-time repository setup (Pages, domain, optional build variables) is described in [`docs/maintaining.md`](docs/maintaining.md). Without any of it, the app builds and works: optional features simply stay off.
