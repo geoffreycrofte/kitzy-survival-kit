@@ -1,15 +1,17 @@
 import { useTranslation } from 'react-i18next';
 import { PROJECT_ISSUES_URL } from '@kitzy/core';
 import { usePageTitle } from '../lib/usePageTitle';
+import { webPushConfigured } from '../lib/webpush';
 
 export function Privacy() {
   const { t } = useTranslation();
   usePageTitle(t('privacy.title'));
-  const sections = t('privacy.sections', { returnObjects: true }) as unknown as Array<{
-    title: string;
-    where: string;
-    text: string;
-  }>;
+  type Section = { id?: string; title: string; where: string; text: string };
+  const push = t('privacy.pushSection', { returnObjects: true }) as unknown as Section;
+  // Une fois le service de rappel en ligne, la section Notifications dit ce qu'il reçoit.
+  const sections = (t('privacy.sections', { returnObjects: true }) as unknown as Section[]).map(
+    (section) => (webPushConfigured && section.id === 'notify' ? push : section),
+  );
 
   return (
     <article className="page prose">

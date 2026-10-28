@@ -35,16 +35,19 @@ async function salt(): Promise<string> {
   return fresh;
 }
 
-/** Abonne cet appareil et envoie le calendrier des rappels (dates seulement). */
-export async function subscribePush(reminders: readonly Reminder[]): Promise<boolean> {
-  if (!webPushConfigured || !('PushManager' in window)) return false;
-  const reg = await navigator.serviceWorker.ready;
-  const subscription =
-    (await reg.pushManager.getSubscription()) ??
-    (await reg.pushManager.subscribe({
-      userVisibleOnly: true,
-      applicationServerKey: urlBase64ToBytes(VAPID_KEY),
-    }));
+/** La clé publique du service, telle que `pushManager.subscribe()` l'attend. */
+export function applicationServerKey(): Uint8Array<ArrayBuffer> {
+  return urlBase64ToBytes(VAPID_KEY);
+}
+
+/**
+ * Envoie au service l'abonnement et le calendrier (dates seulement). Utilisé par l'app et par
+ * le service worker quand le navigateur renouvelle l'abonnement.
+ */
+export async function sendSchedule(
+  subscription: PushSubscription,
+  reminders: readonly Reminder[],
+): Promise<boolean> {
   const response = await fetch(`${PUSH_URL}/subscribe`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -54,8 +57,31 @@ export async function subscribePush(reminders: readonly Reminder[]): Promise<boo
       timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     }),
   });
-  if (response.ok) await updateNotifySettings({ push: true });
   return response.ok;
+}
+
+/** Oublie une ancienne adresse d'abonnement côté service. */
+export async function forgetEndpoint(endpoint: string): Promise<void> {
+  await fetch(`${PUSH_URL}/subscribe`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ endpoint }),
+  }).catch(() => undefined);
+}
+
+/** Abonne cet appareil et envoie le calendrier des rappels (dates seulement). */
+export async function subscribePush(reminders: readonly Reminder[]): Promise<boolean> {
+  if (!webPushConfigured || !('PushManager' in globalThis)) return false;
+  const reg = await navigator.serviceWorker.ready;
+  const subscription =
+    (await reg.pushManager.getSubscription()) ??
+    (await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: applicationServerKey(),
+    }));
+  const ok = await sendSchedule(subscription, reminders);
+  if (ok) await updateNotifySettings({ push: true });
+  return ok;
 }
 
 export async function unsubscribePush(): Promise<void> {
@@ -64,11 +90,7 @@ export async function unsubscribePush(): Promise<void> {
   const reg = await navigator.serviceWorker.ready;
   const subscription = await reg.pushManager.getSubscription();
   if (!subscription) return;
-  await fetch(`${PUSH_URL}/subscribe`, {
-    method: 'DELETE',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ endpoint: subscription.endpoint }),
-  }).catch(() => undefined);
+  await forgetEndpoint(subscription.endpoint);
   await subscription.unsubscribe();
 }
 

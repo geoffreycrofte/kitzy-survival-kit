@@ -1026,6 +1026,7 @@ export const fr = {
         text: 'Quand tu suis un lien d’achat, tu quittes Kitzy. Kitzy ne transmet rien au marchand, ni ton kit, ni ton foyer. Le marchand peut déposer ses propres cookies sur son site, notamment pour attribuer une commission. Kitzy ne reçoit aucune information sur toi ni sur tes achats.',
       },
       {
+        id: 'notify',
         title: 'Notifications',
         where: 'Uniquement sur ton appareil',
         text: 'Les rappels sont calculés et affichés par ton appareil. Si un service de notifications est un jour ajouté, il ne recevra que des dates et des identifiants anonymes, jamais le contenu de ton kit. Cette page sera mise à jour avant.',
@@ -1036,6 +1037,11 @@ export const fr = {
         text: 'Comme tout est sur ton appareil, c’est là qu’on efface : dans les réglages, « Tout effacer » supprime toutes les données de Kitzy. Désinstaller l’app ou vider les données du site fait de même.',
       },
     ],
+    pushSection: {
+      title: 'Notifications',
+      where: 'Sur ton appareil, et seulement des dates sur le service de rappel',
+      text: 'Les rappels sont calculés et affichés par ton appareil. Si tu actives les notifications, Kitzy confie à son service de rappel (un serveur hébergé chez OVH) uniquement l’adresse d’abonnement fournie par ton navigateur, les dates d’alerte et ton fuseau horaire : jamais le nom d’un article ni le contenu de ton kit. Ces jours-là, le service envoie un message vide par le service de notifications de ton navigateur (Google, Apple, Mozilla ou Microsoft), et c’est ton appareil qui écrit le rappel. Ces données ne servent qu’à ça, avec ton accord : désactiver les notifications les supprime aussitôt, et elles sont effacées après six mois sans nouvelles de ton appareil. Aucune adresse IP n’est conservée.',
+    },
     contact: 'Une question ou une remarque ?',
     contactLink: 'Écris-nous sur la page du projet sur GitHub',
     updated: 'Dernière mise à jour : octobre 2026.',
@@ -1085,7 +1091,12 @@ export const fr = {
     title: 'Notifications',
     help: 'Kitzy te prévient quand une date approche ou qu’un appareil doit être rechargé. Une seule notification par jour, jamais la nuit. Rien ne quitte ton appareil.',
     toggle: 'Me prévenir sur cet appareil',
+    helpPush:
+      'Kitzy te prévient quand une date approche ou qu’un appareil doit être rechargé. Une seule notification par jour, vers 9 h, jamais la nuit. Pour te prévenir app fermée, Kitzy confie au service de rappel uniquement des dates, jamais le contenu de ton kit.',
+    iosPush:
+      'Sur iPhone et iPad, Kitzy peut te prévenir app fermée une fois ajouté à l’écran d’accueil : touche Partager, puis « Sur l’écran d’accueil », et ouvre Kitzy depuis son icône. En attendant, ajoute tes rappels à l’agenda, juste en dessous.',
     state: {
+      push: 'C’est activé. Kitzy te prévient vers 9 h les jours où une date approche, même quand l’app est fermée.',
       background:
         'C’est activé. Kitzy vérifie tes dates environ une fois par jour, même quand l’app est fermée.',
       'open-only':
@@ -1194,6 +1205,7 @@ export const fr = {
   },
   system: {
     notify: {
+      pushFallback: 'Tu as des rappels pour ton kit.',
       overdue: 'en retard',
       today: 'aujourd’hui',
       tomorrow: 'demain',

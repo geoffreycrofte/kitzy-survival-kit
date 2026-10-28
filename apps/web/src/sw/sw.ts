@@ -12,7 +12,15 @@ import {
   precacheAndRoute,
 } from 'workbox-precaching';
 import { NavigationRoute, registerRoute } from 'workbox-routing';
-import { digest, dueOn, isLocale, messagesFor, shouldNotify, todayLocal } from '@kitzy/core';
+import {
+  digest,
+  dueOn,
+  isLocale,
+  messagesFor,
+  shouldNotify,
+  todayLocal,
+  type Locale,
+} from '@kitzy/core';
 import {
   getMeta,
   getNotifySettings,
@@ -20,6 +28,12 @@ import {
   remindersFor,
   updateNotifySettings,
 } from '../data/load';
+import {
+  applicationServerKey,
+  forgetEndpoint,
+  sendSchedule,
+  webPushConfigured,
+} from '../lib/webpush';
 import { PERIODIC_TAG } from './types';
 
 declare const self: ServiceWorkerGlobalScope & {
@@ -55,9 +69,7 @@ async function checkReminders(): Promise<void> {
   if (!shouldNotify(settings.lastNotified, today)) return;
   const data = await loadAll();
   if (!data.household) return;
-  // La langue choisie dans l'app (copiée dans la base locale), sinon le français.
-  const stored = await getMeta<string>('locale', 'fr');
-  const locale = isLocale(stored) ? stored : 'fr';
+  const locale = await storedLocale();
   const message = digest(
     dueOn(remindersFor(data, today, locale), today),
     today,
@@ -71,7 +83,7 @@ async function checkReminders(): Promise<void> {
     tag: message.tag,
     icon: ICON,
     badge: BADGE,
-    lang: 'fr',
+    lang: locale,
     data: { url: './' },
   });
 }
@@ -85,24 +97,66 @@ self.addEventListener('periodicsync', (event) => {
   );
 });
 
+/** La langue choisie dans l'app (copiée dans la base locale), sinon le français. */
+async function storedLocale(): Promise<Locale> {
+  const stored = await getMeta<string>('locale', 'fr');
+  return isLocale(stored) ? stored : 'fr';
+}
+
 self.addEventListener('push', (event) => {
-  // Le serveur ne connaît pas le contenu du kit : il réveille seulement Kitzy.
+  // Le serveur ne connaît pas le contenu du kit : il réveille seulement Kitzy, qui calcule le
+  // détail ici. Une notification s'affiche toujours, même si la base ne s'ouvre pas : les
+  // navigateurs coupent l'abonnement d'une app qui reçoit des push sans rien montrer.
   event.waitUntil(
     (async () => {
-      const today = todayLocal();
-      const data = await loadAll();
-      const message = data.household
-        ? digest(dueOn(remindersFor(data, today), today), today)
-        : null;
+      let locale: Locale = 'fr';
+      let message: { title: string; body: string } | null = null;
+      try {
+        locale = await storedLocale();
+        const today = todayLocal();
+        const data = await loadAll();
+        if (data.household) {
+          message = digest(
+            dueOn(remindersFor(data, today, locale), today),
+            today,
+            messagesFor(locale).system.notify,
+          );
+        }
+      } catch (error) {
+        console.error('Kitzy, push :', error);
+      }
+      const notify = messagesFor(locale).system.notify;
       await self.registration.showNotification(message?.title ?? 'Kitzy', {
-        body: message?.body ?? 'Tu as des rappels pour ton kit.',
+        body: message?.body ?? notify.pushFallback,
         tag: 'kitzy-rappels',
         icon: ICON,
         badge: BADGE,
-        lang: 'fr',
+        lang: locale,
         data: { url: './' },
       });
     })(),
+  );
+});
+
+// Le navigateur a renouvelé l'abonnement (expiration, changement de clés côté service push) :
+// on prévient le service, sinon les rappels s'arrêteraient sans que personne ne le sache.
+self.addEventListener('pushsubscriptionchange', (event) => {
+  const change = event as PushSubscriptionChangeEvent;
+  change.waitUntil(
+    (async () => {
+      if (!webPushConfigured || !(await getNotifySettings()).push) return;
+      if (change.oldSubscription) await forgetEndpoint(change.oldSubscription.endpoint);
+      const subscription =
+        change.newSubscription ??
+        (await self.registration.pushManager.subscribe({
+          userVisibleOnly: true,
+          applicationServerKey: applicationServerKey(),
+        }));
+      const today = todayLocal();
+      const data = await loadAll();
+      const reminders = data.household ? remindersFor(data, today, await storedLocale()) : [];
+      await sendSchedule(subscription, reminders);
+    })().catch((error: unknown) => console.error('Kitzy, abonnement push :', error)),
   );
 });
 
