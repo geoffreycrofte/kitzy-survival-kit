@@ -60,7 +60,7 @@ sudo install -m 600 -o root -g root /opt/kitzy-push/services/push/deploy/env.exa
 sudo nano /etc/kitzy-push.env   # paste the two key lines, check VAPID_SUBJECT and ALLOWED_ORIGIN
 ```
 
-The **private** key stays in `/etc/kitzy-push.env` and nowhere else: not in the repository, not in GitHub. Keep a copy in your password manager: generating new keys later unsubscribes every device. `VAPID_SUBJECT` must be a working address (`mailto:hello@kitzy.lu`): it is how Google, Apple or Mozilla would reach you about a problem.
+The **private** key stays in `/etc/kitzy-push.env` and nowhere else: not in the repository, not in GitHub. Keep a copy in your password manager: generating new keys later unsubscribes every device. `VAPID_SUBJECT` must be a working address (`mailto:notifications@kitzy.lu`): it is how Google, Apple or Mozilla would reach you about a problem.
 
 ### 5. systemd
 
