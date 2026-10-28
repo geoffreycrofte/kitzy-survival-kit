@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test';
+// Seulement le module de chiffrement : le paquet entier charge des JSON que Playwright ne lit pas.
+import { unprotectBackup } from '../../../packages/core/src/vault';
 import { expectNoAxeViolations, setUpHousehold } from './helpers';
 
 test.describe('Phase 2 : plan, gestes, scan, notifications', () => {
@@ -152,14 +154,21 @@ test.describe('Phase 2 : plan, gestes, scan, notifications', () => {
       .fill('Famille Muller');
     await page.waitForTimeout(800);
     await page.goto('./reglages');
-    await page.getByLabel('Protéger la sauvegarde par un code').uncheck();
-    await page.getByRole('button', { name: 'Préparer la sauvegarde' }).click();
+    await page.getByRole('button', { name: 'Faire une sauvegarde' }).click();
+    const drawer = page.getByRole('dialog', { name: 'Faire une sauvegarde' });
+    await drawer
+      .getByRole('textbox', { name: 'Code de la sauvegarde', exact: true })
+      .fill('48291375');
+    await drawer.getByRole('textbox', { name: 'Confirme le code', exact: true }).fill('48291375');
     const download = page.waitForEvent('download');
-    await page.getByRole('button', { name: 'Télécharger', exact: true }).click();
+    await drawer.getByRole('button', { name: 'Protéger et télécharger' }).click();
     const file = await download;
-    const json = JSON.parse(
-      await (await file.createReadStream()).toArray().then((c) => Buffer.concat(c).toString()),
-    );
+    const text = await (
+      await file.createReadStream()
+    )
+      .toArray()
+      .then((c) => Buffer.concat(c).toString());
+    const json = JSON.parse((await unprotectBackup(text, '48291375')) ?? '');
     expect(json.schemaVersion).toBe(2);
     expect(json.plan.owner.name).toBe('Famille Muller');
     expect(Object.keys(json.tasks)).toEqual(['lu-alert']);

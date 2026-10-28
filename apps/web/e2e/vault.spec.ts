@@ -135,15 +135,20 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     await lock.getByLabel('Code Kitzy').fill(CODE);
     await lock.getByRole('button', { name: 'Ouvrir avec le code' }).click();
 
-    await expect(data.getByLabel('Protéger la sauvegarde par un code')).toBeChecked();
-    await data.getByRole('button', { name: 'Préparer la sauvegarde' }).click();
-    await expect(data.getByText('Le code doit faire au moins 8 caractères.')).toBeVisible();
-    await data.getByLabel('Code de la sauvegarde').fill('48291375');
-    await data.getByLabel('Confirme le code').fill('48291375');
-    await data.getByRole('button', { name: 'Préparer la sauvegarde' }).click();
-    await expect(data.getByText('Elle est protégée par ton code.')).toBeVisible();
+    await data.getByRole('button', { name: 'Faire une sauvegarde' }).click();
+    const drawer = page.getByRole('dialog', { name: 'Faire une sauvegarde' });
+    await expect(drawer).toBeFocused();
+    // Ici, pas de partage de fichiers : le bouton dit qu'il va télécharger.
+    await drawer.getByRole('button', { name: 'Protéger et télécharger' }).click();
+    await expect(drawer.getByText('Le code doit faire au moins 8 caractères.')).toBeVisible();
+    const field = drawer.getByRole('textbox', { name: 'Code de la sauvegarde', exact: true });
+    await field.fill('48291375');
+    await expect(field).toHaveAttribute('type', 'password');
+    await drawer.getByRole('button', { name: 'Afficher Code de la sauvegarde' }).click();
+    await expect(field).toHaveAttribute('type', 'text');
+    await drawer.getByRole('textbox', { name: 'Confirme le code', exact: true }).fill('48291375');
     const download = page.waitForEvent('download');
-    await data.getByRole('button', { name: 'Télécharger', exact: true }).click();
+    await drawer.getByRole('button', { name: 'Protéger et télécharger' }).click();
     const file = await download;
     const text = await (
       await file.createReadStream()
@@ -152,6 +157,11 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
       .then((c) => Buffer.concat(c).toString());
     expect(text).not.toContain('Hoffmann');
     expect(JSON.parse(text)).toMatchObject({ app: 'kitzy', protected: 1 });
+    // Le tiroir dit où est le fichier et quoi en faire.
+    await expect(drawer.getByRole('heading', { name: 'Sauvegarde téléchargée' })).toBeFocused();
+    await expect(drawer.getByText(file.suggestedFilename())).toBeVisible();
+    await drawer.getByRole('button', { name: 'Terminé' }).click();
+    await expect(drawer).toBeHidden();
 
     // Un autre appareil, sans empreinte ni verrou : le code suffit.
     const other = await browser.newContext({ baseURL: 'http://localhost:4173/app/' });
@@ -177,6 +187,42 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     await other.close();
   });
 
+  test('avec le partage de fichiers, « Protéger et envoyer » ouvre la feuille de partage', async ({
+    page,
+  }) => {
+    // Un téléphone : le partage accepte les fichiers. La première fois, le navigateur juge le
+    // geste trop ancien ; « Envoyer » rouvre alors le partage.
+    await page.addInitScript(() => {
+      const calls: string[] = [];
+      Object.assign(window, { shared: calls });
+      Object.defineProperty(navigator, 'canShare', { value: () => true });
+      Object.defineProperty(navigator, 'share', {
+        value: async (data: { files: File[] }) => {
+          calls.push(data.files[0]?.name ?? '');
+          if (calls.length === 1) throw new DOMException('trop tard', 'NotAllowedError');
+        },
+      });
+    });
+    await setUpHousehold(page);
+    await page.goto('./reglages');
+    await page.getByRole('button', { name: 'Faire une sauvegarde' }).click();
+    const drawer = page.getByRole('dialog', { name: 'Faire une sauvegarde' });
+    await drawer
+      .getByRole('textbox', { name: 'Code de la sauvegarde', exact: true })
+      .fill('48291375');
+    await drawer.getByRole('textbox', { name: 'Confirme le code', exact: true }).fill('48291375');
+    await drawer.getByRole('button', { name: 'Protéger et envoyer' }).click();
+    await expect(drawer.getByRole('heading', { name: 'Ta sauvegarde est prête' })).toBeFocused();
+    await drawer.getByRole('button', { name: 'Envoyer', exact: true }).click();
+    await expect(drawer.getByRole('heading', { name: 'Sauvegarde envoyée' })).toBeFocused();
+    const shared = await page.evaluate(() => (window as unknown as { shared: string[] }).shared);
+    expect(shared).toHaveLength(2);
+    expect(shared[0]).toMatch(/^kitzy-sauvegarde-.*-protegee\.json$/);
+    await page.keyboard.press('Escape');
+    await expect(drawer).toBeHidden();
+    await expect(page.getByRole('button', { name: 'Faire une sauvegarde' })).toBeFocused();
+  });
+
   test('aucune erreur axe sur les écrans de protection', async ({ page }) => {
     await setUpHousehold(page);
     await fillOwner(page, 'Famille Muller');
@@ -186,6 +232,26 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
       const results = await new AxeBuilder({ page }).analyze();
       expect(results.violations, `réglages ${scheme}`).toEqual([]);
     }
+    await page.getByRole('button', { name: 'Faire une sauvegarde' }).click();
+    const drawer = page.getByRole('dialog', { name: 'Faire une sauvegarde' });
+    await drawer.getByRole('button', { name: 'Protéger et télécharger' }).click();
+    for (const scheme of ['dark', 'light'] as const) {
+      await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(results.violations, `tiroir de sauvegarde ${scheme}`).toEqual([]);
+    }
+    await drawer
+      .getByRole('textbox', { name: 'Code de la sauvegarde', exact: true })
+      .fill('48291375');
+    await drawer.getByRole('textbox', { name: 'Confirme le code', exact: true }).fill('48291375');
+    await drawer.getByRole('button', { name: 'Protéger et télécharger' }).click();
+    await expect(drawer.getByRole('heading', { name: 'Sauvegarde téléchargée' })).toBeVisible();
+    for (const scheme of ['dark', 'light'] as const) {
+      await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(results.violations, `sauvegarde téléchargée ${scheme}`).toEqual([]);
+    }
+    await drawer.getByRole('button', { name: 'Terminé' }).click();
     await protectPlan(page);
     await page.reload();
     await page.goto('./plan/foyer');
