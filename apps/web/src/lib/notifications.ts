@@ -99,6 +99,7 @@ export async function sendTestNotification(body: string): Promise<boolean> {
     body,
     tag: 'kitzy-essai',
     icon: `${import.meta.env.BASE_URL}icons/icon-192.png`,
+    badge: `${import.meta.env.BASE_URL}icons/badge-96.png`,
     lang: 'fr',
     data: { url: './' },
   });

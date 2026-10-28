@@ -54,7 +54,11 @@ self.addEventListener('message', (event) => {
 });
 
 const ICON = 'icons/icon-192.png';
-const BADGE = 'icons/favicon-64.png';
+/**
+ * Barre d'état Android : seule la transparence compte, d'où une silhouette blanche de profil
+ * (source : assets/notification-badge.svg).
+ */
+const BADGE = 'icons/badge-96.png';
 
 /** Jamais la nuit : la vérification suivante prendra le relais le matin. */
 const QUIET_BEFORE = 8;
