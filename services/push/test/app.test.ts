@@ -8,12 +8,20 @@ import { openStore } from '../src/db.ts';
 const ORIGIN = 'https://kitzy.lu';
 const endpoint = 'https://fcm.googleapis.com/fcm/send/abc';
 const store = openStore(':memory:');
+const sent: string[] = [];
 let server: Server;
 let base = '';
 
 before(async () => {
   server = createServer(
-    createApp(store, { allowedOrigins: [ORIGIN], trustProxy: true, maxSubscriptions: 2 }),
+    createApp(
+      store,
+      { allowedOrigins: [ORIGIN], trustProxy: true, maxSubscriptions: 3 },
+      async (endpoint) => {
+        sent.push(endpoint);
+        return 'sent';
+      },
+    ),
   );
   await new Promise<void>((resolve) => server.listen(0, '127.0.0.1', resolve));
   base = `http://127.0.0.1:${(server.address() as AddressInfo).port}`;
@@ -86,7 +94,8 @@ test('plafond d’abonnements, mais un appareil déjà connu peut toujours se me
   const ip = { 'X-Real-IP': '10.0.0.3' };
   assert.equal((await subscribe(valid(`${endpoint}1`), ip)).status, 204);
   assert.equal((await subscribe(valid(`${endpoint}2`), ip)).status, 204);
-  assert.equal((await subscribe(valid(`${endpoint}3`), ip)).status, 503);
+  assert.equal((await subscribe(valid(`${endpoint}3`), ip)).status, 204);
+  assert.equal((await subscribe(valid(`${endpoint}4`), ip)).status, 503);
   assert.equal((await subscribe(valid(`${endpoint}1`), ip)).status, 204);
 });
 
@@ -96,4 +105,23 @@ test('débit limité par adresse', async () => {
   for (let i = 0; i < 31; i++) statuses.push((await subscribe('{', ip)).status);
   assert.equal(statuses.at(-1), 429);
   assert.equal((await subscribe('{', { 'X-Real-IP': '10.0.0.5' })).status, 400);
+});
+
+test('essai : uniquement l’appareil qui le demande, une fois par minute', async () => {
+  const headers = {
+    'Content-Type': 'application/json',
+    Origin: ORIGIN,
+    'X-Real-IP': '10.0.0.6',
+  };
+  const test = (e: string) =>
+    fetch(`${base}/test`, { method: 'POST', headers, body: JSON.stringify({ endpoint: e }) });
+  const mine = `${endpoint}1`;
+  assert.equal((await test(mine)).status, 204);
+  assert.deepEqual(sent, [mine]);
+  assert.equal((await test(mine)).status, 429);
+  assert.equal((await test('https://fcm.googleapis.com/fcm/send/inconnu')).status, 404);
+  assert.equal((await test('https://evil.example/x')).status, 400);
+  assert.deepEqual(sent, [mine]);
+  const del = await fetch(`${base}/test`, { method: 'DELETE', headers, body: '{}' });
+  assert.equal(del.status, 405);
 });

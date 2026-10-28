@@ -105,12 +105,14 @@ Then redeploy (any push to `main`, or re-run the last `deploy.yml` run). The set
 ### 8. Test on real devices
 
 1. Android (Chrome), an iPhone with Kitzy added to the home screen, and Firefox on a computer: Settings › Notifications › turn on.
-2. On the VPS, send a test push to the device that subscribed last:
+2. In the app, **Send a test notification** now goes the real way: the app asks the service (`POST /test`) to push to **this device only** (once a minute at most), and the phone shows “Hi, it's the hedgehog…”, even with the app closed right after tapping.
+3. From the VPS, an admin test push is also possible:
    ```bash
-   sudo /opt/kitzy-push/services/push/deploy/send-test.sh
+   sudo /opt/kitzy-push/services/push/deploy/send-test.sh         # the device updated most recently
+   sudo /opt/kitzy-push/services/push/deploy/send-test.sh --all   # every subscribed device
    ```
-   The phone shows a Kitzy notification within seconds (“You have reminders for your kit”, or the actual reminders of the day).
-3. Turn notifications off on the device: the subscription disappears from the database.
+   Once real people use Kitzy, “most recently updated” may be someone else's phone (each device refreshes its dates when the app opens): prefer the button in the app.
+4. Turn notifications off on the device: the subscription disappears from the database.
 
 ### Day to day
 

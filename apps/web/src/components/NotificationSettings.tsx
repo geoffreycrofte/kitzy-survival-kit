@@ -11,7 +11,7 @@ import {
   type EnableResult,
 } from '../lib/notifications';
 import { getNotifySettings } from '../data/load';
-import { subscribePush, unsubscribePush, webPushConfigured } from '../lib/webpush';
+import { subscribePush, testPush, unsubscribePush, webPushConfigured } from '../lib/webpush';
 
 /** `push` : abonné au service de rappel, prévenu même app fermée (iPhone compris). */
 type State = EnableResult | 'push' | 'off' | 'loading';
@@ -107,7 +107,11 @@ export function NotificationSettings({ reminders }: { reminders: Reminder[] }) {
               type="button"
               className="button button--ghost"
               onClick={async () => {
-                const ok = await sendTestNotification(t('notify.testBody'));
+                // Abonné au service : l'essai fait le vrai trajet, comme un rappel app fermée.
+                const ok =
+                  state === 'push'
+                    ? await testPush()
+                    : await sendTestNotification(t('notify.testBody'));
                 announce(t(ok ? 'notify.testSent' : 'notify.testFailed'));
               }}
             >

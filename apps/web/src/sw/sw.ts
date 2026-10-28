@@ -26,6 +26,7 @@ import {
   getNotifySettings,
   loadAll,
   remindersFor,
+  setMeta,
   updateNotifySettings,
 } from '../data/load';
 import {
@@ -115,11 +116,19 @@ self.addEventListener('push', (event) => {
     (async () => {
       let locale: Locale = 'fr';
       let message: { title: string; body: string } | null = null;
+      let tag = 'kitzy-rappels';
       try {
         locale = await storedLocale();
+        // Essai demandé depuis les réglages il y a moins de deux minutes.
+        const test = await getMeta<number>('pushTest', 0);
+        if (Date.now() - test < 2 * 60 * 1000) {
+          await setMeta('pushTest', 0);
+          message = { title: 'Kitzy', body: messagesFor(locale).notify.testBody };
+          tag = 'kitzy-essai';
+        }
         const today = todayLocal();
         const data = await loadAll();
-        if (data.household) {
+        if (!message && data.household) {
           message = digest(
             dueOn(remindersFor(data, today, locale), today),
             today,
@@ -132,7 +141,7 @@ self.addEventListener('push', (event) => {
       const notify = messagesFor(locale).system.notify;
       await self.registration.showNotification(message?.title ?? 'Kitzy', {
         body: message?.body ?? notify.pushFallback,
-        tag: 'kitzy-rappels',
+        tag,
         icon: ICON,
         badge: BADGE,
         lang: locale,

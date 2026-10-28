@@ -45,7 +45,7 @@ async function tick() {
   }
 }
 
-const server = createServer(createApp(store, config));
+const server = createServer(createApp(store, config, send));
 server.requestTimeout = 10_000;
 server.headersTimeout = 10_000;
 server.listen(config.port, config.host, () => {

@@ -1,6 +1,7 @@
 /**
  * Envoi d'essai, à lancer sur le VPS (jamais exposé sur Internet) :
- *   node scripts/send-test.ts          le dernier appareil abonné (celui qu'on vient d'activer)
+ *   node scripts/send-test.ts          l'appareil mis à jour le plus récemment (pas forcément le
+ *                                      tien une fois l'app utilisée : préfère le bouton d'essai de l'app)
  *   node scripts/send-test.ts --all    tous les appareils abonnés
  * Les variables de /etc/kitzy-push.env doivent être chargées (voir docs/maintaining.md).
  */
