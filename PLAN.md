@@ -680,7 +680,7 @@ Une sauvegarde importée ou un lien de partage peuvent venir de n'importe qui : 
 - **Faire une sauvegarde** (une seule action, pensée pour la personne et non pour le fichier) : le bouton ouvre un tiroir qui demande le code deux fois (bouton « Afficher » dans chaque champ). Le bouton principal dit ce qui va se passer, selon ce que l'appareil sait faire (détection de `navigator.canShare` avec un fichier) :
   - **« Protéger et envoyer »** : chiffre puis ouvre la feuille de partage du téléphone avec le fichier en pièce jointe (e-mail à soi-même, Google Drive, Dropbox, iCloud Drive via l'app Fichiers…). Si le navigateur juge le geste trop ancien après le chiffrement, ou si la feuille est refermée, le tiroir propose « Envoyer » (ou « Télécharger plutôt »).
   - **« Protéger et télécharger »** (la plupart des ordinateurs) : chiffre et télécharge, puis le tiroir explique où est le fichier (dossier Téléchargements, avec son nom), quoi en faire (le copier hors de l'appareil), qu'il faut garder le code, et comment restaurer.
-  - Choix proposé (à confirmer) : plus de sauvegarde sans code depuis les réglages ; l'écran de secours (données abîmées) garde son téléchargement direct.
+  - Choix validé : plus de sauvegarde sans code depuis les réglages ; l'écran de secours (données abîmées) garde son téléchargement direct.
 - **Cloud** (choix validé : pas de synchronisation automatique) : passe par la feuille de partage ci-dessus. Pour restaurer, le sélecteur de fichiers donne accès aux mêmes services. Une vraie synchronisation Drive / Dropbox demanderait des applications OAuth chez chaque fournisseur ; iCloud n'est pas accessible depuis une app web.
 - **Limite connue** : un code court reste devinable hors ligne par quelqu'un qui a le fichier ou l'appareil ; l'app conseille un code long.
 
@@ -1168,7 +1168,7 @@ Reste pour plus tard : recettes et défi saisonniers, « 1 an de rotation », fi
 ### Phase 5 : International et stores
 
 - [x] **Traductions EN, LB, DE, PT** de toute l'app : interface, catalogue, guide, gestes, recettes, quiz, simulation, conseils d'achat, notifications, fichier agenda. Le français reste la source ; un texte manquant retombe sur le français, et un test vérifie pour chaque langue que toutes les clés, tous les `{{…}}` et tous les contenus sont là
-- [ ] Relecture native des quatre langues (traductions faites par l'IA ; le luxembourgeois en priorité)
+- [ ] Relecture native des quatre langues (traductions faites par l'IA) : au fil des retours des utilisateurs, pas de relecture planifiée
 - [ ] App **Expo** (`apps/mobile`) branchée sur `core` : SQLite, notifications locales, scan
 - [ ] Pot à pourboires en achat intégré (ou lien masqué)
 - [ ] EAS Build et Submit (Google Play, App Store)
