@@ -982,6 +982,13 @@ export const fr = {
     privacy:
       'Kitzy ne sait pas ce que tu achètes. Le lien t’emmène sur le site du marchand, qui applique ses propres règles de confidentialité et ses cookies.',
     privacyLink: 'Lire la politique de confidentialité',
+    aiTitle: 'Kitzy et l’intelligence artificielle',
+    ai: [
+      'Le code de Kitzy a été écrit avec l’aide de Claude Code, l’assistant de programmation d’Anthropic. Chaque modification est relue, testée puis validée par une personne avant d’être publiée.',
+      'Les traductions en anglais, allemand, luxembourgeois et portugais ont été faites avec Claude Code à partir du texte français. Si tu repères une erreur, signale-la : elle sera corrigée.',
+      'Les illustrations, dont Kitzy le hérisson, ont été créées avec Perplexity, à l’aide d’un modèle d’image GPT d’OpenAI.',
+      'Kitzy n’utilise aucune intelligence artificielle pendant que tu t’en sers : rien de ce que tu saisis n’est envoyé à un service d’IA.',
+    ],
   },
   privacy: {
     title: 'Confidentialité',

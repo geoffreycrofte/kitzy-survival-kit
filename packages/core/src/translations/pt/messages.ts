@@ -979,6 +979,13 @@ export const messages: Messages = {
     privacy:
       'O Kitzy não sabe o que compras. A ligação leva-te ao site do comerciante, que aplica as suas próprias regras de privacidade e os seus cookies.',
     privacyLink: 'Ler a política de privacidade',
+    aiTitle: 'O Kitzy e a inteligência artificial',
+    ai: [
+      'O código do Kitzy foi escrito com a ajuda do Claude Code, o assistente de programação da Anthropic. Cada alteração é revista, testada e aprovada por uma pessoa antes de ser publicada.',
+      'As traduções para inglês, alemão, luxemburguês e português foram feitas com o Claude Code a partir do texto francês. Se encontrares um erro, comunica-o: será corrigido.',
+      'As ilustrações, incluindo o Kitzy, o ouriço, foram criadas com o Perplexity, com um modelo de imagem GPT da OpenAI.',
+      'O Kitzy não usa inteligência artificial enquanto o utilizas: nada do que escreves é enviado para um serviço de IA.',
+    ],
   },
   privacy: {
     title: 'Privacidade',
