@@ -569,19 +569,19 @@ Le MVP utilise les couches 1, 2 et 3. Conséquences assumées :
 - **Android/Chrome** : Periodic Background Sync, si l'app est installée.
 - On mesure le besoin (retours utilisateurs) avant d'ajouter le serveur.
 
-### 6.4 Service Web Push sur le VPS (code prêt, à déployer)
+### 6.4 Service Web Push sur le VPS (en service depuis octobre 2026)
 
-Le service est écrit : `services/push` (dans l'espace de travail pnpm, testé par le CI). Il reste à le déployer (guide pas à pas : `docs/maintaining.md`, section « Web Push service »).
+Le service est écrit : `services/push` (dans l'espace de travail pnpm, testé par le CI). Déployé le 28 octobre 2026 sur `push.kitzy.lu` et testé de bout en bout (envoi d'essai reçu sur téléphone, app fermée). Guide pas à pas : `docs/maintaining.md`, section « Web Push service ».
 
 - **Sans dépendance** : Node 22.18 ou plus récent seulement (`node:http`, `node:sqlite`, `node:crypto`). Rien à installer avec npm sur le VPS ; mise à jour par `git pull` puis redémarrage.
 - **Push vide** : le service n'envoie aucun contenu, donc rien à chiffrer (RFC 8291), seulement une signature VAPID (RFC 8292, jeton ES256). Le service worker se réveille, lit la base de l'appareil et écrit le rappel dans la langue choisie.
 - **Données** : adresse d'abonnement, dates d'alerte, fuseau horaire. Ni les clés de l'abonnement, ni les identifiants envoyés par l'app, ni adresse IP (journaux : des nombres seulement).
-- **API** : `GET /health`, `POST /subscribe` `{ subscription, schedule: [{ id, date }], timezone }` (remplace le calendrier de l'appareil), `DELETE /subscribe` `{ endpoint }`.
+- **API** : `GET /health`, `POST /subscribe` `{ subscription, schedule: [{ id, date }], timezone }` (remplace le calendrier de l'appareil), `DELETE /subscribe` `{ endpoint }`, `POST /test` `{ endpoint }` (push d'essai immédiat vers cet appareil seul, une fois par minute : le bouton « Envoyer une notification d'essai » de l'app passe par là quand le service est actif).
 - **Protections** : écriture réservée à l'origine de l'app (CORS, en-tête Origin exigé) ; corps JSON de 32 Ko au plus, 500 dates au plus ; seuls les services push des navigateurs sont acceptés comme adresses (Google, Apple, Mozilla, Microsoft), pour ne pas servir de relais ; 30 requêtes par adresse et par 10 minutes ; plafond de 50 000 abonnements (un appareil connu peut toujours se mettre à jour).
 - **Envoi** : un tour tous les quarts d'heure ; une alerte part le jour J à partir de 9 h dans le fuseau de l'appareil, une seule fois. 404/410 : abonnement supprimé ; 429/5xx : réessayé au tour suivant ; alerte d'un jour passé (service arrêté) : abandonnée, l'app la montre à l'ouverture.
 - **Ménage** : un abonnement sans alerte à venir et sans nouvelles depuis six mois est supprimé.
 - **Côté app** : le service worker affiche toujours une notification à la réception (les navigateurs coupent les abonnements « silencieux »), dans la langue choisie ; `pushsubscriptionchange` réabonne l'appareil et renvoie le calendrier ; le réglage indique « prévenu vers 9 h, même app fermée » et, sur iPhone non installé, explique l'ajout à l'écran d'accueil ; la politique de confidentialité décrit le service dès que les variables sont fournies au build.
-- **Déploiement sur le VPS (OVH, nginx + WordOps)** : `push.kitzy.lu` en A/AAAA ; utilisateur système `kitzy` ; code en lecture seule dans `/opt/kitzy-push` (clone partiel du dépôt) ; base dans `/var/lib/kitzy-push` ; unité systemd durcie (`deploy/kitzy-push.service`) ; clés et réglages dans `/etc/kitzy-push.env` (root, 600) ; site proxy WordOps avec Let's Encrypt, `X-Real-IP` transmis ; contact VAPID `mailto:hello@kitzy.lu`.
+- **Déploiement sur le VPS (OVH, nginx + WordOps)** : `push.kitzy.lu` en A/AAAA ; utilisateur système `kitzy` ; code en lecture seule dans `/opt/kitzy-push` (clone partiel du dépôt) ; base dans `/var/lib/kitzy-push` ; unité systemd durcie (`deploy/kitzy-push.service`) ; clés et réglages dans `/etc/kitzy-push.env` (root, 600) ; site proxy WordOps avec Let's Encrypt, `X-Real-IP` transmis (via `proxy_params`), journal des visites nginx coupé (`access_log off`, erreurs graves seulement) pour ne garder aucune adresse IP ; contact VAPID `mailto:notifications@kitzy.lu`.
 - **Domaine** : `kitzy.lu` (en place). Un abonnement push est lié à l'adresse du site : ne plus la changer.
 - **Hébergement** : VPS OVH à Gravelines (France), mentionné dans la politique de confidentialité.
 - **Variables de dépôt** : `KITZY_PUSH_URL` (adresse du service) et `KITZY_VAPID_KEY` (clé **publique**). La clé privée ne quitte jamais le VPS.

@@ -100,3 +100,22 @@ export async function syncPush(reminders: readonly Reminder[]): Promise<void> {
   const settings = await getNotifySettings();
   if (settings.push) await subscribePush(reminders).catch(() => false);
 }
+
+/**
+ * Notification d'essai par le vrai chemin (service, puis service push du navigateur) : prouve
+ * que les rappels arriveront app fermée. Le push est vide ; une marque dans la base dit au
+ * service worker d'afficher le texte d'essai plutôt que les rappels du jour.
+ */
+export async function testPush(): Promise<boolean> {
+  if (!webPushConfigured) return false;
+  const reg = await navigator.serviceWorker.ready;
+  const subscription = await reg.pushManager.getSubscription();
+  if (!subscription) return false;
+  await setMeta('pushTest', Date.now());
+  const response = await fetch(`${PUSH_URL}/test`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ endpoint: subscription.endpoint }),
+  }).catch(() => null);
+  return response?.ok ?? false;
+}

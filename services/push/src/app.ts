@@ -3,6 +3,7 @@
  *   GET    /health     le service tourne
  *   POST   /subscribe  abonner cet appareil ou mettre à jour ses dates
  *   DELETE /subscribe  désabonner
+ *   POST   /test       envoyer tout de suite un push d'essai à cet appareil, et à lui seul
  *
  * Seules les pages de Kitzy (CORS, en-tête Origin) peuvent écrire. Les corps sont petits et
  * validés, le débit est limité par adresse, et aucune adresse IP n'est enregistrée.
@@ -10,6 +11,7 @@
 import type { IncomingMessage, RequestListener, ServerResponse } from 'node:http';
 import type { Config } from './config.ts';
 import type { Store } from './db.ts';
+import type { Sender } from './send.ts';
 import { parseSubscribe, parseUnsubscribe } from './validate.ts';
 
 /** Un calendrier de 500 dates tient en moins de 20 Ko. */
@@ -17,6 +19,8 @@ const MAX_BODY = 32 * 1024;
 /** Par adresse : de quoi ouvrir l'app souvent, pas de quoi remplir la base. */
 const RATE_LIMIT = 30;
 const RATE_WINDOW = 10 * 60 * 1000;
+/** Un essai par appareil et par minute. */
+const TEST_COOLDOWN = 60 * 1000;
 
 class HttpError extends Error {
   status: number;
@@ -54,7 +58,7 @@ function readJson(req: IncomingMessage): Promise<unknown> {
   });
 }
 
-function send(res: ServerResponse, status: number, body?: unknown) {
+function reply(res: ServerResponse, status: number, body?: unknown) {
   res.statusCode = status;
   if (body === undefined) return res.end();
   res.setHeader('Content-Type', 'application/json; charset=utf-8');
@@ -64,9 +68,11 @@ function send(res: ServerResponse, status: number, body?: unknown) {
 export function createApp(
   store: Store,
   config: Pick<Config, 'allowedOrigins' | 'trustProxy' | 'maxSubscriptions'>,
+  send: Sender | null = null,
   now: () => number = Date.now,
 ): RequestListener {
   const hits = new Map<string, { count: number; reset: number }>();
+  const tested = new Map<string, number>();
 
   const limited = (req: IncomingMessage): boolean => {
     const forwarded = config.trustProxy ? req.headers['x-real-ip'] : undefined;
@@ -89,51 +95,67 @@ export function createApp(
     res.setHeader('Cache-Control', 'no-store');
     const path = (req.url ?? '/').split('?')[0];
 
-    if (path === '/health' && req.method === 'GET') return send(res, 200, { ok: true });
-    if (path !== '/subscribe') return send(res, 404);
+    if (path === '/health' && req.method === 'GET') return reply(res, 200, { ok: true });
+    if (path !== '/subscribe' && path !== '/test') return reply(res, 404);
 
     // Seules les pages de Kitzy écrivent : un navigateur envoie toujours Origin en CORS.
     const origin = req.headers.origin;
-    if (!origin || !config.allowedOrigins.includes(origin)) return send(res, 403);
+    if (!origin || !config.allowedOrigins.includes(origin)) return reply(res, 403);
     res.setHeader('Access-Control-Allow-Origin', origin);
     res.setHeader('Vary', 'Origin');
 
     if (req.method === 'OPTIONS') {
-      res.setHeader('Access-Control-Allow-Methods', 'POST, DELETE');
+      res.setHeader('Access-Control-Allow-Methods', path === '/test' ? 'POST' : 'POST, DELETE');
       res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
       res.setHeader('Access-Control-Max-Age', '86400');
-      return send(res, 204);
+      return reply(res, 204);
     }
-    if (req.method !== 'POST' && req.method !== 'DELETE') {
-      res.setHeader('Allow', 'POST, DELETE, OPTIONS');
-      return send(res, 405);
+    if (req.method !== 'POST' && (req.method !== 'DELETE' || path === '/test')) {
+      res.setHeader('Allow', path === '/test' ? 'POST, OPTIONS' : 'POST, DELETE, OPTIONS');
+      return reply(res, 405);
     }
     if (limited(req)) {
       res.setHeader('Retry-After', String(RATE_WINDOW / 1000));
-      return send(res, 429);
+      return reply(res, 429);
     }
 
     readJson(req)
-      .then((body) => {
+      .then(async (body) => {
+        if (path === '/test') {
+          // L'adresse d'abonnement n'est connue que du navigateur qui l'a créée :
+          // seul cet appareil peut demander un essai pour lui-même.
+          const endpoint = parseUnsubscribe(body);
+          if (!endpoint || !send) return reply(res, 400);
+          if (!store.has(endpoint)) return reply(res, 404);
+          const last = tested.get(endpoint) ?? 0;
+          if (now() - last < TEST_COOLDOWN) return reply(res, 429);
+          tested.set(endpoint, now());
+          if (tested.size > 10_000) {
+            for (const [key, at] of tested) if (now() - at >= TEST_COOLDOWN) tested.delete(key);
+          }
+          const result = await send(endpoint);
+          if (result === 'gone') store.remove(endpoint);
+          return reply(res, result === 'sent' ? 204 : result === 'gone' ? 410 : 502);
+        }
         if (req.method === 'DELETE') {
           const endpoint = parseUnsubscribe(body);
-          if (!endpoint) return send(res, 400);
+          if (!endpoint) return reply(res, 400);
           store.remove(endpoint);
-          return send(res, 204);
+          return reply(res, 204);
         }
         const request = parseSubscribe(body);
-        if (!request) return send(res, 400);
+        if (!request) return reply(res, 400);
         if (!store.has(request.endpoint) && store.count() >= config.maxSubscriptions) {
-          return send(res, 503);
+          return reply(res, 503);
         }
         store.upsert(request.endpoint, request.timezone, request.dates, now());
-        return send(res, 204);
+        return reply(res, 204);
       })
       .catch((error: unknown) => {
         if (res.headersSent) return;
-        if (error instanceof HttpError) return send(res, error.status);
+        if (error instanceof HttpError) return reply(res, error.status);
         console.error('Erreur interne :', error instanceof Error ? error.message : error);
-        send(res, 500);
+        reply(res, 500);
       });
   };
 }

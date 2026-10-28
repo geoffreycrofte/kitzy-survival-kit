@@ -3,7 +3,7 @@ import { createPublicKey, verify } from 'node:crypto';
 import { test } from 'node:test';
 import { generateVapidKeys, vapidAuthorizer } from '../src/vapid.ts';
 
-const subject = 'mailto:hello@kitzy.lu';
+const subject = 'mailto:notifications@kitzy.lu';
 
 test('les clés générées ont le format attendu par les navigateurs', () => {
   const keys = generateVapidKeys();

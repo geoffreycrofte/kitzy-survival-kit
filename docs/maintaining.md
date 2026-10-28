@@ -36,6 +36,8 @@ Add an **A** record `push.kitzy.lu` pointing to the VPS IPv4 address (and **AAAA
 
 The service needs Node 22.18 or later, and nothing else.
 
+Check first: `node -v` and `readlink -f "$(which node)"`. If Node 22.18+ is already installed system-wide (`/usr/bin/node`, as on the current VPS), skip this. Otherwise:
+
 ```bash
 curl -fsSL https://deb.nodesource.com/setup_24.x | sudo -E bash -
 sudo apt-get install -y nodejs
@@ -60,7 +62,7 @@ sudo install -m 600 -o root -g root /opt/kitzy-push/services/push/deploy/env.exa
 sudo nano /etc/kitzy-push.env   # paste the two key lines, check VAPID_SUBJECT and ALLOWED_ORIGIN
 ```
 
-The **private** key stays in `/etc/kitzy-push.env` and nowhere else: not in the repository, not in GitHub. Keep a copy in your password manager: generating new keys later unsubscribes every device. `VAPID_SUBJECT` must be a working address (`mailto:hello@kitzy.lu`): it is how Google, Apple or Mozilla would reach you about a problem.
+The **private** key stays in `/etc/kitzy-push.env` and nowhere else: not in the repository, not in GitHub. Keep a copy in your password manager: generating new keys later unsubscribes every device. `VAPID_SUBJECT` must be a working address (`mailto:notifications@kitzy.lu`): it is how Google, Apple or Mozilla would reach you about a problem.
 
 ### 5. systemd
 
@@ -80,7 +82,12 @@ Create a reverse-proxy site with a Let's Encrypt certificate (check the exact op
 sudo wo site create push.kitzy.lu --proxy=127.0.0.1:8787 --letsencrypt
 ```
 
-Then make sure nginx passes the visitor's address, which the per-address rate limit relies on: the generated vhost (`/etc/nginx/sites-available/push.kitzy.lu`, or the included proxy config) must contain `proxy_set_header X-Real-IP $remote_addr;` in its `location /`. Add it if missing, then `sudo nginx -t && sudo systemctl reload nginx`.
+Then check the generated vhost (`/etc/nginx/sites-available/push.kitzy.lu`):
+
+- **Visitor address**: the per-address rate limit needs `proxy_set_header X-Real-IP $remote_addr;`. WordOps 3.22 already has it through `include proxy_params;` in `location /` (check with `grep -rn X-Real-IP /etc/nginx/`).
+- **No IP addresses kept**, as the privacy policy promises: replace the `access_log …;` line with `access_log off;`, and add `crit` at the end of the `error_log …;` line so only serious errors are logged. Then delete the log written so far: `sudo rm -f /var/log/nginx/push.kitzy.lu.access.log*`.
+
+Apply with `sudo nginx -t && sudo systemctl reload nginx`.
 
 Check from your own computer: `curl -s https://push.kitzy.lu/health`.
 
@@ -98,12 +105,14 @@ Then redeploy (any push to `main`, or re-run the last `deploy.yml` run). The set
 ### 8. Test on real devices
 
 1. Android (Chrome), an iPhone with Kitzy added to the home screen, and Firefox on a computer: Settings › Notifications › turn on.
-2. On the VPS, send a test push to the device that subscribed last:
+2. In the app, **Send a test notification** now goes the real way: the app asks the service (`POST /test`) to push to **this device only** (once a minute at most), and the phone shows “Hi, it's the hedgehog…”, even with the app closed right after tapping.
+3. From the VPS, an admin test push is also possible:
    ```bash
-   sudo /opt/kitzy-push/services/push/deploy/send-test.sh
+   sudo /opt/kitzy-push/services/push/deploy/send-test.sh         # the device updated most recently
+   sudo /opt/kitzy-push/services/push/deploy/send-test.sh --all   # every subscribed device
    ```
-   The phone shows a Kitzy notification within seconds (“You have reminders for your kit”, or the actual reminders of the day).
-3. Turn notifications off on the device: the subscription disappears from the database.
+   Once real people use Kitzy, “most recently updated” may be someone else's phone (each device refreshes its dates when the app opens): prefer the button in the app.
+4. Turn notifications off on the device: the subscription disappears from the database.
 
 ### Day to day
 
