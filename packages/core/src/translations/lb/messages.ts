@@ -987,6 +987,13 @@ export const messages: Messages = {
     privacy:
       'Kitzy weess net, wat s de kafs. De Link bréngt dech op de Site vum Händler, deen seng eegen Dateschutzreegelen a Cookien applizéiert.',
     privacyLink: 'Dateschutzerklärung liesen',
+    aiTitle: 'Kitzy an d’kënschtlech Intelligenz',
+    ai: [
+      'De Code vu Kitzy gouf mat der Hëllef vu Claude Code geschriwwen, dem Programméierassistent vun Anthropic. All Ännerung gëtt vun enger Persoun nogekuckt, getest a fräigi, ier se publizéiert gëtt.',
+      'D’Iwwersetzungen op Englesch, Däitsch, Lëtzebuergesch a Portugisesch goufe mat Claude Code aus dem franséischen Text gemaach. Wann s de e Feeler fënns, mell en: e gëtt verbessert.',
+      'D’Illustratiounen, dorënner Kitzy den Igel, goufe mat Perplexity gemaach, mat engem GPT-Bildmodell vun OpenAI.',
+      'Kitzy benotzt keng kënschtlech Intelligenz, während s du et benotz: näischt vun deem, wat s de agëss, gëtt un en KI-Service geschéckt.',
+    ],
   },
   privacy: {
     title: 'Dateschutz',

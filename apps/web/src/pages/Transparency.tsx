@@ -37,6 +37,16 @@ export function Transparency() {
         </h2>
         <p>{t('buy.amazon')}</p>
       </section>
+      <section className="prose-section" aria-labelledby="tr-ai">
+        <h2 id="tr-ai" className="section-title">
+          {t('transparency.aiTitle')}
+        </h2>
+        <ul className="prose-list">
+          {list('transparency.ai').map((item) => (
+            <li key={item}>{item}</li>
+          ))}
+        </ul>
+      </section>
       <section className="prose-section" aria-labelledby="tr-privacy">
         <h2 id="tr-privacy" className="section-title">
           {t('transparency.privacyTitle')}

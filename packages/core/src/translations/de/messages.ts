@@ -990,6 +990,13 @@ export const messages: Messages = {
     privacy:
       'Kitzy weiß nicht, was du kaufst. Der Link bringt dich auf die Website des Händlers, für die dessen eigene Datenschutzregeln und Cookies gelten.',
     privacyLink: 'Datenschutzerklärung lesen',
+    aiTitle: 'Kitzy und künstliche Intelligenz',
+    ai: [
+      'Der Code von Kitzy wurde mit Hilfe von Claude Code geschrieben, dem Programmierassistenten von Anthropic. Jede Änderung wird von einer Person geprüft, getestet und freigegeben, bevor sie veröffentlicht wird.',
+      'Die Übersetzungen ins Englische, Deutsche, Luxemburgische und Portugiesische wurden mit Claude Code aus dem französischen Text erstellt. Wenn dir ein Fehler auffällt, melde ihn: Er wird korrigiert.',
+      'Die Illustrationen, darunter Kitzy der Igel, wurden mit Perplexity erstellt, mit einem GPT-Bildmodell von OpenAI.',
+      'Kitzy nutzt keine künstliche Intelligenz, während du es verwendest: Nichts von dem, was du eingibst, wird an einen KI-Dienst gesendet.',
+    ],
   },
   privacy: {
     title: 'Datenschutz',

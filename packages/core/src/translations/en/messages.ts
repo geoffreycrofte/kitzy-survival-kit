@@ -970,6 +970,13 @@ export const messages: Messages = {
     privacy:
       'Kitzy doesn’t know what you buy. The link takes you to the retailer’s website, which applies its own privacy rules and cookies.',
     privacyLink: 'Read the privacy policy',
+    aiTitle: 'Kitzy and artificial intelligence',
+    ai: [
+      'Kitzy’s code was written with the help of Claude Code, Anthropic’s coding assistant. Every change is reviewed, tested and approved by a person before it’s published.',
+      'The English, German, Luxembourgish and Portuguese translations were made with Claude Code from the French text. If you spot a mistake, please report it and it will be fixed.',
+      'The illustrations, including Kitzy the hedgehog, were created with Perplexity, using an OpenAI GPT image model.',
+      'Kitzy uses no artificial intelligence while you use it: nothing you enter is sent to an AI service.',
+    ],
   },
   privacy: {
     title: 'Privacy',
