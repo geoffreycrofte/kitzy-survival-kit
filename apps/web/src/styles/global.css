@@ -3389,6 +3389,100 @@ html[data-motion='full'] .menu::backdrop {
   font-size: 1.125rem;
 }
 
+/* Tiroir « Faire une sauvegarde » : pas de geste de glisser, juste un en-tête qui reste en place. */
+.drawer__bar {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  margin: 0 -20px;
+  padding: 20px 20px 12px;
+  background: var(--kz-bg);
+}
+
+.backup__form .field,
+.backup__form .code-field {
+  max-width: none;
+}
+
+.backup__action {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+/* Code + « Afficher » : le bouton est posé dans le champ, à droite. */
+.code-field {
+  position: relative;
+  align-self: stretch;
+  max-width: 24rem;
+}
+
+.code-field .input {
+  padding-right: 7.5rem;
+}
+
+.code-field__show {
+  position: absolute;
+  inset: 4px 4px 4px auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--kz-text);
+  font: 600 0.9375rem / 1 var(--kz-font-body);
+  cursor: pointer;
+}
+
+.code-field__show svg {
+  width: 20px;
+  height: 20px;
+}
+
+.code-field__show[aria-pressed='true'] {
+  background: var(--kz-surface);
+}
+
+.backup__result {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.backup__result p {
+  margin: 0;
+}
+
+.backup__result-title {
+  margin: 0;
+  font-family: var(--kz-font-display);
+  font-size: 1.375rem;
+}
+
+.backup__result-title:focus {
+  outline: none;
+}
+
+.backup__step {
+  margin: 8px 0 0;
+  font-size: 1rem;
+}
+
+.backup__result .button {
+  margin-top: 8px;
+}
+
+@media (min-width: 960px) {
+  .drawer__bar {
+    margin: 0 -28px;
+    padding: 28px 28px 12px;
+  }
+}
+
 /*
  * En-tête de page avec le hérisson : le texte à gauche, Kitzy à droite, posé sur la ligne
  * du bas. Une seule règle pour toutes les pages de contenu (guide, plan). Les pages

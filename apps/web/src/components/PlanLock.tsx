@@ -13,6 +13,7 @@ import {
 import { announce } from '../lib/announce';
 import { passkeySupported } from '../lib/passkey';
 import { lockPlan } from '../lib/planKey';
+import { EyeIcon, EyeOffIcon } from './Icons';
 import { Loading } from './Loading';
 
 /** Champ de code : masqué, étiquette visible, aide et erreur liées (RAWeb 11.1, 11.2, 11.10). */
@@ -23,6 +24,7 @@ export function CodeField({
   hint,
   error,
   autoComplete = 'off',
+  revealable = false,
 }: {
   label: string;
   value: string;
@@ -30,12 +32,32 @@ export function CodeField({
   hint?: string;
   error?: string;
   autoComplete?: string;
+  /** Un bouton « Afficher » laisse relire ce qu'on a tapé. */
+  revealable?: boolean;
 }) {
+  const { t } = useTranslation();
   const id = useId();
+  const [shown, setShown] = useState(false);
   const described = [hint && `${id}-hint`, error && `${id}-error`].filter(Boolean).join(' ');
+  const input = (
+    <input
+      id={id}
+      className="input"
+      type={shown ? 'text' : 'password'}
+      value={value}
+      maxLength={200}
+      autoComplete={autoComplete}
+      autoCapitalize="off"
+      autoCorrect="off"
+      spellCheck={false}
+      aria-invalid={error ? true : undefined}
+      aria-describedby={described || undefined}
+      onChange={(e) => onChange(e.target.value)}
+    />
+  );
   return (
     <div className="field">
-      <label htmlFor={id} className="field__label">
+      <label id={`${id}-label`} htmlFor={id} className="field__label">
         {label}
       </label>
       {hint && (
@@ -43,17 +65,25 @@ export function CodeField({
           {hint}
         </p>
       )}
-      <input
-        id={id}
-        className="input"
-        type="password"
-        value={value}
-        maxLength={200}
-        autoComplete={autoComplete}
-        aria-invalid={error ? true : undefined}
-        aria-describedby={described || undefined}
-        onChange={(e) => onChange(e.target.value)}
-      />
+      {revealable ? (
+        <div className="code-field">
+          {input}
+          {/* Nom : « Afficher » suivi du nom du champ ; l'état est porté par aria-pressed. */}
+          <button
+            type="button"
+            id={`${id}-show`}
+            className="code-field__show"
+            aria-pressed={shown}
+            aria-labelledby={`${id}-show ${id}-label`}
+            onClick={() => setShown((s) => !s)}
+          >
+            {shown ? <EyeOffIcon /> : <EyeIcon />}
+            <span>{t('backup.show')}</span>
+          </button>
+        </div>
+      ) : (
+        input
+      )}
       {error && (
         <p id={`${id}-error`} className="field__error">
           {error}

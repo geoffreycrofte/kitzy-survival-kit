@@ -1144,21 +1144,32 @@ export const messages: Messages = {
     unlocked: 'Plano aberto.',
   },
   backup: {
-    protect: 'Proteger a cópia de segurança com um código',
-    protectHelp:
-      'Recomendado: a cópia contém o teu plano de emergência. Para a restaurar, neste telemóvel ou noutro, vais precisar deste código, não da tua impressão digital.',
-    plainHelp:
-      'Sem código, qualquer pessoa que encontre o ficheiro pode ler o teu plano de emergência.',
+    make: 'Fazer uma cópia de segurança',
+    intro:
+      'A cópia contém todo o Kitzy, incluindo o teu plano de emergência. Escolhe um código para a proteger: vais precisar dele para a restaurar, neste telemóvel ou noutro.',
+    show: 'Mostrar',
+    protectShare: 'Proteger e enviar',
+    protectShareHint:
+      'Depois escolhes para onde a enviar: um e-mail para ti, Google Drive, iCloud Drive, Dropbox…',
+    protectDownload: 'Proteger e descarregar',
+    protectDownloadHint: 'O ficheiro será guardado neste dispositivo.',
+    working: 'A proteger a cópia…',
+    readyTitle: 'A tua cópia está pronta',
+    readyText: 'Está protegida pelo teu código. Só falta escolher para onde a enviar.',
+    send: 'Enviar',
+    downloadInstead: 'Descarregar em vez disso',
+    sentTitle: 'Cópia enviada',
+    sentText: 'Confirma que chegou ao sítio para onde a enviaste.',
+    downloadedTitle: 'Cópia descarregada',
+    whereTitle: 'Onde está o ficheiro?',
+    where: 'Na pasta Transferências deste dispositivo, com o nome «{{name}}».',
+    nextTitle: 'E agora?',
+    next: 'Copia-o para outro sítio além deste dispositivo: pen USB, nuvem, e-mail para ti. Se o dispositivo se perder ou avariar, é essa cópia que te salva.',
+    keepCode:
+      'Guarda o teu código em lugar seguro: sem ele, ninguém consegue abrir a cópia, nem tu.',
+    restoreHow: 'Para a restaurar: {{settings}}, «{{data}}», depois «{{choose}}».',
     code: 'Código da cópia',
     codeHint: 'Pelo menos 8 caracteres. Pode ser diferente do teu código Kitzy.',
-    prepare: 'Preparar a cópia de segurança',
-    ready: 'Cópia pronta.',
-    readyProtected: 'Está protegida pelo teu código.',
-    readyPlain: 'Não está protegida por um código.',
-    saveTo: 'Guardar em…',
-    saveToHint:
-      'Abre a partilha do telemóvel: Google Drive, Dropbox, iCloud Drive (app Ficheiros), e-mail…',
-    download: 'Descarregar',
     done: 'Concluído',
     needsUnlock:
       'O teu plano está bloqueado: abre-o em «Proteger o meu plano», logo acima, para o incluir na cópia.',

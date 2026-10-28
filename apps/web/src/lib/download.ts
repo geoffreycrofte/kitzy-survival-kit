@@ -23,15 +23,28 @@ export function canShareFile(): boolean {
   }
 }
 
-/** Ouvre la feuille de partage avec le fichier. `false` si la personne a annulé. */
-export async function shareFile(filename: string, content: string, type: string): Promise<boolean> {
+/**
+ * Ouvre la feuille de partage avec le fichier.
+ * - `shared` : envoyé ;
+ * - `cancelled` : la personne a refermé la feuille ;
+ * - `blocked` : le navigateur exige un geste plus récent (le chiffrement a pris trop de temps),
+ *   il suffit de toucher à nouveau un bouton ;
+ * - `downloaded` : le partage a échoué, le fichier a été téléchargé à la place.
+ */
+export type ShareOutcome = 'shared' | 'cancelled' | 'blocked' | 'downloaded';
+
+export async function shareFile(
+  filename: string,
+  content: string,
+  type: string,
+): Promise<ShareOutcome> {
   try {
     await navigator.share({ files: [new File([content], filename, { type })], title: filename });
-    return true;
+    return 'shared';
   } catch (error) {
-    if (error instanceof DOMException && error.name === 'AbortError') return false;
-    // Partage refusé par le navigateur : on retombe sur le téléchargement.
+    if (error instanceof DOMException && error.name === 'AbortError') return 'cancelled';
+    if (error instanceof DOMException && error.name === 'NotAllowedError') return 'blocked';
     downloadFile(filename, content, type);
-    return true;
+    return 'downloaded';
   }
 }
