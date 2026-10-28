@@ -54,6 +54,31 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
   const { t } = useTranslation();
   const ref = useRef<HTMLDialogElement>(null);
   const { themePref } = usePreferences();
+
+  /* Ambiance : la pastille jaune glisse vers l'option choisie. Elle s'étire en route, dépasse de
+     4 px (toujours dans le cadre, quelle que soit la distance) et revient en place. */
+  const themeIndex = Math.max(
+    0,
+    themes.findIndex(([value]) => value === themePref),
+  );
+  const thumb = useRef<HTMLSpanElement>(null);
+  const previousTheme = useRef(themeIndex);
+  useEffect(() => {
+    const from = previousTheme.current;
+    previousTheme.current = themeIndex;
+    if (from === themeIndex || document.documentElement.dataset.motion !== 'full') return;
+    const at = (i: number, shift = 0) => `translateX(calc(${i} * (100% + 4px) + ${shift}px))`;
+    const way = Math.sign(themeIndex - from);
+    thumb.current?.animate(
+      [
+        { transform: `${at(from)} scaleX(1)` },
+        { transform: `${at(from + (themeIndex - from) * 0.75)} scaleX(1.14)`, offset: 0.45 },
+        { transform: `${at(themeIndex, 4 * way)} scaleX(0.97)`, offset: 0.75 },
+        { transform: `${at(themeIndex)} scaleX(1)` },
+      ],
+      { duration: 480, easing: 'ease-out' },
+    );
+  }, [themeIndex]);
   const data = useKitzy();
   const unlocked = data ? ACHIEVEMENTS.filter((a) => data.achievements[a.id]).length : 0;
 
@@ -167,6 +192,12 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
         <fieldset className="menu__theme menu__item" style={{ '--i': 0 } as CSSProperties}>
           <legend className="menu__label">{t('menu.theme')}</legend>
           <div className="segmented">
+            <span
+              ref={thumb}
+              className="segmented__thumb"
+              aria-hidden="true"
+              style={{ '--seg-i': themeIndex } as CSSProperties}
+            />
             {themes.map(([value, key, Icon]) => (
               <label key={value} className="segmented__option">
                 <input

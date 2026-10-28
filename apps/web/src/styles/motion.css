@@ -39,12 +39,26 @@ html[data-motion='full'] .icon-button {
     border-color 0.5s ease;
 }
 
-html[data-motion='full'] .button {
-  transition: transform 0.15s ease;
+/* Toucher : ce qu'on touche s'enfonce un peu, et sa lueur apparaît en douceur. */
+html[data-motion='full']
+  :where(.button, .icon-button, .menu__link, .dest, .segmented__option, .bottom-nav__link) {
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
 }
 
-html[data-motion='full'] .button:active {
-  transform: scale(0.97);
+html[data-motion='full']
+  :where(.button, .icon-button, .menu__link, .dest, .segmented__option, .bottom-nav__link):active {
+  transform: scale(0.96);
+}
+
+/* Ambiance (Auto, Veillée, Jour) : la pastille glisse (voir MainMenu) ; le texte change de
+   couleur en même temps. */
+html[data-motion='full'] .segmented__option {
+  transition:
+    color 0.3s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
 }
 
 /* Histoire d'accueil (foyer pas encore présenté), moins de 5 secondes, une fois par session :

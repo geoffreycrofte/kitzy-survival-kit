@@ -230,6 +230,21 @@ section:focus {
   font-weight: 600;
 }
 
+/* Toucher : une lueur de lanterne à la place du rectangle bleu de Chrome, comme dans l'app. */
+html {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:where(button, summary, .button):active {
+  box-shadow: 0 0 0 4px var(--kz-halo, rgb(244 184 96 / 0.28));
+}
+
+:where(a):not(.button):active {
+  border-radius: 4px;
+  background: var(--kz-halo, rgb(244 184 96 / 0.28));
+  box-shadow: 0 0 0 3px var(--kz-halo, rgb(244 184 96 / 0.28));
+}
+
 /* Texte sélectionné : la lanterne (jaune) sous l'encre du terrier (vert sombre), comme dans l'app. */
 ::selection {
   background: var(--kz-btn, #f4b860);
