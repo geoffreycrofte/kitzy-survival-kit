@@ -1028,7 +1028,7 @@ export const messages: Messages = {
     pushSection: {
       title: 'Notifications',
       where: 'On your device, and only dates on the reminder service',
-      text: 'Reminders are worked out and shown by your device. If you turn notifications on, Kitzy gives its reminder service (a server hosted by OVH) only the subscription address provided by your browser, the alert dates and your time zone: never an item name or what is in your kit. On those days, the service sends an empty message through your browser’s notification service (Google, Apple, Mozilla or Microsoft), and your device writes the reminder. This data is used for nothing else, with your consent: turning notifications off deletes it at once, and it is erased after six months without news from your device. No IP address is kept.',
+      text: 'Reminders are worked out and shown by your device. If you turn notifications on, Kitzy gives its reminder service (an OVH server located in Gravelines, France) only the subscription address provided by your browser, the alert dates and your time zone: never an item name or what is in your kit. On those days, the service sends an empty message through your browser’s notification service (Google, Apple, Mozilla or Microsoft), and your device writes the reminder. This data is used for nothing else, with your consent: turning notifications off deletes it at once, and it is erased after six months without news from your device. No IP address is kept.',
     },
     contact: 'A question or a comment?',
     contactLink: 'Write to us on the project’s GitHub page',

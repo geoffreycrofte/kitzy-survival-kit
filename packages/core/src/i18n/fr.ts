@@ -1040,7 +1040,7 @@ export const fr = {
     pushSection: {
       title: 'Notifications',
       where: 'Sur ton appareil, et seulement des dates sur le service de rappel',
-      text: 'Les rappels sont calculés et affichés par ton appareil. Si tu actives les notifications, Kitzy confie à son service de rappel (un serveur hébergé chez OVH) uniquement l’adresse d’abonnement fournie par ton navigateur, les dates d’alerte et ton fuseau horaire : jamais le nom d’un article ni le contenu de ton kit. Ces jours-là, le service envoie un message vide par le service de notifications de ton navigateur (Google, Apple, Mozilla ou Microsoft), et c’est ton appareil qui écrit le rappel. Ces données ne servent qu’à ça, avec ton accord : désactiver les notifications les supprime aussitôt, et elles sont effacées après six mois sans nouvelles de ton appareil. Aucune adresse IP n’est conservée.',
+      text: 'Les rappels sont calculés et affichés par ton appareil. Si tu actives les notifications, Kitzy confie à son service de rappel (un serveur OVH situé en France, à Gravelines) uniquement l’adresse d’abonnement fournie par ton navigateur, les dates d’alerte et ton fuseau horaire : jamais le nom d’un article ni le contenu de ton kit. Ces jours-là, le service envoie un message vide par le service de notifications de ton navigateur (Google, Apple, Mozilla ou Microsoft), et c’est ton appareil qui écrit le rappel. Ces données ne servent qu’à ça, avec ton accord : désactiver les notifications les supprime aussitôt, et elles sont effacées après six mois sans nouvelles de ton appareil. Aucune adresse IP n’est conservée.',
     },
     contact: 'Une question ou une remarque ?',
     contactLink: 'Écris-nous sur la page du projet sur GitHub',

@@ -1045,7 +1045,7 @@ export const messages: Messages = {
     pushSection: {
       title: 'Notifikatiounen',
       where: 'Op dengem Apparat, an nëmmen Datumer um Erënnerungsservice',
-      text: 'D’Erënnerunge ginn op dengem Apparat berechent an ugewisen. Wann s de d’Notifikatiounen aktivéiers, gëtt Kitzy sengem Erënnerungsservice (e Server bei OVH) nëmmen d’Abonnementsadress vun dengem Browser, d’Erënnerungsdatumer an deng Zäitzon: ni den Numm vun engem Artikel oder den Inhalt vun dengem Stock. Op deenen Deeg schéckt de Service e leere Message iwwer de Notifikatiounsservice vun dengem Browser (Google, Apple, Mozilla oder Microsoft), an dään Apparat schreift d’Erënnerung. Dës Donnéeë déngen nëmmen dozou, mat dengem Accord: d’Notifikatiounen ausschalten läscht se direkt, a no sechs Méint ouni Noriicht vun dengem Apparat gi se geläscht. Et gëtt keng IP-Adress gespäichert.',
+      text: 'D’Erënnerunge ginn op dengem Apparat berechent an ugewisen. Wann s de d’Notifikatiounen aktivéiers, gëtt Kitzy sengem Erënnerungsservice (en OVH-Server zu Gravelines a Frankräich) nëmmen d’Abonnementsadress vun dengem Browser, d’Erënnerungsdatumer an deng Zäitzon: ni den Numm vun engem Artikel oder den Inhalt vun dengem Stock. Op deenen Deeg schéckt de Service e leere Message iwwer de Notifikatiounsservice vun dengem Browser (Google, Apple, Mozilla oder Microsoft), an dään Apparat schreift d’Erënnerung. Dës Donnéeë déngen nëmmen dozou, mat dengem Accord: d’Notifikatiounen ausschalten läscht se direkt, a no sechs Méint ouni Noriicht vun dengem Apparat gi se geläscht. Et gëtt keng IP-Adress gespäichert.',
     },
     contact: 'Eng Fro oder eng Remarque?',
     contactLink: 'Schreif eis op der Projetssäit op GitHub',

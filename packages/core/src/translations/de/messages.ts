@@ -1048,7 +1048,7 @@ export const messages: Messages = {
     pushSection: {
       title: 'Benachrichtigungen',
       where: 'Auf deinem Gerät, und nur Daten beim Erinnerungsdienst',
-      text: 'Erinnerungen werden von deinem Gerät berechnet und angezeigt. Wenn du Benachrichtigungen aktivierst, gibt Kitzy seinem Erinnerungsdienst (ein Server bei OVH) nur die Abonnement-Adresse deines Browsers, die Erinnerungsdaten und deine Zeitzone weiter: nie den Namen eines Artikels oder den Inhalt deines Vorrats. An diesen Tagen sendet der Dienst eine leere Nachricht über den Benachrichtigungsdienst deines Browsers (Google, Apple, Mozilla oder Microsoft), und dein Gerät schreibt die Erinnerung. Diese Daten dienen nur dazu, mit deiner Einwilligung: Benachrichtigungen ausschalten löscht sie sofort, und nach sechs Monaten ohne Lebenszeichen deines Geräts werden sie gelöscht. Es wird keine IP-Adresse gespeichert.',
+      text: 'Erinnerungen werden von deinem Gerät berechnet und angezeigt. Wenn du Benachrichtigungen aktivierst, gibt Kitzy seinem Erinnerungsdienst (ein OVH-Server in Gravelines, Frankreich) nur die Abonnement-Adresse deines Browsers, die Erinnerungsdaten und deine Zeitzone weiter: nie den Namen eines Artikels oder den Inhalt deines Vorrats. An diesen Tagen sendet der Dienst eine leere Nachricht über den Benachrichtigungsdienst deines Browsers (Google, Apple, Mozilla oder Microsoft), und dein Gerät schreibt die Erinnerung. Diese Daten dienen nur dazu, mit deiner Einwilligung: Benachrichtigungen ausschalten löscht sie sofort, und nach sechs Monaten ohne Lebenszeichen deines Geräts werden sie gelöscht. Es wird keine IP-Adresse gespeichert.',
     },
     contact: 'Eine Frage oder Anmerkung?',
     contactLink: 'Schreib uns auf der Projektseite auf GitHub',

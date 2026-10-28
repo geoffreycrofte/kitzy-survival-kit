@@ -1037,7 +1037,7 @@ export const messages: Messages = {
     pushSection: {
       title: 'Notificações',
       where: 'No teu dispositivo, e apenas datas no serviço de lembretes',
-      text: 'Os lembretes são calculados e mostrados pelo teu dispositivo. Se ativares as notificações, o Kitzy dá ao seu serviço de lembretes (um servidor alojado na OVH) apenas o endereço de subscrição fornecido pelo teu navegador, as datas de alerta e o teu fuso horário: nunca o nome de um artigo nem o conteúdo da tua reserva. Nesses dias, o serviço envia uma mensagem vazia através do serviço de notificações do teu navegador (Google, Apple, Mozilla ou Microsoft), e é o teu dispositivo que escreve o lembrete. Estes dados só servem para isso, com o teu consentimento: desativar as notificações apaga-os de imediato, e são apagados após seis meses sem notícias do teu dispositivo. Nenhum endereço IP é guardado.',
+      text: 'Os lembretes são calculados e mostrados pelo teu dispositivo. Se ativares as notificações, o Kitzy dá ao seu serviço de lembretes (um servidor da OVH em Gravelines, França) apenas o endereço de subscrição fornecido pelo teu navegador, as datas de alerta e o teu fuso horário: nunca o nome de um artigo nem o conteúdo da tua reserva. Nesses dias, o serviço envia uma mensagem vazia através do serviço de notificações do teu navegador (Google, Apple, Mozilla ou Microsoft), e é o teu dispositivo que escreve o lembrete. Estes dados só servem para isso, com o teu consentimento: desativar as notificações apaga-os de imediato, e são apagados após seis meses sem notícias do teu dispositivo. Nenhum endereço IP é guardado.',
     },
     contact: 'Uma pergunta ou um comentário?',
     contactLink: 'Escreve-nos na página do projeto no GitHub',

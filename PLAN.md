@@ -582,7 +582,8 @@ Le service est écrit : `services/push` (dans l'espace de travail pnpm, testé p
 - **Ménage** : un abonnement sans alerte à venir et sans nouvelles depuis six mois est supprimé.
 - **Côté app** : le service worker affiche toujours une notification à la réception (les navigateurs coupent les abonnements « silencieux »), dans la langue choisie ; `pushsubscriptionchange` réabonne l'appareil et renvoie le calendrier ; le réglage indique « prévenu vers 9 h, même app fermée » et, sur iPhone non installé, explique l'ajout à l'écran d'accueil ; la politique de confidentialité décrit le service dès que les variables sont fournies au build.
 - **Déploiement sur le VPS (OVH, nginx + WordOps)** : `push.kitzy.lu` en A/AAAA ; utilisateur système `kitzy` ; code en lecture seule dans `/opt/kitzy-push` (clone partiel du dépôt) ; base dans `/var/lib/kitzy-push` ; unité systemd durcie (`deploy/kitzy-push.service`) ; clés et réglages dans `/etc/kitzy-push.env` (root, 600) ; site proxy WordOps avec Let's Encrypt, `X-Real-IP` transmis ; contact VAPID `mailto:hello@kitzy.lu`.
-- **Prérequis** : le domaine `kitzy.lu` en place avant, car un abonnement push est lié à l'adresse du site.
+- **Domaine** : `kitzy.lu` (en place). Un abonnement push est lié à l'adresse du site : ne plus la changer.
+- **Hébergement** : VPS OVH à Gravelines (France), mentionné dans la politique de confidentialité.
 - **Variables de dépôt** : `KITZY_PUSH_URL` (adresse du service) et `KITZY_VAPID_KEY` (clé **publique**). La clé privée ne quitte jamais le VPS.
 
 ### 6.5 Règles de rappel par défaut

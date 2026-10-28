@@ -26,7 +26,7 @@ All are repository **variables** (not secrets), read by `deploy.yml`. When one i
 
 Lets Kitzy remind people when the app is closed, iPhone included (app added to the home screen, iOS 16.4 or later). The code and its design are in [`services/push`](../services/push). It only ever stores push subscription addresses, alert dates and time zones.
 
-**Do this after the custom domain is set up.** A push subscription is tied to the site's address, like the user data: moving the app afterwards would silently cut every subscription.
+A push subscription is tied to the site's address (`kitzy.lu`), like the user data: moving the app to another address would silently cut every subscription.
 
 ### 1. DNS (OVH)
 
