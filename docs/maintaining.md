@@ -4,7 +4,7 @@ Notes for the people who run the repository. Nothing here is secret: the build v
 
 ## Deployment
 
-Every push to `main` deploys to GitHub Pages (`deploy.yml` workflow). The published site holds the landing page at the root (`apps/web/landing`) and the app in `app/`; the installed app starts directly in `app/`.
+Every push to `main` deploys to GitHub Pages (`deploy.yml` workflow), once the CI run on that commit has passed: a red `main` is never published. To redeploy without waiting for CI, run `deploy.yml` by hand (Actions, « Run workflow »). The published site holds the landing page at the root (`apps/web/landing`) and the app in `app/`; the installed app starts directly in `app/`.
 
 One-time setup in the repository settings:
 
@@ -100,7 +100,7 @@ Firewall: only SSH, 80 and 443 open; port 8787 stays internal (`sudo ufw status`
 - `KITZY_PUSH_URL` = `https://push.kitzy.lu`
 - `KITZY_VAPID_KEY` = the **public** key
 
-Then redeploy (any push to `main`, or re-run the last `deploy.yml` run). The settings page now offers reminders when the app is closed, and the privacy page describes the service.
+Then redeploy (any push to `main`, or run `deploy.yml` by hand from the Actions tab). The settings page now offers reminders when the app is closed, and the privacy page describes the service.
 
 ### 8. Test on real devices
 
