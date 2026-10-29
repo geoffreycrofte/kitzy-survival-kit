@@ -1,8 +1,9 @@
 /**
- * Visuel LinkedIn du lancement (1080 × 1350) : les guides officiels « Lëtz prepare! » et l'accueil
- * de l'app dans un téléphone (capture faite sur le site construit, avec un foyer d'exemple).
+ * Visuels LinkedIn du lancement (1080 × 1350), en français et en anglais : les guides officiels
+ * « Lëtz prepare! » et l'accueil de l'app dans un téléphone (capture faite sur le site construit,
+ * dans la langue du visuel, avec un foyer d'exemple).
  *   pnpm build && pnpm linkedin-image  (PLAYWRIGHT_CHROMIUM_PATH pour un Chromium déjà installé)
- * Sortie : assets/social/kitzy-linkedin-lancement.png
+ * Sorties : assets/social/kitzy-linkedin-lancement.png et kitzy-linkedin-launch-en.png
  */
 import { spawn } from 'node:child_process';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
@@ -10,6 +11,7 @@ import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { chromium } from '@playwright/test';
+import { messagesFor } from '../../../packages/core/src/content';
 
 const web = resolve(import.meta.dirname, '..');
 const root = resolve(web, '../..');
@@ -17,10 +19,49 @@ const file = (path: string) => pathToFileURL(resolve(web, path)).href;
 const font = (name: string) => file(`node_modules/@fontsource/${name}`);
 const PORT = 4180;
 
-const dir = mkdtempSync(join(tmpdir(), 'kitzy-linkedin-'));
-const phoneShot = join(dir, 'phone.png');
+type Version = {
+  locale: 'fr' | 'en';
+  browserLocale: string;
+  out: string;
+  title: string;
+  credit: string;
+  pitch: string;
+  points: string[];
+};
 
-// 1. kitzy.lu sur un téléphone, thème sombre.
+const VERSIONS: Version[] = [
+  {
+    locale: 'fr',
+    browserLocale: 'fr-LU',
+    out: 'kitzy-linkedin-lancement.png',
+    title: 'Vous avez reçu<br>ce guide&#8239;?',
+    credit: 'Les guides officiels « Lëtz prepare! », Luxembourg',
+    pitch: 'J’en ai fait une app gratuite.',
+    points: [
+      'Un kit calculé pour votre foyer',
+      'Des rappels avant chaque date',
+      'Votre plan d’urgence, protégé',
+      'Sans compte, hors connexion',
+    ],
+  },
+  {
+    locale: 'en',
+    browserLocale: 'en-LU',
+    out: 'kitzy-linkedin-launch-en.png',
+    title: 'Did you get<br>this guide?',
+    credit: 'The official “Lëtz prepare!” guides, Luxembourg',
+    pitch: 'I turned it into a free app.',
+    points: [
+      'A kit sized for your household',
+      'Reminders before every date',
+      'Your emergency plan, protected',
+      'No account, works offline',
+    ],
+  },
+];
+
+const dir = mkdtempSync(join(tmpdir(), 'kitzy-linkedin-'));
+
 const server = spawn(process.execPath, [resolve(web, 'scripts/serve-dist.mjs')], {
   env: { ...process.env, PORT: String(PORT) },
   stdio: 'ignore',
@@ -28,35 +69,36 @@ const server = spawn(process.execPath, [resolve(web, 'scripts/serve-dist.mjs')],
 const browser = await chromium.launch({
   executablePath: process.env.PLAYWRIGHT_CHROMIUM_PATH || undefined,
 });
-try {
-  await new Promise((r) => setTimeout(r, 600));
+
+/** L'accueil de l'app dans la langue du visuel, avec un foyer : 2 adultes, 1 enfant, 1 chat. */
+async function shootPhone(version: Version, path: string) {
+  const m = messagesFor(version.locale);
   const context = await browser.newContext({
     viewport: { width: 390, height: 844 },
     deviceScaleFactor: 3,
     colorScheme: 'dark',
     reducedMotion: 'reduce',
-    locale: 'fr-LU',
+    locale: version.browserLocale,
   });
   const phone = await context.newPage();
-  // L'accueil de l'app, avec un foyer : 2 adultes, 1 enfant, 1 chat.
   await phone.goto(`http://localhost:${PORT}/app/`, { waitUntil: 'networkidle' });
-  await phone.getByRole('link', { name: 'Présenter mon foyer' }).click();
-  await phone.getByRole('button', { name: 'Ajouter : Adultes' }).click();
-  await phone.getByRole('button', { name: 'Ajouter : Enfants' }).click();
-  await phone.getByRole('button', { name: 'Ajouter : Chats' }).click();
-  await phone.getByRole('button', { name: 'Enregistrer mon foyer' }).click();
-  await phone.getByRole('status').filter({ hasText: 'Foyer enregistré.' }).waitFor();
+  await phone.getByRole('link', { name: m.home.firstMissionCta }).click();
+  for (const who of [m.household.adults, m.household.children, m.household.cats]) {
+    await phone.getByRole('button', { name: m.household.more.replace('{{label}}', who) }).click();
+  }
+  await phone.getByRole('button', { name: m.household.save }).click();
+  await phone.getByRole('status').filter({ hasText: m.household.saved }).waitFor();
   await phone.goto(`http://localhost:${PORT}/app/`, { waitUntil: 'networkidle' });
   // Le bandeau « Succès débloqué » ne sert pas le propos : masqué pour la capture.
   await phone.addStyleTag({ content: '.unlock-region { display: none !important; }' });
   await phone.evaluate(() => globalThis.document.fonts.ready);
   await phone.waitForTimeout(800);
-  await phone.screenshot({ path: phoneShot });
+  await phone.screenshot({ path });
   await context.close();
+}
 
-  // 2. Le montage.
-  const html = `<!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><style>
+const html = (version: Version, phoneShot: string) => `<!doctype html>
+<html lang="${version.locale}"><head><meta charset="utf-8"><style>
 @font-face { font-family: 'Young Serif'; src: url(${font('young-serif/files/young-serif-latin-400-normal.woff2')}); }
 @font-face { font-family: 'Figtree'; font-weight: 600; src: url(${font('figtree/files/figtree-latin-600-normal.woff2')}); }
 @font-face { font-family: 'Figtree'; font-weight: 700; src: url(${font('figtree/files/figtree-latin-700-normal.woff2')}); }
@@ -92,32 +134,34 @@ h1 { position: absolute; left: 72px; top: 60px; width: 940px; font-family: 'Youn
 <span class="fly" style="left:980px;top:420px;transform:scale(.7)"></span>
 <span class="fly" style="left:640px;top:1120px;transform:scale(.6)"></span>
 <span class="fly" style="left:120px;top:1240px;transform:scale(.8)"></span>
-<h1>Vous avez reçu<br>ce guide&#8239;?</h1>
+<h1>${version.title}</h1>
 <img class="guides" src="${pathToFileURL(resolve(root, 'assets/social/guides-letz-prepare.png')).href}" alt="">
-<p class="credit">Les guides officiels « Lëtz prepare! », Luxembourg</p>
+<p class="credit">${version.credit}</p>
 <div class="pitch">
-  <h2>J’en ai fait une app gratuite.</h2>
-  <ul>
-    <li>Un kit calculé pour votre foyer</li>
-    <li>Des rappels avant chaque date</li>
-    <li>Votre plan d’urgence, protégé</li>
-    <li>Sans compte, hors connexion</li>
-  </ul>
+  <h2>${version.pitch}</h2>
+  <ul>${version.points.map((point) => `<li>${point}</li>`).join('')}</ul>
 </div>
 <div class="cta">kitzy.lu</div>
 <div class="phone"><img src="${pathToFileURL(phoneShot).href}" alt=""><span class="notch"></span></div>
 </body></html>`;
-  const htmlFile = join(dir, 'post.html');
-  writeFileSync(htmlFile, html);
+
+try {
+  await new Promise((r) => setTimeout(r, 600));
   const page = await browser.newPage({
     viewport: { width: 1080, height: 1350 },
     deviceScaleFactor: 2,
   });
-  await page.goto(pathToFileURL(htmlFile).href, { waitUntil: 'load' });
-  await page.evaluate(() => globalThis.document.fonts.ready);
-  const out = resolve(root, 'assets/social/kitzy-linkedin-lancement.png');
-  await page.screenshot({ path: out, type: 'png' });
-  console.log(`Image écrite : ${out}`);
+  for (const version of VERSIONS) {
+    const phoneShot = join(dir, `phone-${version.locale}.png`);
+    await shootPhone(version, phoneShot);
+    const htmlFile = join(dir, `post-${version.locale}.html`);
+    writeFileSync(htmlFile, html(version, phoneShot));
+    await page.goto(pathToFileURL(htmlFile).href, { waitUntil: 'load' });
+    await page.evaluate(() => globalThis.document.fonts.ready);
+    const out = resolve(root, 'assets/social', version.out);
+    await page.screenshot({ path: out, type: 'png' });
+    console.log(`Image écrite : ${out}`);
+  }
 } finally {
   await browser.close();
   server.kill();
