@@ -42,9 +42,15 @@ test.describe('Tableau de bord, menu et succès', () => {
     const menu = page.getByRole('dialog', { name: 'Menu' });
     await expect(menu).toBeVisible();
     await expect(button).toHaveAttribute('aria-expanded', 'true');
-    for (const name of [/^Succès/, /^Guide/, /^Mes gestes/, /^Réglages/]) {
+    for (const name of [/^Succès/, /^Guide/, /^Mes gestes/]) {
       await expect(menu.getByRole('link', { name })).toBeVisible();
     }
+    // Réglages, partage et sauvegarde : des icônes, avec leur nom pour les lecteurs d'écran.
+    await expect(menu.getByRole('link', { name: 'Réglages', exact: true })).toBeVisible();
+    await expect(menu.getByRole('button', { name: 'Partager Kitzy', exact: true })).toBeVisible();
+    await expect(
+      menu.getByRole('link', { name: 'Sauvegarde et données', exact: true }),
+    ).toBeVisible();
     await expectNoAxeViolations(page);
     await page.keyboard.press('Escape');
     await expect(menu).toBeHidden();
@@ -55,6 +61,15 @@ test.describe('Tableau de bord, menu et succès', () => {
     await expect(menu).toBeHidden();
     await expect(page.getByRole('heading', { level: 1, name: 'Guide' })).toBeFocused();
     await expect(button).toHaveClass(/bottom-nav__link--active/);
+
+    await button.click();
+    await menu.getByRole('link', { name: 'Sauvegarde et données', exact: true }).click();
+    await expect(
+      page.getByRole('heading', { level: 1, name: 'Sauvegarde et données' }),
+    ).toBeFocused();
+    await expect(page.getByRole('region', { name: 'Protéger mon plan' })).toBeVisible();
+    await expect(page.getByRole('region', { name: 'Mes données', exact: true })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Tout effacer' })).toBeVisible();
   });
 
   test('la page des succès : acquis datés, les autres disent comment faire', async ({ page }) => {
@@ -89,7 +104,7 @@ test.describe('Tableau de bord, menu et succès', () => {
     await setUpHousehold(page);
     await page.goto('./reglages');
     const toc = page.getByRole('navigation', { name: 'Sur cette page' });
-    const groups = ['Affichage', 'Kits et rappels', 'Cet appareil et mes données', 'Kitzy'];
+    const groups = ['Affichage', 'Kits et rappels', 'Cet appareil', 'Kitzy'];
     for (const name of groups) {
       await expect(page.getByRole('heading', { level: 2, name })).toBeVisible();
       await expect(toc.getByRole('link', { name })).toBeVisible();

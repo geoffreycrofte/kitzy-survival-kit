@@ -64,9 +64,9 @@ export function BackupCard() {
 
   return (
     <section className="card" aria-labelledby="data-title">
-      <h3 id="data-title" className="choice__legend">
+      <h2 id="data-title" className="choice__legend">
         {t('settings.data')}
-      </h3>
+      </h2>
       <p className="choice__help">{t('settings.dataHelp')}</p>
 
       <button
@@ -102,7 +102,7 @@ export function BackupCard() {
         onClose={() => setUnlockFor(null)}
       />
 
-      <h4 className="backup__restore">{t('settings.import')}</h4>
+      <h3 className="backup__restore">{t('settings.import')}</h3>
       <p id="import-help" className="choice__help">
         {t('settings.importHelp')}
       </p>

@@ -41,14 +41,30 @@ html[data-motion='full'] .icon-button {
 
 /* Toucher : ce qu'on touche s'enfonce un peu, et sa lueur apparaît en douceur. */
 html[data-motion='full']
-  :where(.button, .icon-button, .menu__link, .dest, .segmented__option, .bottom-nav__link) {
+  :where(
+    .button,
+    .icon-button,
+    .menu__link,
+    .menu__quick-link,
+    .dest,
+    .segmented__option,
+    .bottom-nav__link
+  ) {
   transition:
     transform 0.15s ease,
     box-shadow 0.2s ease;
 }
 
 html[data-motion='full']
-  :where(.button, .icon-button, .menu__link, .dest, .segmented__option, .bottom-nav__link):active {
+  :where(
+    .button,
+    .icon-button,
+    .menu__link,
+    .menu__quick-link,
+    .dest,
+    .segmented__option,
+    .bottom-nav__link
+  ):active {
   transform: scale(0.96);
 }
 

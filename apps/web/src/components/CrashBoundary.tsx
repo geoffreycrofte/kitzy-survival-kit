@@ -51,7 +51,7 @@ function CrashScreen() {
             className="button button--ghost"
             onClick={async () => {
               if (!window.confirm(t('settings.resetConfirm'))) return;
-              await resetAll();
+              await resetAll({ evenIfLocked: true });
               location.reload();
             }}
           >

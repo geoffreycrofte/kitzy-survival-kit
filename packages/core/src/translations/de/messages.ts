@@ -29,6 +29,7 @@ export const messages: Messages = {
     plan: 'Mein Plan',
     guide: 'Ratgeber',
     settings: 'Einstellungen',
+    backup: 'Sicherung und Daten',
     menu: 'Menü',
     achievements: 'Erfolge',
     tasks: 'Meine Handgriffe',
@@ -49,7 +50,6 @@ export const messages: Messages = {
     guideHint: 'Der offizielle Ratgeber, einfacher erklärt',
     tasksHint: 'Was man nicht kaufen kann',
     activitiesHint: 'Rituale, Rezepte, Challenge, Übung, Quiz',
-    settingsHint: 'Erinnerungen, Sicherung, Vorratsstufe',
     about: 'Transparenz und Datenschutz',
   },
   theme: {
@@ -318,12 +318,14 @@ export const messages: Messages = {
     back: 'Zurück zum Bau',
   },
   settings: {
+    dataPageIntro:
+      'Schütze deinen Plan, behalte eine Sicherung und verwalte die Daten von Kitzy auf diesem Gerät.',
     title: 'Einstellungen',
     toc: 'Auf dieser Seite',
     groups: {
       display: 'Anzeige',
       kits: 'Vorräte und Erinnerungen',
-      device: 'Dieses Gerät und meine Daten',
+      device: 'Dieses Gerät',
       kitzy: 'Kitzy',
     },
     danger: 'Von vorne anfangen',
@@ -359,6 +361,10 @@ export const messages: Messages = {
     reset: 'Alles löschen',
     resetConfirm: 'Deinen Haushalt, deine Vorräte und deine Einkaufsliste endgültig löschen?',
     resetDone: 'Alle Daten wurden gelöscht.',
+    resetLocked: 'Öffne ihn, um alles löschen zu können.',
+    forgotTitle: 'Code vergessen?',
+    forgot:
+      'Ohne deinen Code oder Fingerabdruck kann Kitzy deinen Plan nicht mehr öffnen. Um neu anzufangen, lösche die Websitedaten von kitzy.lu in den Einstellungen deines Browsers, oder deinstalliere die App und installiere sie neu. Wenn du eine Sicherung hast, kannst du sie danach mit ihrem eigenen Code wiederherstellen.',
     support: 'Kitzy unterstützen',
     supportHelp:
       'Kitzy ist kostenlos, ohne Werbung und ohne Konto. Wenn dir die App hilft, kannst du dem Igel einen Apfel spendieren.',
@@ -825,7 +831,6 @@ export const messages: Messages = {
     message:
       'Ich bereite mit Kitzy unser Kit für 72 Stunden vor. Es ist kostenlos, und alles bleibt auf dem Handy. Wenn Familie und Nachbarschaft vorbereitet sind, hilft man sich leichter.',
     shareTitle: 'Kitzy, das 72-Stunden-Kit',
-    menuHint: 'Schick die App an deine Liebsten und Nachbarn',
   },
   recipes: {
     title: 'Konservenabend',
@@ -1043,7 +1048,7 @@ export const messages: Messages = {
       {
         title: 'Deine Daten löschen',
         where: 'Auf deinem Gerät',
-        text: 'Da alles auf deinem Gerät ist, wird auch dort gelöscht: In den Einstellungen entfernt „Alles löschen“ alle Daten von Kitzy. Die App zu deinstallieren oder die Websitedaten zu löschen, bewirkt dasselbe.',
+        text: 'Da alles auf deinem Gerät ist, wird auch dort gelöscht: Unter „Sicherung und Daten“ entfernt „Alles löschen“ alle Daten von Kitzy. Die App zu deinstallieren oder die Websitedaten zu löschen, bewirkt dasselbe.',
       },
     ],
     pushSection: {

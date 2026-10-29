@@ -29,6 +29,7 @@ export const messages: Messages = {
     plan: 'My plan',
     guide: 'Guide',
     settings: 'Settings',
+    backup: 'Backup and data',
     menu: 'Menu',
     achievements: 'Achievements',
     tasks: 'My actions',
@@ -49,7 +50,6 @@ export const messages: Messages = {
     guideHint: 'The official guide, made simpler',
     tasksHint: 'What money can’t buy',
     activitiesHint: 'Rituals, recipes, challenge, simulation, quiz',
-    settingsHint: 'Reminders, backup, kit level',
     about: 'Transparency and privacy',
   },
   theme: {
@@ -316,12 +316,13 @@ export const messages: Messages = {
     back: 'Back to the burrow',
   },
   settings: {
+    dataPageIntro: 'Protect your plan, keep a backup and manage Kitzy’s data on this device.',
     title: 'Settings',
     toc: 'On this page',
     groups: {
       display: 'Display',
       kits: 'Kits and reminders',
-      device: 'This device and my data',
+      device: 'This device',
       kitzy: 'Kitzy',
     },
     danger: 'Start from scratch',
@@ -357,6 +358,10 @@ export const messages: Messages = {
     reset: 'Delete everything',
     resetConfirm: 'Permanently delete your household, kits and shopping list?',
     resetDone: 'All data has been deleted.',
+    resetLocked: 'Open it to be able to delete everything.',
+    forgotTitle: 'Forgot your code?',
+    forgot:
+      'Without your code or your fingerprint, Kitzy can no longer open your plan. To start over, clear the site data for kitzy.lu in your browser settings, or uninstall the app and reinstall it. If you have a backup, you can then restore it with its own code.',
     support: 'Support Kitzy',
     supportHelp:
       'Kitzy is free, ad-free and needs no account. If the app helps you, you can buy the hedgehog an apple.',
@@ -806,7 +811,6 @@ export const messages: Messages = {
     message:
       'I’m preparing our kit to last 72 hours with Kitzy. It’s free, and everything stays on the phone. When family and neighbours are ready, it’s easier to help each other.',
     shareTitle: 'Kitzy, the 72-hour kit',
-    menuHint: 'Send the app to your loved ones and neighbours',
   },
   recipes: {
     title: 'Tinned-food night',
@@ -1023,7 +1027,7 @@ export const messages: Messages = {
       {
         title: 'Deleting your data',
         where: 'On your device',
-        text: 'Since everything is on your device, that’s where you delete it: in the settings, “Delete everything” removes all Kitzy data. Uninstalling the app or clearing the site’s data does the same.',
+        text: 'Since everything is on your device, that’s where you delete it: under “Backup and data”, “Delete everything” removes all Kitzy data. Uninstalling the app or clearing the site’s data does the same.',
       },
     ],
     pushSection: {

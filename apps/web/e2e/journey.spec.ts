@@ -97,6 +97,7 @@ test.describe('Parcours principal', () => {
         './guide',
         './guide/sirenes',
         './reglages',
+        './sauvegarde',
       ]) {
         await page.goto(path);
         await expect(page.getByRole('heading', { level: 1 })).toBeVisible();

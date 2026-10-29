@@ -178,6 +178,16 @@ export function EyeOffIcon(props: IconProps) {
   );
 }
 
+/** Sauvegarde : un nuage et une flèche qui monte. */
+export function BackupIcon(props: IconProps) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M7 18.5a4.5 4.5 0 0 1-.7-8.95A6 6 0 0 1 17.9 8.6 4 4 0 0 1 17.5 18.5" />
+      <path d="M12 21v-8M9 15.5l3-3 3 3" />
+    </svg>
+  );
+}
+
 export function BellIcon(props: IconProps) {
   return (
     <svg {...base} {...props}>

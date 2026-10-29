@@ -257,9 +257,9 @@ export function PlanProtection() {
 
   return (
     <section className="card" aria-labelledby="lock-settings-title">
-      <h3 id="lock-settings-title" className="choice__legend">
+      <h2 id="lock-settings-title" className="choice__legend">
         {t('lock.title')}
-      </h3>
+      </h2>
       <p className="choice__help">{t('lock.intro')}</p>
 
       {!lock && (

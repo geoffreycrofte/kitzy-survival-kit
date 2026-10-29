@@ -3,12 +3,10 @@ import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { DONATION_LINKS, LOCALES, buildIcs, messagesFor, type KitLevel } from '@kitzy/core';
 import { setLocalePref, useLocale, type LocalePref } from '../lib/locale';
-import { BackupCard } from '../components/BackupCard';
 import { InstallSettings } from '../components/InstallSettings';
-import { PlanProtection } from '../components/PlanLock';
 import { NotificationSettings } from '../components/NotificationSettings';
 import { COUNTRY, useKitzy } from '../data/derived';
-import { resetAll, setLevel } from '../data/store';
+import { setLevel } from '../data/store';
 import { announce } from '../lib/announce';
 import { downloadFile } from '../lib/download';
 import {
@@ -199,28 +197,6 @@ export function Settings() {
 
       <SettingsGroup id="appareil" title={groups[2]!.title}>
         <InstallSettings />
-
-        <PlanProtection />
-
-        <BackupCard />
-
-        <section className="card card--danger" aria-labelledby="danger-title">
-          <h3 id="danger-title" className="choice__legend">
-            {t('settings.danger')}
-          </h3>
-          <p className="choice__help">{t('settings.dangerHelp')}</p>
-          <button
-            type="button"
-            className="button button--danger"
-            onClick={async () => {
-              if (!window.confirm(t('settings.resetConfirm'))) return;
-              await resetAll();
-              announce(t('settings.resetDone'));
-            }}
-          >
-            {t('settings.reset')}
-          </button>
-        </section>
       </SettingsGroup>
 
       <SettingsGroup id="kitzy" title={groups[3]!.title}>

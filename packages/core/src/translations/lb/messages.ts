@@ -29,6 +29,7 @@ export const messages: Messages = {
     plan: 'Mäi Plang',
     guide: 'Guide',
     settings: 'Astellungen',
+    backup: 'Backup an Donnéeën',
     menu: 'Menü',
     achievements: 'Erfolleger',
     tasks: 'Meng Handgrëffer',
@@ -49,7 +50,6 @@ export const messages: Messages = {
     guideHint: 'Den offizielle Guide, méi einfach erkläert',
     tasksHint: 'Wat een net ka kafen',
     activitiesHint: 'Ritualer, Rezepter, Challenge, Simulatioun, Quiz',
-    settingsHint: 'Erënnerungen, Backup, Niveau vum Kit',
     about: 'Transparenz an Dateschutz',
   },
   theme: {
@@ -316,12 +316,13 @@ export const messages: Messages = {
     back: 'Zréck an de Bau',
   },
   settings: {
+    dataPageIntro: 'Schütz däi Plang, hal e Backup a geréier d’Donnéeë vu Kitzy op dësem Apparat.',
     title: 'Astellungen',
     toc: 'Op dëser Säit',
     groups: {
       display: 'Usiicht',
       kits: 'Kits an Erënnerungen',
-      device: 'Dësen Apparat a meng Donnéeën',
+      device: 'Dësen Apparat',
       kitzy: 'Kitzy',
     },
     danger: 'Vun Null ufänken',
@@ -357,6 +358,10 @@ export const messages: Messages = {
     reset: 'Alles läschen',
     resetConfirm: 'Däin Haushalt, deng Kits an deng Akafslëscht definitiv läschen?',
     resetDone: 'All d’Donnéeë goufe geläscht.',
+    resetLocked: 'Maach en op, fir alles kënnen ze läschen.',
+    forgotTitle: 'Code vergiess?',
+    forgot:
+      'Ouni däi Code oder däi Fangerofdrock kann Kitzy däi Plang net méi opmaachen. Fir vu vir unzefänken, läsch d’Donnéeë vum Site kitzy.lu an den Astellunge vun dengem Browser, oder desinstalléier d’App an installéier se nei. Wann s de e Backup hues, kanns de en duerno mat sengem eegene Code restauréieren.',
     support: 'Kitzy ënnerstëtzen',
     supportHelp:
       'Kitzy ass gratis, ouni Reklamm an ouni Kont. Wann d’App dir hëlleft, kanns de dem Kéiseker en Apel schenken.',
@@ -822,7 +827,6 @@ export const messages: Messages = {
     message:
       'Ech preparéieren mat Kitzy eise Kit fir 72 Stonnen. Et ass gratis, an alles bleift um Handy. Wann d’Famill an d’Noperschaft virbereet sinn, hëlleft ee sech méi einfach.',
     shareTitle: 'Kitzy, de Kit fir 72 Stonnen',
-    menuHint: 'Schéck d’App un deng Léifsten an deng Noperen',
   },
   recipes: {
     title: 'Konserven-Owend',
@@ -1040,7 +1044,7 @@ export const messages: Messages = {
       {
         title: 'Deng Donnéeë läschen',
         where: 'Op dengem Apparat',
-        text: 'Well alles op dengem Apparat ass, gëtt och do geläscht: an den Astellunge läscht „Alles läschen“ all d’Donnéeë vu Kitzy. D’App deinstalléieren oder d’Donnéeë vum Site läschen huet deeselwechten Effekt.',
+        text: 'Well alles op dengem Apparat ass, gëtt och do geläscht: ënner „Backup an Donnéeën“ läscht „Alles läschen“ all d’Donnéeë vu Kitzy. D’App deinstalléieren oder d’Donnéeë vum Site läschen huet deeselwechten Effekt.',
       },
     ],
     pushSection: {

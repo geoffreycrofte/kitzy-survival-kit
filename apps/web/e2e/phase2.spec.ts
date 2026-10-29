@@ -153,7 +153,7 @@ test.describe('Phase 2 : plan, gestes, scan, notifications', () => {
       .getByLabel('Nom et prénom')
       .fill('Famille Muller');
     await page.waitForTimeout(800);
-    await page.goto('./reglages');
+    await page.goto('./sauvegarde');
     await page.getByRole('button', { name: 'Faire une sauvegarde' }).click();
     const drawer = page.getByRole('dialog', { name: 'Faire une sauvegarde' });
     await drawer

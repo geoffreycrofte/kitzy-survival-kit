@@ -388,7 +388,8 @@ Structure officielle du guide, reprise pour l'arborescence de l'aide : **1. Comp
 - **Export / import** JSON (sauvegarde, changement de téléphone), export CSV de l'inventaire
 - Réinitialiser
 - À propos, sources, mentions d'affiliation, déclaration d'accessibilité, confidentialité
-- **Organisation** (fait) : un sommaire en pastilles, puis quatre groupes titrés en jaune. *Affichage* (thème, animations, langue), *Kits et rappels* (niveau, notifications, agenda), *Cet appareil et mes données* (installer, sauvegarde, puis « Repartir de zéro » dans une carte à part, bordée de rouge), *Kitzy* (soutenir, à propos)
+- **Organisation** (fait) : un sommaire en pastilles, puis quatre groupes titrés en jaune. *Affichage* (thème, animations, langue), *Kits et rappels* (niveau, notifications, agenda), *Cet appareil* (installer), *Kitzy* (soutenir, à propos). Depuis octobre 2026, tout ce qui touche aux données a sa page **« Sauvegarde et données »** (`/sauvegarde`) : protéger le plan, faire une sauvegarde, restaurer, puis « Tout effacer » dans une carte bordée de rouge. Plan protégé et verrouillé : chacune de ces actions ouvre d'abord le tiroir « Ton plan est protégé » (empreinte demandée aussitôt, sinon le code, avec l'aide « Code oublié ? »).
+- **Menu plein écran** : quatre entrées détaillées (Activités, Succès, Guide, Mes gestes), puis une ligne de trois icônes (Réglages, Partager, Sauvegarde et données ; nom lu par les lecteurs d'écran)
 
 ### 3.9 Partage par QR code ou URL
 

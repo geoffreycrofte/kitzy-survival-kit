@@ -2673,7 +2673,7 @@ html[data-motion='full'] .menu::backdrop {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 28px;
+  gap: 22px;
   padding: 20px 20px calc(28px + env(safe-area-inset-bottom));
 }
 
@@ -2685,7 +2685,7 @@ html[data-motion='full'] .menu::backdrop {
 }
 
 .menu__title {
-  font-size: 2.5rem;
+  font-size: 2.125rem;
 }
 
 .menu__theme {
@@ -2782,15 +2782,15 @@ html[data-motion='full'] .menu::backdrop {
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .menu__link {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 14px 18px 14px 14px;
-  border-radius: 22px;
+  gap: 14px;
+  padding: 11px 16px 11px 12px;
+  border-radius: 20px;
   border: 2px solid transparent;
   background: var(--kz-surface);
   text-decoration: none;
@@ -2813,9 +2813,9 @@ html[data-motion='full'] .menu::backdrop {
 
 .menu__icon {
   flex: none;
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
   display: grid;
   place-content: center;
   background: var(--kz-bg);
@@ -2831,13 +2831,49 @@ html[data-motion='full'] .menu::backdrop {
 
 .menu__name {
   font-family: var(--kz-font-display);
-  font-size: 1.375rem;
+  font-size: 1.1875rem;
   line-height: 1.2;
 }
 
 .menu__hint {
   color: var(--kz-muted);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
+}
+
+.menu__icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+/* Réglages, partage, sauvegarde : trois tuiles d'icône sur une ligne. */
+.menu__quick {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.menu__quick-link {
+  width: 100%;
+  min-height: 56px;
+  display: grid;
+  place-content: center;
+  border-radius: 18px;
+  border: 2px solid transparent;
+  background: var(--kz-surface);
+  color: var(--kz-heading);
+  font: inherit;
+  cursor: pointer;
+}
+
+.menu__quick-link:hover {
+  border-color: var(--kz-line);
+}
+
+.menu__quick-link[aria-current='page'] {
+  border-color: var(--kz-heading);
 }
 
 .menu__foot {
@@ -2849,7 +2885,8 @@ html[data-motion='full'] .menu::backdrop {
 }
 
 @media (forced-colors: active) {
-  .menu__link {
+  .menu__link,
+  .menu__quick-link {
     border-color: LinkText;
   }
 }
@@ -3381,6 +3418,18 @@ html[data-motion='full'] .menu::backdrop {
   flex-direction: column;
   align-items: flex-start;
   gap: 12px;
+}
+
+/* « Code oublié ? » : replié, pour ne pas détourner de l'ouverture. */
+.unlock__forgot summary {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.unlock__forgot p {
+  margin: 8px 0 0;
+  color: var(--kz-muted);
 }
 
 .backup__restore {
