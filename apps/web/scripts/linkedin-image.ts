@@ -1,6 +1,6 @@
 /**
- * Visuel LinkedIn du lancement (1080 × 1350) : les guides officiels « Lëtz prepare! », kitzy.lu dans
- * un téléphone et Kitzy à la lanterne. La capture du téléphone est faite sur le site construit.
+ * Visuel LinkedIn du lancement (1080 × 1350) : les guides officiels « Lëtz prepare! » et l'accueil
+ * de l'app dans un téléphone (capture faite sur le site construit, avec un foyer d'exemple).
  *   pnpm build && pnpm linkedin-image  (PLAYWRIGHT_CHROMIUM_PATH pour un Chromium déjà installé)
  * Sortie : assets/social/kitzy-linkedin-lancement.png
  */
@@ -38,10 +38,19 @@ try {
     locale: 'fr-LU',
   });
   const phone = await context.newPage();
-  await phone.goto(`http://localhost:${PORT}/`, { waitUntil: 'networkidle' });
-  // Le hérisson est déjà en grand sur le visuel : dans le téléphone, on montre la suite de la page.
-  await phone.addStyleTag({ content: '.hero .stage { display: none !important; }' });
+  // L'accueil de l'app, avec un foyer : 2 adultes, 1 enfant, 1 chat.
+  await phone.goto(`http://localhost:${PORT}/app/`, { waitUntil: 'networkidle' });
+  await phone.getByRole('link', { name: 'Présenter mon foyer' }).click();
+  await phone.getByRole('button', { name: 'Ajouter : Adultes' }).click();
+  await phone.getByRole('button', { name: 'Ajouter : Enfants' }).click();
+  await phone.getByRole('button', { name: 'Ajouter : Chats' }).click();
+  await phone.getByRole('button', { name: 'Enregistrer mon foyer' }).click();
+  await phone.getByRole('status').filter({ hasText: 'Foyer enregistré.' }).waitFor();
+  await phone.goto(`http://localhost:${PORT}/app/`, { waitUntil: 'networkidle' });
+  // Le bandeau « Succès débloqué » ne sert pas le propos : masqué pour la capture.
+  await phone.addStyleTag({ content: '.unlock-region { display: none !important; }' });
   await phone.evaluate(() => globalThis.document.fonts.ready);
+  await phone.waitForTimeout(800);
   await phone.screenshot({ path: phoneShot });
   await context.close();
 
@@ -63,21 +72,22 @@ h1 { position: absolute; left: 72px; top: 60px; width: 940px; font-family: 'Youn
 .guides { position: absolute; left: 72px; top: 296px; width: 660px; transform: rotate(-2.5deg);
   border-radius: 18px; box-shadow: 0 30px 60px rgba(0,0,0,.45); }
 .credit { position: absolute; left: 80px; top: 630px; font-size: 18px; font-weight: 600; color: #8FA89E; }
-.pitch { position: absolute; left: 72px; top: 700px; width: 500px; }
-.pitch h2 { font-family: 'Young Serif'; font-weight: 400; font-size: 50px; line-height: 1.08; color: #F4B860; }
-.pitch p { margin-top: 20px; font-size: 25px; line-height: 1.42; font-weight: 600; color: #D8E3DC; }
-.cta { position: absolute; left: 72px; top: 1086px; padding: 14px 28px; border-radius: 999px;
-  background: #F4B860; color: #12302B; font-size: 32px; font-weight: 700; }
+.pitch { position: absolute; left: 72px; top: 712px; width: 520px; }
+.pitch h2 { font-family: 'Young Serif'; font-weight: 400; font-size: 56px; line-height: 1.08; color: #F4B860; }
+.pitch ul { margin: 34px 0 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 18px; }
+.pitch li { position: relative; padding-left: 34px; font-size: 29px; line-height: 1.3; font-weight: 600; color: #E6EEE9; }
+.pitch li::before { content: ''; position: absolute; left: 0; top: 0.42em; width: 14px; height: 14px; border-radius: 50%;
+  background: #F4B860; box-shadow: 0 0 12px 3px rgba(244,184,96,.45); }
+.cta { position: absolute; left: 72px; top: 1150px; padding: 14px 30px; border-radius: 999px;
+  background: #F4B860; color: #12302B; font-size: 34px; font-weight: 700; }
 .phone { position: absolute; right: 60px; top: 520px; width: 350px; height: 742px; padding: 13px;
   border-radius: 54px; background: #0B1F1C; transform: rotate(4deg);
   box-shadow: 0 0 0 3px #2C4A43, 0 40px 80px rgba(0,0,0,.55); }
 .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 42px; display: block; }
 .notch { position: absolute; left: 50%; top: 24px; width: 100px; height: 28px; margin-left: -50px;
   border-radius: 999px; background: #0B1F1C; }
-.hog { position: absolute; left: 330px; bottom: -30px; height: 400px; }
 </style></head><body>
 <div class="glow" style="left:480px;top:520px;width:820px;height:820px"></div>
-<div class="glow" style="left:200px;top:900px;width:560px;height:560px;opacity:.7"></div>
 <span class="fly" style="left:820px;top:200px"></span>
 <span class="fly" style="left:980px;top:420px;transform:scale(.7)"></span>
 <span class="fly" style="left:640px;top:1120px;transform:scale(.6)"></span>
@@ -86,11 +96,15 @@ h1 { position: absolute; left: 72px; top: 60px; width: 940px; font-family: 'Youn
 <img class="guides" src="${pathToFileURL(resolve(root, 'assets/social/guides-letz-prepare.png')).href}" alt="">
 <p class="credit">Les guides officiels « Lëtz prepare! », Luxembourg</p>
 <div class="pitch">
-  <h2>J’en ai fait une app gratuite, qui évolue avec vous.</h2>
-  <p>Votre kit de 72 h calculé pour votre foyer, vos dates de péremption, votre plan d’urgence. Sans compte, hors connexion, en 5 langues.</p>
+  <h2>J’en ai fait une app gratuite.</h2>
+  <ul>
+    <li>Un kit calculé pour votre foyer</li>
+    <li>Des rappels avant chaque date</li>
+    <li>Votre plan d’urgence, protégé</li>
+    <li>Sans compte, hors connexion</li>
+  </ul>
 </div>
 <div class="cta">kitzy.lu</div>
-<img class="hog" src="${file('public/mascot/kitzy-lanterne.webp')}" alt="">
 <div class="phone"><img src="${pathToFileURL(phoneShot).href}" alt=""><span class="notch"></span></div>
 </body></html>`;
   const htmlFile = join(dir, 'post.html');
