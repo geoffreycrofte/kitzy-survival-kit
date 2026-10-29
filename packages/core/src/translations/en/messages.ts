@@ -586,6 +586,9 @@ export const messages: Messages = {
     delete: 'Delete my plan',
     deleteConfirm: 'Permanently delete your emergency plan?',
     deleted: 'Plan deleted.',
+    deleteLocked:
+      'Your plan is protected: open it with your fingerprint or your code to be able to delete it.',
+    unlockToDelete: 'Open my plan to delete it',
     notFound: 'This plan step doesn’t exist.',
   },
   achievements: {

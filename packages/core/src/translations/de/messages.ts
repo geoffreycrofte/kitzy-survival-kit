@@ -590,6 +590,9 @@ export const messages: Messages = {
     delete: 'Meinen Plan löschen',
     deleteConfirm: 'Deinen Notfallplan endgültig löschen?',
     deleted: 'Plan gelöscht.',
+    deleteLocked:
+      'Dein Plan ist geschützt: Öffne ihn mit deinem Fingerabdruck oder deinem Code, um ihn löschen zu können.',
+    unlockToDelete: 'Plan öffnen, um ihn zu löschen',
     notFound: 'Diesen Schritt des Plans gibt es nicht.',
   },
   achievements: {

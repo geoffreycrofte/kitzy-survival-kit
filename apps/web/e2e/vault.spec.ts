@@ -118,6 +118,32 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     await expect(page.getByText('Famille Schmit')).toBeVisible();
   });
 
+  test('un plan protégé ne s’efface qu’après l’avoir ouvert', async ({ page }) => {
+    await setUpHousehold(page);
+    await fillOwner(page, 'Famille Weber');
+    await protectPlan(page);
+    await page.reload();
+    await page.goto('./plan');
+
+    // Verrouillé : pas de bouton pour effacer, il faut d'abord ouvrir le plan.
+    await expect(page.getByRole('button', { name: 'Effacer mon plan' })).toHaveCount(0);
+    await expect(
+      page.getByText(/ouvre-le avec ton empreinte ou ton code pour pouvoir l’effacer/),
+    ).toBeVisible();
+    await page.getByRole('button', { name: 'Ouvrir mon plan pour l’effacer' }).click();
+    const code = page.getByLabel('Code Kitzy', { exact: true });
+    await expect(code).toBeFocused();
+    await code.fill(CODE);
+    await page.getByRole('button', { name: 'Ouvrir avec le code' }).click();
+
+    const remove = page.getByRole('button', { name: 'Effacer mon plan' });
+    await expect(remove).toBeFocused();
+    page.once('dialog', (dialog) => void dialog.accept());
+    await remove.click();
+    await expect(page.getByRole('status').filter({ hasText: 'Plan effacé.' })).toBeVisible();
+    await expect(remove).toHaveCount(0);
+  });
+
   test('une sauvegarde protégée se restaure ailleurs avec son code seulement', async ({
     page,
     browser,

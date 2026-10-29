@@ -587,6 +587,9 @@ export const messages: Messages = {
     delete: 'Apagar o meu plano',
     deleteConfirm: 'Apagar definitivamente o teu plano de emergência?',
     deleted: 'Plano apagado.',
+    deleteLocked:
+      'O teu plano está protegido: abre-o com a impressão digital ou o código para o poderes apagar.',
+    unlockToDelete: 'Abrir o meu plano para o apagar',
     notFound: 'Esta etapa do plano não existe.',
   },
   achievements: {

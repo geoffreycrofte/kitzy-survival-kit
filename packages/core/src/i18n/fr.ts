@@ -592,6 +592,9 @@ export const fr = {
     delete: 'Effacer mon plan',
     deleteConfirm: 'Effacer définitivement ton plan d’urgence ?',
     deleted: 'Plan effacé.',
+    deleteLocked:
+      'Ton plan est protégé : ouvre-le avec ton empreinte ou ton code pour pouvoir l’effacer.',
+    unlockToDelete: 'Ouvrir mon plan pour l’effacer',
     notFound: 'Cette étape du plan n’existe pas.',
   },
   achievements: {

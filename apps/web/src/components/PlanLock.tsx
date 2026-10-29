@@ -1,4 +1,4 @@
-import { useEffect, useId, useState, type FormEvent, type ReactNode } from 'react';
+import { useEffect, useId, useRef, useState, type FormEvent, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CODE_MIN_LENGTH } from '@kitzy/core';
 import { useKitzy } from '../data/derived';
@@ -113,8 +113,21 @@ export function PlanGate({ children }: { children: ReactNode }) {
 }
 
 /** Ouvrir le plan : empreinte (si ajoutée), sinon le code Kitzy. */
-export function PlanUnlock({ heading = 'h1' }: { heading?: 'h1' | 'h3' }) {
+export function PlanUnlock({
+  heading = 'h1',
+  focusOnMount = false,
+  onUnlocked,
+}: {
+  heading?: 'h1' | 'h2' | 'h3';
+  /** Ouvert à la demande (bouton) : le focus va au premier contrôle, sinon il serait perdu. */
+  focusOnMount?: boolean;
+  onUnlocked?: () => void;
+}) {
   const { t } = useTranslation();
+  const sectionRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    if (focusOnMount) sectionRef.current?.querySelector<HTMLElement>('button, input')?.focus();
+  }, [focusOnMount]);
   const data = useKitzy();
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
@@ -127,8 +140,10 @@ export function PlanUnlock({ heading = 'h1' }: { heading?: 'h1' | 'h3' }) {
     setBusy(true);
     const ok = await unlockPlanWithPasskey().catch(() => false);
     setBusy(false);
-    if (ok) announce(t('lock.unlocked'));
-    else setError(t('lock.passkeyFailed'));
+    if (ok) {
+      announce(t('lock.unlocked'));
+      onUnlocked?.();
+    } else setError(t('lock.passkeyFailed'));
   };
 
   const withCode = async (event: FormEvent) => {
@@ -139,12 +154,13 @@ export function PlanUnlock({ heading = 'h1' }: { heading?: 'h1' | 'h3' }) {
     if (ok) {
       setCode('');
       announce(t('lock.unlocked'));
+      onUnlocked?.();
     } else setError(t('lock.wrongCode'));
   };
 
   return (
     <div className={heading === 'h1' ? 'page' : undefined}>
-      <section className="card lock" aria-labelledby={titleId}>
+      <section ref={sectionRef} className="card lock" aria-labelledby={titleId}>
         <Heading id={titleId} tabIndex={heading === 'h1' ? -1 : undefined}>
           {t('lock.lockedTitle')}
         </Heading>

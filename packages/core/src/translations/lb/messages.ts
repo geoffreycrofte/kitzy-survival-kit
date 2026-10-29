@@ -589,6 +589,9 @@ export const messages: Messages = {
     delete: 'Mäi Plang läschen',
     deleteConfirm: 'Däin Noutfallplang definitiv läschen?',
     deleted: 'Plang geläscht.',
+    deleteLocked:
+      'Däi Plang ass geschützt: maach en mat dengem Fangerofdrock oder dengem Code op, fir en kënnen ze läschen.',
+    unlockToDelete: 'Mäi Plang opmaachen, fir en ze läschen',
     notFound: 'Dëse Schrëtt vum Plang gëtt et net.',
   },
   achievements: {
