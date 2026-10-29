@@ -40,6 +40,9 @@ export const messages: Messages = {
     more: 'Alles zu diesem Artikel',
   },
   menu: {
+    donate: 'Spenden',
+    donateIntro:
+      'Kitzy ist kostenlos, ohne Werbung und ohne Konto. Deine Spende hilft, es online zu halten und seine Weiterentwicklung zu finanzieren.',
     title: 'Menü',
     close: 'Menü schließen',
     theme: 'Stimmung',

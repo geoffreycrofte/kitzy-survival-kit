@@ -40,6 +40,9 @@ export const messages: Messages = {
     more: 'Ver tudo sobre este artigo',
   },
   menu: {
+    donate: 'Fazer um donativo',
+    donateIntro:
+      'O Kitzy é gratuito, sem publicidade e sem conta. O teu donativo ajuda a mantê-lo online e a financiar as próximas evoluções.',
     title: 'Menu',
     close: 'Fechar o menu',
     theme: 'Ambiente',

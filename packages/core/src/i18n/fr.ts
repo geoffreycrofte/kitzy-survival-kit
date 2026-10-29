@@ -43,6 +43,9 @@ export const fr = {
     more: 'Tout voir sur cet article',
   },
   menu: {
+    donate: 'Faire un don',
+    donateIntro:
+      'Kitzy est gratuit, sans publicité et sans compte. Ton don aide à le maintenir en ligne et à financer ses prochaines évolutions.',
     title: 'Menu',
     close: 'Fermer le menu',
     theme: 'Ambiance',

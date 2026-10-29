@@ -40,6 +40,9 @@ export const messages: Messages = {
     more: 'See everything about this item',
   },
   menu: {
+    donate: 'Make a donation',
+    donateIntro:
+      'Kitzy is free, with no ads and no account. Your donation helps keep it online and fund what comes next.',
     title: 'Menu',
     close: 'Close the menu',
     theme: 'Mood',

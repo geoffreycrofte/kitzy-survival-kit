@@ -72,6 +72,38 @@ test.describe('Tableau de bord, menu et succès', () => {
     await expect(page.getByRole('button', { name: 'Tout effacer' })).toBeVisible();
   });
 
+  test('faire un don depuis le menu ; le nom de l’app seulement sur l’accueil', async ({
+    page,
+  }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto('./');
+    await expect(page.getByRole('link', { name: 'Kitzy, accueil' })).toBeVisible();
+    await page.getByRole('button', { name: 'Menu', exact: true }).click();
+    const menu = page.getByRole('dialog', { name: 'Menu' });
+    const donate = menu.getByRole('button', { name: 'Faire un don' });
+    await donate.click();
+    const drawer = page.getByRole('dialog', { name: 'Faire un don' });
+    await expect(drawer).toBeFocused();
+    await expect(drawer.getByText(/financer ses prochaines évolutions/)).toBeVisible();
+    await expect(drawer.getByRole('link', { name: /PayPal/ })).toHaveAttribute(
+      'href',
+      /paypal\.me/,
+    );
+    await expect(drawer.getByRole('link', { name: /Revolut/ })).toHaveAttribute(
+      'href',
+      /revolut\.me/,
+    );
+    await expectNoAxeViolations(page);
+    await page.keyboard.press('Escape');
+    await expect(drawer).toBeHidden();
+    await expect(donate).toBeFocused();
+
+    await page.keyboard.press('Escape');
+    await page.goto('./guide');
+    await expect(page.getByRole('heading', { level: 1, name: 'Guide' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Kitzy, accueil' })).toHaveCount(0);
+  });
+
   test('la page des succès : acquis datés, les autres disent comment faire', async ({ page }) => {
     await setUpHousehold(page);
     await page.goto('./succes');

@@ -1,8 +1,16 @@
-import { useEffect, useRef, type ComponentType, type CSSProperties, type SVGProps } from 'react';
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ComponentType,
+  type CSSProperties,
+  type SVGProps,
+} from 'react';
 import { Link, NavLink } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { ACHIEVEMENTS } from '@kitzy/core';
 import { useKitzy } from '../data/derived';
+import { DonateDrawer } from './DonateDrawer';
 import { useShareApp } from './ShareKitzy';
 import { setThemePref, usePreferences, type ThemePref } from '../lib/preferences';
 import {
@@ -11,6 +19,7 @@ import {
   BookIcon,
   CheckListIcon,
   CloseIcon,
+  HeartIcon,
   MoonIcon,
   SettingsIcon,
   ShareIcon,
@@ -153,6 +162,7 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
     return () => dialog.removeEventListener('cancel', onCancel);
   });
   const share = useShareApp();
+  const [donating, setDonating] = useState(false);
 
   const links = [
     {
@@ -172,7 +182,16 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
   ];
 
   return (
-    <dialog ref={ref} className="menu" aria-labelledby="menu-title" onClose={onClose}>
+    <dialog
+      ref={ref}
+      className="menu"
+      aria-labelledby="menu-title"
+      onClose={(e) => {
+        // React fait remonter la fermeture du tiroir « Faire un don » (dialogue imbriqué) :
+        // seul le menu lui-même ferme le menu.
+        if (e.target === e.currentTarget) onClose();
+      }}
+    >
       {/* Le disque de lumière qui grandit depuis le bouton Menu (décor, animé seulement). */}
       <span className="menu__light" aria-hidden="true" />
       <div className="menu__inner">
@@ -258,7 +277,15 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
           </ul>
         </nav>
 
-        <p className="menu__item menu__foot" style={{ '--i': links.length + 2 } as CSSProperties}>
+        <div className="menu__item" style={{ '--i': links.length + 2 } as CSSProperties}>
+          <button type="button" className="button menu__donate" onClick={() => setDonating(true)}>
+            <HeartIcon />
+            {t('menu.donate')}
+          </button>
+        </div>
+        <DonateDrawer open={donating} onClose={() => setDonating(false)} />
+
+        <p className="menu__item menu__foot" style={{ '--i': links.length + 3 } as CSSProperties}>
           <Link to="/transparence" className="text-link" onClick={close}>
             {t('settings.transparency')}
           </Link>

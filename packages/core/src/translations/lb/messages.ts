@@ -40,6 +40,9 @@ export const messages: Messages = {
     more: 'Alles iwwer dësen Artikel',
   },
   menu: {
+    donate: 'En Don maachen',
+    donateIntro:
+      'Kitzy ass gratis, ouni Reklamm an ouni Kont. Däin Don hëlleft, et online ze halen a seng nächst Entwécklungen ze finanzéieren.',
     title: 'Menü',
     close: 'Menü zoumaachen',
     theme: 'Stëmmung',
