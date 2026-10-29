@@ -21,7 +21,8 @@
     "check-links": "tsx scripts/check-links.ts",
     "og-image": "tsx apps/web/scripts/og-image.ts",
     "splash-images": "tsx apps/web/scripts/splash-images.ts",
-    "linkedin-image": "tsx apps/web/scripts/linkedin-image.ts"
+    "linkedin-image": "tsx apps/web/scripts/linkedin-image.ts",
+    "linkedin-carousel": "tsx apps/web/scripts/linkedin-carousel.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

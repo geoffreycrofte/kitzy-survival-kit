@@ -60,6 +60,18 @@ Image alt text:
 
 > Visual on a dark green background. Headline: “Did you get this guide?”. Below, the covers of the official “Lëtz prepare!” guides in French, Luxembourgish and Portuguese. Then, in yellow: “I turned it into a free app.”, with four points: a kit sized for your household, reminders before every date, your emergency plan protected, no account and works offline. On the right, a phone shows the Kitzy app’s home screen, with the hedgehog holding a water bottle. At the bottom: kitzy.lu.
 
+## Carrousel des fonctionnalités (français)
+
+Document : [`kitzy-linkedin-fonctionnalites.pdf`](kitzy-linkedin-fonctionnalites.pdf), 10 pages en 1080 × 1350, à publier comme « document » sur LinkedIn. Se régénère avec `pnpm build && pnpm linkedin-carousel`.
+
+Pages : couverture ; foyer ; lucioles ; maison et sacs ; liste de courses ; recettes avec les boîtes ; activités ; plan d’urgence ; bons gestes ; « Gratuit. Sans compte. Hors connexion. » et kitzy.lu.
+
+Texte d’accompagnement proposé :
+
+> Kitzy, c’est quoi concrètement ? En 10 écrans : une réserve calculée pour votre foyer, des rappels avant les dates, une liste de courses prête, des idées recettes avec vos conserves, des activités pour garder le kit vivant, et votre plan d’urgence protégé.
+>
+> Gratuit, sans compte, hors connexion. 👉 kitzy.lu
+
 ## Conseils de publication
 
 - **Texte alternatif** : sur LinkedIn, après avoir ajouté l’image, « Ajouter un texte alternatif ». Les textes ci-dessus tiennent dans la limite de 1 000 caractères.
