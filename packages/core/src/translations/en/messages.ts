@@ -95,10 +95,8 @@ export const messages: Messages = {
     remaining_other: '{{count}} more fireflies to light to last 72 hours.',
     allLit: 'All six fireflies are glowing. Your kit is ready.',
     story: {
-      watch:
-        'Six fireflies watch over your burrow: water, meals, light, warmth, care and your plan.',
-      fade: 'When a supply runs short, its firefly goes out. Build up your household’s supplies to light them again, one by one.',
-      allGood: 'As long as they all glow, all is well.',
+      watch: 'Each supply you complete lights a firefly: water, meals, light, warmth, care, plan.',
+      allGood: 'Six fireflies lit, and your household can last 72 hours.',
     },
     firstMissionLabel: 'To begin',
     firstMission: 'Tell me who lives with you: I’ll work out what you need for 72 hours.',

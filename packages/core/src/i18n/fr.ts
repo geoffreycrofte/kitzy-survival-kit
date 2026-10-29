@@ -98,10 +98,8 @@ export const fr = {
     remaining_other: 'Encore {{count}} lucioles à allumer pour tenir 72 h.',
     allLit: 'Les six lucioles brillent. Ton kit est prêt.',
     story: {
-      watch:
-        'Six lucioles veillent sur ton terrier : l’eau, les repas, la lumière, la chaleur, les soins et ton plan.',
-      fade: 'Quand une réserve manque, sa luciole s’éteint. Prépare les réserves de ton foyer pour les rallumer, une à une.',
-      allGood: 'Tant qu’elles brillent toutes, tout va bien.',
+      watch: 'Chaque réserve prête allume une luciole : eau, repas, lumière, chaleur, soins, plan.',
+      allGood: 'Six lucioles allumées, et ton foyer tient 72 h.',
     },
     firstMissionLabel: 'Pour commencer',
     firstMission: 'Dis-moi qui vit chez toi : je calcule ce qu’il te faut pour 72 h.',

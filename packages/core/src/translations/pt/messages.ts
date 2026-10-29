@@ -96,9 +96,8 @@ export const messages: Messages = {
     allLit: 'Os seis pirilampos brilham. O teu kit está pronto.',
     story: {
       watch:
-        'Seis pirilampos vigiam a tua toca: a água, as refeições, a luz, o calor, os cuidados e o teu plano.',
-      fade: 'Quando falta uma reserva, o seu pirilampo apaga-se. Prepara as reservas da tua casa para os voltar a acender, um a um.',
-      allGood: 'Enquanto brilharem todos, está tudo bem.',
+        'Cada reserva pronta acende um pirilampo: água, refeições, luz, calor, cuidados, plano.',
+      allGood: 'Seis pirilampos acesos, e a tua casa aguenta 72 horas.',
     },
     firstMissionLabel: 'Para começar',
     firstMission: 'Diz-me quem vive contigo: eu calculo o que precisas para 72 horas.',

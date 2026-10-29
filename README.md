@@ -55,3 +55,7 @@ To run the end-to-end tests with an already installed Chromium: `PLAYWRIGHT_CHRO
 ## Publishing
 
 Every push to `main` builds the site and deploys it to GitHub Pages. The one-time repository setup (Pages, domain, optional build variables) is described in [`docs/maintaining.md`](docs/maintaining.md). Without any of it, the app builds and works: optional features simply stay off.
+
+## License
+
+Kitzy is by Geoffrey Crofte, under [CC BY-NC-SA 4.0](LICENSE): you may share and adapt it with credit, not for commercial use, and under the same license. Third-party dependencies and the official “Lëtz prepare!” guide covers keep their own rights.

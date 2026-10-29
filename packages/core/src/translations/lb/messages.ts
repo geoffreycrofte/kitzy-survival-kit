@@ -96,9 +96,8 @@ export const messages: Messages = {
     allLit: 'All sechs Liichtwiermercher liichten. Däi Kit ass prett.',
     story: {
       watch:
-        'Sechs Liichtwiermercher passen op däi Bau op: d’Waasser, d’Iessen, d’Liicht, d’Wäermt, d’Fleeg an däi Plang.',
-      fade: 'Wann e Virrot feelt, geet säi Liichtwiermchen aus. Fëll d’Virréit vun dengem Haushalt op, fir se eent nom aneren erëm unzemaachen.',
-      allGood: 'Soulaang se all liichten, ass alles an der Rei.',
+        'All fäerdege Virrot mécht e Liichtwiermchen un: Waasser, Iessen, Liicht, Wäermt, Fleeg, Plang.',
+      allGood: 'Sechs Liichtwiermercher liichten, an däin Haushalt hält 72 Stonnen duer.',
     },
     firstMissionLabel: 'Fir unzefänken',
     firstMission: 'So mer, wien bei dir wunnt: ech rechnen aus, wat s du fir 72 Stonne brauchs.',

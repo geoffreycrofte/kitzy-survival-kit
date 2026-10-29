@@ -96,9 +96,8 @@ export const messages: Messages = {
     allLit: 'Alle sechs Glühwürmchen leuchten. Dein Vorrat ist bereit.',
     story: {
       watch:
-        'Sechs Glühwürmchen wachen über deinen Bau: Wasser, Mahlzeiten, Licht, Wärme, Pflege und dein Plan.',
-      fade: 'Wenn ein Vorrat fehlt, erlischt sein Glühwürmchen. Leg die Vorräte für deinen Haushalt an, um sie eins nach dem anderen wieder anzuzünden.',
-      allGood: 'Solange alle leuchten, ist alles gut.',
+        'Jeder fertige Vorrat lässt ein Glühwürmchen leuchten: Wasser, Mahlzeiten, Licht, Wärme, Pflege, Plan.',
+      allGood: 'Sechs Glühwürmchen leuchten, und dein Haushalt hält 72 Stunden durch.',
     },
     firstMissionLabel: 'Für den Anfang',
     firstMission: 'Sag mir, wer bei dir wohnt: Ich rechne aus, was du für 72 Stunden brauchst.',

@@ -1,6 +1,7 @@
 {
   "name": "kitzy",
   "private": true,
+  "license": "CC-BY-NC-SA-4.0",
   "description": "Kitzy : constituer, suivre et faire tourner sa r\u00e9serve d'urgence de 72 heures.",
   "type": "module",
   "packageManager": "pnpm@10.28.0",
@@ -19,7 +20,8 @@
     "format:check": "prettier --check .",
     "check-links": "tsx scripts/check-links.ts",
     "og-image": "tsx apps/web/scripts/og-image.ts",
-    "splash-images": "tsx apps/web/scripts/splash-images.ts"
+    "splash-images": "tsx apps/web/scripts/splash-images.ts",
+    "linkedin-image": "tsx apps/web/scripts/linkedin-image.ts"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
