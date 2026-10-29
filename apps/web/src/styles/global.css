@@ -128,6 +128,11 @@ main:focus {
   padding: 8px 20px 24px;
 }
 
+/* Pages internes : pas de nom de l'app au-dessus, le titre de la page prend un peu d'air. */
+.app:not(:has(> .header)) .app__main {
+  padding-top: 24px;
+}
+
 .skip-link {
   position: absolute;
   left: 12px;
@@ -2843,6 +2848,27 @@ html[data-motion='full'] .menu::backdrop {
 .menu__icon svg {
   width: 22px;
   height: 22px;
+}
+
+/* Faire un don : toute la largeur, sous les trois icônes. */
+.menu__donate {
+  width: 100%;
+  gap: 10px;
+}
+
+.menu__donate svg {
+  width: 20px;
+  height: 20px;
+}
+
+.donate__options {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.donate__options .button {
+  align-self: stretch;
 }
 
 /* Réglages, partage, sauvegarde : trois tuiles d'icône sur une ligne. */
