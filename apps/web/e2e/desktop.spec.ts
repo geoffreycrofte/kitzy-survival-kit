@@ -5,11 +5,11 @@ test.describe('Accueil : l’histoire des lucioles', () => {
   test('explique les lucioles tant que le foyer n’est pas présenté', async ({ page }) => {
     await page.goto('./');
     await expect(page.getByRole('img', { name: '0 luciole allumée sur 6' })).toBeVisible();
-    await expect(page.getByText('Tant qu’elles brillent toutes, tout va bien.')).toBeVisible();
+    await expect(page.getByText('Six lucioles allumées, et ton foyer tient 72 h.')).toBeVisible();
     await expect(page.getByRole('link', { name: 'Présenter mon foyer' })).toBeVisible();
     await setUpHousehold(page);
     await page.goto('./');
-    await expect(page.getByText('Tant qu’elles brillent toutes, tout va bien.')).toHaveCount(0);
+    await expect(page.getByText('Six lucioles allumées, et ton foyer tient 72 h.')).toHaveCount(0);
   });
 
   test('ne s’anime pas quand l’appareil demande moins de mouvement', async ({ page }) => {

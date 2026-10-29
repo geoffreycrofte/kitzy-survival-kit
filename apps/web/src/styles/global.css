@@ -338,6 +338,10 @@ main:focus {
   font-size: 1.0625rem;
 }
 
+.home__story p {
+  text-wrap: balance;
+}
+
 .home__story-end {
   color: var(--kz-heading);
   font-family: var(--kz-font-display);

@@ -71,7 +71,6 @@ export function Home() {
         {intro ? (
           <div className="home__story reveal">
             <p>{t('home.story.watch')}</p>
-            <p>{t('home.story.fade')}</p>
             <p className="home__story-end">{t('home.story.allGood')}</p>
           </div>
         ) : (
