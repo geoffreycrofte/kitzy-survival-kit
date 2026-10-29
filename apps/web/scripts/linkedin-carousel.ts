@@ -226,7 +226,7 @@ const html = ({ locale, cover, slides, end }: Version, shots: Map<string, string
       (slide, i) => `<section class="page">${glow(140, 560, 860, 0.8)}${flies}
       <h2>${slide.title}</h2>
       <p class="lead">${slide.text}</p>
-      <div class="phone"><img src="${pathToFileURL(shots.get(slide.screen) ?? '').href}" alt=""></div>
+      <div class="phone"><div class="screen" style="background-image:url(${pathToFileURL(shots.get(slide.screen) ?? '').href})"></div></div>
       ${foot(i + 2)}
     </section>`,
     ),
@@ -260,10 +260,13 @@ h2 { font-size: 68px; line-height: 1.06; color: #F4B860; }
 .cover .lead { color: #F4B860; }
 .hint { position: absolute; left: 80px; bottom: 120px; font-size: 26px; font-weight: 700; color: #8FA89E; }
 .cover .hog { position: absolute; right: 40px; bottom: -40px; height: 760px; }
-.phone { position: absolute; left: 50%; top: 470px; width: 540px; height: 1150px; margin-left: -270px;
-  padding: 16px; border-radius: 72px; background: #0B1F1C;
+/* Le téléphone s'arrête au bord de la page : à l'impression, un élément qui la dépasse
+   passe à la page suivante et disparaît. */
+.phone { position: absolute; left: 50%; top: 470px; width: 540px; height: 880px; margin-left: -270px;
+  padding: 16px 16px 0; border-radius: 72px 72px 0 0; background: #0B1F1C;
   box-shadow: 0 0 0 3px #2C4A43, 0 40px 90px rgba(0,0,0,.55); }
-.phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 58px; display: block; }
+.phone .screen { width: 100%; height: 100%; border-radius: 58px 58px 0 0;
+  background: top / 100% auto no-repeat; }
 .foot { position: absolute; left: 80px; right: 80px; bottom: 44px; display: flex; justify-content: space-between;
   font-size: 22px; font-weight: 700; color: #8FA89E; }
 .page:not(.cover):not(.end) .foot { left: 40px; right: 40px; }
