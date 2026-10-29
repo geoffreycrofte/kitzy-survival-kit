@@ -118,6 +118,87 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     await expect(page.getByText('Famille Schmit')).toBeVisible();
   });
 
+  test('plan verrouillé avec empreinte : « Faire une sauvegarde » la demande tout de suite', async ({
+    page,
+    context,
+  }) => {
+    const cdp = await context.newCDPSession(page);
+    await cdp.send('WebAuthn.enable');
+    await cdp.send('WebAuthn.addVirtualAuthenticator', {
+      options: {
+        protocol: 'ctap2',
+        transport: 'internal',
+        hasResidentKey: true,
+        hasUserVerification: true,
+        isUserVerified: true,
+        hasPrf: true,
+        automaticPresenceSimulation: true,
+      },
+    });
+    await setUpHousehold(page);
+    const card = await protectPlan(page);
+    await card.getByRole('button', { name: 'Ouvrir aussi avec l’empreinte ou le visage' }).click();
+    await expect(card.getByText(/Il s’ouvre avec ton empreinte/)).toBeVisible();
+    await card.getByRole('button', { name: 'Verrouiller maintenant' }).click();
+
+    // Un seul geste : l'empreinte est demandée aussitôt, puis la sauvegarde s'ouvre.
+    const data = page.getByRole('region', { name: 'Mes données', exact: true });
+    await data.getByRole('button', { name: 'Faire une sauvegarde' }).click();
+    await expect(page.getByRole('dialog', { name: 'Faire une sauvegarde' })).toBeVisible();
+    await expect(page.getByRole('dialog', { name: 'Ton plan est protégé' })).toBeHidden();
+  });
+
+  test('un plan protégé ne s’efface qu’après l’avoir ouvert, sans quitter la page', async ({
+    page,
+  }) => {
+    await setUpHousehold(page);
+    await fillOwner(page, 'Famille Weber');
+    await protectPlan(page);
+    await page.reload();
+    await page.goto('./plan');
+
+    // Le bouton est là, mais il demande d'abord d'ouvrir le plan, dans un tiroir.
+    await page.getByRole('button', { name: 'Effacer mon plan' }).click();
+    const unlock = page.getByRole('dialog', { name: 'Ton plan est protégé' });
+    await expect(unlock).toBeFocused();
+    await expect(unlock.getByText('Ouvre-le pour pouvoir l’effacer.')).toBeVisible();
+    await unlock.getByLabel('Code Kitzy', { exact: true }).fill(CODE);
+    await unlock.getByRole('button', { name: 'Ouvrir avec le code' }).click();
+    await expect(unlock.getByText('Plan ouvert.')).toBeFocused();
+    page.once('dialog', (dialog) => void dialog.accept());
+    await unlock.getByRole('button', { name: 'Effacer mon plan' }).click();
+    await expect(unlock).toBeHidden();
+    await expect(page.getByRole('status').filter({ hasText: 'Plan effacé.' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Effacer mon plan' })).toHaveCount(0);
+  });
+
+  test('plan verrouillé : restaurer ouvre le plan sur place, puis le sélecteur de fichiers', async ({
+    page,
+  }) => {
+    await setUpHousehold(page);
+    await protectPlan(page);
+    await page.reload();
+    await page.goto('./reglages');
+    const data = page.getByRole('region', { name: 'Mes données', exact: true });
+    await data.getByRole('button', { name: 'Choisir un fichier' }).click();
+    const unlock = page.getByRole('dialog', { name: 'Ton plan est protégé' });
+    await expect(unlock.getByText(/la sauvegarde restaurée sera protégée/)).toBeVisible();
+    for (const scheme of ['dark', 'light'] as const) {
+      await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
+      const results = await new AxeBuilder({ page }).analyze();
+      expect(results.violations, `tiroir d’ouverture ${scheme}`).toEqual([]);
+    }
+    await unlock.getByLabel('Code Kitzy', { exact: true }).fill(CODE);
+    await unlock.getByRole('button', { name: 'Ouvrir avec le code' }).click();
+    await expect(
+      unlock.getByText('Ton plan est ouvert. Choisis maintenant le fichier de sauvegarde.'),
+    ).toBeFocused();
+    const chooser = page.waitForEvent('filechooser');
+    await unlock.getByRole('button', { name: 'Choisir un fichier' }).click();
+    await chooser;
+    await expect(unlock).toBeHidden();
+  });
+
   test('une sauvegarde protégée se restaure ailleurs avec son code seulement', async ({
     page,
     browser,
@@ -128,14 +209,14 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     await page.reload();
     await page.goto('./reglages');
 
-    // Plan verrouillé : il faut l'ouvrir pour l'inclure dans la sauvegarde.
+    // Plan verrouillé : le bouton habituel ouvre d'abord le plan, dans un tiroir sous le doigt,
+    // puis enchaîne sur la sauvegarde.
     const data = page.getByRole('region', { name: 'Mes données', exact: true });
-    await expect(data.getByText(/pour l’inclure dans la sauvegarde/)).toBeVisible();
-    const lock = page.getByRole('region', { name: 'Protéger mon plan' });
-    await lock.getByLabel('Code Kitzy').fill(CODE);
-    await lock.getByRole('button', { name: 'Ouvrir avec le code' }).click();
-
     await data.getByRole('button', { name: 'Faire une sauvegarde' }).click();
+    const unlock = page.getByRole('dialog', { name: 'Ton plan est protégé' });
+    await expect(unlock.getByText('Ouvre-le pour l’inclure dans ta sauvegarde.')).toBeVisible();
+    await unlock.getByLabel('Code Kitzy', { exact: true }).fill(CODE);
+    await unlock.getByRole('button', { name: 'Ouvrir avec le code' }).click();
     const drawer = page.getByRole('dialog', { name: 'Faire une sauvegarde' });
     await expect(drawer).toBeFocused();
     // Ici, pas de partage de fichiers : le bouton dit qu'il va télécharger.

@@ -592,6 +592,7 @@ export const fr = {
     delete: 'Effacer mon plan',
     deleteConfirm: 'Effacer définitivement ton plan d’urgence ?',
     deleted: 'Plan effacé.',
+    deleteLocked: 'Ouvre-le pour pouvoir l’effacer.',
     notFound: 'Cette étape du plan n’existe pas.',
   },
   achievements: {
@@ -1166,6 +1167,10 @@ export const fr = {
     unlocked: 'Plan ouvert.',
   },
   backup: {
+    unlockTitle: 'Ton plan est protégé',
+    unlockForBackup: 'Ouvre-le pour l’inclure dans ta sauvegarde.',
+    unlockForRestore: 'Ouvre-le d’abord : la sauvegarde restaurée sera protégée de la même façon.',
+    unlockedRestore: 'Ton plan est ouvert. Choisis maintenant le fichier de sauvegarde.',
     make: 'Faire une sauvegarde',
     intro:
       'Ta sauvegarde contient tout Kitzy, y compris ton plan d’urgence. Choisis un code pour la protéger : il te sera demandé pour la restaurer, sur ce téléphone ou un autre.',
@@ -1193,11 +1198,7 @@ export const fr = {
     code: 'Code de la sauvegarde',
     codeHint: 'Au moins 8 caractères. Il peut être différent de ton code Kitzy.',
     done: 'Terminé',
-    needsUnlock:
-      'Ton plan est verrouillé : ouvre-le dans « Protéger mon plan », juste au-dessus, pour l’inclure dans la sauvegarde.',
     choose: 'Choisir un fichier',
-    importNeedsUnlock:
-      'Ouvre d’abord ton plan, juste au-dessus : la sauvegarde restaurée sera protégée de la même façon.',
     importCode: 'Code de la sauvegarde à ouvrir',
     protectedFile: 'Cette sauvegarde est protégée par un code.',
     open: 'Ouvrir la sauvegarde',

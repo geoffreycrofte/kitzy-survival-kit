@@ -586,6 +586,7 @@ export const messages: Messages = {
     delete: 'Delete my plan',
     deleteConfirm: 'Permanently delete your emergency plan?',
     deleted: 'Plan deleted.',
+    deleteLocked: 'Open it to be able to delete it.',
     notFound: 'This plan step doesn’t exist.',
   },
   achievements: {
@@ -1151,6 +1152,10 @@ export const messages: Messages = {
     unlocked: 'Plan opened.',
   },
   backup: {
+    unlockTitle: 'Your plan is protected',
+    unlockForBackup: 'Open it to include it in your backup.',
+    unlockForRestore: 'Open it first: the restored backup will be protected the same way.',
+    unlockedRestore: 'Your plan is open. Now choose the backup file.',
     make: 'Make a backup',
     intro:
       'Your backup holds all of Kitzy, including your emergency plan. Choose a code to protect it: you’ll need it to restore the backup, on this phone or another.',
@@ -1178,11 +1183,7 @@ export const messages: Messages = {
     code: 'Backup code',
     codeHint: 'At least 8 characters. It can differ from your Kitzy code.',
     done: 'Done',
-    needsUnlock:
-      'Your plan is locked: open it under “Protect my plan”, just above, to include it in the backup.',
     choose: 'Choose a file',
-    importNeedsUnlock:
-      'Open your plan first, just above: the restored backup will be protected the same way.',
     importCode: 'Code of the backup to open',
     protectedFile: 'This backup is protected by a code.',
     open: 'Open the backup',

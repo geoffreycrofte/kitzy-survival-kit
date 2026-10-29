@@ -29,6 +29,7 @@ import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
 import { Loading } from '../components/Loading';
 import { PlanGate } from '../components/PlanLock';
+import { UnlockDrawer } from '../components/UnlockDrawer';
 import { ShareKitzy } from '../components/ShareKitzy';
 
 const uid = () => crypto.randomUUID();
@@ -104,20 +105,58 @@ export function PlanOverview() {
         </Link>
       </section>
 
-      {(data.plan || data.planSealed) && (
-        <button
-          type="button"
-          className="button button--danger"
-          onClick={async () => {
-            if (!window.confirm(t('plan.deleteConfirm'))) return;
-            await deletePlan();
-            announce(t('plan.deleted'));
-          }}
-        >
-          {t('plan.delete')}
-        </button>
-      )}
+      <PlanDelete />
     </div>
+  );
+}
+
+/**
+ * Effacer le plan. Protégé, il faut d'abord l'ouvrir (empreinte ou code), dans un tiroir sous
+ * le doigt : sinon n'importe qui tenant le téléphone pourrait l'effacer. « Tout effacer »
+ * (réglages) reste le recours en cas de code perdu.
+ */
+function PlanDelete() {
+  const { t } = useTranslation();
+  const data = useKitzy();
+  const [unlocking, setUnlocking] = useState(false);
+  if (!data || (!data.plan && !data.planSealed)) return null;
+
+  const remove = async () => {
+    if (!window.confirm(t('plan.deleteConfirm'))) return;
+    await deletePlan();
+    announce(t('plan.deleted'));
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        className="button button--danger"
+        onClick={() => (data.planState === 'open' ? void remove() : setUnlocking(true))}
+      >
+        {t('plan.delete')}
+      </button>
+      <UnlockDrawer
+        open={unlocking}
+        intro={t('plan.deleteLocked')}
+        next={
+          <>
+            <p tabIndex={-1}>{t('lock.unlocked')}</p>
+            <button
+              type="button"
+              className="button button--danger"
+              onClick={() => {
+                setUnlocking(false);
+                void remove();
+              }}
+            >
+              {t('plan.delete')}
+            </button>
+          </>
+        }
+        onClose={() => setUnlocking(false)}
+      />
+    </>
   );
 }
 

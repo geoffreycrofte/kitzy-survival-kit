@@ -401,6 +401,9 @@ async function writeSealedPlan(key: Uint8Array, plan: EmergencyPlan | null): Pro
 }
 
 export async function deletePlan(): Promise<void> {
+  // Protégé, le plan ne s'efface qu'ouvert. « Tout effacer » reste possible si le code est perdu.
+  const lock = await getMeta<PlanLock | null>('planLock', null);
+  if (lock && !getPlanKey()) throw new Error('Plan verrouillé : ouvre-le avant de l’effacer.');
   await db.meta.bulkDelete(['plan', 'planSealed', 'planInfo']);
 }
 
