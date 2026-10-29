@@ -10,6 +10,7 @@ import { UpdateBanner } from './components/UpdateBanner';
 import { useKitzy } from './data/derived';
 import { syncPush, webPushConfigured } from './lib/webpush';
 import { Achievements } from './pages/Achievements';
+import { DataPage } from './pages/DataPage';
 import { Activities } from './pages/Activities';
 import { Challenge } from './pages/Challenge';
 import { Quiz } from './pages/Quiz';
@@ -110,6 +111,7 @@ export function App() {
             <Route path="/simulation" element={<Simulation />} />
             <Route path="/quiz" element={<Quiz />} />
             <Route path="/reglages" element={<Settings />} />
+            <Route path="/sauvegarde" element={<DataPage />} />
             <Route path="/transparence" element={<Transparency />} />
             <Route path="/confidentialite" element={<Privacy />} />
             <Route path="*" element={<NotFound />} />

@@ -16,7 +16,7 @@ async function fillOwner(page: Page, name: string) {
 }
 
 async function protectPlan(page: Page) {
-  await page.goto('./reglages');
+  await page.goto('./sauvegarde');
   const card = page.getByRole('region', { name: 'Protéger mon plan' });
   await card.getByLabel('Code Kitzy', { exact: true }).fill(CODE);
   await card.getByLabel('Confirme le code').fill(CODE);
@@ -178,7 +178,7 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     await setUpHousehold(page);
     await protectPlan(page);
     await page.reload();
-    await page.goto('./reglages');
+    await page.goto('./sauvegarde');
     const data = page.getByRole('region', { name: 'Mes données', exact: true });
     await data.getByRole('button', { name: 'Choisir un fichier' }).click();
     const unlock = page.getByRole('dialog', { name: 'Ton plan est protégé' });
@@ -205,7 +205,7 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     await setUpHousehold(page);
     await protectPlan(page);
     await page.reload();
-    await page.goto('./reglages');
+    await page.goto('./sauvegarde');
 
     await page.getByRole('button', { name: 'Tout effacer' }).click();
     const unlock = page.getByRole('dialog', { name: 'Ton plan est protégé' });
@@ -231,7 +231,7 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     await fillOwner(page, 'Famille Hoffmann');
     await protectPlan(page);
     await page.reload();
-    await page.goto('./reglages');
+    await page.goto('./sauvegarde');
 
     // Plan verrouillé : le bouton habituel ouvre d'abord le plan, dans un tiroir sous le doigt,
     // puis enchaîne sur la sauvegarde.
@@ -271,7 +271,7 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     // Un autre appareil, sans empreinte ni verrou : le code suffit.
     const other = await browser.newContext({ baseURL: 'http://localhost:4173/app/' });
     const fresh = await other.newPage();
-    await fresh.goto('./reglages');
+    await fresh.goto('./sauvegarde');
     await fresh.locator('input[type=file]').setInputFiles({
       name: 'kitzy-sauvegarde-protegee.json',
       mimeType: 'application/json',
@@ -309,7 +309,7 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
       });
     });
     await setUpHousehold(page);
-    await page.goto('./reglages');
+    await page.goto('./sauvegarde');
     await page.getByRole('button', { name: 'Faire une sauvegarde' }).click();
     const drawer = page.getByRole('dialog', { name: 'Faire une sauvegarde' });
     await drawer
@@ -331,7 +331,7 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
   test('aucune erreur axe sur les écrans de protection', async ({ page }) => {
     await setUpHousehold(page);
     await fillOwner(page, 'Famille Muller');
-    await page.goto('./reglages');
+    await page.goto('./sauvegarde');
     for (const scheme of ['dark', 'light'] as const) {
       await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });
       const results = await new AxeBuilder({ page }).analyze();

@@ -29,6 +29,7 @@ export const messages: Messages = {
     plan: 'O meu plano',
     guide: 'Guia',
     settings: 'Definições',
+    backup: 'Cópia de segurança e dados',
     menu: 'Menu',
     achievements: 'Conquistas',
     tasks: 'Os meus gestos',
@@ -49,7 +50,6 @@ export const messages: Messages = {
     guideHint: 'O guia oficial, mais simples',
     tasksHint: 'O que não se compra',
     activitiesHint: 'Rituais, receitas, desafio, simulação, quiz',
-    settingsHint: 'Lembretes, cópia de segurança, nível do kit',
     about: 'Transparência e privacidade',
   },
   theme: {
@@ -317,12 +317,14 @@ export const messages: Messages = {
     back: 'Voltar à toca',
   },
   settings: {
+    dataPageIntro:
+      'Protege o teu plano, guarda uma cópia de segurança e gere os dados do Kitzy neste aparelho.',
     title: 'Definições',
     toc: 'Nesta página',
     groups: {
       display: 'Apresentação',
       kits: 'Kits e lembretes',
-      device: 'Este aparelho e os meus dados',
+      device: 'Este aparelho',
       kitzy: 'Kitzy',
     },
     danger: 'Recomeçar do zero',
@@ -818,7 +820,6 @@ export const messages: Messages = {
     message:
       'Estou a preparar o nosso kit para 72 horas com o Kitzy. É gratuito, e fica tudo no telemóvel. Quando a família e o bairro estão preparados, é mais fácil ajudarmo-nos uns aos outros.',
     shareTitle: 'Kitzy, o kit de 72 horas',
-    menuHint: 'Envia a app aos teus próximos e vizinhos',
   },
   recipes: {
     title: 'Noite das conservas',
@@ -1036,7 +1037,7 @@ export const messages: Messages = {
       {
         title: 'Apagar os teus dados',
         where: 'No teu aparelho',
-        text: 'Como está tudo no teu aparelho, é aí que se apaga: nas definições, «Apagar tudo» elimina todos os dados do Kitzy. Desinstalar a app ou limpar os dados do site tem o mesmo efeito.',
+        text: 'Como está tudo no teu aparelho, é aí que se apaga: em «Cópia de segurança e dados», «Apagar tudo» elimina todos os dados do Kitzy. Desinstalar a app ou limpar os dados do site tem o mesmo efeito.',
       },
     ],
     pushSection: {

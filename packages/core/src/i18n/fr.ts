@@ -32,6 +32,7 @@ export const fr = {
     plan: 'Mon plan',
     guide: 'Guide',
     settings: 'Réglages',
+    backup: 'Sauvegarde et données',
     menu: 'Menu',
     achievements: 'Succès',
     tasks: 'Mes gestes',
@@ -52,7 +53,6 @@ export const fr = {
     guideHint: 'Le guide officiel, en plus simple',
     tasksHint: 'Ce qui ne s’achète pas',
     activitiesHint: 'Rituels, recettes, défi, simulation, quiz',
-    settingsHint: 'Rappels, sauvegarde, niveau du kit',
     about: 'Transparence et confidentialité',
   },
   theme: {
@@ -321,12 +321,14 @@ export const fr = {
     back: 'Retour au terrier',
   },
   settings: {
+    dataPageIntro:
+      'Protège ton plan, garde une sauvegarde et gère les données de Kitzy sur cet appareil.',
     title: 'Réglages',
     toc: 'Sur cette page',
     groups: {
       display: 'Affichage',
       kits: 'Kits et rappels',
-      device: 'Cet appareil et mes données',
+      device: 'Cet appareil',
       kitzy: 'Kitzy',
     },
     danger: 'Repartir de zéro',
@@ -819,7 +821,6 @@ export const fr = {
     message:
       'Je prépare notre kit pour tenir 72 heures avec Kitzy. C’est gratuit, et tout reste sur le téléphone. Quand la famille et le quartier sont prêts, on s’entraide plus facilement.',
     shareTitle: 'Kitzy, le kit 72 h',
-    menuHint: 'Envoie l’app à tes proches et à tes voisins',
   },
   recipes: {
     title: 'Soirée conserves',
@@ -1039,7 +1040,7 @@ export const fr = {
       {
         title: 'Effacer tes données',
         where: 'Sur ton appareil',
-        text: 'Comme tout est sur ton appareil, c’est là qu’on efface : dans les réglages, « Tout effacer » supprime toutes les données de Kitzy. Désinstaller l’app ou vider les données du site fait de même.',
+        text: 'Comme tout est sur ton appareil, c’est là qu’on efface : dans « Sauvegarde et données », « Tout effacer » supprime toutes les données de Kitzy. Désinstaller l’app ou vider les données du site fait de même.',
       },
     ],
     pushSection: {

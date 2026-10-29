@@ -49,7 +49,7 @@ test.describe('Robustesse', () => {
 
   test('une sauvegarde piégée est refusée sans toucher aux données', async ({ page }) => {
     await setUpHousehold(page);
-    await page.goto('./reglages');
+    await page.goto('./sauvegarde');
     const backup = {
       app: 'kitzy',
       schemaVersion: 2,

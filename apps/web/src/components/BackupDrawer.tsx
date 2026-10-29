@@ -126,7 +126,7 @@ export function BackupDrawer({ open, onClose }: { open: boolean; onClose: () => 
   const restoreHow = (
     <p className="choice__help">
       {t('backup.restoreHow', {
-        settings: t('nav.settings'),
+        settings: t('nav.backup'),
         data: t('settings.data'),
         choose: t('backup.choose'),
       })}

@@ -55,6 +55,7 @@ test.describe('Version bureau', () => {
         './plan',
         './succes',
         './reglages',
+        './sauvegarde',
       ]) {
         await page.goto(path);
         await expect(page.getByRole('heading', { level: 1 })).toBeVisible();

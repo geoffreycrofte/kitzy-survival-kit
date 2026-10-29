@@ -7,6 +7,7 @@ import { useShareApp } from './ShareKitzy';
 import { setThemePref, usePreferences, type ThemePref } from '../lib/preferences';
 import {
   AutoThemeIcon,
+  BackupIcon,
   BookIcon,
   CheckListIcon,
   CloseIcon,
@@ -31,6 +32,7 @@ export const MENU_ROUTES = [
   '/guide',
   '/gestes',
   '/reglages',
+  '/sauvegarde',
   '/transparence',
   '/confidentialite',
 ];
@@ -167,7 +169,6 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
     },
     { to: '/guide', Icon: BookIcon, title: t('nav.guide'), hint: t('menu.guideHint') },
     { to: '/gestes', Icon: CheckListIcon, title: t('nav.tasks'), hint: t('menu.tasksHint') },
-    { to: '/reglages', Icon: SettingsIcon, title: t('nav.settings'), hint: t('menu.settingsHint') },
   ];
 
   return (
@@ -229,16 +230,30 @@ export function MainMenu({ open, onClose }: MainMenuProps) {
                 </NavLink>
               </li>
             ))}
-            <li className="menu__item" style={{ '--i': links.length + 1 } as CSSProperties}>
-              <button type="button" className="menu__link" onClick={() => void share()}>
-                <span className="menu__icon">
-                  <ShareIcon />
-                </span>
-                <span className="menu__text">
-                  <span className="menu__name">{t('share.button')}</span>
-                  <span className="menu__hint">{t('share.menuHint')}</span>
-                </span>
+          </ul>
+          {/* Réglages, partage et sauvegarde : des icônes sur une ligne, le nom pour les lecteurs
+              d'écran. Moins d'entrées dans la liste, sans rien retirer. */}
+          <ul
+            className="menu__quick menu__item"
+            style={{ '--i': links.length + 1 } as CSSProperties}
+          >
+            <li>
+              <NavLink to="/reglages" className="menu__quick-link" onClick={close}>
+                <SettingsIcon />
+                <span className="visually-hidden">{t('nav.settings')}</span>
+              </NavLink>
+            </li>
+            <li>
+              <button type="button" className="menu__quick-link" onClick={() => void share()}>
+                <ShareIcon />
+                <span className="visually-hidden">{t('share.button')}</span>
               </button>
+            </li>
+            <li>
+              <NavLink to="/sauvegarde" className="menu__quick-link" onClick={close}>
+                <BackupIcon />
+                <span className="visually-hidden">{t('nav.backup')}</span>
+              </NavLink>
             </li>
           </ul>
         </nav>
