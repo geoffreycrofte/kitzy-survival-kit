@@ -6,6 +6,7 @@ import { importData } from '../data/store';
 import { announce } from '../lib/announce';
 import { BackupDrawer } from './BackupDrawer';
 import { CodeField } from './PlanLock';
+import { UnlockDrawer } from './UnlockDrawer';
 
 /** Sauvegarde (dans un tiroir, voir BackupDrawer) et restauration. */
 export function BackupCard() {
@@ -13,6 +14,8 @@ export function BackupCard() {
   const data = useKitzy();
   const fileRef = useRef<HTMLInputElement>(null);
   const [making, setMaking] = useState(false);
+  // Plan verrouillé : les boutons restent les mêmes ; le tiroir d'ouverture vient sous le doigt.
+  const [unlockFor, setUnlockFor] = useState<'backup' | 'restore' | null>(null);
   const [busy, setBusy] = useState(false);
   const [pending, setPending] = useState<string | null>(null);
   const [importCode, setImportCode] = useState('');
@@ -66,31 +69,51 @@ export function BackupCard() {
       </h3>
       <p className="choice__help">{t('settings.dataHelp')}</p>
 
-      {locked ? (
-        <p className="note">{t('backup.needsUnlock')}</p>
-      ) : (
-        <button type="button" className="button" onClick={() => setMaking(true)}>
-          {t('backup.make')}
-        </button>
-      )}
+      <button
+        type="button"
+        className="button"
+        onClick={() => (locked ? setUnlockFor('backup') : setMaking(true))}
+      >
+        {t('backup.make')}
+      </button>
       <BackupDrawer open={making} onClose={() => setMaking(false)} />
+      <UnlockDrawer
+        open={unlockFor !== null}
+        intro={t(unlockFor === 'restore' ? 'backup.unlockForRestore' : 'backup.unlockForBackup')}
+        next={
+          unlockFor === 'restore' ? (
+            <>
+              <p tabIndex={-1}>{t('backup.unlockedRestore')}</p>
+              <button
+                type="button"
+                className="button"
+                onClick={() => {
+                  // Un nouveau geste : le sélecteur de fichiers l'exige.
+                  fileRef.current?.click();
+                  setUnlockFor(null);
+                }}
+              >
+                {t('backup.choose')}
+              </button>
+            </>
+          ) : undefined
+        }
+        onUnlocked={() => setMaking(true)}
+        onClose={() => setUnlockFor(null)}
+      />
 
       <h4 className="backup__restore">{t('settings.import')}</h4>
       <p id="import-help" className="choice__help">
         {t('settings.importHelp')}
       </p>
-      {locked ? (
-        <p className="note">{t('backup.importNeedsUnlock')}</p>
-      ) : (
-        <button
-          type="button"
-          className="button button--ghost"
-          aria-describedby="import-help"
-          onClick={() => fileRef.current?.click()}
-        >
-          {t('backup.choose')}
-        </button>
-      )}
+      <button
+        type="button"
+        className="button button--ghost"
+        aria-describedby="import-help"
+        onClick={() => (locked ? setUnlockFor('restore') : fileRef.current?.click())}
+      >
+        {t('backup.choose')}
+      </button>
       <input
         ref={fileRef}
         type="file"

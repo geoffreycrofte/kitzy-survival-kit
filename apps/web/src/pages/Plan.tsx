@@ -28,7 +28,8 @@ import { mascotImage } from '../lib/assets';
 import { usePageTitle } from '../lib/usePageTitle';
 import { NotFound } from './NotFound';
 import { Loading } from '../components/Loading';
-import { PlanGate, PlanUnlock } from '../components/PlanLock';
+import { PlanGate } from '../components/PlanLock';
+import { UnlockDrawer } from '../components/UnlockDrawer';
 import { ShareKitzy } from '../components/ShareKitzy';
 
 const uid = () => crypto.randomUUID();
@@ -110,61 +111,52 @@ export function PlanOverview() {
 }
 
 /**
- * Effacer le plan. Protégé, il faut d'abord l'ouvrir (empreinte ou code) : sinon n'importe qui
- * tenant le téléphone pourrait l'effacer. « Tout effacer » (réglages) reste le recours en cas de
- * code perdu.
+ * Effacer le plan. Protégé, il faut d'abord l'ouvrir (empreinte ou code), dans un tiroir sous
+ * le doigt : sinon n'importe qui tenant le téléphone pourrait l'effacer. « Tout effacer »
+ * (réglages) reste le recours en cas de code perdu.
  */
 function PlanDelete() {
   const { t } = useTranslation();
   const data = useKitzy();
   const [unlocking, setUnlocking] = useState(false);
-  const deleteRef = useRef<HTMLButtonElement>(null);
-  const focusDelete = useRef(false);
-  const open = data?.planState === 'open';
-
-  // Ouvert à l'instant pour l'effacer : le focus va sur le bouton qui vient d'apparaître.
-  useEffect(() => {
-    if (open && focusDelete.current) {
-      focusDelete.current = false;
-      deleteRef.current?.focus();
-    }
-  }, [open, unlocking]);
-
   if (!data || (!data.plan && !data.planSealed)) return null;
-  if (!open) {
-    return (
-      <div className="plan-delete">
-        <p className="note">{t('plan.deleteLocked')}</p>
-        {unlocking ? (
-          <PlanUnlock
-            heading="h2"
-            focusOnMount
-            onUnlocked={() => {
-              focusDelete.current = true;
-              setUnlocking(false);
-            }}
-          />
-        ) : (
-          <button type="button" className="button button--ghost" onClick={() => setUnlocking(true)}>
-            {t('plan.unlockToDelete')}
-          </button>
-        )}
-      </div>
-    );
-  }
+
+  const remove = async () => {
+    if (!window.confirm(t('plan.deleteConfirm'))) return;
+    await deletePlan();
+    announce(t('plan.deleted'));
+  };
+
   return (
-    <button
-      ref={deleteRef}
-      type="button"
-      className="button button--danger"
-      onClick={async () => {
-        if (!window.confirm(t('plan.deleteConfirm'))) return;
-        await deletePlan();
-        announce(t('plan.deleted'));
-      }}
-    >
-      {t('plan.delete')}
-    </button>
+    <>
+      <button
+        type="button"
+        className="button button--danger"
+        onClick={() => (data.planState === 'open' ? void remove() : setUnlocking(true))}
+      >
+        {t('plan.delete')}
+      </button>
+      <UnlockDrawer
+        open={unlocking}
+        intro={t('plan.deleteLocked')}
+        next={
+          <>
+            <p tabIndex={-1}>{t('lock.unlocked')}</p>
+            <button
+              type="button"
+              className="button button--danger"
+              onClick={() => {
+                setUnlocking(false);
+                void remove();
+              }}
+            >
+              {t('plan.delete')}
+            </button>
+          </>
+        }
+        onClose={() => setUnlocking(false)}
+      />
+    </>
   );
 }
 

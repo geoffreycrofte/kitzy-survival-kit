@@ -589,9 +589,7 @@ export const messages: Messages = {
     delete: 'Mäi Plang läschen',
     deleteConfirm: 'Däin Noutfallplang definitiv läschen?',
     deleted: 'Plang geläscht.',
-    deleteLocked:
-      'Däi Plang ass geschützt: maach en mat dengem Fangerofdrock oder dengem Code op, fir en kënnen ze läschen.',
-    unlockToDelete: 'Mäi Plang opmaachen, fir en ze läschen',
+    deleteLocked: 'Maach en op, fir en kënnen ze läschen.',
     notFound: 'Dëse Schrëtt vum Plang gëtt et net.',
   },
   achievements: {
@@ -1174,6 +1172,11 @@ export const messages: Messages = {
     unlocked: 'Plang opgemaach.',
   },
   backup: {
+    unlockTitle: 'Däi Plang ass geschützt',
+    unlockForBackup: 'Maach en op, fir en an däi Backup ze huelen.',
+    unlockForRestore:
+      'Maach en fir d’éischt op: de restauréierte Backup gëtt op déiselwecht Manéier geschützt.',
+    unlockedRestore: 'Däi Plang ass op. Wiel elo de Backup-Fichier.',
     make: 'E Backup maachen',
     intro:
       'Däi Backup enthält alles aus Kitzy, och däi Noutfallplang. Wiel e Code, fir en ze schützen: du brauchs en, fir de Backup ze restauréieren, op dësem oder engem aneren Telefon.',
@@ -1201,11 +1204,7 @@ export const messages: Messages = {
     code: 'Code vum Backup',
     codeHint: 'Mindestens 8 Zeechen. En däerf anescht si wéi däi Kitzy-Code.',
     done: 'Fäerdeg',
-    needsUnlock:
-      'Däi Plang ass gespaart: maach en uewen ënner „Mäi Plang schützen“ op, fir en an de Backup ze huelen.',
     choose: 'E Fichier auswielen',
-    importNeedsUnlock:
-      'Maach fir d’éischt uewen däi Plang op: de restauréierte Backup gëtt op déiselwecht Manéier geschützt.',
     importCode: 'Code vum Backup fir opzemaachen',
     protectedFile: 'Dëse Backup ass mat engem Code geschützt.',
     open: 'De Backup opmaachen',

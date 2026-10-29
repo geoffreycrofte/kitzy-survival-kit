@@ -587,9 +587,7 @@ export const messages: Messages = {
     delete: 'Apagar o meu plano',
     deleteConfirm: 'Apagar definitivamente o teu plano de emergência?',
     deleted: 'Plano apagado.',
-    deleteLocked:
-      'O teu plano está protegido: abre-o com a impressão digital ou o código para o poderes apagar.',
-    unlockToDelete: 'Abrir o meu plano para o apagar',
+    deleteLocked: 'Abre-o para o poderes apagar.',
     notFound: 'Esta etapa do plano não existe.',
   },
   achievements: {
@@ -1165,6 +1163,10 @@ export const messages: Messages = {
     unlocked: 'Plano aberto.',
   },
   backup: {
+    unlockTitle: 'O teu plano está protegido',
+    unlockForBackup: 'Abre-o para o incluir na tua cópia.',
+    unlockForRestore: 'Abre-o primeiro: a cópia restaurada ficará protegida da mesma forma.',
+    unlockedRestore: 'O teu plano está aberto. Escolhe agora o ficheiro da cópia.',
     make: 'Fazer uma cópia de segurança',
     intro:
       'A cópia contém todo o Kitzy, incluindo o teu plano de emergência. Escolhe um código para a proteger: vais precisar dele para a restaurar, neste telemóvel ou noutro.',
@@ -1192,11 +1194,7 @@ export const messages: Messages = {
     code: 'Código da cópia',
     codeHint: 'Pelo menos 8 caracteres. Pode ser diferente do teu código Kitzy.',
     done: 'Concluído',
-    needsUnlock:
-      'O teu plano está bloqueado: abre-o em «Proteger o meu plano», logo acima, para o incluir na cópia.',
     choose: 'Escolher um ficheiro',
-    importNeedsUnlock:
-      'Abre primeiro o teu plano, logo acima: a cópia restaurada ficará protegida da mesma forma.',
     importCode: 'Código da cópia a abrir',
     protectedFile: 'Esta cópia de segurança está protegida por um código.',
     open: 'Abrir a cópia',

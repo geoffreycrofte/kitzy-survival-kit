@@ -115,26 +115,38 @@ export function PlanGate({ children }: { children: ReactNode }) {
 /** Ouvrir le plan : empreinte (si ajoutée), sinon le code Kitzy. */
 export function PlanUnlock({
   heading = 'h1',
-  focusOnMount = false,
+  bare = false,
+  autoPasskey = false,
   onUnlocked,
 }: {
-  heading?: 'h1' | 'h2' | 'h3';
-  /** Ouvert à la demande (bouton) : le focus va au premier contrôle, sinon il serait perdu. */
-  focusOnMount?: boolean;
+  heading?: 'h1' | 'h3';
+  /** Sans carte ni titre : dans un tiroir qui a déjà les siens. */
+  bare?: boolean;
+  /** Demande l'empreinte tout de suite (au moment du geste) ; le bouton reste là si c'est refusé. */
+  autoPasskey?: boolean;
   onUnlocked?: () => void;
 }) {
   const { t } = useTranslation();
-  const sectionRef = useRef<HTMLElement>(null);
-  useEffect(() => {
-    if (focusOnMount) sectionRef.current?.querySelector<HTMLElement>('button, input')?.focus();
-  }, [focusOnMount]);
   const data = useKitzy();
+  const hasPasskey = Boolean(data?.planLock?.passkey);
+  const asked = useRef(false);
+  useEffect(() => {
+    if (!autoPasskey || !hasPasskey || asked.current) return;
+    asked.current = true;
+    // Silencieux en cas de refus : les boutons empreinte et code restent sous le doigt.
+    void unlockPlanWithPasskey()
+      .then((ok) => {
+        if (!ok) return;
+        announce(t('lock.unlocked'));
+        onUnlocked?.();
+      })
+      .catch(() => undefined);
+  }, [autoPasskey, hasPasskey, onUnlocked, t]);
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);
   const Heading = heading;
   const titleId = useId();
-  const hasPasskey = Boolean(data?.planLock?.passkey);
 
   const withPasskey = async () => {
     setBusy(true);
@@ -158,37 +170,46 @@ export function PlanUnlock({
     } else setError(t('lock.wrongCode'));
   };
 
+  const controls = (
+    <>
+      {hasPasskey && (
+        <button type="button" className="button" disabled={busy} onClick={withPasskey}>
+          {t('lock.unlockPasskey')}
+        </button>
+      )}
+      <form className="lock__form" onSubmit={withCode}>
+        <CodeField
+          label={t('lock.code')}
+          value={code}
+          onChange={(value) => {
+            setCode(value);
+            setError('');
+          }}
+          error={error}
+          autoComplete="current-password"
+        />
+        <button
+          type="submit"
+          className={hasPasskey ? 'button button--ghost' : 'button'}
+          disabled={busy || code.length === 0}
+        >
+          {t('lock.unlockCode')}
+        </button>
+      </form>
+    </>
+  );
+
+  if (bare) {
+    return <div className="lock">{controls}</div>;
+  }
   return (
     <div className={heading === 'h1' ? 'page' : undefined}>
-      <section ref={sectionRef} className="card lock" aria-labelledby={titleId}>
+      <section className="card lock" aria-labelledby={titleId}>
         <Heading id={titleId} tabIndex={heading === 'h1' ? -1 : undefined}>
           {t('lock.lockedTitle')}
         </Heading>
         <p>{t('lock.lockedText')}</p>
-        {hasPasskey && (
-          <button type="button" className="button" disabled={busy} onClick={withPasskey}>
-            {t('lock.unlockPasskey')}
-          </button>
-        )}
-        <form className="lock__form" onSubmit={withCode}>
-          <CodeField
-            label={t('lock.code')}
-            value={code}
-            onChange={(value) => {
-              setCode(value);
-              setError('');
-            }}
-            error={error}
-            autoComplete="current-password"
-          />
-          <button
-            type="submit"
-            className={hasPasskey ? 'button button--ghost' : 'button'}
-            disabled={busy || code.length === 0}
-          >
-            {t('lock.unlockCode')}
-          </button>
-        </form>
+        {controls}
       </section>
     </div>
   );

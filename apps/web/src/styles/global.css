@@ -3383,17 +3383,6 @@ html[data-motion='full'] .menu::backdrop {
   gap: 12px;
 }
 
-.plan-delete {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 12px;
-}
-
-.plan-delete .lock {
-  align-self: stretch;
-}
-
 .backup__restore {
   margin-top: 24px;
   font-family: var(--kz-font-display);

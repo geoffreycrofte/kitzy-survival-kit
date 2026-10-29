@@ -590,9 +590,7 @@ export const messages: Messages = {
     delete: 'Meinen Plan löschen',
     deleteConfirm: 'Deinen Notfallplan endgültig löschen?',
     deleted: 'Plan gelöscht.',
-    deleteLocked:
-      'Dein Plan ist geschützt: Öffne ihn mit deinem Fingerabdruck oder deinem Code, um ihn löschen zu können.',
-    unlockToDelete: 'Plan öffnen, um ihn zu löschen',
+    deleteLocked: 'Öffne ihn, um ihn löschen zu können.',
     notFound: 'Diesen Schritt des Plans gibt es nicht.',
   },
   achievements: {
@@ -1178,6 +1176,10 @@ export const messages: Messages = {
     unlocked: 'Plan geöffnet.',
   },
   backup: {
+    unlockTitle: 'Dein Plan ist geschützt',
+    unlockForBackup: 'Öffne ihn, um ihn in deine Sicherung aufzunehmen.',
+    unlockForRestore: 'Öffne ihn zuerst: Die wiederhergestellte Sicherung wird genauso geschützt.',
+    unlockedRestore: 'Dein Plan ist geöffnet. Wähle jetzt die Sicherungsdatei.',
     make: 'Sicherung erstellen',
     intro:
       'Deine Sicherung enthält alles aus Kitzy, auch deinen Notfallplan. Wähle einen Code, um sie zu schützen: Du brauchst ihn zum Wiederherstellen, auf diesem oder einem anderen Handy.',
@@ -1205,11 +1207,7 @@ export const messages: Messages = {
     code: 'Code der Sicherung',
     codeHint: 'Mindestens 8 Zeichen. Er darf sich von deinem Kitzy-Code unterscheiden.',
     done: 'Fertig',
-    needsUnlock:
-      'Dein Plan ist gesperrt: Öffne ihn oben unter „Meinen Plan schützen“, um ihn in die Sicherung aufzunehmen.',
     choose: 'Datei auswählen',
-    importNeedsUnlock:
-      'Öffne zuerst oben deinen Plan: Die wiederhergestellte Sicherung wird genauso geschützt.',
     importCode: 'Code der zu öffnenden Sicherung',
     protectedFile: 'Diese Sicherung ist mit einem Code geschützt.',
     open: 'Sicherung öffnen',
