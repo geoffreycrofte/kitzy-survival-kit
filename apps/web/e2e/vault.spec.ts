@@ -199,6 +199,30 @@ test.describe('Plan protégé et sauvegardes chiffrées', () => {
     await expect(unlock).toBeHidden();
   });
 
+  test('plan protégé : « Tout effacer » demande d’abord le code, avec l’aide « Code oublié ? »', async ({
+    page,
+  }) => {
+    await setUpHousehold(page);
+    await protectPlan(page);
+    await page.reload();
+    await page.goto('./reglages');
+
+    await page.getByRole('button', { name: 'Tout effacer' }).click();
+    const unlock = page.getByRole('dialog', { name: 'Ton plan est protégé' });
+    await expect(unlock.getByText('Ouvre-le pour pouvoir tout effacer.')).toBeVisible();
+    await unlock.getByText('Code oublié ?').click();
+    await expect(unlock.getByText(/efface les données du site kitzy\.lu/)).toBeVisible();
+
+    await unlock.getByLabel('Code Kitzy', { exact: true }).fill(CODE);
+    await unlock.getByRole('button', { name: 'Ouvrir avec le code' }).click();
+    await expect(unlock.getByText('Plan ouvert.')).toBeFocused();
+    page.once('dialog', (dialog) => void dialog.accept());
+    await unlock.getByRole('button', { name: 'Tout effacer' }).click();
+    await expect(
+      page.getByRole('status').filter({ hasText: 'Toutes les données ont été effacées.' }),
+    ).toBeVisible();
+  });
+
   test('une sauvegarde protégée se restaure ailleurs avec son code seulement', async ({
     page,
     browser,

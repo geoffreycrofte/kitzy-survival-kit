@@ -362,6 +362,10 @@ export const fr = {
     reset: 'Tout effacer',
     resetConfirm: 'Effacer définitivement ton foyer, tes kits et ta liste de courses ?',
     resetDone: 'Toutes les données ont été effacées.',
+    resetLocked: 'Ouvre-le pour pouvoir tout effacer.',
+    forgotTitle: 'Code oublié ?',
+    forgot:
+      'Sans ton code ni ton empreinte, Kitzy ne peut plus ouvrir ton plan. Pour repartir de zéro, efface les données du site kitzy.lu dans les réglages de ton navigateur, ou désinstalle l’app puis réinstalle-la. Si tu as une sauvegarde, tu pourras ensuite la restaurer avec son propre code.',
     support: 'Soutenir Kitzy',
     supportHelp:
       'Kitzy est gratuit, sans publicité et sans compte. Si l’app t’aide, tu peux offrir une pomme au hérisson.',

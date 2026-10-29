@@ -357,6 +357,10 @@ export const messages: Messages = {
     reset: 'Alles läschen',
     resetConfirm: 'Däin Haushalt, deng Kits an deng Akafslëscht definitiv läschen?',
     resetDone: 'All d’Donnéeë goufe geläscht.',
+    resetLocked: 'Maach en op, fir alles kënnen ze läschen.',
+    forgotTitle: 'Code vergiess?',
+    forgot:
+      'Ouni däi Code oder däi Fangerofdrock kann Kitzy däi Plang net méi opmaachen. Fir vu vir unzefänken, läsch d’Donnéeë vum Site kitzy.lu an den Astellunge vun dengem Browser, oder desinstalléier d’App an installéier se nei. Wann s de e Backup hues, kanns de en duerno mat sengem eegene Code restauréieren.',
     support: 'Kitzy ënnerstëtzen',
     supportHelp:
       'Kitzy ass gratis, ouni Reklamm an ouni Kont. Wann d’App dir hëlleft, kanns de dem Kéiseker en Apel schenken.',

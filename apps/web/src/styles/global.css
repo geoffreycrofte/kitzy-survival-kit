@@ -3383,6 +3383,18 @@ html[data-motion='full'] .menu::backdrop {
   gap: 12px;
 }
 
+/* « Code oublié ? » : replié, pour ne pas détourner de l'ouverture. */
+.unlock__forgot summary {
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.unlock__forgot p {
+  margin: 8px 0 0;
+  color: var(--kz-muted);
+}
+
 .backup__restore {
   margin-top: 24px;
   font-family: var(--kz-font-display);

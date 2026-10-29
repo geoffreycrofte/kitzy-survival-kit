@@ -359,6 +359,10 @@ export const messages: Messages = {
     reset: 'Alles löschen',
     resetConfirm: 'Deinen Haushalt, deine Vorräte und deine Einkaufsliste endgültig löschen?',
     resetDone: 'Alle Daten wurden gelöscht.',
+    resetLocked: 'Öffne ihn, um alles löschen zu können.',
+    forgotTitle: 'Code vergessen?',
+    forgot:
+      'Ohne deinen Code oder Fingerabdruck kann Kitzy deinen Plan nicht mehr öffnen. Um neu anzufangen, lösche die Websitedaten von kitzy.lu in den Einstellungen deines Browsers, oder deinstalliere die App und installiere sie neu. Wenn du eine Sicherung hast, kannst du sie danach mit ihrem eigenen Code wiederherstellen.',
     support: 'Kitzy unterstützen',
     supportHelp:
       'Kitzy ist kostenlos, ohne Werbung und ohne Konto. Wenn dir die App hilft, kannst du dem Igel einen Apfel spendieren.',

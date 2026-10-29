@@ -357,6 +357,10 @@ export const messages: Messages = {
     reset: 'Delete everything',
     resetConfirm: 'Permanently delete your household, kits and shopping list?',
     resetDone: 'All data has been deleted.',
+    resetLocked: 'Open it to be able to delete everything.',
+    forgotTitle: 'Forgot your code?',
+    forgot:
+      'Without your code or your fingerprint, Kitzy can no longer open your plan. To start over, clear the site data for kitzy.lu in your browser settings, or uninstall the app and reinstall it. If you have a backup, you can then restore it with its own code.',
     support: 'Support Kitzy',
     supportHelp:
       'Kitzy is free, ad-free and needs no account. If the app helps you, you can buy the hedgehog an apple.',

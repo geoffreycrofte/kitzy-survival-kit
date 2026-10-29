@@ -98,6 +98,10 @@ export function UnlockDrawer({
             <>
               <p>{intro}</p>
               <PlanUnlock bare autoPasskey onUnlocked={done} />
+              <details className="unlock__forgot">
+                <summary>{t('settings.forgotTitle')}</summary>
+                <p>{t('settings.forgot')}</p>
+              </details>
             </>
           )}
         </div>

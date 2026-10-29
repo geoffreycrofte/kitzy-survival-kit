@@ -358,6 +358,10 @@ export const messages: Messages = {
     reset: 'Apagar tudo',
     resetConfirm: 'Apagar definitivamente a tua casa, os teus kits e a tua lista de compras?',
     resetDone: 'Todos os dados foram apagados.',
+    resetLocked: 'Abre-o para poderes apagar tudo.',
+    forgotTitle: 'Esqueceste o código?',
+    forgot:
+      'Sem o teu código nem a tua impressão digital, o Kitzy já não consegue abrir o teu plano. Para recomeçar, apaga os dados do site kitzy.lu nas definições do navegador, ou desinstala a app e volta a instalá-la. Se tiveres uma cópia de segurança, podes depois restaurá-la com o código dela.',
     support: 'Apoiar o Kitzy',
     supportHelp:
       'O Kitzy é gratuito, sem publicidade e sem conta. Se a app te ajuda, podes oferecer uma maçã ao ouriço.',

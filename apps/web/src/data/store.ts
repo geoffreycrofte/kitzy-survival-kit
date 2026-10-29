@@ -580,7 +580,15 @@ export async function importData(data: BackupData): Promise<void> {
   });
 }
 
-export async function resetAll(): Promise<void> {
+/**
+ * Tout effacer. Plan protégé : seulement ouvert, sauf depuis l'écran de secours (`evenIfLocked`),
+ * quand des données abîmées empêchent l'app de fonctionner.
+ */
+export async function resetAll({ evenIfLocked = false } = {}): Promise<void> {
+  const lock = await getMeta<PlanLock | null>('planLock', null);
+  if (lock && !getPlanKey() && !evenIfLocked) {
+    throw new Error('Plan verrouillé : ouvre-le avant de tout effacer.');
+  }
   await db.transaction('rw', DATA_TABLES(), async () => {
     await clearData();
   });
