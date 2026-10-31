@@ -22,7 +22,8 @@ export interface LandingTexts {
   /** Phrase sous le titre, sur l'image de partage. */
   ogTagline: string;
   openApp: string;
-  hero: { title: string; lead: string; open: string; install: string };
+  /** `lead` dit ce qu'est Kitzy, `sub` ce qu'il fait pour toi. */
+  hero: { title: string; lead: string; sub: string; open: string; install: string };
   /** Ce que fait l'app, en une liste : la réponse à « mais ça sert à quoi ? ». */
   features: { title: string; lead: string; items: Array<{ title: string; text: string }> };
   household: {
@@ -112,7 +113,8 @@ const fr: LandingTexts = {
   openApp: 'Ouvrir l’app',
   hero: {
     title: 'Trois jours d’avance sur l’imprévu.',
-    lead: 'Panne de courant, tempête, crise grave : Kitzy t’aide à préparer de quoi tenir 72 heures chez toi, pas à pas et sans angoisse. Il calcule, range et surveille les dates à ta place. Gratuit, sans compte, et ça marche hors ligne.',
+    lead: 'Kitzy est une app gratuite qui t’aide à préparer ton kit d’urgence : de quoi tenir 72 heures chez toi si le courant, l’eau ou le réseau lâchent.',
+    sub: 'Elle calcule les quantités pour ton foyer, te dit quoi acheter et où le ranger, puis te prévient avant les péremptions. Pas à pas, sans angoisse, sans compte, et même hors ligne.',
     open: 'Ouvrir Kitzy',
     install: 'L’installer',
   },
@@ -323,7 +325,8 @@ const en: LandingTexts = {
   openApp: 'Open the app',
   hero: {
     title: 'Three days ahead of the unexpected.',
-    lead: 'Power cut, storm, serious crisis: Kitzy helps you get ready to manage 72 hours at home, step by step and without the worry. It does the maths, sorts things out and watches the dates for you. Free, no account, and it works offline.',
+    lead: 'Kitzy is a free app that helps you build your emergency kit: what you need to get through 72 hours at home if the power, water or network goes down.',
+    sub: 'It works out the quantities for your household, tells you what to buy and where to keep it, then reminds you before things expire. Step by step, without the worry, no account needed, and even offline.',
     open: 'Open Kitzy',
     install: 'Install it',
   },

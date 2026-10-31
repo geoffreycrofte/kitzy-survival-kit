@@ -15,7 +15,8 @@ export const de: LandingTexts = {
   openApp: 'App öffnen',
   hero: {
     title: 'Dem Unerwarteten drei Tage voraus.',
-    lead: 'Stromausfall, Sturm, ernste Krise: Kitzy hilft dir, dich auf 72 Stunden zu Hause vorzubereiten, Schritt für Schritt und ohne Angst. Kitzy rechnet, sortiert und behält die Termine für dich im Blick. Kostenlos, ohne Konto, und es funktioniert offline.',
+    lead: 'Kitzy ist eine kostenlose App, die dir hilft, deinen Notvorrat anzulegen: alles, um 72 Stunden zu Hause durchzuhalten, wenn Strom, Wasser oder Netz ausfallen.',
+    sub: 'Sie berechnet die Mengen für deinen Haushalt, sagt dir, was du kaufen und wo du es aufbewahren sollst, und erinnert dich vor dem Ablaufdatum. Schritt für Schritt, ohne Angst, ohne Konto und sogar offline.',
     open: 'Kitzy öffnen',
     install: 'Installieren',
   },
@@ -225,7 +226,8 @@ export const lb: LandingTexts = {
   openApp: 'D’App opmaachen',
   hero: {
     title: 'Dem Onerwaarten dräi Deeg viraus.',
-    lead: 'Stroumausfall, Stuerm, eng sérieux Kris: Kitzy hëlleft dir, dech op 72 Stonnen doheem virzebereeden, Schrëtt fir Schrëtt an ouni Angscht. Kitzy rechent, sortéiert a behält d’Datumer fir dech am A. Gratis, ouni Kont, an et funktionéiert offline.',
+    lead: 'Kitzy ass eng gratis App, déi dir hëlleft, däin Noutvirrot unzeleeën: alles, fir 72 Stonnen doheem duerchzehalen, wann de Stroum, d’Waasser oder d’Netz ausfalen.',
+    sub: 'Si rechent d’Quantitéite fir däin Haushalt aus, seet dir, wat s de kafe solls a wou s de et ophäls, an erënnert dech virum Oflafdatum. Schrëtt fir Schrëtt, ouni Angscht, ouni Kont an och offline.',
     open: 'Kitzy opmaachen',
     install: 'Installéieren',
   },
@@ -439,7 +441,8 @@ export const pt: LandingTexts = {
   openApp: 'Abrir a app',
   hero: {
     title: 'Três dias à frente do imprevisto.',
-    lead: 'Falha de energia, tempestade, crise grave: o Kitzy ajuda-te a preparar o necessário para aguentar 72 horas em casa, passo a passo e sem angústia. Faz as contas, arruma e vigia as datas por ti. Gratuito, sem conta, e funciona offline.',
+    lead: 'O Kitzy é uma app gratuita que te ajuda a preparar o teu kit de emergência: o necessário para aguentar 72 horas em casa se faltar a luz, a água ou a rede.',
+    sub: 'Calcula as quantidades para a tua família, diz-te o que comprar e onde guardar, e avisa-te antes de os produtos passarem do prazo. Passo a passo, sem angústia, sem conta e até offline.',
     open: 'Abrir o Kitzy',
     install: 'Instalar',
   },

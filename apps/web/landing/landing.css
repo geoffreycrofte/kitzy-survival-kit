@@ -292,11 +292,19 @@ main > section + section {
   max-width: 11ch;
 }
 
+/* D'abord ce qu'est Kitzy, en clair ; puis ce qu'il fait, plus discret. */
 .hero__lead {
   margin-top: 24px;
   max-width: 34rem;
+  font-size: 1.3125rem;
+  line-height: 1.5;
+}
+
+.hero__sub {
+  margin-top: 14px;
+  max-width: 34rem;
   color: var(--kz-muted);
-  font-size: 1.25rem;
+  font-size: 1.125rem;
 }
 
 .actions {
