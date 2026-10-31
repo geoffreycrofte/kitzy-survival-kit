@@ -1259,6 +1259,30 @@ html[data-motion='full'] .result__n--bump {
   color: var(--kz-muted);
 }
 
+.recipe-facts {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.recipe-facts span {
+  padding: 2px 12px;
+  border: 1px solid var(--kz-line);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.recipe-kit {
+  margin-top: 18px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 0.9375rem;
+}
+
 .doc__source {
   margin-top: 40px;
   font-size: 0.9375rem;

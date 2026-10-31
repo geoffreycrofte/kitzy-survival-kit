@@ -52,18 +52,46 @@ test.describe('Pages publiques : la liste du kit, les fiches, le guide', () => {
     await expect(page.getByRole('navigation', { name: 'Fil d’Ariane' })).toContainText('Le guide');
   });
 
+  test('les recettes : la liste, une recette et les articles du kit qu’elle utilise', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page.getByRole('contentinfo').getByRole('link', { name: 'Les recettes' }).click();
+    await expect(page).toHaveURL(/\/recettes\/$/);
+    await page.getByRole('link', { name: 'Chili express du terrier' }).click();
+    await expect(page).toHaveURL(/\/recettes\/chili-express\/$/);
+    await expect(page.getByRole('heading', { level: 2, name: 'Ingrédients' })).toBeVisible();
+    await expect(page.getByRole('heading', { level: 2, name: 'Étapes' })).toBeVisible();
+    // Données structurées « Recipe », pour les résultats de recherche.
+    const data = await page.locator('script[type="application/ld+json"]').textContent();
+    expect(
+      JSON.parse(data ?? '{}')['@graph'].map((n: { '@type': string }) => n['@type']),
+    ).toContain('Recipe');
+    await page
+      .getByRole('link', { name: /^Dans le kit :/ })
+      .first()
+      .click();
+    await expect(page).toHaveURL(/\/kit\/#cat-food$/);
+  });
+
   test('le plan du site liste les pages publiques dans toutes les langues', async ({ request }) => {
     const sitemap = await (await request.get('/sitemap.xml')).text();
     for (const url of [
       'https://kitzy.lu/kit/',
       'https://kitzy.lu/en/kit/headlamp/',
       'https://kitzy.lu/pt/guide/sirenes/',
+      'https://kitzy.lu/de/recettes/chili-express/',
     ]) {
       expect(sitemap).toContain(`<loc>${url}</loc>`);
     }
   });
 
-  for (const path of ['/kit/', '/kit/headlamp/', '/guide/coupure-electricite/']) {
+  for (const path of [
+    '/kit/',
+    '/kit/headlamp/',
+    '/guide/coupure-electricite/',
+    '/recettes/chili-express/',
+  ]) {
     for (const scheme of ['dark', 'light'] as const) {
       test(`aucune erreur axe : ${path} (${scheme})`, async ({ page }) => {
         await page.emulateMedia({ colorScheme: scheme, reducedMotion: 'reduce' });

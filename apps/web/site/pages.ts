@@ -2,7 +2,8 @@
  * Pages publiques du site, écrites au build à côté de la page d'accueil :
  * - /kit/ : la liste du kit 72 h, par rubrique ;
  * - /kit/<article>/ : une fiche par article qui a des conseils d'achat ;
- * - /guide/ et /guide/<page>/ : le guide, en langage clair.
+ * - /guide/ et /guide/<page>/ : le guide, en langage clair ;
+ * - /recettes/ et /recettes/<recette>/ : les recettes avec les conserves.
  * Le contenu vient de @kitzy/core, comme dans l'app : un texte n'existe qu'à un seul endroit.
  * Ces pages se lisent sans JavaScript ; le script de la page d'accueil ne règle que le thème
  * et la langue.
@@ -15,6 +16,7 @@ import {
 } from '../../../packages/core/src/catalog';
 import { CATALOG, categoryName, contentFor, messagesFor } from '../../../packages/core/src/content';
 import type { GuideBlock, GuidePage } from '../../../packages/core/src/guide';
+import type { Recipe } from '../../../packages/core/src/recipes';
 import { fill } from '../../../packages/core/src/i18n/fill';
 import { LANDING } from '../../../packages/core/src/i18n/landing';
 import { intlLocale, type Locale } from '../../../packages/core/src/i18n/locales';
@@ -72,6 +74,8 @@ export function sitePaths(): string[] {
     ...itemsWithPage().map((item) => `kit/${item.id}/`),
     'guide/',
     ...contentFor('fr').guide.map((page) => `guide/${page.slug}/`),
+    'recettes/',
+    ...contentFor('fr').recipes.map((recipe) => `recettes/${recipe.id}/`),
   ];
 }
 
@@ -214,6 +218,7 @@ function page(frame: Frame, options: SiteOptions): string {
       <ul class="footer__links">
         <li><a href="${href(locale, 'kit/')}">${escape(t.nav.kit)}</a></li>
         <li><a href="${href(locale, 'guide/')}">${escape(t.nav.guide)}</a></li>
+        <li><a href="${href(locale, 'recettes/')}">${escape(t.recipes.nav)}</a></li>
         <li><a href="${options.base}app/confidentialite">${escape(landing.footer.privacy)}</a></li>
         <li><a href="${options.base}app/transparence">${escape(landing.footer.transparency)}</a></li>
       </ul>
@@ -481,6 +486,118 @@ function guideArticle(p: GuidePage, locale: Locale, options: SiteOptions): strin
   );
 }
 
+/* ---------- Les recettes ---------- */
+
+/** Durée, cuisson, eau et nombre de personnes, comme dans l'app. */
+function recipeFacts(recipe: Recipe, locale: Locale): string[] {
+  const m = messagesFor(locale).recipes;
+  const liters = new Intl.NumberFormat(intlLocale(locale), { maximumFractionDigits: 1 }).format(
+    recipe.water,
+  );
+  return [
+    fill(m.minutes, { count: recipe.minutes }),
+    recipe.cooking === 'none' ? m.none : m.stove,
+    recipe.water > 0 ? fill(m.water, { quantity: `${liters} L` }) : m.noWater,
+    fill(m.serves, { count: recipe.serves }),
+  ];
+}
+
+function recipeIndex(locale: Locale, options: SiteOptions): string {
+  const t = SITE[locale];
+  const href = (p: string) => `${options.base}${prefix(locale)}${p}`;
+  const list = contentFor(locale)
+    .recipes.map(
+      (recipe) => `<li>
+            <a href="${href(`recettes/${recipe.id}/`)}">${escape(recipe.title)}</a>
+            <p>${escape(recipe.summary)}</p>
+            <p class="recipe-facts">${recipeFacts(recipe, locale)
+              .map((fact) => `<span>${escape(fact)}</span>`)
+              .join('')}</p>
+          </li>`,
+    )
+    .join('\n          ');
+  return page(
+    {
+      locale,
+      path: 'recettes/',
+      title: t.recipes.metaTitle,
+      description: t.recipes.description,
+      h1: t.recipes.title,
+      lead: t.recipes.lead,
+      crumbs: [{ label: t.recipes.nav }],
+      body: `<ul class="guide-list">
+          ${list}
+        </ul>`,
+    },
+    options,
+  );
+}
+
+function recipePage(recipe: Recipe, locale: Locale, options: SiteOptions): string {
+  const t = SITE[locale];
+  const m = messagesFor(locale).recipes;
+  const href = (p: string) => `${options.base}${prefix(locale)}${p}`;
+  const withPage = new Set(itemsWithPage().map((item) => item.id));
+  // Les articles du kit qu'utilise la recette, une fois chacun : vers leur fiche quand elle existe,
+  // sinon vers leur rubrique dans la liste du kit.
+  const kitItems = [...new Set(recipe.ingredients.map((i) => i.templateId))]
+    .map((id) => CATALOG.find((item) => item.id === id))
+    .filter((item): item is ItemTemplate => item !== undefined);
+  const kitHref = (item: ItemTemplate) =>
+    withPage.has(item.id) ? href(`kit/${item.id}/`) : `${href('kit/')}#cat-${item.category}`;
+  const body = `<p class="recipe-facts">${recipeFacts(recipe, locale)
+    .map((fact) => `<span>${escape(fact)}</span>`)
+    .join('')}</p>
+      <section class="doc__section" aria-labelledby="ingredients-title">
+        <h2 id="ingredients-title">${escape(m.ingredients)}</h2>
+        <ul class="doc__links">${recipe.ingredients.map((i) => `<li>${escape(i.text)}</li>`).join('')}</ul>
+        ${
+          kitItems.length > 0
+            ? `<ul class="recipe-kit">${kitItems
+                .map(
+                  (item) =>
+                    `<li><a href="${kitHref(item)}">${escape(fill(t.recipes.inKit, { name: tx(item.name, locale) }))}</a></li>`,
+                )
+                .join('')}</ul>`
+            : ''
+        }
+      </section>
+      <section class="doc__section" aria-labelledby="steps-title">
+        <h2 id="steps-title">${escape(m.steps)}</h2>
+        <ol class="doc__links">${recipe.steps.map((step) => `<li>${escape(step)}</li>`).join('')}</ol>
+        ${recipe.tip ? `<p class="doc__note">${escape(recipe.tip)}</p>` : ''}
+        ${recipe.cooking === 'stove' ? `<p class="doc__warning">${escape(m.safety)}</p>` : ''}
+      </section>
+      <p><a href="${href('recettes/')}">${escape(m.back)}</a></p>`;
+  return page(
+    {
+      locale,
+      path: `recettes/${recipe.id}/`,
+      title: fill(t.recipes.metaTitleRecipe, { title: recipe.title }),
+      description: recipe.summary,
+      h1: recipe.title,
+      lead: recipe.summary,
+      crumbs: [{ label: t.recipes.nav, path: 'recettes/' }, { label: recipe.title }],
+      body,
+      data: [
+        {
+          '@type': 'Recipe',
+          name: recipe.title,
+          description: recipe.summary,
+          inLanguage: locale,
+          url: absolute(locale, `recettes/${recipe.id}/`),
+          totalTime: `PT${recipe.minutes}M`,
+          recipeYield: String(recipe.serves),
+          recipeIngredient: recipe.ingredients.map((i) => i.text),
+          recipeInstructions: recipe.steps.map((text) => ({ '@type': 'HowToStep', text })),
+          author: { '@type': 'Organization', name: 'Kitzy', url: SITE_URL },
+        },
+      ],
+    },
+    options,
+  );
+}
+
 /** Toutes les pages publiques, dans toutes les langues. */
 export function sitePages(options: SiteOptions): SitePage[] {
   const out: SitePage[] = [];
@@ -492,6 +609,14 @@ export function sitePages(options: SiteOptions): SitePage[] {
     out.push({ path: 'guide/', locale, html: guideIndex(locale, options) });
     for (const p of contentFor(locale).guide) {
       out.push({ path: `guide/${p.slug}/`, locale, html: guideArticle(p, locale, options) });
+    }
+    out.push({ path: 'recettes/', locale, html: recipeIndex(locale, options) });
+    for (const recipe of contentFor(locale).recipes) {
+      out.push({
+        path: `recettes/${recipe.id}/`,
+        locale,
+        html: recipePage(recipe, locale, options),
+      });
     }
   }
   return out;
