@@ -567,6 +567,47 @@ html[data-motion='full'] .result__n--bump {
   font-size: 1.125rem;
 }
 
+/* ---------- Ce que fait Kitzy : une luciole par fonction ---------- */
+
+.features__list {
+  margin-top: 40px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  column-gap: 48px;
+}
+
+.feature {
+  position: relative;
+  padding: 22px 0 22px 34px;
+  border-top: 1px solid var(--kz-line);
+}
+
+/* Le point lumineux de la lanterne, en repère discret devant chaque fonction. */
+.feature::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 32px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--kz-fly);
+  border: 2px solid var(--kz-fly-edge);
+  box-shadow: 0 0 14px 4px var(--kz-fly-glow);
+}
+
+.feature__title {
+  font-size: 1.375rem;
+  line-height: 1.25;
+}
+
+.feature__text {
+  margin-top: 6px;
+  max-width: 34rem;
+  color: var(--kz-muted);
+}
+
 /* ---------- La maison et les sacs : de part et d'autre du hérisson ---------- */
 
 .split {
@@ -1015,6 +1056,12 @@ html[data-motion='full'] .result__n--bump {
   }
 }
 
+@media (min-width: 48rem) {
+  .features__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 @media (min-width: 60rem) {
   .hero {
     grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
@@ -1116,5 +1163,10 @@ html[data-motion='full'] .result__n--bump {
   .agenda__item::before {
     forced-color-adjust: none;
     border-color: CanvasText;
+  }
+
+  .feature::before {
+    forced-color-adjust: none;
+    background: CanvasText;
   }
 }

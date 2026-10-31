@@ -23,6 +23,8 @@ export interface LandingTexts {
   ogTagline: string;
   openApp: string;
   hero: { title: string; lead: string; open: string; install: string };
+  /** Ce que fait l'app, en une liste : la réponse à « mais ça sert à quoi ? ». */
+  features: { title: string; lead: string; items: Array<{ title: string; text: string }> };
   household: {
     title: string;
     lead: string;
@@ -110,10 +112,45 @@ const fr: LandingTexts = {
   openApp: 'Ouvrir l’app',
   hero: {
     title: 'Trois jours d’avance sur l’imprévu.',
-    lead: 'Kitzy t’aide à préparer de quoi tenir 72 heures chez toi, à la mesure de ton foyer, puis garde un œil sur les dates. Gratuit, sans compte, et ça marche hors ligne.',
+    lead: 'Panne de courant, tempête, crise grave : Kitzy t’aide à préparer de quoi tenir 72 heures chez toi, pas à pas et sans angoisse. Il calcule, range et surveille les dates à ta place. Gratuit, sans compte, et ça marche hors ligne.',
     open: 'Ouvrir Kitzy',
     install: 'L’installer',
   },
+  features: {
+    title: 'Ce que Kitzy fait pour toi',
+    lead: 'Se préparer à une crise, c’est souvent une liste sans fin et une boule au ventre. Kitzy en fait un projet simple, à ton rythme.',
+    items: [
+      {
+        title: 'Se préparer sans s’angoisser',
+        text: 'Pas de scénario catastrophe : des petites étapes, des progrès qui se voient, et un hérisson qui t’encourage.',
+      },
+      {
+        title: 'Ta réserve, à la maison et dans les sacs',
+        text: 'Panne de courant, tempête, inondation, conflit : Kitzy calcule ce qu’il faut à ton foyer et te dit où ranger chaque chose.',
+      },
+      {
+        title: 'Des alertes avant les péremptions',
+        text: 'Eau, conserves, piles, médicaments : tu es prévenu à temps, sur ton téléphone ou dans ton agenda.',
+      },
+      {
+        title: 'Une routine qui tient',
+        text: 'Un mini-check de deux minutes le premier lundi du mois, un grand check-up aux changements d’heure. Le kit reste prêt sans que tu y penses.',
+      },
+      {
+        title: 'Des recettes avec tes conserves',
+        text: 'Chili express, pâtes aux sardines, salade de lentilles : des idées originales pour faire tourner tes boîtes avant qu’elles ne périment.',
+      },
+      {
+        title: 'Toute la famille embarquée',
+        text: 'Un plan d’urgence à remplir ensemble et à imprimer, une liste de courses à partager par lien, des défis et un quiz à faire en famille.',
+      },
+      {
+        title: 'Le voisinage, dans les deux sens',
+        text: 'Ton plan note les voisins qui peuvent t’aider et ceux qui auront besoin de toi. Et tu leur fais découvrir Kitzy d’un QR code.',
+      },
+    ],
+  },
+
   household: {
     title: 'Calculé pour ta maisonnée',
     lead: 'Dis à Kitzy qui vit chez toi, animaux compris : il calcule les quantités à réunir. Essaie.',
@@ -286,10 +323,45 @@ const en: LandingTexts = {
   openApp: 'Open the app',
   hero: {
     title: 'Three days ahead of the unexpected.',
-    lead: 'Kitzy helps you get what you need to manage 72 hours at home, sized to your household, then keeps an eye on the dates. Free, no account, and it works offline.',
+    lead: 'Power cut, storm, serious crisis: Kitzy helps you get ready to manage 72 hours at home, step by step and without the worry. It does the maths, sorts things out and watches the dates for you. Free, no account, and it works offline.',
     open: 'Open Kitzy',
     install: 'Install it',
   },
+  features: {
+    title: 'What Kitzy does for you',
+    lead: 'Getting ready for a crisis often means an endless list and a knot in your stomach. Kitzy turns it into a simple project, at your own pace.',
+    items: [
+      {
+        title: 'Prepare without the worry',
+        text: 'No disaster scenarios: small steps, progress you can see, and a hedgehog cheering you on.',
+      },
+      {
+        title: 'Your supply, at home and in your bags',
+        text: 'Power cut, storm, flooding, conflict: Kitzy works out what your household needs and tells you where to keep each thing.',
+      },
+      {
+        title: 'Alerts before things expire',
+        text: 'Water, tins, batteries, medicines: you’re warned in time, on your phone or in your calendar.',
+      },
+      {
+        title: 'A routine that sticks',
+        text: 'A two-minute mini-check on the first Monday of the month, a big check-up when the clocks change. Your kit stays ready without you having to think about it.',
+      },
+      {
+        title: 'Recipes from your tins',
+        text: 'Quick chilli, sardine pasta, lentil salad: fresh ideas to use up your tins before they expire.',
+      },
+      {
+        title: 'The whole family on board',
+        text: 'An emergency plan to fill in together and print, a shopping list to share by link, challenges and a quiz to do as a family.',
+      },
+      {
+        title: 'Neighbours, both ways',
+        text: 'Your plan lists the neighbours who can help you and those who will need you. And a QR code is all it takes to show them Kitzy.',
+      },
+    ],
+  },
+
   household: {
     title: 'Worked out for your household',
     lead: 'Tell Kitzy who lives with you, pets included: it works out the quantities to gather. Give it a try.',

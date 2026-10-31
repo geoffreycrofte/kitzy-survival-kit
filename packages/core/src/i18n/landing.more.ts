@@ -15,10 +15,45 @@ export const de: LandingTexts = {
   openApp: 'App öffnen',
   hero: {
     title: 'Dem Unerwarteten drei Tage voraus.',
-    lead: 'Kitzy hilft dir, alles für 72 Stunden zu Hause bereitzuhalten, passend zu deinem Haushalt, und behält danach die Termine im Blick. Kostenlos, ohne Konto, und es funktioniert offline.',
+    lead: 'Stromausfall, Sturm, ernste Krise: Kitzy hilft dir, dich auf 72 Stunden zu Hause vorzubereiten, Schritt für Schritt und ohne Angst. Kitzy rechnet, sortiert und behält die Termine für dich im Blick. Kostenlos, ohne Konto, und es funktioniert offline.',
     open: 'Kitzy öffnen',
     install: 'Installieren',
   },
+  features: {
+    title: 'Was Kitzy für dich tut',
+    lead: 'Sich auf eine Krise vorzubereiten heißt oft: eine endlose Liste und ein mulmiges Gefühl. Kitzy macht daraus ein einfaches Projekt, in deinem Tempo.',
+    items: [
+      {
+        title: 'Vorsorgen ohne Angst',
+        text: 'Keine Katastrophenszenarien: kleine Schritte, sichtbare Fortschritte und ein Igel, der dich anfeuert.',
+      },
+      {
+        title: 'Dein Vorrat, zu Hause und im Rucksack',
+        text: 'Stromausfall, Sturm, Hochwasser, Konflikt: Kitzy berechnet, was dein Haushalt braucht, und sagt dir, wo du alles aufbewahrst.',
+      },
+      {
+        title: 'Erinnerungen vor dem Ablaufdatum',
+        text: 'Wasser, Konserven, Batterien, Medikamente: Du wirst rechtzeitig erinnert, auf dem Handy oder im Kalender.',
+      },
+      {
+        title: 'Eine Routine, die bleibt',
+        text: 'Ein Mini-Check von zwei Minuten am ersten Montag im Monat, ein großer Check bei der Zeitumstellung. So bleibt dein Vorrat bereit, ohne dass du daran denken musst.',
+      },
+      {
+        title: 'Rezepte mit deinen Konserven',
+        text: 'Schnelles Chili, Nudeln mit Sardinen, Linsensalat: neue Ideen, um deine Dosen zu verbrauchen, bevor sie ablaufen.',
+      },
+      {
+        title: 'Die ganze Familie macht mit',
+        text: 'Ein Notfallplan zum gemeinsamen Ausfüllen und Ausdrucken, eine Einkaufsliste zum Teilen per Link, Challenges und ein Quiz für die ganze Familie.',
+      },
+      {
+        title: 'Nachbarschaft, in beide Richtungen',
+        text: 'Dein Plan notiert die Nachbarn, die dir helfen können, und die, die dich brauchen werden. Und mit einem QR-Code zeigst du ihnen Kitzy.',
+      },
+    ],
+  },
+
   household: {
     title: 'Berechnet für deinen Haushalt',
     lead: 'Sag Kitzy, wer bei dir wohnt, Haustiere inklusive: Kitzy rechnet aus, welche Mengen du brauchst. Probier’s aus.',
@@ -190,10 +225,45 @@ export const lb: LandingTexts = {
   openApp: 'D’App opmaachen',
   hero: {
     title: 'Dem Onerwaarten dräi Deeg viraus.',
-    lead: 'Kitzy hëlleft dir, alles fir 72 Stonnen doheem prett ze hunn, ugepasst un däin Haushalt, a behält duerno d’Datumer am A. Gratis, ouni Kont, an et funktionéiert offline.',
+    lead: 'Stroumausfall, Stuerm, eng sérieux Kris: Kitzy hëlleft dir, dech op 72 Stonnen doheem virzebereeden, Schrëtt fir Schrëtt an ouni Angscht. Kitzy rechent, sortéiert a behält d’Datumer fir dech am A. Gratis, ouni Kont, an et funktionéiert offline.',
     open: 'Kitzy opmaachen',
     install: 'Installéieren',
   },
+  features: {
+    title: 'Wat Kitzy fir dech mécht',
+    lead: 'Sech op eng Kris virzebereeden, dat ass dacks eng endlos Lëscht an e mulmegt Gefill. Kitzy mécht doraus en einfacht Projet, an dengem Rhythmus.',
+    items: [
+      {
+        title: 'Virsuergen ouni Angscht',
+        text: 'Keng Katastrophenszenarien: kleng Schrëtt, Fortschrëtter, déi ee gesäit, an en Igel, deen dech encouragéiert.',
+      },
+      {
+        title: 'Däi Virrot, doheem an am Rucksak',
+        text: 'Stroumausfall, Stuerm, Iwwerschwemmung, Konflikt: Kitzy rechent aus, wat däin Haushalt brauch, a seet dir, wou s de all Saach ophäls.',
+      },
+      {
+        title: 'Erënnerungen virum Oflafdatum',
+        text: 'Waasser, Konserven, Batterien, Medikamenter: Du gëss rechtzäiteg erënnert, um Handy oder am Kalenner.',
+      },
+      {
+        title: 'Eng Routine, déi hält',
+        text: 'E Mini-Check vun zwou Minutten um éischte Méindeg vum Mount, e grousse Check beim Zäitwiessel. Esou bleift däi Kit prett, ouni dass de drun denke muss.',
+      },
+      {
+        title: 'Rezepter mat denge Konserven',
+        text: 'Séieren Chili, Nuddele mat Sardinnen, Lënsenzalot: nei Iddien, fir deng Boîten opzebrauchen, ier se oflafen.',
+      },
+      {
+        title: 'Déi ganz Famill mécht mat',
+        text: 'En Noutfallplang fir zesummen auszefëllen an ze drécken, eng Akafslëscht fir per Link ze deelen, Challengen an e Quiz fir déi ganz Famill.',
+      },
+      {
+        title: 'D’Noperschaft, a béid Richtungen',
+        text: 'Däi Plang notéiert d’Noperen, déi dir hëllefe kënnen, an déi, déi dech brauche wäerten. A mat engem QR-Code weis de hinnen Kitzy.',
+      },
+    ],
+  },
+
   household: {
     title: 'Ausgerechent fir däin Haushalt',
     lead: 'So Kitzy, wien alles bei dir wunnt, Déieren abegraff: Kitzy rechent aus, wéi vill s du brauchs. Probéier et aus.',
@@ -369,10 +439,45 @@ export const pt: LandingTexts = {
   openApp: 'Abrir a app',
   hero: {
     title: 'Três dias à frente do imprevisto.',
-    lead: 'O Kitzy ajuda-te a reunir o necessário para aguentar 72 horas em casa, à medida da tua família, e depois fica de olho nas datas. Gratuito, sem conta, e funciona offline.',
+    lead: 'Falha de energia, tempestade, crise grave: o Kitzy ajuda-te a preparar o necessário para aguentar 72 horas em casa, passo a passo e sem angústia. Faz as contas, arruma e vigia as datas por ti. Gratuito, sem conta, e funciona offline.',
     open: 'Abrir o Kitzy',
     install: 'Instalar',
   },
+  features: {
+    title: 'O que o Kitzy faz por ti',
+    lead: 'Preparar-se para uma crise costuma ser uma lista sem fim e um nó no estômago. O Kitzy transforma isso num projeto simples, ao teu ritmo.',
+    items: [
+      {
+        title: 'Preparar-te sem angústia',
+        text: 'Nada de cenários catastróficos: pequenos passos, progressos que se veem e um ouriço que te encoraja.',
+      },
+      {
+        title: 'A tua reserva, em casa e nas mochilas',
+        text: 'Falha de energia, tempestade, inundação, conflito: o Kitzy calcula o que a tua família precisa e diz-te onde guardar cada coisa.',
+      },
+      {
+        title: 'Alertas antes do fim do prazo',
+        text: 'Água, conservas, pilhas, medicamentos: és avisado a tempo, no telemóvel ou na agenda.',
+      },
+      {
+        title: 'Uma rotina que fica',
+        text: 'Um mini-check de dois minutos na primeira segunda-feira do mês, uma grande revisão na mudança da hora. O kit fica pronto sem teres de pensar nisso.',
+      },
+      {
+        title: 'Receitas com as tuas latas',
+        text: 'Chili rápido, massa com sardinhas, salada de lentilhas: ideias originais para gastar as latas antes de passarem do prazo.',
+      },
+      {
+        title: 'A família toda a bordo',
+        text: 'Um plano de emergência para preencher juntos e imprimir, uma lista de compras para partilhar por link, desafios e um quiz para fazer em família.',
+      },
+      {
+        title: 'A vizinhança, nos dois sentidos',
+        text: 'O teu plano regista os vizinhos que te podem ajudar e os que vão precisar de ti. E basta um código QR para lhes mostrar o Kitzy.',
+      },
+    ],
+  },
+
   household: {
     title: 'Calculado para a tua família',
     lead: 'Diz ao Kitzy quem vive contigo, animais incluídos: ele calcula as quantidades a reunir. Experimenta.',
