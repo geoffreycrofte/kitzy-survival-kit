@@ -110,7 +110,9 @@ function initLanguage(): void {
   const hint = document.querySelector<HTMLElement>('#lang-hint');
   if (!hint || !device || device === locale || isLocale(read('kitzy.locale'))) return;
   const link = document.createElement('a');
-  link.href = hrefFor(device);
+  // La même page dans l'autre langue (menu des langues), sinon sa page d'accueil.
+  link.href =
+    document.querySelector<HTMLAnchorElement>(`[data-locale="${device}"]`)?.href ?? hrefFor(device);
   link.hreflang = device;
   link.lang = device;
   link.textContent = LANDING[device].langHint;

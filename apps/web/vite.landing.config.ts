@@ -3,7 +3,9 @@ import { resolve } from 'node:path';
 import { defineConfig, type Plugin } from 'vite';
 import { renderSVG } from 'uqr';
 import { LANDING } from '../../packages/core/src/i18n/landing';
+import { SITE } from '../../packages/core/src/i18n/site';
 import { SITE_URL, ogImageName } from '../../packages/core/src/links';
+import { sitePages, sitemap } from './site/pages';
 
 /**
  * Page de présentation (kitzy.lu) : construite à la racine du site, à côté de l'app (`app/`).
@@ -37,8 +39,9 @@ const NAMES: Record<Locale, string> = {
 };
 
 function lookup(locale: Locale, path: string): string {
-  let value: unknown = LANDING[locale];
-  for (const part of path.split('.')) {
+  // `site.…` : textes des pages publiques (liens vers la liste et le guide).
+  let value: unknown = path.startsWith('site.') ? SITE[locale] : LANDING[locale];
+  for (const part of (path.startsWith('site.') ? path.slice(5) : path).split('.')) {
     if (value === null || typeof value !== 'object') value = undefined;
     else value = (value as Record<string, unknown>)[part];
   }
@@ -185,13 +188,29 @@ function landingPages(): Plugin {
         return render(html, 'fr');
       },
     },
-    // Le gabarit n'est complet (scripts et styles du build) qu'à la fin : on écrit alors les traductions.
+    // Le gabarit n'est complet (scripts et styles du build) qu'à la fin : on écrit alors les traductions,
+    // puis les pages publiques (liste du kit, fiches, guide), avec la même feuille de style et le même script.
     closeBundle() {
       for (const locale of LOCALES) {
         if (locale === 'fr') continue;
         mkdirSync(resolve(outDir, locale), { recursive: true });
         writeFileSync(resolve(outDir, locale, 'index.html'), render(template, locale));
       }
+      const assets = [
+        ...template.matchAll(/<link rel="stylesheet"[^>]*>|<script type="module"[^>]*><\/script>/g),
+      ]
+        .map((match) => match[0])
+        .join('\n    ');
+      const affiliate = {
+        amazonTagFr: process.env.VITE_KITZY_AMAZON_TAG_FR || undefined,
+        amazonTagDe: process.env.VITE_KITZY_AMAZON_TAG_DE || undefined,
+      };
+      for (const page of sitePages({ base: siteBase, assets, affiliate })) {
+        const dir = resolve(outDir, page.locale === 'fr' ? '' : page.locale, page.path);
+        mkdirSync(dir, { recursive: true });
+        writeFileSync(resolve(dir, 'index.html'), page.html);
+      }
+      writeFileSync(resolve(outDir, 'sitemap.xml'), sitemap());
     },
   };
 }

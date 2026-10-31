@@ -616,6 +616,12 @@ html[data-motion='full'] .result__n--bump {
   color: var(--kz-muted);
 }
 
+.features__more {
+  margin-top: 28px;
+  font-weight: 700;
+  font-size: 1.125rem;
+}
+
 /* ---------- La maison et les sacs : de part et d'autre du hérisson ---------- */
 
 .split {
@@ -1020,6 +1026,263 @@ html[data-motion='full'] .result__n--bump {
   min-height: 44px;
   align-items: center;
   color: var(--kz-text);
+}
+
+/* ---------- Pages publiques : la liste du kit, les fiches, le guide ---------- */
+
+.doc {
+  max-width: 46rem;
+}
+
+/* Une page de texte : les rubriques se suivent sans le grand souffle de la page d'accueil. */
+.doc > section + section {
+  margin-top: 0;
+}
+
+.doc > p:not([class]) {
+  margin-top: 28px;
+}
+
+.crumbs ol {
+  margin: 8px 0 28px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 0;
+  font-size: 0.9375rem;
+  color: var(--kz-muted);
+}
+
+.crumbs li + li::before {
+  content: '/';
+  margin: 0 10px;
+  color: var(--kz-line);
+}
+
+.crumbs a {
+  color: var(--kz-text);
+}
+
+.doc__title {
+  font-size: clamp(2.25rem, 7vw, 3.75rem);
+  line-height: 1.05;
+  color: var(--kz-heading);
+}
+
+.doc__lead {
+  margin-top: 18px;
+  font-size: 1.25rem;
+  color: var(--kz-muted);
+}
+
+.doc h2 {
+  margin-top: 56px;
+  font-size: clamp(1.625rem, 4vw, 2.125rem);
+  line-height: 1.15;
+  color: var(--kz-heading);
+}
+
+.doc h3 {
+  font-size: 1.3125rem;
+  line-height: 1.25;
+}
+
+.doc__section > p,
+.doc__prose > p,
+.doc__prose > ul,
+.doc__prose > ol {
+  margin-top: 14px;
+}
+
+.doc__prose ul,
+.doc__prose ol,
+.doc__links {
+  padding-left: 1.25rem;
+}
+
+.doc__prose li + li,
+.doc__links li + li {
+  margin-top: 8px;
+}
+
+.doc__note,
+.doc__warning {
+  margin-top: 20px;
+  padding-left: 18px;
+  border-left: 3px solid var(--kz-label);
+}
+
+.doc__warning {
+  border-left-color: var(--kz-heading);
+}
+
+.doc__tags {
+  margin-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.doc__tags span,
+.kit-item__source {
+  display: inline-block;
+  padding: 2px 12px;
+  border: 1px solid var(--kz-line);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.kit-item__source--official {
+  border-color: var(--kz-label);
+  color: var(--kz-label);
+}
+
+.doc__rules,
+.kit-item__rules {
+  margin: 14px 0 0;
+  display: grid;
+  gap: 8px;
+}
+
+.doc__rules div,
+.kit-item__rules div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 10px;
+}
+
+.doc__rules dt,
+.kit-item__rules dt {
+  font-weight: 700;
+}
+
+.doc__rules dd,
+.kit-item__rules dd {
+  margin: 0;
+  color: var(--kz-muted);
+}
+
+.kit-list {
+  margin-top: 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.kit-item {
+  padding: 20px 0;
+  border-top: 1px solid var(--kz-line);
+}
+
+.kit-item__name {
+  margin-bottom: 8px;
+}
+
+.kit-item__hint {
+  margin-top: 10px;
+  color: var(--kz-muted);
+}
+
+.kit-item__rules {
+  font-size: 0.9375rem;
+}
+
+.buy-tier {
+  margin-top: 32px;
+}
+
+.buy-tier__mark {
+  color: var(--kz-heading);
+  margin-right: 6px;
+}
+
+.buy-product {
+  margin-top: 14px;
+  padding: 18px 20px;
+  border-radius: 18px;
+  background: var(--kz-surface);
+}
+
+.buy-product__name {
+  font-weight: 700;
+}
+
+.buy-product__why,
+.buy-product__none {
+  margin-top: 6px;
+  color: var(--kz-muted);
+}
+
+.buy-product__offers {
+  margin-top: 10px;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 20px;
+}
+
+.buy-product__offers a {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  font-weight: 700;
+}
+
+.buy-disclosure {
+  margin-top: 24px;
+  display: grid;
+  gap: 8px;
+  font-size: 0.9375rem;
+  color: var(--kz-muted);
+}
+
+.guide-list {
+  margin-top: 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.guide-list li {
+  padding: 16px 0;
+  border-top: 1px solid var(--kz-line);
+}
+
+.guide-list a {
+  font-family: var(--kz-font-display);
+  font-size: 1.3125rem;
+}
+
+.guide-list p {
+  margin-top: 4px;
+  color: var(--kz-muted);
+}
+
+.doc__source {
+  margin-top: 40px;
+  font-size: 0.9375rem;
+  color: var(--kz-muted);
+}
+
+.doc__cta {
+  margin-top: 64px;
+  padding: 28px;
+  border-radius: 24px;
+  background: var(--kz-nav);
+  color: var(--kz-nav-text);
+}
+
+.doc .doc__cta h2 {
+  margin-top: 0;
+}
+
+.doc__cta p + p {
+  margin-top: 18px;
+}
+
+.doc__cta p:first-of-type {
+  margin-top: 12px;
 }
 
 /* ---------- Petits écrans ---------- */

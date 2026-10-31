@@ -8,6 +8,7 @@
   "include": [
     "src",
     "landing",
+    "site",
     "e2e",
     "scripts",
     "vite.config.ts",
