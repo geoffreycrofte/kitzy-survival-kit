@@ -9,6 +9,7 @@ test.describe('Page de présentation (racine du site)', () => {
       page.getByRole('heading', { level: 1, name: 'Trois jours d’avance sur l’imprévu.' }),
     ).toBeVisible();
     for (const name of [
+      'Ce que Kitzy fait pour toi',
       'Calculé pour ta maisonnée',
       'La maison, et les sacs à dos',
       'Quoi acheter, à ton budget',
