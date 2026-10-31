@@ -212,11 +212,10 @@ test.describe('Page de présentation (racine du site)', () => {
   });
 
   test('les anciennes adresses mènent à la même page dans app/', async ({ page }) => {
-    await page.goto('/guide/sirenes');
-    await expect(page).toHaveURL(/\/app\/guide\/sirenes$/);
-    await expect(
-      page.getByRole('heading', { level: 1, name: 'Les signaux des sirènes' }),
-    ).toBeVisible();
+    // /guide/… est désormais la version publique du guide (voir site.spec.ts) : on teste une autre page.
+    await page.goto('/activites');
+    await expect(page).toHaveURL(/\/app\/activites$/);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   });
 
   test('l’ancien service worker de la racine se retire', async ({ request }) => {

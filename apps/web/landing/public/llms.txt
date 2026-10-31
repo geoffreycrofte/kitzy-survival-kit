@@ -18,6 +18,8 @@ Key facts:
 
 - [Kitzy home page](https://kitzy.lu/): what Kitzy does, household calculator, install instructions (French)
 - Translations of the home page: [English](https://kitzy.lu/en/), [German](https://kitzy.lu/de/), [Luxembourgish](https://kitzy.lu/lb/), [Portuguese](https://kitzy.lu/pt/)
+- [The 72-hour kit list](https://kitzy.lu/kit/): every item by category, with the quantities and where it goes (home or backpack); one page per item with buying advice at three budgets, e.g. [headlamp](https://kitzy.lu/kit/headlamp/) (French; also under /en/, /de/, /lb/, /pt/)
+- [The guide](https://kitzy.lu/guide/): the official Lëtz prepare! advice in plain words, e.g. [power cut](https://kitzy.lu/guide/coupure-electricite/), [sirens](https://kitzy.lu/guide/sirenes/), [LU-Alert](https://kitzy.lu/guide/alerte-lu-alert/) (French; also under /en/, /de/, /lb/, /pt/)
 - [Open the app](https://kitzy.lu/app/): the web app itself (requires JavaScript)
 
 ## Policies
