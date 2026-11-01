@@ -37,6 +37,20 @@ export interface SiteTexts {
     /** Titre d'une page du guide dans l'onglet, avec `{{title}}`. */
     metaTitleArticle: string;
   };
+  recipes: {
+    /** Lien dans le pied de page. */
+    nav: string;
+    title: string;
+    lead: string;
+    metaTitle: string;
+    description: string;
+    /** Titre d'une recette dans l'onglet, avec `{{title}}`. */
+    metaTitleRecipe: string;
+    /** Ingrédient relié à la fiche d'un article : `{{name}}`. */
+    inKit: string;
+    /** Crédit d'une photo : `{{author}}` et `{{license}}` (liens vers la source et la licence). */
+    photo: string;
+  };
   cta: { title: string; text: string; button: string };
   /** Lien vers la liste, depuis la page d'accueil. */
   more: string;
@@ -81,6 +95,17 @@ const fr: SiteTexts = {
     description:
       'Les conseils officiels Lëtz prepare! en langage clair : pourquoi 72 heures, coupure d’électricité, LU-Alert, sirènes, s’informer, s’entraider.',
     metaTitleArticle: '{{title}} | Kitzy',
+  },
+  recipes: {
+    nav: 'Les recettes',
+    title: 'Recettes avec des conserves',
+    lead: 'Faire tourner sa réserve, c’est aussi se faire un bon repas. Des recettes avec des boîtes et des produits secs, peu d’eau, peu de vaisselle et pas besoin de frigo.',
+    metaTitle: 'Recettes avec des conserves, sans frigo ni électricité | Kitzy',
+    description:
+      'Chili express, pâtes aux sardines, salade de lentilles sans cuisson : des recettes simples avec les conserves de ta réserve d’urgence, peu d’eau et peu de vaisselle.',
+    metaTitleRecipe: '{{title}} : recette avec des conserves | Kitzy',
+    inKit: 'Dans le kit : {{name}}',
+    photo: 'Photo : {{author}}, {{license}}',
   },
   cta: {
     title: 'Kitzy calcule tout ça pour ton foyer',
@@ -129,6 +154,17 @@ const en: SiteTexts = {
     description:
       'The official Lëtz prepare! advice in plain words: why 72 hours, power cuts, LU-Alert, sirens, staying informed, helping each other.',
     metaTitleArticle: '{{title}} | Kitzy',
+  },
+  recipes: {
+    nav: 'Recipes',
+    title: 'Recipes from tins',
+    lead: 'Rotating your supply can also mean a good meal. Recipes with tins and dry food, little water, little washing-up and no fridge needed.',
+    metaTitle: 'Recipes from tins, with no fridge or power | Kitzy',
+    description:
+      'Quick chilli, sardine pasta, no-cook lentil salad: simple recipes with the tins from your emergency supply, little water and little washing-up.',
+    metaTitleRecipe: '{{title}}: a recipe from tins | Kitzy',
+    inKit: 'In the kit: {{name}}',
+    photo: 'Photo: {{author}}, {{license}}',
   },
   cta: {
     title: 'Kitzy works all this out for your household',
@@ -183,6 +219,17 @@ const de: SiteTexts = {
       'Die offiziellen Ratschläge von Lëtz prepare! in einfachen Worten: warum 72 Stunden, Stromausfall, LU-Alert, Sirenen, sich informieren, sich gegenseitig helfen.',
     metaTitleArticle: '{{title}} | Kitzy',
   },
+  recipes: {
+    nav: 'Rezepte',
+    title: 'Rezepte mit Konserven',
+    lead: 'Den Vorrat zu erneuern kann auch ein gutes Essen bedeuten. Rezepte mit Dosen und Trockenvorräten, wenig Wasser, wenig Abwasch und ganz ohne Kühlschrank.',
+    metaTitle: 'Rezepte mit Konserven, ohne Kühlschrank und Strom | Kitzy',
+    description:
+      'Schnelles Chili, Nudeln mit Sardinen, Linsensalat ohne Kochen: einfache Rezepte mit den Konserven aus deinem Notvorrat, mit wenig Wasser und wenig Abwasch.',
+    metaTitleRecipe: '{{title}}: Rezept mit Konserven | Kitzy',
+    inKit: 'Im Vorrat: {{name}}',
+    photo: 'Foto: {{author}}, {{license}}',
+  },
   cta: {
     title: 'Kitzy rechnet das alles für deinen Haushalt aus',
     text: 'Sag Kitzy, wer bei dir wohnt: Kitzy berechnet die Mengen, ordnet jeden Artikel seinem Platz zu und erinnert dich vor den Terminen. Kostenlos, ohne Konto, und es funktioniert offline.',
@@ -231,6 +278,17 @@ const lb: SiteTexts = {
       'Déi offiziell Rotschléi vu Lëtz prepare! an einfache Wierder: firwat 72 Stonnen, Stroumausfall, LU-Alert, Sirenen, sech informéieren, sech géigesäiteg hëllefen.',
     metaTitleArticle: '{{title}} | Kitzy',
   },
+  recipes: {
+    nav: 'Rezepter',
+    title: 'Rezepter mat Konserven',
+    lead: 'De Virrot ze erneieren, dat kann och e gutt Iesse sinn. Rezepter mat Boîten an dréchene Liewensmëttel, wéineg Waasser, wéineg Ofwäsch an ouni Frigo.',
+    metaTitle: 'Rezepter mat Konserven, ouni Frigo a Stroum | Kitzy',
+    description:
+      'Séieren Chili, Nuddele mat Sardinnen, Lënsenzalot ouni Kachen: einfach Rezepter mat de Konserven aus dengem Noutvirrot, mat wéineg Waasser a wéineg Ofwäsch.',
+    metaTitleRecipe: '{{title}}: Rezept mat Konserven | Kitzy',
+    inKit: 'Am Kit: {{name}}',
+    photo: 'Foto: {{author}}, {{license}}',
+  },
   cta: {
     title: 'Kitzy rechent dat alles fir däin Haushalt aus',
     text: 'So Kitzy, wien bei dir wunnt: Kitzy rechent d’Quantitéiten aus, setzt all Artikel op seng Plaz an erënnert dech virun den Datumer. Gratis, ouni Kont, an et funktionéiert offline.',
@@ -278,6 +336,17 @@ const pt: SiteTexts = {
     description:
       'Os conselhos oficiais Lëtz prepare! em palavras simples: porquê 72 horas, falha de energia, LU-Alert, sirenes, estar informado, entreajuda.',
     metaTitleArticle: '{{title}} | Kitzy',
+  },
+  recipes: {
+    nav: 'Receitas',
+    title: 'Receitas com conservas',
+    lead: 'Renovar a reserva também pode ser uma boa refeição. Receitas com latas e produtos secos, pouca água, pouca loiça e sem precisar de frigorífico.',
+    metaTitle: 'Receitas com conservas, sem frigorífico nem eletricidade | Kitzy',
+    description:
+      'Chili rápido, massa com sardinhas, salada de lentilhas sem cozedura: receitas simples com as conservas da tua reserva de emergência, pouca água e pouca loiça.',
+    metaTitleRecipe: '{{title}}: receita com conservas | Kitzy',
+    inKit: 'No kit: {{name}}',
+    photo: 'Foto: {{author}}, {{license}}',
   },
   cta: {
     title: 'O Kitzy calcula tudo isto para a tua família',

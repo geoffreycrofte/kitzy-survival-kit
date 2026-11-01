@@ -1259,6 +1259,87 @@ html[data-motion='full'] .result__n--bump {
   color: var(--kz-muted);
 }
 
+.recipe-facts {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.recipe-facts span {
+  padding: 2px 12px;
+  border: 1px solid var(--kz-line);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.recipe-photo {
+  margin: 28px 0 0;
+}
+
+.recipe-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.recipe-photo figcaption {
+  margin-top: 8px;
+  font-size: 0.8125rem;
+  color: var(--kz-muted);
+}
+
+/* La liste des recettes : la photo à gauche, le texte à droite (dès qu'il y a la place). */
+.recipe-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 20px;
+}
+
+.recipe-card__photo {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+/* Sans photo : un bol dessiné, seulement quand la liste a deux colonnes. */
+.recipe-card__photo--empty {
+  display: none;
+  place-items: center;
+  background: var(--kz-surface);
+  color: var(--kz-label);
+}
+
+@media (min-width: 36rem) {
+  .recipe-card {
+    grid-template-columns: 9rem 1fr;
+  }
+
+  .recipe-card__photo--empty {
+    display: grid;
+  }
+
+  .recipe-card__photo {
+    grid-row: span 3;
+    margin-bottom: 0;
+  }
+}
+
+.recipe-kit {
+  margin-top: 18px;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 6px;
+  font-size: 0.9375rem;
+}
+
 .doc__source {
   margin-top: 40px;
   font-size: 0.9375rem;
