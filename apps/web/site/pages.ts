@@ -17,6 +17,7 @@ import {
 import { CATALOG, categoryName, contentFor, messagesFor } from '../../../packages/core/src/content';
 import type { GuideBlock, GuidePage } from '../../../packages/core/src/guide';
 import type { Recipe } from '../../../packages/core/src/recipes';
+import { RECIPE_PHOTOS, recipePhotoPath } from './photos';
 import { fill } from '../../../packages/core/src/i18n/fill';
 import { LANDING } from '../../../packages/core/src/i18n/landing';
 import { intlLocale, type Locale } from '../../../packages/core/src/i18n/locales';
@@ -108,6 +109,8 @@ interface Frame {
   body: string;
   /** Données structurées propres à la page, ajoutées au fil d'Ariane. */
   data?: Record<string, unknown>[];
+  /** Image de partage propre à la page (sinon celle de la page d'accueil). */
+  image?: { url: string; width: number; height: number; alt: string };
 }
 
 function page(frame: Frame, options: SiteOptions): string {
@@ -116,7 +119,7 @@ function page(frame: Frame, options: SiteOptions): string {
   const t = SITE[locale];
   const href = (l: Locale, p: string) => `${options.base}${prefix(l)}${p}`;
   const url = absolute(locale, path);
-  const image = `${SITE_URL}og/${ogImageName(locale)}`;
+  const image = frame.image?.url ?? `${SITE_URL}og/${ogImageName(locale)}`;
   const crumbs = [{ label: t.nav.home, path: '' }, ...frame.crumbs];
   const data = {
     '@context': 'https://schema.org',
@@ -153,7 +156,8 @@ function page(frame: Frame, options: SiteOptions): string {
     ${meta('property', 'og:title', frame.title)}
     ${meta('property', 'og:description', frame.description)}
     ${meta('property', 'og:image', image)}
-    ${meta('property', 'og:image:alt', landing.ogImageAlt)}
+    ${meta('property', 'og:image:alt', frame.image?.alt ?? landing.ogImageAlt)}
+    ${frame.image ? `${meta('property', 'og:image:width', String(frame.image.width))}\n    ${meta('property', 'og:image:height', String(frame.image.height))}` : ''}
     ${meta('name', 'twitter:card', 'summary_large_image')}
     <script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>
     <meta name="theme-color" content="#12302B" />
@@ -507,7 +511,8 @@ function recipeIndex(locale: Locale, options: SiteOptions): string {
   const href = (p: string) => `${options.base}${prefix(locale)}${p}`;
   const list = contentFor(locale)
     .recipes.map(
-      (recipe) => `<li>
+      (recipe) => `<li class="recipe-card${RECIPE_PHOTOS[recipe.id] ? ' recipe-card--photo' : ''}">
+            ${RECIPE_PHOTOS[recipe.id] ? `<img class="recipe-card__photo" src="${options.base}${recipePhotoPath(recipe.id)}" alt="" width="${RECIPE_PHOTOS[recipe.id]!.width}" height="${RECIPE_PHOTOS[recipe.id]!.height}" loading="lazy" decoding="async" />` : ''}
             <a href="${href(`recettes/${recipe.id}/`)}">${escape(recipe.title)}</a>
             <p>${escape(recipe.summary)}</p>
             <p class="recipe-facts">${recipeFacts(recipe, locale)
@@ -525,7 +530,7 @@ function recipeIndex(locale: Locale, options: SiteOptions): string {
       h1: t.recipes.title,
       lead: t.recipes.lead,
       crumbs: [{ label: t.recipes.nav }],
-      body: `<ul class="guide-list">
+      body: `<ul class="guide-list recipe-list">
           ${list}
         </ul>`,
     },
@@ -545,9 +550,24 @@ function recipePage(recipe: Recipe, locale: Locale, options: SiteOptions): strin
     .filter((item): item is ItemTemplate => item !== undefined);
   const kitHref = (item: ItemTemplate) =>
     withPage.has(item.id) ? href(`kit/${item.id}/`) : `${href('kit/')}#cat-${item.category}`;
-  const body = `<p class="recipe-facts">${recipeFacts(recipe, locale)
-    .map((fact) => `<span>${escape(fact)}</span>`)
-    .join('')}</p>
+  const photo = RECIPE_PHOTOS[recipe.id];
+  // Photo d'illustration : le titre dit déjà de quel plat il s'agit (alternative vide),
+  // la légende crédite l'auteur et la licence, comme elle l'exige.
+  const figure = photo
+    ? `<figure class="recipe-photo">
+        <img src="${options.base}${recipePhotoPath(recipe.id)}" alt="" width="${photo.width}" height="${photo.height}" decoding="async" />
+        <figcaption>${fill(escape(t.recipes.photo), {
+          author: `<a href="${escape(photo.source)}" rel="noopener noreferrer">${escape(photo.author)}</a>`,
+          license: photo.licenseUrl
+            ? `<a href="${escape(photo.licenseUrl)}" rel="license noopener noreferrer">${escape(photo.license)}</a>`
+            : escape(photo.license),
+        })}</figcaption>
+      </figure>`
+    : '';
+  const body = `${figure}
+      <p class="recipe-facts">${recipeFacts(recipe, locale)
+        .map((fact) => `<span>${escape(fact)}</span>`)
+        .join('')}</p>
       <section class="doc__section" aria-labelledby="ingredients-title">
         <h2 id="ingredients-title">${escape(m.ingredients)}</h2>
         <ul class="doc__links">${recipe.ingredients.map((i) => `<li>${escape(i.text)}</li>`).join('')}</ul>
@@ -579,6 +599,16 @@ function recipePage(recipe: Recipe, locale: Locale, options: SiteOptions): strin
       lead: recipe.summary,
       crumbs: [{ label: t.recipes.nav, path: 'recettes/' }, { label: recipe.title }],
       body,
+      ...(photo
+        ? {
+            image: {
+              url: `${SITE_URL}${recipePhotoPath(recipe.id)}`,
+              width: photo.width,
+              height: photo.height,
+              alt: recipe.title,
+            },
+          }
+        : {}),
       data: [
         {
           '@type': 'Recipe',
@@ -591,6 +621,7 @@ function recipePage(recipe: Recipe, locale: Locale, options: SiteOptions): strin
           recipeIngredient: recipe.ingredients.map((i) => i.text),
           recipeInstructions: recipe.steps.map((text) => ({ '@type': 'HowToStep', text })),
           author: { '@type': 'Organization', name: 'Kitzy', url: SITE_URL },
+          ...(photo ? { image: [`${SITE_URL}${recipePhotoPath(recipe.id)}`] } : {}),
         },
       ],
     },

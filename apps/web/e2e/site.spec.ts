@@ -60,6 +60,9 @@ test.describe('Pages publiques : la liste du kit, les fiches, le guide', () => {
     await expect(page).toHaveURL(/\/recettes\/$/);
     await page.getByRole('link', { name: 'Chili express du terrier' }).click();
     await expect(page).toHaveURL(/\/recettes\/chili-express\/$/);
+    // Photo libre : créditée sous l'image, avec un lien vers sa licence.
+    await expect(page.locator('.recipe-photo figcaption')).toContainText('Photo :');
+    await expect(page.locator('.recipe-photo a[rel~="license"]')).toHaveText('CC0');
     await expect(page.getByRole('heading', { level: 2, name: 'Ingrédients' })).toBeVisible();
     await expect(page.getByRole('heading', { level: 2, name: 'Étapes' })).toBeVisible();
     // Données structurées « Recipe », pour les résultats de recherche.

@@ -1274,6 +1274,51 @@ html[data-motion='full'] .result__n--bump {
   font-weight: 600;
 }
 
+.recipe-photo {
+  margin: 28px 0 0;
+}
+
+.recipe-photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 24px;
+}
+
+.recipe-photo figcaption {
+  margin-top: 8px;
+  font-size: 0.8125rem;
+  color: var(--kz-muted);
+}
+
+/* La liste des recettes : la photo à gauche, le texte à droite (dès qu'il y a la place). */
+.recipe-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  column-gap: 20px;
+}
+
+.recipe-card__photo {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 16px;
+  margin-bottom: 12px;
+}
+
+@media (min-width: 36rem) {
+  .recipe-card--photo {
+    grid-template-columns: 9rem 1fr;
+  }
+
+  .recipe-card__photo {
+    grid-row: span 3;
+    margin-bottom: 0;
+  }
+}
+
 .recipe-kit {
   margin-top: 18px;
   padding: 0;

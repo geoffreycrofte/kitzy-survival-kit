@@ -29,3 +29,7 @@ hedgehog) and other material created for this project. It does not cover:
   - the covers of the official "Lëtz prepare!" guides
     (assets/social/guides-letz-prepare.png), which belong to the Government of
     the Grand Duchy of Luxembourg and are shown for reference only.
+  - the recipe photos (apps/web/landing/public/images/recettes/), taken from
+    Wikimedia Commons: each keeps its own license (CC0, CC BY or CC BY-SA) and
+    is credited on its page, with a link to its source. The list is in
+    apps/web/site/photos.ts.

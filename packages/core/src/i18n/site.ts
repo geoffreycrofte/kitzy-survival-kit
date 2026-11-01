@@ -48,6 +48,8 @@ export interface SiteTexts {
     metaTitleRecipe: string;
     /** Ingrédient relié à la fiche d'un article : `{{name}}`. */
     inKit: string;
+    /** Crédit d'une photo : `{{author}}` et `{{license}}` (liens vers la source et la licence). */
+    photo: string;
   };
   cta: { title: string; text: string; button: string };
   /** Lien vers la liste, depuis la page d'accueil. */
@@ -103,6 +105,7 @@ const fr: SiteTexts = {
       'Chili express, pâtes aux sardines, salade de lentilles sans cuisson : des recettes simples avec les conserves de ta réserve d’urgence, peu d’eau et peu de vaisselle.',
     metaTitleRecipe: '{{title}} : recette avec des conserves | Kitzy',
     inKit: 'Dans le kit : {{name}}',
+    photo: 'Photo : {{author}}, {{license}}',
   },
   cta: {
     title: 'Kitzy calcule tout ça pour ton foyer',
@@ -161,6 +164,7 @@ const en: SiteTexts = {
       'Quick chilli, sardine pasta, no-cook lentil salad: simple recipes with the tins from your emergency supply, little water and little washing-up.',
     metaTitleRecipe: '{{title}}: a recipe from tins | Kitzy',
     inKit: 'In the kit: {{name}}',
+    photo: 'Photo: {{author}}, {{license}}',
   },
   cta: {
     title: 'Kitzy works all this out for your household',
@@ -224,6 +228,7 @@ const de: SiteTexts = {
       'Schnelles Chili, Nudeln mit Sardinen, Linsensalat ohne Kochen: einfache Rezepte mit den Konserven aus deinem Notvorrat, mit wenig Wasser und wenig Abwasch.',
     metaTitleRecipe: '{{title}}: Rezept mit Konserven | Kitzy',
     inKit: 'Im Vorrat: {{name}}',
+    photo: 'Foto: {{author}}, {{license}}',
   },
   cta: {
     title: 'Kitzy rechnet das alles für deinen Haushalt aus',
@@ -282,6 +287,7 @@ const lb: SiteTexts = {
       'Séieren Chili, Nuddele mat Sardinnen, Lënsenzalot ouni Kachen: einfach Rezepter mat de Konserven aus dengem Noutvirrot, mat wéineg Waasser a wéineg Ofwäsch.',
     metaTitleRecipe: '{{title}}: Rezept mat Konserven | Kitzy',
     inKit: 'Am Kit: {{name}}',
+    photo: 'Foto: {{author}}, {{license}}',
   },
   cta: {
     title: 'Kitzy rechent dat alles fir däin Haushalt aus',
@@ -340,6 +346,7 @@ const pt: SiteTexts = {
       'Chili rápido, massa com sardinhas, salada de lentilhas sem cozedura: receitas simples com as conservas da tua reserva de emergência, pouca água e pouca loiça.',
     metaTitleRecipe: '{{title}}: receita com conservas | Kitzy',
     inKit: 'No kit: {{name}}',
+    photo: 'Foto: {{author}}, {{license}}',
   },
   cta: {
     title: 'O Kitzy calcula tudo isto para a tua família',
