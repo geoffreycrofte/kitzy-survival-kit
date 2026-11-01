@@ -1308,9 +1308,21 @@ html[data-motion='full'] .result__n--bump {
   margin-bottom: 12px;
 }
 
+/* Sans photo : un bol dessiné, seulement quand la liste a deux colonnes. */
+.recipe-card__photo--empty {
+  display: none;
+  place-items: center;
+  background: var(--kz-surface);
+  color: var(--kz-label);
+}
+
 @media (min-width: 36rem) {
-  .recipe-card--photo {
+  .recipe-card {
     grid-template-columns: 9rem 1fr;
+  }
+
+  .recipe-card__photo--empty {
+    display: grid;
   }
 
   .recipe-card__photo {

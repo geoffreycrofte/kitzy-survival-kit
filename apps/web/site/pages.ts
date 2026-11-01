@@ -506,13 +506,16 @@ function recipeFacts(recipe: Recipe, locale: Locale): string[] {
   ];
 }
 
+/** Sans photo, un bol fumant dessiné garde la liste alignée (décoratif). */
+const PHOTO_PLACEHOLDER = `<span class="recipe-card__photo recipe-card__photo--empty" aria-hidden="true"><svg viewBox="0 0 48 48" width="52" height="52" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M7 25h34a17 17 0 0 1-34 0z"/><path d="M17 38h14"/><path d="M18 18c-2-2.5 2-4.5 0-7M24 18c-2-2.5 2-4.5 0-7M30 18c-2-2.5 2-4.5 0-7"/></svg></span>`;
+
 function recipeIndex(locale: Locale, options: SiteOptions): string {
   const t = SITE[locale];
   const href = (p: string) => `${options.base}${prefix(locale)}${p}`;
   const list = contentFor(locale)
     .recipes.map(
-      (recipe) => `<li class="recipe-card${RECIPE_PHOTOS[recipe.id] ? ' recipe-card--photo' : ''}">
-            ${RECIPE_PHOTOS[recipe.id] ? `<img class="recipe-card__photo" src="${options.base}${recipePhotoPath(recipe.id)}" alt="" width="${RECIPE_PHOTOS[recipe.id]!.width}" height="${RECIPE_PHOTOS[recipe.id]!.height}" loading="lazy" decoding="async" />` : ''}
+      (recipe) => `<li class="recipe-card">
+            ${RECIPE_PHOTOS[recipe.id] ? `<img class="recipe-card__photo" src="${options.base}${recipePhotoPath(recipe.id)}" alt="" width="${RECIPE_PHOTOS[recipe.id]!.width}" height="${RECIPE_PHOTOS[recipe.id]!.height}" loading="lazy" decoding="async" />` : PHOTO_PLACEHOLDER}
             <a href="${href(`recettes/${recipe.id}/`)}">${escape(recipe.title)}</a>
             <p>${escape(recipe.summary)}</p>
             <p class="recipe-facts">${recipeFacts(recipe, locale)
