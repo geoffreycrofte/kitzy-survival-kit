@@ -50,6 +50,8 @@ export interface SiteTexts {
     inKit: string;
     /** Crédit d'une photo : `{{author}}` et `{{license}}` (liens vers la source et la licence). */
     photo: string;
+    /** Catégorie d'une recette, pour les données structurées. */
+    categories: { breakfast: string; main: string; dessert: string };
   };
   cta: { title: string; text: string; button: string };
   /** Lien vers la liste, depuis la page d'accueil. */
@@ -106,6 +108,7 @@ const fr: SiteTexts = {
     metaTitleRecipe: '{{title}} : recette avec des conserves | Kitzy',
     inKit: 'Dans le kit : {{name}}',
     photo: 'Photo : {{author}}, {{license}}',
+    categories: { breakfast: 'Petit-déjeuner', main: 'Plat', dessert: 'Dessert' },
   },
   cta: {
     title: 'Kitzy calcule tout ça pour ton foyer',
@@ -165,6 +168,7 @@ const en: SiteTexts = {
     metaTitleRecipe: '{{title}}: a recipe from tins | Kitzy',
     inKit: 'In the kit: {{name}}',
     photo: 'Photo: {{author}}, {{license}}',
+    categories: { breakfast: 'Breakfast', main: 'Main course', dessert: 'Dessert' },
   },
   cta: {
     title: 'Kitzy works all this out for your household',
@@ -229,6 +233,7 @@ const de: SiteTexts = {
     metaTitleRecipe: '{{title}}: Rezept mit Konserven | Kitzy',
     inKit: 'Im Vorrat: {{name}}',
     photo: 'Foto: {{author}}, {{license}}',
+    categories: { breakfast: 'Frühstück', main: 'Hauptgericht', dessert: 'Dessert' },
   },
   cta: {
     title: 'Kitzy rechnet das alles für deinen Haushalt aus',
@@ -288,6 +293,7 @@ const lb: SiteTexts = {
     metaTitleRecipe: '{{title}}: Rezept mat Konserven | Kitzy',
     inKit: 'Am Kit: {{name}}',
     photo: 'Foto: {{author}}, {{license}}',
+    categories: { breakfast: 'Kaffi', main: 'Haaptplat', dessert: 'Dessert' },
   },
   cta: {
     title: 'Kitzy rechent dat alles fir däin Haushalt aus',
@@ -347,6 +353,7 @@ const pt: SiteTexts = {
     metaTitleRecipe: '{{title}}: receita com conservas | Kitzy',
     inKit: 'No kit: {{name}}',
     photo: 'Foto: {{author}}, {{license}}',
+    categories: { breakfast: 'Pequeno-almoço', main: 'Prato principal', dessert: 'Sobremesa' },
   },
   cta: {
     title: 'O Kitzy calcula tudo isto para a tua família',
