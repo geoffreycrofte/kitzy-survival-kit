@@ -29,7 +29,9 @@ jobs:
       - run: pnpm check-links
 
       # Les statuts mis à jour arrivent par une PR : l'app masque ensuite les offres cassées.
-      - uses: peter-evans/create-pull-request@v7
+      # Réglage du dépôt requis : Settings > Actions > General > Workflow permissions >
+      # « Allow GitHub Actions to create and approve pull requests ».
+      - uses: peter-evans/create-pull-request@v8
         with:
           branch: bot/statut-des-liens
           add-paths: packages/core/src/data/link-status.json
