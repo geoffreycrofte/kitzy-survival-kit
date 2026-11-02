@@ -541,8 +541,15 @@ function recipeIndex(locale: Locale, options: SiteOptions): string {
   );
 }
 
+/** Catégorie de chaque recette (par défaut : un plat). */
+const RECIPE_CATEGORY: Readonly<Record<string, 'breakfast' | 'dessert'>> = {
+  porridge: 'breakfast',
+  'riz-au-lait': 'dessert',
+};
+
 function recipePage(recipe: Recipe, locale: Locale, options: SiteOptions): string {
   const t = SITE[locale];
+  const url = absolute(locale, `recettes/${recipe.id}/`);
   const m = messagesFor(locale).recipes;
   const href = (p: string) => `${options.base}${prefix(locale)}${p}`;
   const withPage = new Set(itemsWithPage().map((item) => item.id));
@@ -587,7 +594,7 @@ function recipePage(recipe: Recipe, locale: Locale, options: SiteOptions): strin
       </section>
       <section class="doc__section" aria-labelledby="steps-title">
         <h2 id="steps-title">${escape(m.steps)}</h2>
-        <ol class="doc__links">${recipe.steps.map((step) => `<li>${escape(step)}</li>`).join('')}</ol>
+        <ol class="doc__links">${recipe.steps.map((step, i) => `<li id="etape-${i + 1}">${escape(step)}</li>`).join('')}</ol>
         ${recipe.tip ? `<p class="doc__note">${escape(recipe.tip)}</p>` : ''}
         ${recipe.cooking === 'stove' ? `<p class="doc__warning">${escape(m.safety)}</p>` : ''}
       </section>
@@ -612,21 +619,32 @@ function recipePage(recipe: Recipe, locale: Locale, options: SiteOptions): strin
             },
           }
         : {}),
-      data: [
-        {
-          '@type': 'Recipe',
-          name: recipe.title,
-          description: recipe.summary,
-          inLanguage: locale,
-          url: absolute(locale, `recettes/${recipe.id}/`),
-          totalTime: `PT${recipe.minutes}M`,
-          recipeYield: String(recipe.serves),
-          recipeIngredient: recipe.ingredients.map((i) => i.text),
-          recipeInstructions: recipe.steps.map((text) => ({ '@type': 'HowToStep', text })),
-          author: { '@type': 'Organization', name: 'Kitzy', url: SITE_URL },
-          ...(photo ? { image: [`${SITE_URL}${recipePhotoPath(recipe.id)}`] } : {}),
-        },
-      ],
+      // Google exige une image pour une recette : sans photo, pas de données « Recipe »
+      // (la page reste indexée normalement, sans affichage enrichi).
+      ...(photo
+        ? {
+            data: [
+              {
+                '@type': 'Recipe',
+                name: recipe.title,
+                description: recipe.summary,
+                inLanguage: locale,
+                url,
+                image: [`${SITE_URL}${recipePhotoPath(recipe.id)}`],
+                recipeCategory: t.recipes.categories[RECIPE_CATEGORY[recipe.id] ?? 'main'],
+                totalTime: `PT${recipe.minutes}M`,
+                recipeYield: String(recipe.serves),
+                recipeIngredient: recipe.ingredients.map((i) => i.text),
+                recipeInstructions: recipe.steps.map((text, i) => ({
+                  '@type': 'HowToStep',
+                  text,
+                  url: `${url}#etape-${i + 1}`,
+                })),
+                author: { '@type': 'Organization', name: 'Kitzy', url: SITE_URL },
+              },
+            ],
+          }
+        : {}),
     },
     options,
   );

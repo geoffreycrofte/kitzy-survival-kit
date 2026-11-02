@@ -70,6 +70,9 @@ test.describe('Pages publiques : la liste du kit, les fiches, le guide', () => {
     expect(
       JSON.parse(data ?? '{}')['@graph'].map((n: { '@type': string }) => n['@type']),
     ).toContain('Recipe');
+    // Sans photo, pas de données « Recipe » : Google les refuserait (image obligatoire).
+    const noPhoto = await page.request.get('/recettes/porridge/');
+    expect(await noPhoto.text()).not.toContain('"@type":"Recipe"');
     await page
       .getByRole('link', { name: /^Dans le kit :/ })
       .first()
