@@ -194,7 +194,7 @@ export const fr = {
     button: 'Imprimer',
     noneChosen: 'Choisis au moins un emplacement.',
     empty: 'Rien à imprimer pour l’instant : ajoute à tes kits ce que tu as déjà, avec sa date.',
-    sheetTitle: '{{kit}} : ce que j’ai',
+    sheetTitle: '{{kit}}\u00a0: ce que j’ai',
     printed: 'Imprimé le {{date}}.',
     hint: 'Coche ou barre chaque ligne quand tu l’utilises.',
     colUsed: 'Utilisé',

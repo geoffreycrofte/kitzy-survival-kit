@@ -1725,6 +1725,18 @@ h3.section-title {
   height: 2.2em;
 }
 
+/* Aperçu sur téléphone : un peu plus serré pour garder quatre colonnes lisibles. */
+@media (max-width: 34rem) {
+  .inventory-table {
+    font-size: 0.8125rem;
+  }
+
+  .inventory-table th,
+  .inventory-table td {
+    padding: 6px 4px;
+  }
+}
+
 /* Impression : la feuille seule, au format A4. */
 
 @media print {
