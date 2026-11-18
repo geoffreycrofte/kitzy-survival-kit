@@ -50,6 +50,9 @@ export function Kits() {
               );
             })}
           </ul>
+          <Link to="/kits/imprimer" className="button button--ghost">
+            {t('inventoryPrint.link')}
+          </Link>
           <p className="muted">
             {t('kits.level', { level: t(`levels.${data.level}`) })}{' '}
             <Link to="/reglages#niveau" className="text-link">

@@ -1661,12 +1661,81 @@ h3.section-title {
   }
 }
 
+/*
+ * Inventaire imprimable : une feuille par emplacement, un tableau sobre à cocher ou barrer
+ * au stylo. Même papier que le plan (.doc) ; à l'impression, chaque feuille sur sa page.
+ */
+
+.inventory-print {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.inventory-sheet__head {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.inventory-sheet__meta {
+  color: var(--doc-muted);
+  font-size: 0.875rem;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.inventory-table th {
+  text-align: left;
+  font-weight: 700;
+  border-bottom: 2px solid var(--doc-ink);
+  padding: 6px 8px;
+}
+
+.inventory-table td {
+  border-bottom: 1px solid var(--doc-rule);
+  padding: 8px;
+  vertical-align: top;
+}
+
+.inventory-table__used {
+  width: 2rem;
+  text-align: center;
+}
+
+/* La case à cocher au stylo. */
+.inventory-table__box {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid var(--doc-ink);
+  border-radius: 2px;
+}
+
+.inventory-table__qty {
+  white-space: nowrap;
+}
+
+/* Lignes vides, pour écrire à la main ce qu'on range en plus. */
+.inventory-table__blank td {
+  height: 2.2em;
+}
+
 /* Impression : la feuille seule, au format A4. */
 
 @media print {
   @page {
     size: A4;
     margin: 12mm 14mm;
+  }
+
+  /* Thème sombre : sans ça, Chrome peint les marges de la page dans la couleur du thème. */
+  :root {
+    color-scheme: light !important;
   }
 
   html,
@@ -1685,6 +1754,7 @@ h3.section-title {
     display: none !important;
   }
 
+  .app,
   .app__main,
   .page {
     padding: 0 !important;
@@ -1703,6 +1773,28 @@ h3.section-title {
 
   .doc__title {
     font-size: 20pt;
+  }
+
+  /* Inventaire : une page par emplacement, lignes qui ne se coupent pas. */
+  .inventory-print {
+    gap: 0;
+    max-width: none !important;
+  }
+
+  .inventory-sheet + .inventory-sheet {
+    break-before: page;
+  }
+
+  .inventory-table {
+    font-size: 10pt;
+  }
+
+  .inventory-table tr {
+    break-inside: avoid;
+  }
+
+  .inventory-table thead {
+    display: table-header-group;
   }
 
   .doc__head {

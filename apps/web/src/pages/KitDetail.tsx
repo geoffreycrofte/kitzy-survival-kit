@@ -59,6 +59,9 @@ export function KitDetail() {
         <button type="button" className="button" onClick={() => setScanning(true)}>
           {t('scan.button')}
         </button>
+        <Link to={`/kits/imprimer?kit=${kit.id}`} className="button button--ghost">
+          {t('inventoryPrint.linkKit')}
+        </Link>
       </div>
       <BarcodeScanner
         open={scanning}
