@@ -50,6 +50,11 @@ export function formatDay(iso: string, today?: string): string {
   }).format(toDate(iso));
 }
 
+/** « 26/10/2026 » : court, pour les tableaux imprimés */
+export function formatShortDate(iso: string): string {
+  return new Intl.DateTimeFormat(currentIntl(), { dateStyle: 'short' }).format(toDate(iso));
+}
+
 /** « 26 octobre 2026 » */
 export function formatDate(iso: string): string {
   return new Intl.DateTimeFormat(currentIntl(), {

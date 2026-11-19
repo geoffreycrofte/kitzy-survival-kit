@@ -31,6 +31,7 @@ import { Shopping } from './pages/Shopping';
 import { PlanOverview, PlanStepPage } from './pages/Plan';
 import { ScanChoose } from './pages/ScanChoose';
 import { PlanPrint } from './pages/PlanPrint';
+import { InventoryPrint } from './pages/InventoryPrint';
 import { Tasks } from './pages/Tasks';
 import { Transparency } from './pages/Transparency';
 import { Privacy } from './pages/Privacy';
@@ -89,6 +90,7 @@ export function App() {
             <Route path="/" element={<Home />} />
             <Route path="/foyer" element={<Household />} />
             <Route path="/kits" element={<Kits />} />
+            <Route path="/kits/imprimer" element={<InventoryPrint />} />
             <Route path="/kits/:kitId" element={<KitDetail />} />
             <Route path="/kits/:kitId/nouveau" element={<NewItem />} />
             <Route path="/kits/:kitId/scan/:code" element={<ScanChoose />} />
